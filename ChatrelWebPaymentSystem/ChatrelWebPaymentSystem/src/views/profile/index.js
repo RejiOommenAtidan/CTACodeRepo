@@ -54,7 +54,8 @@ export default function Friends () {
   
 const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
-
+//console.log("UserObj",userObj);
+//console.log("UserGBObj",userGBObj);
   return (
     <>
      <Card className="w-50 mx-auto shadow-lg " style={{paddingTop:'100px'}}>
@@ -68,13 +69,14 @@ const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
                                     <h3 className="font-weight-bold mt-4 mb-3 text-black">{userObj.name} </h3>
                                     
                                     <Grid container spacing={0}>
-                                            <Grid item md={6}>
+                                            <Grid item md={12} lg={6}>
                                                 <div className="bg-secondary m-3 py-3 px-0 text-center rounded">
                                                     <div>
                                                         <FontAwesomeIcon icon={['fas', 'envelope']} className="font-size-xxl text-warning" />
                                                     </div>
                                                     <div className="mt-2 line-height-sm">
-                                                        <b className="font-size-lg text-black">{userObj.email}</b>
+                                                        <b className="font-size-md text-black">{userObj.email}</b>
+                                                        
                                                         <span className="text-black-50 d-block">Email Address</span>
                                                     </div>
                                                 </div>
@@ -85,31 +87,32 @@ const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
                                                         <FontAwesomeIcon icon={['fas', 'id-card']} className="font-size-xxl text-info" />
                                                     </div>
                                                     <div className="mt-2 line-height-sm">
-                                                        <b className="font-size-lg text-black">{userGBObj.sGBID}</b>
+                                                        <b className="font-size-lg text-black">{userGBObj.sCountryID+userGBObj.sGBID}</b>
                                                         <span className="text-black-50 d-block">Green Book Number</span>
                                                     </div>
                                                 </div>
                                             </Grid>
-                                            <Grid item md={6}>
-                                                <div className="bg-secondary m-3 py-3 px-0 text-center rounded">
-                                                    <div>
-                                                        <FontAwesomeIcon icon={['fas', 'calendar-day']} className="font-size-xxl text-success" />
-                                                    </div>
-                                                    <div className="mt-2 line-height-sm">
-                                                        <b className="font-size-lg text-black">{Moment(userGBObj.dtDob ).format("DD-MM-YYYY")}</b>
-                                                        <span className="text-black-50 d-block">Date of Birth</span>
-                                                    </div>
-                                                </div>
-                                            </Grid>
+                                           
                                             
                                             <Grid item md={6}>
                                                 <div className="bg-secondary m-3 py-3 px-0 text-center rounded">
                                                     <div>
-                                                        <FontAwesomeIcon icon={['fas', 'id-card-alt']} className="font-size-xxl text-danger" />
+                                                        <FontAwesomeIcon icon={['fas', 'id-card-alt']} className="font-size-xxl text-success" />
                                                     </div>
                                                     <div className="mt-2 line-height-sm">
                                                         <b className="font-size-lg text-black">{Moment().diff(userGBObj.dtDob ,'years')}</b>
                                                         <span className="text-black-50 d-block">Age</span>
+                                                    </div>
+                                                </div>
+                                            </Grid>
+                                            <Grid item  md={12} lg={6}>
+                                                <div className="bg-secondary m-3 py-3 px-0 text-center rounded">
+                                                    <div>
+                                                        <FontAwesomeIcon icon={['fas', 'map-marker-alt']} className="font-size-xxl text-danger" />
+                                                    </div>
+                                                    <div className="mt-2 line-height-sm">
+                                                        <b className="font-size-lg text-black">{userGBObj.sAuthRegion}</b>
+                                                        <span className="text-black-50 d-block">Authority Region</span>
                                                     </div>
                                                 </div>
                                             </Grid>

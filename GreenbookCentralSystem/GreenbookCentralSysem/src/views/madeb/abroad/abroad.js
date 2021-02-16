@@ -32,6 +32,12 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(3)
     }
   },
+  expansionHeading: {
+    color: '#ffffff'
+  },
+  expansionPanel: {
+    backgroundColor: '#4e5287'
+  },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
@@ -68,7 +74,13 @@ const useStyles = makeStyles((theme) => ({
     secondary: {
       // This is green.A700 as hex.
       main: '#11cb5f',
-    },
+    }
+  },
+  expansionHeading: {
+    color: '#ffffff'
+  },
+  expansionPanel: {
+    backgroundColor: '#4e5287'
   }
 }));
 
@@ -198,7 +210,7 @@ export default function EnhancedTable() {
         borderRight: '1px solid grey'
       },
       customSort: (a, b) => {
-        //console.log(a, b);
+        ////console.log(a, b);
         if(!a.madeb.dtFormattedReceived){
           return -1;
         }
@@ -660,10 +672,10 @@ export default function EnhancedTable() {
               } else {
                 console.error('Error', error.message);
               }
-              console.log(error.config);
+              //console.log(error.config);
             })
             .then(release => {
-              //console.log(release); => udefined
+              ////console.log(release); => udefined
             });
           
         }
@@ -682,10 +694,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
@@ -709,10 +721,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   }
   const addAPICall = (madeb) => {
@@ -752,10 +764,10 @@ export default function EnhancedTable() {
               } else {
                 console.error('Error', error.message);
               }
-              console.log(error.config);
+              //console.log(error.config);
             })
             .then(release => {
-              //console.log(release); => udefined
+              ////console.log(release); => udefined
             });
           //window.location = window.location;
         }
@@ -774,10 +786,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
@@ -813,10 +825,10 @@ export default function EnhancedTable() {
           console.error('Error', error.message);
         }
        
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   }, []);
 

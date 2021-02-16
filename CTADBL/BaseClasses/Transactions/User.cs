@@ -15,6 +15,7 @@ namespace CTADBL.BaseClasses.Transactions
         private string _sFullname;
         private string _sOffice;
         private string _sPassword;
+        private string _sSalt;
         private int _nUserRightsId;
         private bool _bActive;
         #endregion
@@ -32,6 +33,8 @@ namespace CTADBL.BaseClasses.Transactions
         public string sOffice { get { return _sOffice; } set { _sOffice = value; } }
         [DisplayName("Password")]
         public string sPassword { get { return _sPassword; } set { _sPassword = value; } }
+        [DisplayName("Salt")]
+        public string sSalt { get { return _sSalt; } set { _sSalt = value; } }
         [DisplayName("User Rights ID")]
         public int nUserRightsId { get { return _nUserRightsId; } set { _nUserRightsId = value; } }
         [DisplayName("Active")]

@@ -25,6 +25,7 @@ namespace CTADBL.ViewModelsRepositories
 	                        `users`.`sFullName`,
 	                        `users`.`sOffice`,
 	                        `users`.`sPassword`,
+                            `users`.`sSalt`,
 	                        `users`.`nUserRightsId`,
                             `users`.`bActive`,
 	                        `users`.`dtEntered`,

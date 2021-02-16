@@ -77,7 +77,13 @@ const useStyles = makeStyles((theme) => ({
       // This is green.A700 as hex.
       main: '#11cb5f',
     },
-  }
+  },
+  expansionHeading: {
+    color: '#ffffff'
+  },
+  expansionPanel: {
+    backgroundColor: '#4e5287'
+  },
 }));
 
 
@@ -444,7 +450,7 @@ export default () => {
         borderRight: '1px solid grey'
       },
       customSort: (a, b) => {
-        //console.log(a, b);
+        ////console.log(a, b);
         if(!a.madeb.dtFormattedReject){
           return -1;
         }
@@ -491,7 +497,7 @@ export default () => {
       },
       
       customSort: (a, b) => {
-        //console.log(a, b);
+        ////console.log(a, b);
         if(!a.madeb.dtFormattedReturnEmail){
           return -1;
         }
@@ -622,7 +628,7 @@ export default () => {
   };
 
   const editAPICall = (madeb) => {
-    console.log(madeb);
+    //console.log(madeb);
     madeb.dtReject = madeb.dtReject === "" ? null : madeb.dtReject;
     madeb.dtReceived = madeb.dtReceived === "" ? null : madeb.dtReceived;
     madeb.dtIssueAction = madeb.dtIssueAction === "" ? null : madeb.dtIssueAction;
@@ -649,13 +655,13 @@ export default () => {
                 selectDatafunction();
               }
               else {
-                console.log("Response received:\n", resp);
+                //console.log("Response received:\n", resp);
               }
             })
             .catch(error => {
               setBackdrop(false);
-              console.log(error.config);
-              console.log(error.message);
+              //console.log(error.config);
+              //console.log(error.message);
             })
         }
       })
@@ -680,13 +686,13 @@ export default () => {
       })
       .catch(error => {
         setBackdrop(false);
-        console.log(error.config);
-        console.log(error.message);
+        //console.log(error.config);
+        //console.log(error.message);
       })
   };
 
   const addAPICall = (madeb) => {
-    console.log(madeb);
+    //console.log(madeb);
     setBackdrop(true);
     axios.post(`/Madeb/AddMadeb/`, madeb)
       .then(resp => {
@@ -710,8 +716,8 @@ export default () => {
             })
             .catch(error => {
               setBackdrop(false);
-              console.log(error.message);
-              console.log(error.config);
+              //console.log(error.message);
+              //console.log(error.config);
             })
         }
       })
@@ -741,8 +747,8 @@ export default () => {
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
+        //console.log(error.config);
+        //console.log(error.message);
         setisLoading(false);
       })
   }, []);

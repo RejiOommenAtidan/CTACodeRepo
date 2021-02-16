@@ -1,7 +1,7 @@
 ﻿using CTADBL.BaseClasses.Transactions;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
+//using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 
 namespace CTADBL.ViewModels

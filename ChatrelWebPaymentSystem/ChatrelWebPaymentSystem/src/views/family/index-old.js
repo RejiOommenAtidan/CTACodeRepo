@@ -57,7 +57,7 @@ export default function Family () {
 
     }
     dispatch(storeCurrentGBDetails(obj));
-    history.push('/PaymentPage');
+    history.push('/Chatrel');
   }
 
   useEffect(() => {
@@ -80,10 +80,10 @@ export default function Family () {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
      }, []);
   return (

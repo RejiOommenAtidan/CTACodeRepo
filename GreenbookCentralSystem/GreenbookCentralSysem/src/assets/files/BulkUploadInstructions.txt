@@ -1,0 +1,21 @@
+Instructions for Bulk Import CSV File:
+
+1. Choose a CSV File by clicking on 'Choose File' button.
+2. After selecting the file, the file will be verified for correct headers.
+3. If the headers are as per system requirement, the file can be uploaded for verification.
+
+The data in the file is expected as mentioned below:
+
+1. All types of dates are expected in the "DD/MM/YYYY" format with "/"  or "-" as separator.
+   (For eg. 25/09/2008 OR 25-09-2008)
+
+2. "Greenbook ID" and "Paid by Greenbook ID" should be preceeded with the country ID.
+   (For eg. "IN1234567" OR "US1234567")
+
+3. Currency Format should be correctly mentioned as either "INR" / "USD",  etc.
+4. Financial Year should be mentioned as "2020" and not as "2020-21".
+5. Authority Region names should match exactly as per database.
+6. Country Names should match exactly as per database.
+7. Payment mode should be mentioned strictly as 'Offline'.
+8. During verification, file will be checked for valid data.
+9. A table will be populated below displaying Success or Failed status of each row.

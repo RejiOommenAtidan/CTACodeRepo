@@ -1,10 +1,10 @@
 export default {
-  primary: '#4c69ae',
+  primary: '#298851',
   accent: '#FFC107',
   greenBG: '#298851',
   white: '#ffffff',
   black: '#000000',
-  blue: '#4c69ae',
+  blue: '#298851',
   blackText: '#000000',
   blackTextAPI: '#000000',
   buttonYellow: '#ebcb45',
@@ -20,10 +20,15 @@ export default {
   backgroundColorForLoader: '#00000000',
   separatorColor: '#DCDCDC',
   spinnerColor: '#ebcb45',
-  labelColorLight: "#6e6e6e",
-  websiteLightBlueColor: "#3e8efb",
-  faqButtonColor: "#f57736",
-  Opacity40Color: "#00000040"
+  labelColorLight: '#6e6e6e',
+  websiteLightBlueColor: '#3e8efb',
+  faqButtonColor: '#f57736',
+  Opacity40Color: '#00000040',
+  MyProfileEmailColor: '#ee6a32',
+  MyProfileGBIDColor: '#2cbed4',
+  MyProfileAgeColor: '#f22341',
+  MyProfileAuthorityRegionColor: '#28c741',
 };
 
-//old green -#298851
+//Old Green - #298851
+//primary blue color - #4c69ae

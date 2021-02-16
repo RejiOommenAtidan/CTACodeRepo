@@ -28,14 +28,12 @@ const GoogleLogoutButton = () => {
     render={renderProps => (
            
 
-        <Button className="btn-google m-2 shadow-first"  style={{   backgroundColor: 'rgb(42, 92, 255)'}}   onClick={renderProps.onClick} /*disabled={renderProps.disabled}*/ >
-        <span className="btn-wrapper--icon">
-            <FontAwesomeIcon icon={['fab', 'google']} className="font-size-lg" />
-        </span>
-        <span className="btn-wrapper--label">
-        Sign Out
-    </span>
-    </Button>
+        
+         <Button className="btn-outline-first border-1 m-2" onClick={renderProps.onClick}  variant="outlined">
+         <span className="btn-wrapper--label">
+             Yes
+         </span>
+     </Button>
       )}
     >
        

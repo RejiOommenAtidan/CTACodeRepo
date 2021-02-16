@@ -53,7 +53,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     `lnkgbchatreldonation`.`nEnteredBy`,
                                     `lnkgbchatreldonation`.`dtUpdated`,
                                     `lnkgbchatreldonation`.`nUpdatedBy`
-                                FROM `chatreldb`.`lnkgbchatreldonation`
+                                FROM `lnkgbchatreldonation`
                                 LIMIT @limit;";
             using (var command = new MySqlCommand(sql))
             {
@@ -81,7 +81,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     `lnkgbchatreldonation`.`nEnteredBy`,
                                     `lnkgbchatreldonation`.`dtUpdated`,
                                     `lnkgbchatreldonation`.`nUpdatedBy`
-                                FROM `chatreldb`.`lnkgbchatreldonation`
+                                FROM `lnkgbchatreldonation`
                                 WHERE sGBID = @sGBID;";
             using (var command = new MySqlCommand(sql))
             {
@@ -109,7 +109,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     `lnkgbchatreldonation`.`nEnteredBy`,
                                     `lnkgbchatreldonation`.`dtUpdated`,
                                     `lnkgbchatreldonation`.`nUpdatedBy`
-                                FROM `chatreldb`.`lnkgbchatreldonation`
+                                FROM `lnkgbchatreldonation`
                                 WHERE sGBID = @sGBID
                                 AND nChatrelYear = @year;";
             using (var command = new MySqlCommand(sql))

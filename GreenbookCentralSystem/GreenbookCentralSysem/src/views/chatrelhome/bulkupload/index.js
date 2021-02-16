@@ -7,6 +7,7 @@ import { useHistory, NavLink, useLocation } from 'react-router-dom';
 import { isText, isBinary, getEncoding } from 'istextorbinary'
 import { red } from '@material-ui/core/colors';
 import SampleForBulkUpload from '../../../assets/files/SampleForBulkUpload.csv';
+import Instructions from '../../../assets/files/BulkUploadInstructions.txt';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -590,27 +591,27 @@ export default function BulkUpload(props) {
     }
     setCSVFile(reader.result);
 
-    //console.log(data);
+    ////console.log(data);
     let char = '';
     if (data.indexOf('\r') > -1) {
       char = '\r';
-      console.log("character is '\\r'");
+      //console.log("character is '\\r'");
     }
     if (data.indexOf('\r\n') > -1) {
       char = '\r\n';
-      console.log("character is '\\r\\n'");
+      //console.log("character is '\\r\\n'");
     }
     let header = data.split(char, 1);
     //header = header[0].slice(0, -1);
     header = header[0].split(',');
-    console.log('Headers', header);
+    //console.log('Headers', header);
     if (JSON.stringify(header) === JSON.stringify(defaultHeader)) {
-      console.log("Headers match");
+      //console.log("Headers match");
       const converter = csvTojson({
         delimiter: ',',
       });
       converter.fromString(data).then((obj) => {
-        console.log("Json: ", obj);
+        //console.log("Json: ", obj);
         if (obj) {
           obj.forEach(element => {
             element.nEnteredBy = userId;
@@ -631,7 +632,7 @@ export default function BulkUpload(props) {
 
     }
     else {
-      console.log("Headers don't match");
+      //console.log("Headers don't match");
       setAlertMessage("Headers don't match");
       setAlertType('error');
       setHeaderOK(false);
@@ -652,7 +653,7 @@ export default function BulkUpload(props) {
       .then(resp => {
         setBackdrop(false);
         if (resp.status === 200) {
-          console.log(resp.data);
+          //console.log(resp.data);
           setBatchNumber(resp.data[0].sBatchNumber);
           setDataAPI(resp.data);
           setShowTable(true);
@@ -674,7 +675,7 @@ export default function BulkUpload(props) {
         setAlertMessage("Error while verifying CSV file with server.\n" + error.response.data);
         setAlertType('error');
         snackbarOpen();
-        console.log(error.response);
+        //console.log(error.response);
 
       });
   };
@@ -684,17 +685,18 @@ export default function BulkUpload(props) {
     setHeaderOK(false);
     setDataAPI([]);
     setShowTable(false);
-    let file = document.getElementById("csv").files;
-    console.log("File in input is:", file);
+    const file = document.getElementById("csv").files;
+    //console.log("File in input is:", file);
     if (file) {
       reader.readAsText(file[0]);
       setTitle(file[0].name);
 
     }
+    event.target.value = null; 
   }
 
   const handleSubmit = () => {
-    console.log("Batch Number ", sBatchNumber);
+    //console.log("Batch Number ", sBatchNumber);
     setBackdrop(true);
     axios.post(`ChatrelBulkData/SubmitBulkData/?sBatchNumber=${sBatchNumber}`)
       .then(resp => {
@@ -704,6 +706,7 @@ export default function BulkUpload(props) {
             setAlertMessage('Successfully inserted: ' + resp.data + ' records');
             setAlertType('success');
             snackbarOpen();
+            
           }
           if (resp.data === 0) {
             setAlertMessage("NO Records were inserted");
@@ -712,6 +715,8 @@ export default function BulkUpload(props) {
           }
 
           setDataAPI([]);
+          setShowTable(false);
+          setTitle();
 
         }
       })
@@ -720,7 +725,7 @@ export default function BulkUpload(props) {
         setAlertMessage("Error while submitting Bulk Data\n" + error.response.data);
         setAlertType('error');
         snackbarOpen();
-        console.log(error.response);
+        //console.log(error.response);
 
       })
   };
@@ -729,9 +734,11 @@ export default function BulkUpload(props) {
     <>
       <Grid container justify='center' alignItems='center' direction='column'>
         <Typography paragraph variant='h5' >Chatrel Bulk Import</Typography>
-        <Typography paragraph variant='subtitle1'>Instructions: <p className={classes.paragraph}>1. Choose a CSV File by clicking on 'Choose File' button.</p><p className={classes.paragraph}>2. After selecting the file, the file will be verified for correct headers.</p><p className={classes.paragraph}>3. If the headers are as per system requirement, the file can be uploaded for verification.</p>
-          <p className={classes.paragraph}>4. During verification, file will be checked for valid data.</p><p className={classes.paragraph}> 5. A table will be populated below displaying Success or Failed status of each row.</p>
-          <p className={classes.paragraph}>6. <a style={{ color: 'blue' }} download href={SampleForBulkUpload}><u>Click Here </u></a> to download a sample CSV file</p>
+        <Typography paragraph variant='subtitle1'>Instructions: 
+        {/* <p className={classes.paragraph}>1. Choose a CSV File by clicking on 'Choose File' button.</p><p className={classes.paragraph}>2. After selecting the file, the file will be verified for correct headers.</p><p className={classes.paragraph}>3. If the headers are as per system requirement, the file can be uploaded for verification.</p>
+          <p className={classes.paragraph}>4. During verification, file will be checked for valid data.</p><p className={classes.paragraph}> 5. A table will be populated below displaying Success or Failed status of each row.</p> */}
+          <p className={classes.paragraph}>1. <a style={{ color: 'blue' }} download href={Instructions}><u>Click Here </u></a> to view Instructions file. Please read it carefully and prepare CSV file accordingly.</p>
+          <p className={classes.paragraph}>2. A Sample CSV file can be downloaded from <a style={{ color: 'blue' }} download href={SampleForBulkUpload}><u>here </u></a></p>
         </Typography>
         <Grid container direction='row' justify='center' alignItems='center' spacing={2}>
           {/* <Grid item xs={12} lg={12}>

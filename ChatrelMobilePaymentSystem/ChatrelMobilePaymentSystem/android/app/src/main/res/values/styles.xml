@@ -15,6 +15,9 @@
         <item name="android:windowBackground">@color/app_bg</item>
         <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
         <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem</item>
+        <!-- Fix for Black Flickering RN Google Sign In -->
+        <item name="android:windowAnimationStyle">@style/ActivityAnimations</item>
+        <item name="android:colorControlNormal">#FFFFFF</item>
     </style>
 
     <!-- Adds the splash screen definition -->
@@ -25,22 +28,40 @@
 
     <!-- For Picker Styling -->
     <style name="SpinnerItem" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:fontFamily">JosefinSans-Regular</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:fontFamily">@font/josefinsans_regular</item>
+        <item name="android:textSize">18dp</item>
         <item name="android:textColor">#000000</item>
         <item name="android:textAlignment">gravity</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/my_border</item>
-
+        <!-- <item name="android:background">@android:drawable/edit_text</item> -->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">2dp</item>
+        <!-- <item name="android:colorControlNormal">#FFFFFF</item> -->
     </style>
 
     <style name="SpinnerDropDownItem" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@null</item> -->
         <item name="android:textColor">#000000</item>
-        <item name="android:textSize">16dp</item>
-        <item name="android:fontFamily">JosefinSans-Regular</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:fontFamily">@font/josefinsans_regular</item>
         <item name="android:textAlignment">gravity</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/mydivider</item>
+        <!-- <item name="android:background">@drawable/mydivider</item> -->
+        <item name="android:background">@android:color/transparent</item>
+
+        @android:color/transparent
+    </style>
+
+    <!-- Fix for Black Flickeirng Screen -->
+    <style name="ActivityAnimations" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
     </style>
 
 </resources>

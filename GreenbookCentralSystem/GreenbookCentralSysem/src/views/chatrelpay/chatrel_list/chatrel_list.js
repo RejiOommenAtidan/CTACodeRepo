@@ -6,7 +6,7 @@ import {
   Button
 } from '@material-ui/core';
 import { useHistory, NavLink, useLocation, Link } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -85,7 +85,7 @@ export default function ChatrelList(){
   const classes = useStyles();
   const history = useHistory();
   
-  
+  const userRightsId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.nUserRightsId);
   
 
   const [profileGBID, setProfileGBID] = useState();
@@ -97,6 +97,7 @@ export default function ChatrelList(){
   oOptions.filtering = filtering;
   const [isLoading, setisLoading] = React.useState(true);
   const [addModal, setAddModal] = useState(false);
+  const [reload, setReload] = useState(false);
 
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
@@ -113,12 +114,16 @@ export default function ChatrelList(){
     setSnackbar(false);
   };
   
-  const handleAddClickClose = () => {
+  const handleAddClickClose = (shouldReload) => {
     setAddModal(false);
+    if(shouldReload){
+      setReload(shouldReload);
+    }
+    
   };
 
   const viewReceipt = (sReceiptNumber) => {
-    console.log("Passing receipt number:", sReceiptNumber);
+    //console.log("Passing receipt number:", sReceiptNumber);
     //history.push('/ChatrelPay/ChatrelReceipt', {sReceiptNumber: sReceiptNumber});
     history.push({
       pathname: '/Chatrel/ChatrelReceipt',
@@ -128,7 +133,7 @@ export default function ChatrelList(){
     });
   };
   const viewGb = (GBID) => {
-    console.log(GBID)
+    //console.log(GBID)
     setProfileGBID(GBID);
     setViewModal(true);
   }
@@ -146,7 +151,7 @@ export default function ChatrelList(){
     {
       field: "dtPayment",
       title: "PAYMENT DATE",
-      type: 'date', 
+      //type: 'date', 
       //render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
       //dateSetting: 'en-IN',
       headerStyle: {
@@ -271,7 +276,7 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['nChatrelAmount'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAmount']}` : `$ ${rowData['nChatrelAmount']}` : ''
+      //render : rowData => rowData['nChatrelAmount'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAmount']}` : `$ ${rowData['nChatrelAmount']}` : ''
     },
     {
       field: "nChatrelMeal",
@@ -287,7 +292,7 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['nChatrelMeal'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelMeal']}` : `$ ${rowData['nChatrelMeal']}` : ''
+      //render : rowData => rowData['nChatrelMeal'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelMeal']}` : `$ ${rowData['nChatrelMeal']}` : ''
     },
     {
       field: "nCurrentChatrelSalaryAmt",
@@ -297,12 +302,12 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['nCurrentChatrelSalaryAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nCurrentChatrelSalaryAmt']}` : `$ ${rowData['nCurrentChatrelSalaryAmt']}` : ''
+      //render : rowData => rowData['nCurrentChatrelSalaryAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nCurrentChatrelSalaryAmt']}` : `$ ${rowData['nCurrentChatrelSalaryAmt']}` : ''
     },
     {
       field: "dtCurrentChatrelFrom",
       title: "CHATREL FROM",
-      type: 'date',
+     // type: 'date',
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -386,7 +391,7 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['nArrears'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nArrears']}` : `$ ${rowData['nArrears']}` : ''
+      //render : rowData => rowData['nArrears'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nArrears']}` : `$ ${rowData['nArrears']}` : ''
     },
 
     {
@@ -459,7 +464,7 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['nChatrelBusinessDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelBusinessDonationAmt']}` : `$ ${rowData['nChatrelBusinessDonationAmt']}`: ''
+      //render : rowData => rowData['nChatrelBusinessDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelBusinessDonationAmt']}` : `$ ${rowData['nChatrelBusinessDonationAmt']}`: ''
     },
     {
       field: "nChatrelAdditionalDonationAmt",
@@ -475,7 +480,7 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['nChatrelAdditionalDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAdditionalDonationAmt']}` : `$ ${rowData['nChatrelAdditionalDonationAmt']}` : ''
+      //render : rowData => rowData['nChatrelAdditionalDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAdditionalDonationAmt']}` : `$ ${rowData['nChatrelAdditionalDonationAmt']}` : ''
     },
     {
       field: "nChatrelTotalAmount",
@@ -491,7 +496,7 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelTotalAmount']}` : `$ ${rowData['nChatrelTotalAmount']}`
+      //render : rowData => rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelTotalAmount']}` : `$ ${rowData['nChatrelTotalAmount']}`
     },
     {
       field: "sAuthRegion",
@@ -531,11 +536,12 @@ export default function ChatrelList(){
   
 
   useEffect(() => {
+    setisLoading(true);
     axios.get(`ChatrelPayment/GetAllChatrelPayments`)
     .then(resp => {
       setisLoading(false);
       if (resp.status === 200) {
-        console.log("Chatrel List", resp.data);
+        //console.log("Chatrel List", resp.data);
         var i = 1;
         resp.data.forEach((element) => {
           element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sDateFormat) : null;
@@ -551,12 +557,33 @@ export default function ChatrelList(){
       }
     })
     .catch(error => {
-      console.log(error.message);
+      //console.log(error.message);
       setisLoading(false);
     });
     
-  },[]);
+  },[reload]);
   
+  const actions = userRightsId === 7 ? [
+    {
+      icon: oTableIcons.Add,
+      tooltip: 'Add a Chatrel',
+      isFreeAction: true,
+      onClick: () => setAddModal(true)
+    },
+    {
+      icon: oTableIcons.Search,
+      tooltip: 'Toggle Filter',
+      isFreeAction: true,
+      onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+    }
+  ] : [
+    {
+      icon: oTableIcons.Search,
+      tooltip: 'Toggle Filter',
+      isFreeAction: true,
+      onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+    }
+  ];
   
   return (
   <>
@@ -572,20 +599,7 @@ export default function ChatrelList(){
             columns={columns}
             data={dataAPI}
             options={oOptions}
-            actions={[
-              {
-                icon: AddBox,
-                tooltip: 'Add a Payment',
-                isFreeAction: true,
-                onClick: () => setAddModal(true)
-              },
-              {
-                icon: Search,
-                tooltip: 'Toggle Filter',
-                isFreeAction: true,
-                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
-              }
-            ]}
+            actions={actions}
           />
           {/* {editModal && <EditDialog
             editModal={editModal}

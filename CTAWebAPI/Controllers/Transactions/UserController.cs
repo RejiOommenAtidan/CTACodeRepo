@@ -193,7 +193,12 @@ namespace CTAWebAPI.Controllers.Transactions
                     }
                     user.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     user.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                    user.sPassword = PasswordEncryption.EncryptString(user.sPassword);
+                    string salt = PasswordHash.CreateSalt();
+                    user.sPassword = PasswordHash.GenerateHash(user.sPassword, salt);
+                    user.sSalt = salt;
+                    //user.sPassword = PasswordEncryption.EncryptString(user.sPassword);
+
+
                     _userRepository.Add(user);
 
                     #region Information Logging
@@ -256,7 +261,11 @@ namespace CTAWebAPI.Controllers.Transactions
                         user.nEnteredBy = fetchedUser.nEnteredBy;
                         user.dtEntered = fetchedUser.dtEntered;
                         user.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                        user.sPassword = PasswordEncryption.EncryptString(user.sPassword);
+                        //user.sPassword = PasswordEncryption.EncryptString(user.sPassword);
+                        string salt = PasswordHash.CreateSalt();
+                        user.sSalt = salt;
+                        user.sPassword = PasswordHash.GenerateHash(user.sPassword, salt);
+                        //user.sPassword = PasswordHash.GenerateHash(user.sPassword, fetchedUser.sSalt);
                         _userRepository.Update(user);
 
                         #region Audit Log
@@ -384,7 +393,10 @@ namespace CTAWebAPI.Controllers.Transactions
                     return BadRequest("User disabled for login, please contact administrator");
                 }
                 //Note: Equals is Case Sensitive
-                if (userFromUI.sPassword.Equals(userFromDB.sPassword))
+                
+                if(PasswordHash.AreEqual(userFromUI.sPassword, userFromDB.sPassword, userFromDB.sSalt))
+
+                //if (userFromUI.sPassword.Equals(userFromDB.sPassword))
                 {
                     #region Generating UserVM
                     UserVM userVMFromDB = _userVMRepository.AuthenticateUser(userFromDB.Id);
@@ -392,6 +404,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         return BadRequest("UserVM Generation Failed");
                     }
+                    int minutes = Convert.ToInt32(CTAConfigRepository.GetValueByKey("LoginSessionTimeout"));
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var key = Encoding.ASCII.GetBytes(_appSettings.sSecret);
                     var tokenDescriptor = new SecurityTokenDescriptor
@@ -401,7 +414,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     new Claim(ClaimTypes.Name, userVMFromDB.oUser.Id.ToString()),
                     new Claim(ClaimTypes.Role, userVMFromDB.oUserRights.sUserRightsName)
                         }),
-                        Expires = DateTime.UtcNow.AddDays(dTimeout),
+                        Expires = DateTime.UtcNow.AddMinutes(minutes),
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                     };
                     var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -409,7 +422,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     userVMFromDB.sJWTToken = tokenHandler.WriteToken(token);
                     //Make Password NULL
                     userVMFromDB.oUser.sPassword = null;
-                    userVMFromDB.nTimeoutInDays = dTimeout;
+                    userVMFromDB.nTimeoutInDays = minutes;
                     return Ok(userVMFromDB);
                     #endregion
                 }
@@ -451,13 +464,14 @@ namespace CTAWebAPI.Controllers.Transactions
                     User fetchedFromDB = _userRepository.GetUserById(changePasswordVM.nUserId.ToString());
                     if (fetchedFromDB == null)
                         return NotFound("User With Id: " + changePasswordVM.nUserId + " Not Found");
-
-                    if (changePasswordVM.sOldPassword.Equals(fetchedFromDB.sPassword))
+                    
+                    if (PasswordHash.AreEqual(changePasswordVM.sOldPassword, fetchedFromDB.sPassword, fetchedFromDB.sSalt))
+                    //if (changePasswordVM.sOldPassword.Equals(fetchedFromDB.sPassword))
                     {
                         if (changePasswordVM.sNewPassword.Equals(changePasswordVM.sConfirmNewPassword))
                         {
-                            changePasswordVM.sNewPassword = PasswordEncryption.EncryptString(changePasswordVM.sNewPassword);
-                            fetchedFromDB.sPassword = changePasswordVM.sNewPassword;
+                            //changePasswordVM.sNewPassword = PasswordEncryption.EncryptString(changePasswordVM.sNewPassword);
+                            fetchedFromDB.sPassword = PasswordHash.GenerateHash(changePasswordVM.sNewPassword, fetchedFromDB.sSalt);
                             fetchedFromDB.nUpdatedBy = changePasswordVM.nUserId;
                             fetchedFromDB.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                             _userRepository.Update(fetchedFromDB);
@@ -491,6 +505,29 @@ namespace CTAWebAPI.Controllers.Transactions
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
+        }
+        #endregion
+
+        #region Logout User and Invalidate JwT
+        [Authorize]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult Logout()
+        {
+            try
+            {
+                string userId = User.Claims.Where(claim => claim.Type == ClaimTypes.Name).Select(claim => claim.Value).FirstOrDefault();
+                User user = _userRepository.GetUserById(userId);
+                string jwt = Request.Headers["Authorization"].ToString().Substring(7);
+                BlockedTokens.Tokens.Add(jwt);
+                return Ok("Logged out successfully");
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            
+
         }
         #endregion
     }

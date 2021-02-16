@@ -63,7 +63,7 @@ export default function Friends () {
   const [binFileDoc, setbinFileDoc] = useState("");
   const [sFileExtension, setsFileExtension] = useState("");
   const [disputeDescription, setDisputeDescription] = useState('');  
-
+  //const [fileName, setFileName] = useState('');  
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const alertObj = {
@@ -86,37 +86,94 @@ const [sName,setName]=React.useState(userObj.name);
 
 const [sGBID,setGBID]=React.useState(userGBObj.sGBID);
 const [dtDob,setDOB]=React.useState("");
-const [fileName,setFileName]=React.useState("No file chosen");
+const [fileName,setFileName]=React.useState("");
 const handleUploadClick =(e) =>{
-  console.log(e)
+  //console.log(e)
   //filename = this.files[0].name
 }
-const reader = new FileReader();
+/*const reader = new FileReader();
 
     reader.addEventListener("load", function () {
-      console.log(reader.result.split('base64,')[1]);
+      //console.log(reader.result.split('base64,')[1]);
         setbinFileDoc(reader.result.split('base64,')[1]);
-       // console.log(reader.result);
+       // //console.log(reader.result);
     }, false);
-  
+  */
 
+const handleSingleFile = (file) => {
+  const reader = new FileReader();
+    let fileObj={}
+    reader.addEventListener("load", function () {
+     // //console.log(reader.result.split('base64,')[1]);
+        //setbinFileDoc(reader.result.split('base64,')[1]);
+       // //console.log(reader.result);
+        fileObj.binFileDoc=reader.result.split('base64,')[1];
+    }, false);
+    reader.readAsDataURL(file);
+    var Dot = file.name.lastIndexOf('.');
+    var Name = file.name.slice(0, Dot);
+    var Extension = file.type.split("/").pop()
+    fileObj.sTitle=Name;
+    fileObj.sFileExtension=Extension;
+    //console.log(sTitle);
+
+   // setsTitle(Name);
+    //  setsFileExtension(Extension);
+    // //console.log(file.name);
+    // //console.log(Name);
+    // //console.log(Extension);
+  return fileObj
+}
+const MaxFileSize=5;
+const MaxFileCount=2;
+//let FileDisputeObj=[];
+const [FileDisputeObj,setFileDisputeObj]=React.useState([]);
 const handleUploadChange = (event) => {
     let files = document.getElementById("id_binDocFile").files;
     let file;
+    let FileName="";
+    let fileArray=[];
+//console.log(files );
     if (files) {
+      
+      if(files.length<(MaxFileCount+1)){
         for (var i = 0; i < files.length; i++) {
-            file = files[i];
-            reader.readAsDataURL(file);
+            //file = files[i];
+            //console.log("file ",i);
+            if(files[i].size > (MaxFileSize*1024*1024)){
+              setAlertMessage('Maximum file size limit: 5 MB.');
+              setAlertType('error');
+              snackbarOpen();
+              break;
+            }
+            else{
+              var fileObj =  handleSingleFile(files[i]);
+              //console.log(fileObj);
+              fileArray.push(fileObj);
+               FileName=FileName+" "+files[i].name; 
+            }
+       
+            // reader.readAsDataURL(file);
             //use var instead of let
-            var Dot = file.name.lastIndexOf('.');
-            var Name = file.name.slice(0, Dot);
-            var Extension = file.type.split("/").pop()
-            setsTitle(Name);
-            setsFileExtension(Extension);
-            console.log(file.name);
-            console.log(Name);
-            console.log(Extension);
+            // var Dot = file.name.lastIndexOf('.');
+            // var Name = file.name.slice(0, Dot);
+            // var Extension = file.type.split("/").pop()
+            // setsTitle(Name);
+            // setsFileExtension(Extension);
+            // //console.log(file.name);
+            // //console.log(Name);
+            // //console.log(Extension);
         }
+        //console.log("File Obj",FileDisputeObj);
+        //console.log('FileName:',FileName);
+        setFileName(FileName);
+        setFileDisputeObj(fileArray);
+      }
+      else{
+        setAlertMessage('Maximum two files allowed.');
+        setAlertType('error');
+        snackbarOpen();
+      }
     }
 };
 
@@ -134,7 +191,7 @@ const handleDisputeFileSubmit = (e) => {
     snackbarOpen();
     
   }
-  else if(binFileDoc === "" ){
+  else if(FileDisputeObj.length === 0 ){
     
     setBackdrop(false);
     setAlertMessage('Select a file ');
@@ -142,12 +199,12 @@ const handleDisputeFileSubmit = (e) => {
     snackbarOpen();
     
   }
-else if (binFileDoc !== "" && disputeDescription !== "")
+else if (FileDisputeObj.length !== 0 && disputeDescription !== "")
 {
-  //console.log(backdrop);
-  // console.log ("File upload:", binFileDoc)
-   const submit = {sGBID: sGBID, sName: sName, description: disputeDescription, sTitle: sTitle,
-    file: binFileDoc, sFileExtension: sFileExtension }
+  ////console.log(backdrop);
+  // //console.log ("File upload:", binFileDoc)
+   const submit = {sGBID: sGBID, sName: sName, description: disputeDescription,aFileResults: FileDisputeObj }
+   //console.log(submit);
    axios.post(`/ChatrelPayment/SubmitDispute`, submit)
    .then((resp) => {
     if (resp.status === 200) {
@@ -157,6 +214,10 @@ else if (binFileDoc !== "" && disputeDescription !== "")
       }
 dispatch(storeSession(oSession));
       setBackdrop(false);
+      setDisputeDescription('');
+      setbinFileDoc('');
+      setFileName('');
+      setsTitle('');
       setAlertMessage('Thanks for uploading. Your details are sent to the CTA Team & they shall get in touch with you soon.');
       setAlertType('success');
       snackbarOpen();
@@ -169,7 +230,7 @@ dispatch(storeSession(oSession));
       setAlertMessage('error on submission.');
       setAlertType('error');
       snackbarOpen();
-      console.log(error.message);
+      //console.log(error.message);
       
   });
 }
@@ -191,7 +252,7 @@ dispatch(storeSession(oSession));
             <Grid container spacing={3}>
          
               <Grid item xs={12}>
-              <TextField rows={5} variant="outlined" fullWidth onChange={(e)=>{setDisputeDescription(e.target.value)}} multiline label="Enter Description"/>
+              <TextField rows={5} variant="outlined" value={disputeDescription} fullWidth onChange={(e)=>{setDisputeDescription(e.target.value)}} multiline label="Enter Description"/>
 
               </Grid>
               <Grid item xs={12} >
@@ -200,6 +261,7 @@ dispatch(storeSession(oSession));
                       <input
                           id="id_binDocFile"
                           accept={sAccept}
+                          multiple  
                           //className={props.classes.textField}
                           style={{ display: 'none' }}
                           type="file"
@@ -211,13 +273,20 @@ dispatch(storeSession(oSession));
                                           </Button>
                                           </label>
                                           </div>
-          {sTitle !== "" &&        <Typography
+          {
+           fileName !== "" 
+           
+          &&      
+          
+              <Typography
                       variant="p"
                       color="primary"
                       className="text-dark"
-                  >File Name: {sTitle}</Typography>}
+                  >Files: {fileName}
+                  
+                  </Typography>}
 
-
+                  <i style={{paddingTop:'10px',fontSize:'14px'}}><br/>- Maximum two files allowed.<br/>- Maximum file size limit: 5 MB. </i>
               </Grid>
             
             </Grid>

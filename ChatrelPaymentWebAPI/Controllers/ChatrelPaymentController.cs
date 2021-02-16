@@ -70,6 +70,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             if (ModelState.IsValid)
             {
                 string sGBIDAuthorized = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
+                string sLoginEmail = User.Claims.Where(claim => claim.Type == ClaimTypes.Email).Select(claim => claim.Value).FirstOrDefault().ToString();
                 string token = BlockAndGenerateNewToken(Request, sGBIDAuthorized);
                 try
                 {
@@ -86,7 +87,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                         return Ok(new { message = obj.details[0].description, token });
                     }
 
-                    Object message = _chatrelPaymentVMRepository.Add(payment);
+                    Object message = _chatrelPaymentVMRepository.Add(payment, sLoginEmail);
                     if (message != null)
                     {
 
@@ -126,6 +127,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             if (ModelState.IsValid)
             {
                 string sGBIDAuthorized = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
+                string sLoginEmail = User.Claims.Where(claim => claim.Type == ClaimTypes.Email).Select(claim => claim.Value).FirstOrDefault().ToString();
                 string token = BlockAndGenerateNewToken(Request, sGBIDAuthorized);
                 try
                 {
@@ -142,7 +144,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                     //    return Ok(new { message = obj.details[0].description, token });
                     //}
 
-                    Object message = _chatrelPaymentVMRepository.Add(payment);
+                    Object message = _chatrelPaymentVMRepository.Add(payment, sLoginEmail);
                     if (message != null)
                     {
 
@@ -346,9 +348,9 @@ namespace ChatrelPaymentWebAPI.Controllers
         [AuthorizeToken]
         [HttpGet]
         [Route("[action]")]
-        public IActionResult VerifyFriendDetails(string sFirstName, string sLastName, string sGBID, DateTime dtDOB)
+        public IActionResult VerifyFriendDetails(string sGBID, DateTime dtDOB)
         {
-            if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID) || String.IsNullOrEmpty(sFirstName) || String.IsNullOrWhiteSpace(sFirstName) || String.IsNullOrEmpty(sLastName) || String.IsNullOrWhiteSpace(sLastName))
+            if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID) )
             {
                 return BadRequest(new { message = "Required parameters are missing" });
             }
@@ -362,7 +364,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             {
 
 
-                bool verified = _chatrelPaymentRepository.VerifyFriendDetails(sFirstName, sLastName, sGBID, dtDOB);
+                bool verified = _chatrelPaymentRepository.VerifyFriendDetails( sGBID, dtDOB);
                 if (verified)
                 {
                     #region Information Logging 
@@ -395,6 +397,8 @@ namespace ChatrelPaymentWebAPI.Controllers
         public IActionResult SubmitDispute(Dictionary<string, dynamic> dict)
         {
 
+            
+
             string sGBIDAuthorized = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
             string token = BlockAndGenerateNewToken(Request, sGBIDAuthorized);
             //To do: Add attachment to the email.
@@ -403,19 +407,15 @@ namespace ChatrelPaymentWebAPI.Controllers
 
                 var sGBID = dict["sGBID"].ToString();
                 var mailTextRaw = dict["description"].ToString();
-                string attachment = dict["file"].ToString();
+                //string attachment = dict["file"].ToString();
                 var sName = dict["sName"].ToString();
 
-                var sFileName = dict["sTitle"].ToString();
-                var sFileExtension = dict["sFileExtension"].ToString();
+                //var sFileName = dict["sTitle"].ToString();
+                //var sFileExtension = dict["sFileExtension"].ToString();
                 var emailFrom = "chatrelcta@gmail.com";
                 var emailTo = "chatrelcta@gmail.com";
 
                 var mailText = String.Format("Name: {0}, GB ID: {1}, Description: {2}", sName, sGBID, mailTextRaw);
-
-                //attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
-
-                byte[] attach = Convert.FromBase64String(attachment);
 
                 MimeMessage message = new MimeMessage();
                 MailboxAddress from = new MailboxAddress(sName, emailFrom);
@@ -423,19 +423,47 @@ namespace ChatrelPaymentWebAPI.Controllers
 
                 BodyBuilder messageBody = new BodyBuilder();
                 messageBody.TextBody = mailText;
-                messageBody.Attachments.Add(sFileName + "." + sFileExtension, attach);
-
-
                 message.From.Add(from);
                 message.To.Add(to);
-                //message.Subject = String.Format("Email from {0}, Green Book Id: {1}", sName, sGBID);
-
                 message.Subject = String.Format("Dispute Raised: GB ID - {0}", sGBID);
-
-
-
                 message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
+                
+                //messageBody.Attachments.Add(sFileName2 + "." + sFileExtension2, attach2);
+
+                /** Handle attachments*/
+
+                var temp = new[] { new { sTitle = "", sFileExtension = "", binFileDoc = "" } };
+
+                System.Text.Json.JsonElement obj = dict["aFileResults"];
+                var files = JsonConvert.DeserializeAnonymousType(obj.GetRawText(), temp);
+                int total = files.Count();
+                if(total > 0)
+                {
+                    foreach(var file in files)
+                    {
+                        string sFileName = file.sTitle;
+                        string sFileExtension = file.sFileExtension;
+                        byte[] attach = Convert.FromBase64String(file.binFileDoc);
+                        messageBody.Attachments.Add(sFileName + "." + sFileExtension, attach);
+                    }
+                    
+                }
                 message.Body = messageBody.ToMessageBody();
+                //string sFileName2 = files[1].sTitle;
+
+
+                //string sFileExtension2 = files[1].sFileExtension;
+
+
+                //byte[] attach2 = Convert.FromBase64String(files[1].binFileDoc);
+
+
+
+                //attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
+
+                //byte[] attach = Convert.FromBase64String(attachment);
+
+
                 // Message ready. Now to use smtp client to despatch message
                 SmtpClient smtpClient = new SmtpClient();
                 smtpClient.AuthenticationMechanisms.Remove("XOAUTH2");
@@ -561,6 +589,7 @@ namespace ChatrelPaymentWebAPI.Controllers
         //[Authorize]
         //[HttpGet]
         //[Route("[action]")]
+        [NonAction]
         private async Task<Tuple<bool, string>> VerifyPayPalPayment(string orderId, decimal totalChatrel)
         {
             //if (String.IsNullOrEmpty(orderId.Trim()))
@@ -587,7 +616,7 @@ namespace ChatrelPaymentWebAPI.Controllers
 
                 if (result.Status == "COMPLETED" && result.CheckoutPaymentIntent == "CAPTURE")
                 {
-                    if (totalChatrel.ToString() == amount.Value)
+                    if (String.Format("{0:0.00}", totalChatrel) == amount.Value)
                     {
                         return new Tuple<bool, string>(true, "{\"details\":[{\"issue\":\"OK\",\"description\":\"Amount received for transaction id '" + orderId + "' is '" + amount.CurrencyCode + amount.Value + "' \" }]}");
                     }
@@ -608,36 +637,17 @@ namespace ChatrelPaymentWebAPI.Controllers
         }
         #endregion
 
-        //[HttpGet]
-        //[Route("[action]")]
-        //public IActionResult TestReceipt()
-        //{
-        //    var sb = new StringBuilder();
-        //    sb.Append(@"
-        //                <html>
-        //                    <head>
-        //                    </head>
-        //                    <body>
-        //                        <div class='header'><h1>This is the generated PDF report!!!</h1></div>
-        //                        <table align='center'>
-        //                            <tr>
-        //                                <th>Name</th>
-        //                                <th>LastName</th>
-        //                                <th>Age</th>
-        //                                <th>Gender</th>
-        //                            </tr>
-        //                             <tr>
-        //                            <td>{0}</td>
-        //                            <td>{1}</td>
-        //                            <td>{2}</td>
-        //                            <td>{3}</td>
-        //                          </tr>
 
-        //                        </table>
-        //                    </body>
-        //                </html>");
-        //    return sb.ToString();
-        //}
+        [AuthorizeToken]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult Ping()
+        {
+            string sGBID = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
+            string token = BlockAndGenerateNewToken(Request, sGBID);
+            return Ok(new { message = "Pong", token });
+        }
+
         [NonAction]
         private string BlockAndGenerateNewToken(HttpRequest request, string sGBID)
         {

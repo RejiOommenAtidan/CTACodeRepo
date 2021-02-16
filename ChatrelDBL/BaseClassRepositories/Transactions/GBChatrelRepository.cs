@@ -75,7 +75,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     `lnkgbchatrel`.`nEnteredBy`,
                                     `lnkgbchatrel`.`dtUpdated`,
                                     `lnkgbchatrel`.`nUpdatedBy`
-                                FROM `chatreldb`.`lnkgbchatrel`
+                                FROM `lnkgbchatrel`
                                 LIMIT @limit;";
             using (var command = new MySqlCommand(sql))
             {
@@ -113,7 +113,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     `lnkgbchatrel`.`nEnteredBy`,
                                     `lnkgbchatrel`.`dtUpdated`,
                                     `lnkgbchatrel`.`nUpdatedBy`
-                                FROM `chatreldb`.`lnkgbchatrel`
+                                FROM `lnkgbchatrel`
                                 WHERE Id = @Id;";
             using (var command = new MySqlCommand(sql))
             {
@@ -151,7 +151,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     `lnkgbchatrel`.`nEnteredBy`,
                                     `lnkgbchatrel`.`dtUpdated`,
                                     `lnkgbchatrel`.`nUpdatedBy`
-                                FROM `chatreldb`.`lnkgbchatrel`
+                                FROM `lnkgbchatrel`
                                 WHERE sGBID = @sGBID;";
             using (var command = new MySqlCommand(sql))
             {
@@ -162,7 +162,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
 
         public GBChatrel GetChatrelByGBIDForYear(string sGBID, int year)
         {
-            string sql = @"SELECT `lnkgbchatrel`.`Id`,
+            string sql = @"set session sql_mode=''; SELECT `lnkgbchatrel`.`Id`,
                                     `lnkgbchatrel`.`chatrelpaymentID`,
                                     `lnkgbchatrel`.`sGBId`,
                                     `lnkgbchatrel`.`nChatrelAmount`,
@@ -173,7 +173,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     `lnkgbchatrel`.`nArrearsAmount`,
                                     `lnkgbchatrel`.`dtArrearsFrom`,
                                     `lnkgbchatrel`.`dtArrearsTo`,
-                                    `lnkgbchatrel`.`nCurrentChatrelSalaryAmt`,
+                                    sum(`lnkgbchatrel`.`nCurrentChatrelSalaryAmt`) AS                   nCurrentChatrelSalaryAmt,
                                     `lnkgbchatrel`.`dtCurrentChatrelFrom`,
                                     `lnkgbchatrel`.`dtCurrentChatrelTo`,
                                     `lnkgbchatrel`.`nChatrelTotalAmount`,
@@ -189,9 +189,10 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     `lnkgbchatrel`.`nEnteredBy`,
                                     `lnkgbchatrel`.`dtUpdated`,
                                     `lnkgbchatrel`.`nUpdatedBy`
-                                FROM `chatreldb`.`lnkgbchatrel`
+                                FROM `lnkgbchatrel`
                                 WHERE sGBID = @sGBID
-                                AND nChatrelYear = @year;";
+                                AND nChatrelYear = @year
+                                group by nChatrelYear ;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sGBID", sGBID);

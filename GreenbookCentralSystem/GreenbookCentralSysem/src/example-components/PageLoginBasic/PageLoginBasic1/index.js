@@ -19,7 +19,8 @@ import loginBackground from '../../../assets/images/TEST1.JPG';
 
 export default function LogingPage(props) {
 
-  let LoggedInOrNot = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
+  const LoggedInOrNot = useSelector(state => state.UserAuthenticationReducer?.oUserAuth);
+  //console.log("Already logged in user:", LoggedInOrNot);
   let history = useHistory();
   const dispatch = useDispatch();
   const { register, handleSubmit, errors } = useForm();
@@ -42,21 +43,32 @@ export default function LogingPage(props) {
   };
 
   useEffect(() => {
-    // console.log('Props:',props);
+    // //console.log('Props:',props);
 
 
     // Redirect to Home if Data Present in Redux
-    if (LoggedInOrNot !== null) {
-
-      history.push('/Search');
+    if(LoggedInOrNot !== null){
+      var u = LoggedInOrNot.lFeatureUserrights.find((x) => x.nFeatureID === 2);
+      if(u) {
+        history.push("/Search");
+      }
+      else{
+        history.push("/Home");
+      }
     }
+    
+    // if (LoggedInOrNot !== null) {
+
+    //   history.push('/Search');
+    // }
   }, []);
 
   const onSubmit = () => {
     authenticationService.login(sUsername, sPassword).then(
       user => {
         dispatch(storeAuthDetails(user));
-        console.info(user);
+        //console.info(user);
+        //console.log("User logged in:", user);
         // //Hour to seconds conversion
         // setTimeout(()=>{
         //   dispatch(removeAuthDetails());
@@ -64,7 +76,16 @@ export default function LogingPage(props) {
         // },user.nTimeoutInDays*3600);
         //history.push('/Home');
         //Using Window.location.reload to /Home for refersh and read proper value from LS
-        window.location.reload("/Search");
+        //console.log("Feature rights:", user.lFeatureUserrights[1]);
+        var u = user.lFeatureUserrights.find((x) => x.nFeatureID === 2);
+        //console.log("user", u);
+        if(u) {
+          window.location.reload("/Search");
+        }
+        else{
+          window.location.reload("/Home");
+        }
+        
       },
       error => {
         if (error.response.data === "User disabled for login, please contact administrator") {

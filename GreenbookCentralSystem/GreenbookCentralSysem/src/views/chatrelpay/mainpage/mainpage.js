@@ -127,13 +127,13 @@ export default function MainPage () {
   let dispatch = useDispatch();
   
   const makePayment = (obj, data, outstanding)=> {
-    console.log("Inside Make payment method for " , obj, data)
+    //console.log("Inside Make payment method for " , obj, data)
     dispatch(storeCurrentGBDetails(obj));
     history.push('/ChatrelPay/PaymentPage', {pymtData: data, outstanding});
   }
 
   const getReceipt = (nChatrelReceiptNumber) => {
-    console.log("Receipt Number", nChatrelReceiptNumber);
+    //console.log("Receipt Number", nChatrelReceiptNumber);
   }
   const classes = useStyles();
   const theme = useTheme();
@@ -155,7 +155,7 @@ export default function MainPage () {
   const [disputeDescription, setDisputeDescription] = useState('');
   const [outstanding, setOutstanding] = useState(true);
 
-  console.log("Outstanding is: ", outstanding);
+  //console.log("Outstanding is: ", outstanding);
   const handleChange = (event, newValue) => {
     setValue(newValue);
     if(newValue === 1){
@@ -168,8 +168,8 @@ export default function MainPage () {
           }
         })
         .catch(error => {
-          console.log(error.config);
-          console.log(error.message);
+          //console.log(error.config);
+          //console.log(error.message);
           return;
         })
       }
@@ -185,8 +185,8 @@ export default function MainPage () {
             }
           })
           .catch(error => {
-            console.log(error.config);
-            console.log(error.message);
+            //console.log(error.config);
+            //console.log(error.message);
             return;
           })
       }
@@ -201,7 +201,7 @@ export default function MainPage () {
     .then(resp => {
       
       if(resp.status === 200){
-        console.log(resp.data);
+        //console.log(resp.data);
         if(resp.data === true){
           axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sFriendGBID)
           .then(resp => {
@@ -210,7 +210,7 @@ export default function MainPage () {
             }
           })
           .catch(error => {
-            console.log(error.message);
+            //console.log(error.message);
           });
         }
         else{
@@ -224,8 +224,8 @@ export default function MainPage () {
         if(error.response.status === 400){
           alert("Missing Parameters...");
         }
-        console.log(error.message);
-        console.log(error);
+        //console.log(error.message);
+        //console.log(error);
 
     });
   };
@@ -238,7 +238,7 @@ export default function MainPage () {
     axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
     .then(resp => {
       if (resp.status === 200) {
-        //console.log("Self Chatrel Payment data:", resp.data);
+        ////console.log("Self Chatrel Payment data:", resp.data);
         if(resp.data.chatrelPayment.nChatrelTotalAmount === 0){
           setChatrelPending('0');
           setOutstanding(false);
@@ -259,12 +259,12 @@ export default function MainPage () {
           setCurrencySymbol('₹');
         }
         
-        console.log("Data fetched...", resp.data);
+        //console.log("Data fetched...", resp.data);
         
       }
     })
     .catch(error => {
-      console.log(error.message);
+      //console.log(error.message);
     });
 
   }, []);
@@ -273,7 +273,7 @@ export default function MainPage () {
 
     reader.addEventListener("load", function () {
         setbinFileDoc(reader.result);
-        console.log(reader.result);
+        //console.log(reader.result);
     }, false);
 
   const handleUploadChange = (event) => {
@@ -289,16 +289,16 @@ export default function MainPage () {
             var Extension = file.type.split("/").pop()
             setsTitle(Name);
             setsFileExtension(Extension);
-            console.log(file.name);
-            console.log(Name);
-            console.log(Extension);
+            //console.log(file.name);
+            //console.log(Name);
+            //console.log(Extension);
         }
     }
 };
 
  const handleDisputeFileSubmit = (e) => {
    e.preventDefault();
-   console.log ("File upload:", binFileDoc)
+   //console.log ("File upload:", binFileDoc)
    const submit = {sGBID: paidByGBID, sName: paidByName, description: disputeDescription, sTitle: sTitle,
     file: binFileDoc, sFileExtension: sFileExtension }
    axios.post(`/ChatrelPayment/SubmitDispute`, submit)
@@ -309,7 +309,7 @@ export default function MainPage () {
   })
   .catch((error) => {
       alert('error on submission.') ;
-      console.log(error.message);
+      //console.log(error.message);
   });
  };
 

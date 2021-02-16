@@ -152,6 +152,18 @@ export default () => {
         padding: '5px',
         borderRight: '1px solid grey'
       },
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtFormattedReceived){
+          return -1;
+        }
+        if(!b.dtFormattedReceived){
+          return 1;
+        }
+        a = a ? a.dtFormattedReceived.split('-').reverse().join('') : '';
+        b = b ? b.dtFormattedReceived.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
       //render: rowData => rowData['dtReceived'] ? Moment(rowData['dtReceived']).format(sDateFormat) : undefined
     },
     {
@@ -258,14 +270,14 @@ export default () => {
       sMadebType: tableRowArray['sMadebType'],
       sAuthRegion: tableRowArray['sAuthRegion'],
     });
-    console.log("Table Array: ", tableRowArray);
-    console.log("gbSerialObj: ", gbSerialObj);
+    //console.log("Table Array: ", tableRowArray);
+    //console.log("gbSerialObj: ", gbSerialObj);
     setAddModal(true);
     //alert("Opening modal...");
   };
 
   const addAPICall = (obj, clicked, damaged) => {
-    console.log("Serial number save called.");
+    //console.log("Serial number save called.");
     setBackdrop(true);
     axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, obj)
       .then(resp => {
@@ -301,8 +313,8 @@ export default () => {
             })
             .catch(error => {
               setLoading(false);
-              console.log(error.message);
-              console.log(error.config);
+              //console.log(error.message);
+              //console.log(error.config);
             })
         }
       })
@@ -311,8 +323,8 @@ export default () => {
         setAlertMessage(`Assigning Serial Number Failed. \nError:${error.message}.`);
         setAlertType('error');
         snackbarOpen();
-        console.log(error.message);
-        console.log(error.config);
+        //console.log(error.message);
+        //console.log(error.config);
       })
   };
 
@@ -321,13 +333,13 @@ export default () => {
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
-          console.log("New Record Data\n", resp.data);
+          //console.log("New Record Data\n", resp.data);
           // setdataAPI(resp.data)
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
+        //console.log(error.config);
+        //console.log(error.message);
       })
   };
 
@@ -350,8 +362,8 @@ export default () => {
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
+        //console.log(error.config);
+        //console.log(error.message);
         setLoading(false);
       })
     modifyHeaders();

@@ -94,7 +94,7 @@ export const ViewDialog = (props) => {
   //#endregion
   const addDocumentAPICall = (documentObject) => {
     setdialogBackdrop(true);
-    console.log("add document call",documentObject);
+    //console.log("add document call",documentObject);
     axios
       .post(`/Greenbook/AddDocumentForSearch`, documentObject)
       .then((resp) => {
@@ -113,7 +113,7 @@ export const ViewDialog = (props) => {
         handleError(error, history);
       })
       .then((release) => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
   const [sFeature, setsFeature] = useState("");
@@ -131,7 +131,7 @@ export const ViewDialog = (props) => {
     axios.post(`/GBDocument/DeleteGBDocument/`, row)
       .then(resp => {
         if (resp.status === 200) {
-          console.log('deleted');
+          //console.log('deleted');
         }
       })
       .catch(error => {
@@ -144,10 +144,10 @@ export const ViewDialog = (props) => {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   }
   const [openDeleteDialog, setopenDeleteDialog] = React.useState(false);
@@ -181,7 +181,7 @@ export const ViewDialog = (props) => {
         handleError(error, history);
       })
       .then((release) => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
   useEffect(() => {
@@ -189,10 +189,10 @@ export const ViewDialog = (props) => {
     axios.get(`GreenBook/GetDetailsFromGBID?sGBID=` + props.sGBID + `&nUserId=` + userid)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
+          //console.log(resp.data);
         setData(resp.data);
        
-          // console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
+          // //console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
 
         }
       })
@@ -206,10 +206,10 @@ export const ViewDialog = (props) => {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
     function tick() {
       // reset when reaching 100%
@@ -464,13 +464,15 @@ export const ViewDialog = (props) => {
                                 Phone Number: {data.greenBook.sPhone}
                               </Grid>
                               <Grid item sm={6}>
-                                Form Date: {data.greenBook.dtFormDate ? Moment(data.greenBook.dtFormDate).format(sDateFormat) : ''}
+                                Google Email: {data.greenBook.sLoginGmail}
                               </Grid>
                               <Grid item sm={6}>
                                 Authority Region: {data.sAuthRegion}
 
                               </Grid>
-
+                              <Grid item sm={6}>
+                                Form Date: {data.greenBook.dtFormDate ? Moment(data.greenBook.dtFormDate).format(sDateFormat) : ''}
+                              </Grid>
                             </Grid>
 
                           </ExpansionPanelDetails>

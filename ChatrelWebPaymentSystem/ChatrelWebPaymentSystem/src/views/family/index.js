@@ -65,22 +65,22 @@ export default function MainPage () {
   const [paymentData, setPaymentData] = React.useState();
   const [outstanding, setOutstanding] = useState(true);
   
-  console.log("Outstanding is: ", outstanding);
+  //console.log("Outstanding is: ", outstanding);
   const fontName='Poppins';
   let history = useHistory();
   let dispatch = useDispatch();
   
   const makePayment = (obj, data, outstanding)=> {
-    console.log("Inside Make payment method for " , obj, data)
+    //console.log("Inside Make payment method for " , obj, data)
     dispatch(storeCurrentGBDetails(obj));
-    history.push('/PaymentPage', {pymtData: data, outstanding});
+    history.push('/Chatrel', {pymtData: data, outstanding});
   }
 
   useEffect(() => {
     axios.get(`ChatrelPayment/GetFamilyDetails/?sGBID=`+paidByGBID)
     .then(resp => {
       if (resp.status === 200) {
-        console.log(resp.data);
+        //console.log(resp.data);
         const oSession={
           sJwtToken:resp.data.token,
           bSession:true
@@ -91,16 +91,9 @@ dispatch(storeSession(oSession));
       }
     })
     .catch(error => {
-      console.log(error.config);
-      console.log(error.message);
-      if (error.response.status === 401) {
+      //console.log(error.config);
+      //console.log(error.message);
    
-        const oSession={
-          sJwtToken:"",
-          bSession:false
-        }
-        dispatch(storeSession(oSession));
-      }
     })
   
   }, []);

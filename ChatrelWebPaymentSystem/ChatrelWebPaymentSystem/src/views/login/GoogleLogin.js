@@ -9,12 +9,12 @@ import {sGoogleAuth_ClientID} from '../../config/commonConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Axios from 'axios';
 const GoogleLoginPage = (props) => {
-   // console.log("PROPS",props);
-   //console.log("Cookies enabled: " + navigator.cookieEnabled);
+   // //console.log("PROPS",props);
+   ////console.log("Cookies enabled: " + navigator.cookieEnabled);
    
   let history = useHistory();
     const save =(response) => {
-        console.log("Login Successful: ",response);
+        //console.log("Login Successful: ",response);
         //debugger
         const token = response.tokenId;
 
@@ -28,7 +28,7 @@ const GoogleLoginPage = (props) => {
             else{
               alert(`Verification Failed for ${response.profileObj.email}`);  
             }
-            //console.log("Auth",resp.data);
+            ////console.log("Auth",resp.data);
           }
         })*/
         
@@ -37,13 +37,14 @@ const GoogleLoginPage = (props) => {
     }
     const dispatch = useDispatch();
     const check = (e) =>{
-            console.log(e.data);
+            //console.log(e.data);
     }
     return(
     <GoogleLogin
         clientId={sGoogleAuth_ClientID}
        
-        onSuccess={(response) => { console.log("login, onSuccess"); save(response) }}
+        onSuccess={(response) => { //console.log("login, onSuccess");
+         save(response) }}
         onFailure={(response) => {  }}
         cookiePolicy={'single_host_origin'}
         //isSignedIn={true}

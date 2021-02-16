@@ -14,14 +14,21 @@ const Footer = (props) => {
 
   let history = useHistory();
   let dispatch = useDispatch();
+  const userObj = useSelector(state => state.GLoginReducer.oGoogle);
+  if(userObj===null){
+   // history.push("/Login");
+   window.location='/Login';
+   }
+
+
   const { footerShadow, footerBgTransparent } = props;
   const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
   const paidByName= useSelector(state => state.GBDetailsReducer.oGBDetails.sName);
 
   const makePayment = (obj)=> {
-    // console.log("Inside Make payment method for " , obj, data)
+    // //console.log("Inside Make payment method for " , obj, data)
      dispatch(storeCurrentGBDetails(obj));
-     history.push('/PaymentPage');
+     history.push('/Chatrel');
    }
    const selfPayment=() => {
     
@@ -133,27 +140,27 @@ const Footer = (props) => {
                           className="px-0 d-block d-xl-flex py-1">
                           Self Chatrel
                         </ListItem>
-                        <ListItem
+                        {/* <ListItem
                           component="a"
                           button
                           href="/Family"
                           //onClick={()=>{history.push('/Family');}}
                           className="px-0 d-block d-xl-flex py-1">
                           Family Chatrel
-                        </ListItem>
+                        </ListItem> */}
                         <ListItem
                           component="a"
                           button
                           href="/Friends"
                           //onClick={()=>{history.push('/Friends');}}
                           className="px-0 d-block d-xl-flex py-1">
-                          Friend's Chatrel
+                          Friends & Family
                         </ListItem>
                         <ListItem
                           component="a"
                           button
-                          href="/PaymentHistory"
-                       //   onClick={()=>{history.push('/PaymentHistory');}}
+                          href="/ChatrelHistory"
+                       //   onClick={()=>{history.push('/ChatrelHistory');}}
                           className="px-0 d-block d-xl-flex py-1">
                           Chatrel History
                         </ListItem>

@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AddSingleChatrel(props) {
-  console.log("Props contains:", props);
+  //console.log("Props contains:", props);
   let history = useHistory();
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const classes = useStyles();
@@ -98,39 +98,39 @@ export default function AddSingleChatrel(props) {
   };
 
   const [authRegions, setAuthRegions] = React.useState(null);
-  const [authRegion, setAuthRegion] = React.useState();
+  const [authRegion, setAuthRegion] = React.useState(null);
   const [sAuthRegion, setRegion] = React.useState();
   const [countries, setCountries] = React.useState(null);
   const [countryID, setCountryID] = React.useState();
-  const [country, setCountry] = useState();
+  const [country, setCountry] = useState(null);
 
-  console.log("AuthRegions set in 'authRegions'", authRegions);
-  console.log("Region set in 'authRegion'", authRegion);
+  //console.log("AuthRegions set in 'authRegions'", authRegions);
+  //console.log("Region set in 'authRegion'", authRegion);
 
   useEffect(() => {
     setBackdrop(true);
     axios.get(`/AuthRegion/GetAuthRegionsForAddNewChatrel`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log("AuthRegions fetched:", resp.data);
+          //console.log("AuthRegions fetched:", resp.data);
           setAuthRegions(resp.data);
           axios.get(`Country/GetCountriesForAddNewChatrel`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
+                //console.log(resp.data);
                 setCountries(resp.data);
                 setBackdrop(false);
               }
             })
             .catch(error => {
               setBackdrop(false);
-              console.log(error.response.data);
+              //console.log(error.response.data);
             });
         }
       })
       .catch(error => {
         setBackdrop(false);
-        console.log(error.response.data);
+        //console.log(error.response.data);
       });
   }, []);
 
@@ -143,6 +143,7 @@ export default function AddSingleChatrel(props) {
 
   // GBID for Chatrel
   const [sGBID, setGBID] = useState();
+  const [sGBIDForDetails, setGBIDForDetails] = useState();
   const [dtPaymentDate, setPaymentDate] = useState(null);
   const [sCurrency, setCurrency] = React.useState('INR');
   const [nChatrel, setChatrel] = useState(null);
@@ -164,12 +165,16 @@ export default function AddSingleChatrel(props) {
   const handleChangeGBID = (value) => {
     var len = 7 - value.length;
     for(var i = 0; i < len ; i++){
-      console.log("gbid value:", value);
+      //console.log("gbid value:", value);
       value = '0' + value;
     }
-    console.log("gbid value:", value);
+    //console.log("gbid value:", value);
     setGBID(value);
-
+    setAuthRegion(null);
+    setRegion(null);
+    setCountryID(null);
+    setCountry(null);
+    setName(null);
     
   }
   const handleChangePaidByGBID = (value) => {
@@ -188,7 +193,7 @@ export default function AddSingleChatrel(props) {
       snackbarOpen();
       return;
     }
-    console.log("Value in GBID: ", value);
+    //console.log("Value in GBID: ", value);
     const gbid = value;
     const event = new Event('change', {
       bubbles: true
@@ -197,16 +202,22 @@ export default function AddSingleChatrel(props) {
     axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=` + gbid)
       .then(resp => {
         if (resp.status === 200) {
-          console.log("Got gb record\n", resp.data);
+          //console.log("Got gb record\n", resp.data);
 
           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
 
           const lname = resp.data.sLastName ? resp.data.sLastName : '';
           setName(`${name} ${lname}`);
-
           clearErrors("sName");
-          // const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
-          // setAuthRegion(region);
+           const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
+          setAuthRegion(region);
+          setRegion(region.sAuthRegion);
+          setValue('AuthRegion', region, {shouldValidate: true});
+          var c = countries.find(x => x.sCountryID === region.sCountryID);
+          //console.log("Country", c);
+          setCountryID(region.sCountryID);
+          setCountry(c);
+          setValue('sCountry', c, {shouldValidate: true});
           // setAuthRegionId(region.id);
           // setValue("AuthRegion", region, {
           //   shouldValidate: true,
@@ -218,8 +229,9 @@ export default function AddSingleChatrel(props) {
         }
         else {
           setName('');
-          //setAuthRegion([]);
-          console.log("Not found", resp);
+          setAuthRegion({});
+          setRegion(null);
+          //console.log("Not found", resp);
           setAlertMessage(`No record found for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -229,7 +241,7 @@ export default function AddSingleChatrel(props) {
         if (error.response.status === 404) {
           setName('');
           //setAuthRegion([]);
-          console.log("Not found", error.response.data);
+          //console.log("Not found", error.response.data);
           setAlertMessage(`${error.response.data}`);
           setAlertType('warning');
           snackbarOpen();
@@ -237,7 +249,7 @@ export default function AddSingleChatrel(props) {
         else if (error.response.status === 505) {
           setName('');
           //setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
           setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -245,11 +257,11 @@ export default function AddSingleChatrel(props) {
         else {
           setName('');
           //setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
         }
       });
   };
-
+ 
   const currencies = [
     {
       value: 'USD',
@@ -277,7 +289,7 @@ export default function AddSingleChatrel(props) {
     ArrearsTo: Moment(dtArrearsTo).format('YYYY-MM-DD') !== 'Invalid date' ? Moment(dtArrearsTo).format(sDateFormatChatrelMoment) : null,
     BusinessDonation: nBusinessDonation?.toString(),
     AdditionalDonation: nAdditionalDonation?.toString(),
-    TotalAmount: nChatrelTotalAmount?.toString(),
+    TotalAmount: nChatrelTotalAmount.toFixed(2),
     ReceiptNo: sReceiptNumber,
     PaymentDate: Moment(dtPaymentDate).format('YYYY-MM-DD') !== 'Invalid date' ? Moment(dtPaymentDate).format(sDateFormatChatrelMoment) : null,
     Region: sAuthRegion,
@@ -287,25 +299,25 @@ export default function AddSingleChatrel(props) {
     nUpdatedBy: userId
   }];
 
-  console.log("Final obj", chatrel);
+  //console.log("Final obj", chatrel);
 
   const handleChatrelSubmit = () => {
     setBackdrop(true);
-    console.log("Submit called");
+    //console.log("Submit called");
     axios.post(`ChatrelBulkData/VerifyBulkImport`, chatrel).then(resp => {
       if(resp.status === 200){
-        console.log("Verification Response: ", resp.data);
+        //console.log("Verification Response: ", resp.data);
         if(resp.data[0].sStatus === 'Validate Success'){
-          console.log("Validation successful", resp.data[0].sBatchNumber);
+          //console.log("Validation successful", resp.data[0].sBatchNumber);
           axios.post(`ChatrelBulkData/SubmitBulkData/?sBatchNumber=${resp.data[0].sBatchNumber}`)
           .then(resp => {
             if(resp.status === 200){
-              console.log("Submit success result integer",resp.data);
+              //console.log("Submit success result integer",resp.data);
               setBackdrop(false);
               setAlertMessage('Record added successfully.');
               setAlertType('success');
               snackbarOpen();
-              setTimeout(() => props.handleAddClickClose(), 3000);
+              setTimeout(() => props.handleAddClickClose(true), 3000);
             }
           })
           .catch(error => {
@@ -313,25 +325,38 @@ export default function AddSingleChatrel(props) {
             setAlertMessage(`Record adding failed.`);
             setAlertType('error');
             snackbarOpen();
-            console.log("Error Status:", error.response.status);
-            console.log("Error Message:", error.message);
-            console.log("Error Data:", error.response.data);
+            //console.log("Error Status:", error.response.status);
+            //console.log("Error Message:", error.message);
+            //console.log("Error Data:", error.response.data);
           });
+        }
+        else{
+          setAlertMessage(resp.data[0].sStatus+'--\n\n'+resp.data[0].sRemarkText);
+            setAlertType('error');
+            snackbarOpen();
+            setBackdrop(false);
         }
       }
     })
     .catch(error => {
       setBackdrop(false);
-      console.log("Error Status:", error.response.status);
-      console.log("Error Message:", error.message);
-      console.log("Error Data:", error.response.data);
+      setAlertMessage(`${error.message}`);
+      setAlertType('error');
+      snackbarOpen();
+      //console.log("Error Status:", error.response.status);
+      //console.log("Error Message:", error.message);
+      //console.log("Error Data:", error.response.data);
     });
   };
+
+  useEffect(() => {
+    //console.log("Country changed", country);
+  }, [country])
 
   return (
     <>
 
-      <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title" maxWidth='md'>
+      <Dialog open={props.addModal} onEscapeKeyDown={() => props.handleAddClickClose(false)} aria-labelledby="form-dialog-title" maxWidth='md'>
         <DialogTitle id="form-dialog-title">Add single Chatrel Payment</DialogTitle>
         <form onSubmit={handleSubmit(handleChatrelSubmit)}>
           <DialogContent>
@@ -349,7 +374,7 @@ export default function AddSingleChatrel(props) {
                         onChange={(e) => {
                           setCurrency(e.target.value);
                           setSymbol(e.target.options[e.target.options.selectedIndex].label);
-                          console.log("target: ", e.target);
+                          //console.log("target: ", e.target);
                         }}
                         SelectProps={{
                           native: true,
@@ -403,13 +428,23 @@ export default function AddSingleChatrel(props) {
                                 props.onChange(value);
                                 //alert ("onChangeFired")
                                 if (value !== null) {
-                                  console.log(value.id);
+                                  //console.log(value.id);
                                   //setAuthRegionId(value.id);
                                   setRegion(value.sAuthRegion);
+                                  setAuthRegion(value);
+                                  setCountryID(value.sCountryID);
+                                  setCountry(() => {
+                                    var c = countries.find(x => x.sCountryID === value.sCountryID);
+                                    //console.log("Country", c);
+                                    return c;
+                                  });
+                                  setValue('sCountry', countries.find(x => x.sCountryID === value.sCountryID), {shouldValidate: true});
                                 }
                                 else {
                                   //setAuthRegionId(null);
                                   setRegion(null);
+                                  setCountryID(null);
+                                  setCountry(null);
                                 }
                               }
                             }
@@ -432,6 +467,7 @@ export default function AddSingleChatrel(props) {
                         render={props => (
                           <Autocomplete
                             {...props}
+                            disabled = {true}
                             openOnFocus={true}
                             clearOnEscape
                             autoComplete={true}
@@ -463,7 +499,7 @@ export default function AddSingleChatrel(props) {
                                 props.onChange(value);
                                 //alert ("onChangeFired")
                                 if (value !== null) {
-                                  console.log("Country selected", value.sCountryID);
+                                  //console.log("Country selected", value.sCountryID);
                                   setCountryID(value.sCountryID);
                                   setCountry(value);
                                 }
@@ -523,7 +559,9 @@ export default function AddSingleChatrel(props) {
                             //minimumValue={1950}
                             digitGroupSeparator=""
                             onChange={(event, value) => {
-                              props.onChange(value); handleChangeGBID(value)
+                              props.onChange(value); 
+                              handleChangeGBID(value);
+                              setGBIDForDetails(value);
                             }}
                           />
                         )}
@@ -534,26 +572,10 @@ export default function AddSingleChatrel(props) {
                       {errors.sGBID && (
                         <span style={{ color: 'red' }}>This field is required</span>
                       )}
-                      
-                      
-                      {/* <TextField
-                        id="sGBID"
-                        size="small"
-                        label={<p>Greenbook ID<span style={{ color: "red" }} > *</span></p>}
-                        //required={true}
-                        name="sGBID"
-                        value={sGBID}
-                        onChange={(e) => { handleChangeGBID(e.target.value) }}
-                        //onBlur={(e) => {formPopulate(e.target.value)}}
-                        inputRef={register({
-                          required: true
-                        })}
-                      />
-                      {errors.sGBID && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )} */}
+                     
                     </FormControl>
-                    {/* <button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button> */}
+                    <button type='button' style={btnstyles} onClick={() => formPopulate(sGBIDForDetails)}>Get Details</button>
+                    
                   </Grid>
                   <Grid item xs={12} sm={4}>
                     <FormControl className={classes.formControl}>
@@ -698,7 +720,7 @@ export default function AddSingleChatrel(props) {
                             onChange={(event, value) => {
                               props.onChange(value);
                               setChatrel(value);
-                              setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
+                              setChatrelTotalAmount(value+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
                             }}
 
                           />
@@ -735,7 +757,7 @@ export default function AddSingleChatrel(props) {
                             digitGroupSeparator=","
                             onChange={(event, value) => {
                               props.onChange(value); setMeal(value);
-                              setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
+                              setChatrelTotalAmount(nChatrel+value+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
                             }}
                           />
                         )}
@@ -761,7 +783,7 @@ export default function AddSingleChatrel(props) {
                         digitGroupSeparator=","
                         onChange={(event, value) => {
                           setSalary(value);
-                          setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
+                          setChatrelTotalAmount(nChatrel+nMeal+value+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
                         }}
                       />
                     </FormControl>
@@ -916,7 +938,7 @@ export default function AddSingleChatrel(props) {
                         digitGroupSeparator=","
                         onChange={(event, value) => {
                           setArrearPlusLateFees(value);
-                          setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
+                          setChatrelTotalAmount(nChatrel+nMeal+nSalary+value+nBusinessDonation+nAdditionalDonation );
                         }}
                       />
 
@@ -1026,7 +1048,7 @@ export default function AddSingleChatrel(props) {
                         digitGroupSeparator=","
                         onChange={(event, value) => {
                           setBusinessDonation(value);
-                          setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
+                          setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+value+nAdditionalDonation );
                         }}
                       />
 
@@ -1045,7 +1067,7 @@ export default function AddSingleChatrel(props) {
                         digitGroupSeparator=","
                         onChange={(event, value) => {
                           setAdditionalDonation(value);
-                          setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation);
+                          setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+value);
                         }
                         }
                       />
@@ -1067,7 +1089,7 @@ export default function AddSingleChatrel(props) {
                             decimalPlaces={2}
                             digitGroupSeparator=","
                             onChange={(event, value) => {
-                              props.onChange(value); setChatrelTotalAmount(value)
+                              props.onChange(value); //setChatrelTotalAmount(value)
                             }}
                           />
                         )}
@@ -1091,7 +1113,7 @@ export default function AddSingleChatrel(props) {
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={props.handleAddClickClose}
+              onClick={() => props.handleAddClickClose(false)}
               color={sButtonColor}
               variant={sButtonVariant}
               size={sButtonSize}

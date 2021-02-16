@@ -66,6 +66,15 @@ INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserR
 
 INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
 	VALUES ('search', 'Search User', 'TCRC Office', 'search123', '1', '1',now(),1,now(),1);
+
+-- all Password changed to : cta@123 to force user to change the password`
+ALTER TABLE tbluser ADD sSalt varchar(255) NULL AFTER sPassword;
+SET SQL_SAFE_UPDATES=0;
+Update tbluser
+set sSalt = '/xPgGzm22nBKPtBsoAzC8w==',
+	sPassword = 'hydhXeUd2Upt6OSJcxVYoTMCdmvvRKVVEm4bNVWxmyQ=';	
+	
+	
 	
 SET sql_mode = 'allow_invalid_dates';
 
@@ -1100,6 +1109,25 @@ SELECT
 FROM `greenbookprime`.`deletelog`;
 
 
+
+UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = 36000 WHERE lstmadebtype.Id = 1;
+UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = 16827 where lstmadebtype.Id = 2;
+UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = 2499 WHERE lstmadebtype.Id = 3;
+UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = 2119 WHERE lstmadebtype.Id = 4;
+UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = 86 WHERE lstmadebtype.Id = 5;
+UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = 655 WHERE lstmadebtype.Id = 6;
+
+
+-- UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 1 ) WHERE lstmadebtype.Id = 1;
+-- UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 2) where lstmadebtype.Id = 2;
+-- UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 3) WHERE lstmadebtype.Id = 3;
+-- UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 4) WHERE lstmadebtype.Id = 4;
+-- UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 5) WHERE lstmadebtype.Id = 5;
+-- UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 6) WHERE lstmadebtype.Id = 6;
+
+
+
+
 CREATE TABLE `tmpGBDocument` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) NOT NULL,
@@ -1169,24 +1197,52 @@ UPDATE `tbluser` SET `sPassword` = 'PT3kBpoVuX0pCt8+1rzfifjwsVTPMRNd4wI5C/7tErg=
 UPDATE `tbluser` SET `sPassword` = 'NEx9ClImMEaX+AokbdePF+TWIxLEOgkeKdE1Kf24us4=' WHERE (`Id` = '91');
 
 
+UPDATE `lstctaconfig` SET `sValue` = 'chatrelcta@gmail.com' WHERE (`Id` = '4');
+UPDATE `lstctaconfig` SET `sValue` = 'hjmzfrcillpuvsxv' WHERE (`Id` = '5');
+UPDATE `lstctaconfig` SET `sValue` = 'smtp.gmail.com' WHERE (`Id` = '6');
+UPDATE `lstctaconfig` SET `sValue` = '465' WHERE (`Id` = '7');
+UPDATE `lstctaconfig` SET `sValue` = 'true' WHERE (`Id` = '8');
+UPDATE `lstctaconfig` SET `sValue` = 'reji.oommen@atidan.com' WHERE (`Id` = '9');
+
 UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy101@gmail.com', `sLoginGmail` = 'ctadummy101@gmail.com' WHERE (`Id` = '161');
-UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy102@gmail.com', `sLoginGmail` = 'ctadummy102@gmail.com' WHERE (`Id` = '989');
 UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy103@gmail.com', `sLoginGmail` = 'ctadummy103@gmail.com' WHERE (`Id` = '1001');
--- UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy104@gmail.com', `sLoginGmail` = 'ctadummy104@gmail.com' WHERE (`Id` = '126');
+UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy104@gmail.com', `sLoginGmail` = 'ctadummy104@gmail.com' WHERE (`Id` = '141573');
 UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy105@gmail.com', `sLoginGmail` = 'ctadummy105@gmail.com' WHERE (`Id` = '141573');
 UPDATE `tblgreenbook` SET `sPaidUntil` = '2012' WHERE (`Id` = '141573');
 
 
-UPDATE `lstctaconfig` SET `sValue` = 'malay.doshi@atidan.com' WHERE (`Id` = '4');
-UPDATE `lstctaconfig` SET `sValue` = 'M@lay@123' WHERE (`Id` = '5');
-UPDATE `lstctaconfig` SET `sValue` = 'smtp-mail.outlook.com' WHERE (`Id` = '6');
-UPDATE `lstctaconfig` SET `sValue` = '25' WHERE (`Id` = '7');
-UPDATE `lstctaconfig` SET `sValue` = 'false' WHERE (`Id` = '8');
-UPDATE `lstctaconfig` SET `sValue` = 'reji.oommen@atidan.com' WHERE (`Id` = '9');
+-- To Clear the Login cendentials with some values
+-- clear Chatrel from UAT for 9675
+delete from tblchatrelpayment where sGBId='9675';
+delete from lnkgbchatrel where sGBId='9675';
+delete from lnkgbchatreldonation where sGBId='9675';
+update tblgreenbook 
+set spaiduntil = '2015'
+where sGBId='9675';
 
-UPDATE `tblgreenbook` SET `sPaidUntil` = '2015' WHERE sGBId='9675';
-Delete from `lnkgbchatrel` where sGBId='9675';
-Delete from `tblchatrelpayment` where sGBId='9675';
+-- clear Chatrel from UAT for 9996070
+delete from .tblchatrelpayment where sGBId='9996070';
+delete from lnkgbchatrel where sGBId='9996070';
+delete from lnkgbchatreldonation where sGBId='9996070';
+update tblgreenbook 
+set spaiduntil = '2015'
+where sGBId='9996070';
+
+-- clear Chatrel from UAT for 68324
+delete from tblchatrelpayment where sGBId='68324';
+delete from lnkgbchatrel where sGBId='68324';
+delete from lnkgbchatreldonation where sGBId='68324';
+update tblgreenbook 
+set spaiduntil = '2015'
+where sGBId='68324';
+
+-- clear Chatrel from UAT for 11909
+delete from tblchatrelpayment where sGBId='11909';
+delete from lnkgbchatrel where sGBId='11909';
+delete from lnkgbchatreldonation where sGBId='11909';
+update tblgreenbook 
+set spaiduntil = '2015'
+where sGBId='11909';
 
 
 

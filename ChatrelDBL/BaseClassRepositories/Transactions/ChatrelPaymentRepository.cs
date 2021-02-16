@@ -128,6 +128,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
             //AuthRegion authRegion = _authRegionRepository.GetAuthRegionById(greenbook.nAuthRegionID.ToString());
             int authRegionId = _gbChatrelRepository.GetLatestAuthRegionID(sGBID);
             AuthRegion authRegion = _authRegionRepository.GetAuthRegionById(authRegionId.ToString());
+            AuthRegion authRegionProfile = _authRegionRepository.GetAuthRegionById(greenbook.nAuthRegionID.ToString());
             int paidUntil = GetPaidUntil(greenbook);
             if (paidUntil <= 0)
             {
@@ -167,7 +168,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                     sAuthRegionCurrency = gbChatrel[0].sAuthRegionCurrency
                 };
 
-                var response = new { gbChatrel[0].nAuthRegionID, nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), message = "No Outstandings", sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrel, gbChatrels = gbChatrel, gbChatrelDonation = donation };
+                var response = new { gbChatrel[0].nAuthRegionID, greenbook.sCountryID, authRegionProfile = authRegionProfile.sAuthRegion, nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), message = "No Outstandings", sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrel, gbChatrels = gbChatrel, gbChatrelDonation = donation, nSalaryUSD = (decimal)_chatrelSalaryUSD[paidUntil] };
 
                 return response;
                 //return (new { message = "No Outstandings", currency = authRegion.sCurrencyCode });
@@ -238,7 +239,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
             };
 
 
-            var result = new { nAuthRegionID = authRegion.ID, nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrelPayment, gbChatrels, gbChatrelDonation };
+            var result = new { nAuthRegionID = authRegion.ID, greenbook.sCountryID, authRegionProfile = authRegionProfile.sAuthRegion, nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrelPayment, gbChatrels, gbChatrelDonation };
             return result;
         }
         #endregion
@@ -759,15 +760,14 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
             string sql = @"SELECT   pymt.dtPayment,
                                     pymt.sPaidByGBId,
                                     pymt.sGBID AS sGBIDPaidFor,
-                                    pymt.sGBID,
                                     pymt.sPaymentCurrency,
                                     pymt.nChatrelTotalAmount,
                                     pymt.sChatrelReceiptNumber,
                                     pymt.sPaymentStatus,
                                     pymt.sPaymentMode,
-                                    
                                     gb.sFirstName,
                                     gb.sLastName,
+                                    gb.sCountryID as sCountryIDPaidFor,
                                     CASE
                                                 WHEN lnkrel.nRelationID = 1 THEN 'Father'
                                                 WHEN lnkrel.nRelationID = 2 THEN 'Mother'
@@ -782,8 +782,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                         LEFT JOIN  lnkgbrelation AS lnkrel
                         ON         lnkrel.sGBID = pymt.sPaidByGBId
                         AND        lnkrel.sGBIDRelation = pymt.sGBID
-                        
-                        WHERE      pymt.sPaidByGBId = @sGBID; ";
+                        WHERE      pymt.sPaidByGBId = @sGBID or pymt.sGBID = @sGBID; ";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sGBID", sGBID);
@@ -800,6 +799,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                         sChatrelReceiptNumber = row.Field<string>("sChatrelReceiptNumber"),
                         sPaidByGBId = row.Field<string>("sPaidByGBId"),
                         sGBIDPaidFor = row.Field<string>("sGBIDPaidFor"),
+                        sCountryIDPaidFor = row.Field<string>("sCountryIDPaidFor"),
                         sFirstName = row.Field<string>("sFirstName"),
                         sLastName = row.Field<string>("sLastName"),
                         sRelation = row.Field<string>("sRelation"),
@@ -817,12 +817,12 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Verify Friend Details
-        public bool VerifyFriendDetails(string sFirstName, string sLastName, string sGBID, DateTime dtDOB)
+        public bool VerifyFriendDetails( string sGBID, DateTime dtDOB)
         {
             Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
             if (greenbook != null)
             {
-                if (greenbook.sFirstName == sFirstName && greenbook.sLastName == sLastName && greenbook.dtDOB == dtDOB)
+                if (greenbook.dtDOB == dtDOB)
                 {
                     return true;
                 }

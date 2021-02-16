@@ -199,7 +199,12 @@ const close=(id)=>{
           className="btn-transition-none btn-neutral-primary mr-3">
           Madebs
         </Button>}
-        <Button
+        {
+          authUser &&
+            ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 2)) !== undefined
+              )
+            &&
+          <Button
           id="id_GB"
           size="small"
           onClick={handleGBClick}
@@ -209,7 +214,7 @@ const close=(id)=>{
           
           className="btn-transition-none btn-neutral-primary mr-3">
           Green Book
-        </Button>
+        </Button>}
         
         {authUser &&
               ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
@@ -1196,6 +1201,20 @@ const close=(id)=>{
                         />
                       </div>
                       <span>Chatrel List</span>
+                    </ListItem>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 48)) !== undefined
+                      &&
+                    <ListItem
+                      component="a"
+                      button
+                      href="/Chatrel/ChatrelListSearch">
+                      <div className="mr-2">
+                        <FontAwesomeIcon
+                          icon={['fas', 'chevron-right']}
+                          className="font-size-xs opacity-3"
+                        />
+                      </div>
+                      <span>Chatrel List With Search</span>
                     </ListItem>}
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 50)) !== undefined
                       &&

@@ -2,6 +2,7 @@
 using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
+using CTADBL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,14 @@ namespace CTAWebAPI.Services
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            var jwt = context.HttpContext.Request.Headers["Authorization"].ToString().Substring(7);
+            bool blocked = BlockedTokens.Tokens.Contains(jwt);
+            if (blocked)
+            {
+                context.Result = new UnauthorizedResult();
+                return;
+            }
+
             HttpRequest request = context.HttpContext.Request;
             var controller = request.RouteValues["controller"].ToString();
             var action = request.RouteValues["action"].ToString();

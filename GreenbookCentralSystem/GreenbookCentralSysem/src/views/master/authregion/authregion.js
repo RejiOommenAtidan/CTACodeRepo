@@ -241,7 +241,7 @@ export default function EnhancedTable() {
     axios.post(`/AuthRegion/EditAuthRegion/RegionID=` + authRegionPK, authRegionObj)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          ////console.log(resp.data);
           setEditModal(false);
           axios.get(`/AuthRegionCountry/GetAllAuthRegionsCountryName`)
             .then(resp => {
@@ -254,15 +254,15 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              console.log(error.message);
-              console.log(error.config);
+              //console.log(error.message);
+              //console.log(error.config);
             })
         }
       })
       .catch(error => {
         if(error.response){
           if(error.response.status === 403){
-            console.log(error);
+            //console.log(error);
             setAlertMessage(error.response.data.detail);
             setAlertType("error");
             snackbarOpen();
@@ -271,8 +271,8 @@ export default function EnhancedTable() {
           }
 
         }
-        console.log(error.message);
-        console.log(error.config);
+        //console.log(error.message);
+        //console.log(error.config);
       });
   };
 
@@ -297,11 +297,11 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              console.log(error.message);
-              console.log(error.config);
+              //console.log(error.message);
+              //console.log(error.config);
             })
             .then(release => {
-              //console.log(release); => udefined
+              ////console.log(release); => udefined
             });
           //window.location = window.location;
         }
@@ -309,7 +309,7 @@ export default function EnhancedTable() {
       .catch(error => {
         if(error.response){
           if(error.response.status === 403){
-            console.log(error);
+            //console.log(error);
             setAlertMessage(error.response.data.detail);
             setAlertType("error");
             snackbarOpen();
@@ -318,8 +318,8 @@ export default function EnhancedTable() {
           }
 
         }
-        console.log(error.message);
-        console.log(error.config);
+        //console.log(error.message);
+        //console.log(error.config);
       });
 
   };
@@ -336,7 +336,7 @@ export default function EnhancedTable() {
   };
 
   const deleteAPICall = () => {
-    // console.log(this.state.selectedUser);
+    // //console.log(this.state.selectedUser);
     // let CountryID = countryPK;
     const authRegionToDelete = {
       ID: authRegionPK,
@@ -354,14 +354,14 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              console.log(error.config);
-              console.log(error.message);
+              //console.log(error.config);
+              //console.log(error.message);
             });
         }
       })
       .catch(error => {
-        console.log(error.message);
-        console.log(error.config);
+        //console.log(error.message);
+        //console.log(error.config);
       });
   };
 
@@ -379,14 +379,14 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              console.log(error.config);
-              console.log(error.message);
+              //console.log(error.config);
+              //console.log(error.message);
             });
         }
       })
       .catch(error => {
-        console.log(error.message);
-        console.log(error.config);
+        //console.log(error.message);
+        //console.log(error.config);
       });
   };
 

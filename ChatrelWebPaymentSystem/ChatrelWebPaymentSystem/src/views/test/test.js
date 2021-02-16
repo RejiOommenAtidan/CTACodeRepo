@@ -5,7 +5,7 @@ import {Link, Box, Container, Grid,CardContent, Button, FormControl, FormLabel, 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
-import newback from '../../assets/images/new-background.jpg';
+//import newback from '../../assets/images/new-background.PNG ';
 import projectLogo from '../../assets/images/CTALogo.png';
 import wallpaper from '../../assets/images/wallpaper.jpg';
 
@@ -39,7 +39,9 @@ export default function Test () {
        <div className="app-wrapper min-vh-100 bg-white">
                     <div className="hero-wrapper w-100 bg-composed-wrapper bg-midnight-bloom min-vh-100">
                         <div className="flex-grow-1 w-100 d-flex align-items-center">
-                            <div className="bg-composed-wrapper--image opacity-9" style={{backgroundImage: 'url(' + newback + ')'}}/>
+                            <div className="bg-composed-wrapper--image opacity-9"
+                            //  style={{backgroundImage: 'url(' + newback + ')'}}
+                             />
                             <div className="bg-composed-wrapper--bg bg-second opacity-7"/>
                             <div className="bg-composed-wrapper--content p-3 p-md-5">
                                 <Container>
@@ -133,7 +135,9 @@ export default function Test () {
                 <div className="app-wrapper min-vh-100 bg-white">
                     <div className="hero-wrapper w-100 bg-composed-wrapper bg-midnight-bloom min-vh-100">
                         <div className="flex-grow-1 w-100 d-flex align-items-center">
-                            <div className="bg-composed-wrapper--image opacity-9" style={{backgroundImage: 'url(' + newback + ')'}}/>
+                            <div className="bg-composed-wrapper--image opacity-9" 
+                            // style={{backgroundImage: 'url(' + newback + ')'}}
+                            />
                             <div className="bg-composed-wrapper--bg bg-second opacity-7"/>
                             <div className="bg-composed-wrapper--content p-3 p-md-5">
                                 <Container>

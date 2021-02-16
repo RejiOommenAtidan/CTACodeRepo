@@ -56,28 +56,32 @@ namespace CTADataMigrationAndSupport
                 cnn.Open();
 
                 //string query = "SELECT sGBID FROM tblGreenBook";
-                string query = "select sGBID from tblgreenbook where sGBId Not in (SELECT sGBId FROM lnkgbdocument)";
-                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2012%'";
-                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2011%'";
-                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2010%'";
-                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2009%'";
-                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2008%'";
-                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2007%'";
-                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2006%'";
-                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and  sCountryID !='IN'";
-                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0";
-                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'N' and  sGender = 'M'";
-                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'N' and  sGender = 'F'";
-                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'M' ";
-                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'Y'";
-                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'D'";
-                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF in (1,2,3,4,5)";
-                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF > 5";
-                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM in (1,2,3,4,5)";
-                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM > 5";
-                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2004%'";
-                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2003%'";
-                //string query = "select sGBID from tblgreenbook where sGBID = 0000000";
+                //string query = "select count(*) into @var_2000 from tblgreenbook where year(dtentered) <= '2000'";
+                //string query = "select count(*) into @var_2001 from tblgreenbook where year(dtentered) = '2001'";
+                //string query = "select count(*) into @var_2002 from tblgreenbook where year(dtentered) = '2002'";
+                string query = "select sGBID from tblgreenbook where year(dtentered) = 2003 and month(dtentered) > 7 and day(dtentered) >= 10";
+                //string query = "select count(*) into @var_2003_2 from tblgreenbook where year(dtentered) = 2003 and month(dtentered) > 7 and day(dtentered) < 10";
+                //string query = "select count(*) into @var_2003_3 from tblgreenbook where year(dtentered) = 2003 and month(dtentered) = 7 ";
+                //string query = "select count(*) into @var_2003_4 from tblgreenbook where year(dtentered) = 2003 and month(dtentered) < 7 ";
+                //string query = "select count(*) into @var_2004 from tblgreenbook where year(dtentered) = '2004'";
+                //string query = "select count(*) into @var_2005 from tblgreenbook where year(dtentered) = '2005'";
+                //string query = "select count(*) into @var_2006 from tblgreenbook where year(dtentered) = '2006'";
+                //string query = "select count(*) into @var_2007 from tblgreenbook where year(dtentered) = '2007'";
+                //string query = "select count(*) into @var_2008 from tblgreenbook where year(dtentered) = '2008'";
+                //string query = "select count(*) into @var_2009 from tblgreenbook where year(dtentered) = '2009'";
+                //string query = "select count(*) into @var_2010 from tblgreenbook where year(dtentered) = '2010'";
+                //string query = "select count(*) into @var_2011 from tblgreenbook where year(dtentered) = '2011'";
+                //string query = "select count(*) into @var_2012 from tblgreenbook where year(dtentered) = '2012'";
+                //string query = "select count(*) into @var_2013 from tblgreenbook where year(dtentered) = '2013'";
+                //string query = "select count(*) into @var_2014 from tblgreenbook where year(dtentered) = '2014'";
+                //string query = "select count(*) into @var_2015 from tblgreenbook where year(dtentered) = '2015'";
+                //string query = "select count(*) into @var_2016 from tblgreenbook where year(dtentered) = '2016'";
+                //string query = "select count(*) into @var_2017 from tblgreenbook where year(dtentered) = '2017'";
+                //string query = "select count(*) into @var_2018 from tblgreenbook where year(dtentered) = '2018'";
+                //string query = "select count(*) into @var_2019 from tblgreenbook where year(dtentered) = '2019'";
+                //string query = "select count(*) into @var_2020 from tblgreenbook where year(dtentered) >= '2020'";
+                
+                
                 MySqlCommand cmd = new MySqlCommand(query, cnn);
                 MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
                 DataTable dt = new DataTable("tblGreenBook");
@@ -150,8 +154,8 @@ namespace CTADataMigrationAndSupport
                         br.Close();
                         fs.Close();
 
-                        string cmdString = "INSERT INTO lnkgbdocument(nRegisterDate, sGBId, sTitle, sDocType, binFileDoc, sFileExtension, dtEntered, nEnteredBy) " +
-                                            "VALUES(@nRegisterDate,@sGBId,@sTitle,@sDocType,@binFileDoc,@sFileExtension,@dtEntered,@nEnteredBy)";
+                        string cmdString = "INSERT INTO lnkgbdocument(nRegisterDate, sGBId, sTitle, sDocType, binFileDoc, sFileExtension, dtEntered, nEnteredBy,dtUpdated,nUpdatedBy) " +
+                                            "VALUES(@nRegisterDate,@sGBId,@sTitle,@sDocType,@binFileDoc,@sFileExtension,@dtEntered,@nEnteredBy,@dtEntered,@nEnteredBy)";
 
                         cmd = new MySqlCommand(cmdString, cnn);
 

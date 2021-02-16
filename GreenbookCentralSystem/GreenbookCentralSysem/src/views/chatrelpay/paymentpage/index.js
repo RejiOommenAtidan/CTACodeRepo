@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function PaymentPage  (props) {
-  console.log("Props contains:", props);
+  //console.log("Props contains:", props);
   let history = useHistory();
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   
@@ -71,7 +71,7 @@ export default function PaymentPage  (props) {
 
   
 
-  //console.log(paidByGBID);
+  ////console.log(paidByGBID);
   //const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 
   
@@ -95,10 +95,10 @@ export default function PaymentPage  (props) {
   const [donationNull, setDonationNull] = React.useState(false);
   const [gbChatrelsNull, setGBChatrelsNull] = React.useState(false);
   
-  console.log("AuthRegions set in 'authRegions'", authRegions);
-  console.log("Region set in 'authRegion'", authRegion);
-  console.log("Current paymentData is ", paymentData);
-  console.log("dataAPI is ", dataAPI);
+  //console.log("AuthRegions set in 'authRegions'", authRegions);
+  //console.log("Region set in 'authRegion'", authRegion);
+  //console.log("Current paymentData is ", paymentData);
+  //console.log("dataAPI is ", dataAPI);
   
 
   const autoComplete = (<Autocomplete
@@ -119,7 +119,7 @@ export default function PaymentPage  (props) {
     onChange={
       (e, value) => {
         if (value !== null) {
-          console.log(value.id);
+          //console.log(value.id);
           //setMadebStatusID(value.id);
         }
         else {
@@ -154,7 +154,7 @@ export default function PaymentPage  (props) {
   
 
   const updateAuthRegion = (e, value) => {
-    console.log("Auth region changed to ", value.id, "at row ", e.target.id);
+    //console.log("Auth region changed to ", value.id, "at row ", e.target.id);
     //const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
     //const index = e.target.id.substring(0, e.target.id.indexOf('_'));
     const index = parseInt(e.target.id);
@@ -173,7 +173,7 @@ export default function PaymentPage  (props) {
 
 
 const modify =(target) =>{
-  console.log(target);
+  //console.log(target);
   let payObj = [...paymentData];
   let index;
   if(target.type === 'text'){
@@ -240,7 +240,7 @@ const calcTotal =(obj ,a,b)=>{
       
       if(!outstanding){
         if(paymentData[0].nCurrentChatrelSalaryAmt > 0){
-          console.log("we have no outstanding");
+          //console.log("we have no outstanding");
            const salaryBox = document.getElementsByName('indemployed')[0];
            const checkBox = document.getElementById('employed');
            const rateField = document.getElementById('rate');
@@ -267,12 +267,12 @@ const calcTotal =(obj ,a,b)=>{
         }
       }
       else{
-        console.log("we have outstanding");
+        //console.log("we have outstanding");
         const len = paymentData.length;
         for (var i = 0; i < len; i++){
           calculate(i);
         }
-        console.log("payment obj", paymentData);
+        //console.log("payment obj", paymentData);
       }
       setShouldRun(false);
     } 
@@ -358,7 +358,7 @@ const submit =(e) =>{
     "gbChatrelDonation": donationObj
   };
 
-  console.log("Final Obj:" , finalObj);
+  //console.log("Final Obj:" , finalObj);
   axios.post(`/ChatrelPayment/AddNewChatrelPayment`,finalObj)
   .then(resp => {
     if (resp.status === 200) {
@@ -367,12 +367,12 @@ const submit =(e) =>{
       setAlertType('success');
       snackbarOpen();
       history.goBack();
-      console.log(resp.data); 
+      //console.log(resp.data); 
     }
   })
   .catch(error => {
-    console.log(error.config);
-    console.log(error.message);
+    //console.log(error.config);
+    //console.log(error.message);
   });
   
 
@@ -386,10 +386,10 @@ const submit =(e) =>{
     axios.get(`/AuthRegion/GetAuthRegionsForChatrelReport`)
       .then(resp => {
         if(resp.status === 200){
-          console.log("AuthRegions fetched:", resp.data);
+          //console.log("AuthRegions fetched:", resp.data);
           setAuthRegions(resp.data);
           if(props.location.state.pymtData){
-            console.log("Status is ", props.location.state.outstanding);
+            //console.log("Status is ", props.location.state.outstanding);
             if(!props.location.state.outstanding){
               setOutstanding(false);
               if(props.location.state.pymtData.gbChatrels[0].nCurrentChatrelSalaryAmt > 0){
@@ -410,17 +410,17 @@ const submit =(e) =>{
             fetch('https://api.ratesapi.io/api/latest?base=USD&symbols=INR')
                   .then(response => response.json())
                   .then(data => {
-                  console.log("currency", data.rates.INR);
+                  //console.log("currency", data.rates.INR);
                   setDollarToRupees(parseFloat(data.rates.INR));
                   });
-            console.log("Got data from props");
+            //console.log("Got data from props");
             
             return;
           }
           axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sGBID)
             .then(resp => {
               if (resp.status === 200) {
-                console.log("resp.data is:", resp.data);
+                //console.log("resp.data is:", resp.data);
                 //resp.data.chatrelPayment.sPaymentMode = 'Offline';
                 setDataAPI(resp.data);
                 setSummaryData(resp.data.chatrelPayment);
@@ -430,23 +430,23 @@ const submit =(e) =>{
                 fetch('https://api.ratesapi.io/api/latest?base=USD&symbols=INR')
                   .then(response => response.json())
                   .then(data => {
-                  console.log("currency", data.rates.INR);
+                  //console.log("currency", data.rates.INR);
                   setDollarToRupees(parseFloat(data.rates.INR));
                   });
                 
               }
             })
             .catch(error => {
-              console.log(error.message);
-              console.log(error.config);
-              //console.log(error.response.data);
+              //console.log(error.message);
+              //console.log(error.config);
+              ////console.log(error.response.data);
             });
         }
           
       })
       .catch(error => {
-        console.log(error.message);
-        console.log(error.config);
+        //console.log(error.message);
+        //console.log(error.config);
       });
     //setPaymentData(payObj);
     
@@ -458,16 +458,16 @@ const submit =(e) =>{
 
   useEffect(() => {
     runOnce();
-    console.log("dollar rate is ", dollarToRupees);
+    //console.log("dollar rate is ", dollarToRupees);
   }, [dollarToRupees])
 
 
   useEffect(() => {
-    console.log("Want to set authregion");
+    //console.log("Want to set authregion");
     if(authRegions && dataAPI){
       const region =authRegions.find((x) => x.id === dataAPI.nAuthRegionID); 
       setAuthRegion(region);
-      console.log("authregion and dataAPI are set", region);
+      //console.log("authregion and dataAPI are set", region);
       
     }
     

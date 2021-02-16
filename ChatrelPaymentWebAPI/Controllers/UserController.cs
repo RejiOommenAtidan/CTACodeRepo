@@ -34,6 +34,7 @@ namespace ChatrelPaymentWebAPI.Controllers
         private readonly DBConnectionInfo _info;
         private readonly double dTimeout = 15;
         private readonly GreenbookRepository _greenbookRepository;
+        private readonly AuthRegionRepository _authRegionRepository;
         private readonly ChatrelLogger _chatrelLogger;
         private readonly AppSettings _appSettings;
         #endregion
@@ -42,6 +43,7 @@ namespace ChatrelPaymentWebAPI.Controllers
         {
             _info = info;
             _greenbookRepository = new GreenbookRepository(info.sConnectionString);
+            _authRegionRepository = new AuthRegionRepository(info.sConnectionString);
             _chatrelLogger = new ChatrelLogger(info);
             _appSettings = appSettings.Value;
         }
@@ -123,7 +125,8 @@ namespace ChatrelPaymentWebAPI.Controllers
                     {
 
                         Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
-                        if (greenbook.dtDOB == dtDOB && greenbook.sEmail == sEmail)
+                        string sAuthRegion = _authRegionRepository.GetAuthRegionById(greenbook.nAuthRegionID.ToString()).sAuthRegion;
+                        if (greenbook.dtDOB == dtDOB && greenbook.sLoginGmail == sEmail)
                         {
                             #region Information Logging 
                             _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, Convert.ToInt32(greenbook.sGBID));
@@ -140,7 +143,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                             #endregion
 
                             // should we set a cookie or a token?
-                            return Ok(new { result = "Verified", user.sJwtToken });
+                            return Ok(new { result = "Verified", user.sJwtToken, user.User.sCountryID, sAuthRegion });
                         }
                         else
                         {

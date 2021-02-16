@@ -322,7 +322,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                         Id = row.Field<int>("Id"),
                         dtEntered = row.Field<DateTime>("dtEntered"),
                         nFeatureID = row.Field<int>("nFeatureID"),
-                        nRegionID = row.Field<int>("nRegionID"),
+                        nRegionID = row.Field<int?>("nRegionID"),
                         nRecordID = row.Field<int>("nRecordID"),
                         sGBID = row.Field<string>("sGBID"),
                         sFieldValuesOld = row.Field<string>("sFieldValuesOld"),

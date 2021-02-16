@@ -14,10 +14,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders } from '../../../config/commonConfig';
+
 import Search from '@material-ui/icons/Search';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
+import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders, sDDMMYYYYRegex, sDateFormatMUIDatepicker, sISODateFormat  } from '../../../config/commonConfig';
+import { useForm, Controller } from "react-hook-form";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import _ from "lodash/fp";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -40,13 +48,15 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Report() {
+  
+const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
   const classes = useStyles();
   let history = useHistory();
   const [issuedIndividualData, SetIssuedIndividualData] = React.useState([]);
   const [madebTypeData, SetMadebTypeData] = React.useState();
   const [madebType, SetMadebType] = React.useState('');
-  const [dtFrom, SetdtFrom] = React.useState('');
-  const [dtTo, SetdtTo] = React.useState('');
+  const [dtFrom, SetdtFrom] = React.useState(null);
+  const [dtTo, SetdtTo] = React.useState(null);
   const [orderBy, SetOrderBy] = React.useState('');
   const [title, setTitle] = useState();
   const [rcheader, setRCHeader] = useState();
@@ -189,8 +199,9 @@ export default function Report() {
       },
     },
   ]
-  const issuedIndividual = () => {
-    if (madebType === '' || dtFrom === '' || dtTo === '' || orderBy === '') {
+  const issuedIndividual = (e) => {
+    e.preventDefault();
+    if (madebType === '' || dtFrom === null || dtTo === null || orderBy === '') {
       setAlertMessage('All fields are required !');
       setAlertType('error');
       snackbarOpen();
@@ -238,11 +249,11 @@ export default function Report() {
             console.error('Error', error.message);
             
           }
-          console.log(error.config);
-          console.log(error.message);
+          //console.log(error.config);
+          //console.log(error.message);
         })
         .then(release => {
-          //console.log(release); => udefined
+          ////console.log(release); => udefined
         });
     }
   }
@@ -250,7 +261,7 @@ export default function Report() {
     axios.get(`/MadebType/GetMadebTypes`)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          ////console.log(resp.data);
           SetMadebTypeData(resp.data)
         }
       })
@@ -267,10 +278,10 @@ export default function Report() {
           setAlertType('error');
           snackbarOpen();
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   }, []);
   useEffect(() => {
@@ -280,8 +291,9 @@ export default function Report() {
     <>
       <Paper style={{ padding: '30px', textAlign: 'center' }} >
         <h1>Green Book Issued Individual </h1>
+        <form onSubmit = {(e) => handleSubmit(issuedIndividual(e))}>
         <FormControl className={classes.formControl}>
-          <InputLabel id="madebTypelbl">Madeb Type</InputLabel>
+          <InputLabel id="madebTypelbl">Madeb Type<span style={{ color: 'red' }}> *</span></InputLabel>
           <Select
             labelId="madebTypelbl"
             id="madebType"
@@ -296,6 +308,86 @@ export default function Report() {
           </Select>
         </FormControl>
         <FormControl className={classes.formControl}>
+
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  variant="dialog"
+                  //openTo="year"
+                  //views={["year", "month", "date"]}
+                  margin="dense"
+                  id="dtFrom"
+                  name="dtFrom"
+                  autoFocus
+                  label={<> Date From<span style={{ color: 'red' }}> *</span></>}
+                  format={sDateFormatMUIDatepicker}
+                  returnMoment={true}
+                  onChange={(date) => {
+                    if (date) {
+                      SetdtFrom(Moment(date).format(sISODateFormat));
+                      setValue('dtFrom', date, { shouldValidate: true });
+                    };
+                  }}
+                  value={dtFrom}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                  // fullWidth
+                  //className={classes.dateField}
+                  inputRef={register({
+                    required: true,
+                    pattern:
+                    {
+                      value: new RegExp(sDDMMYYYYRegex),
+                      message: "Invalid Date"
+                    }
+                  })}
+                />
+              </MuiPickersUtilsProvider>
+              {/*{errors.startDate && <span style={{ color: 'red' }}>Date From is required</span>}*/}
+              {_.get("dtFrom.type", errors) === "required" && (
+                <span style={{ color: 'red' }}>Date From is required</span>
+              )}
+        </FormControl>
+        <FormControl className={classes.formControl}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                <KeyboardDatePicker
+                  variant="dialog"
+                  //openTo="year"
+                  //views={["year", "month", "date"]}
+                  margin="dense"
+                  id="dtTo"
+                  name="dtTo"
+
+                  label={<> Date To<span style={{ color: 'red' }}> *</span></>}
+                  format={sDateFormatMUIDatepicker}
+                  returnMoment={true}
+                  onChange={(date) => {
+                    if (date) {
+                      SetdtTo(Moment(date).format(sISODateFormat));
+                      setValue('dtTo', date, { shouldValidate: true });
+                    }
+                  }}
+                  value={dtTo}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                  // fullWidth
+                  //className={classes.dateField}
+                  inputRef={register({
+                    required: true,
+                    pattern:
+                    {
+                      value: new RegExp(sDDMMYYYYRegex),
+                      message: "Invalid Date"
+                    }
+                  })}
+                />
+              </MuiPickersUtilsProvider>
+              {_.get("dtFrom.type", errors) === "required" && (
+                <span style={{ color: 'red' }}>Date To is required</span>
+              )}
+            </FormControl>
+        {/* <FormControl className={classes.formControl}>
 
           <TextField
             type="date"
@@ -323,9 +415,9 @@ export default function Report() {
               shrink: true,
             }}
           />
-        </FormControl>
+        </FormControl> */}
         <FormControl className={classes.formControl}>
-          <InputLabel id="orderbylbl">Order By</InputLabel>
+          <InputLabel id="orderbylbl">Order By<span style={{ color: 'red' }}> *</span></InputLabel>
           <Select
             labelId="orderbylbl"
             id="orderby"
@@ -339,12 +431,12 @@ export default function Report() {
         </FormControl>
 
         <FormControl className={classes.formControl}>
-          <Button type="button"
+          <Button type="submit"
             size={sButtonSize}
             color={sButtonColor}
             variant={sButtonVariant}
             value="Report"
-            onClick={() => { issuedIndividual(); }} >Show</Button>
+            >Show</Button>
         </FormControl>
         <FormControl className={classes.formControl}>
           {issuedIndividualData.length > 0 &&
@@ -380,7 +472,7 @@ export default function Report() {
         }
 
 
-
+</form>
       </Paper>
       {snackbar && <Alerts
         alertObj={alertObj}

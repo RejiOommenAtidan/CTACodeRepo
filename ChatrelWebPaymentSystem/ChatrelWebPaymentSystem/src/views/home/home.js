@@ -1,5 +1,6 @@
 import React , { useEffect, useState } from 'react';
 import { Card ,CardContent,Typography ,Grid,Link,Button,ListItem,List} from '@material-ui/core';
+import {Alert} from '@material-ui/lab';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from 'react-responsive'
 
@@ -13,6 +14,7 @@ import axios from 'axios';
 import img from '../../assets/images/home_pending.jpg';
 import {useHistory} from 'react-router-dom';
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
+import {storeGBDetails} from '../../actions/transactions/GBDetailsAction';
 import {storeSession} from '../../actions/transactions/SessionAction';
 import logo1 from '../../assets/images/stock-logos/discord-icon.svg';
 
@@ -43,12 +45,15 @@ export default function Home() {
   //const payingFor=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sName);
   const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
   const paidByName= useSelector(state => state.GBDetailsReducer.oGBDetails.sName);
+  const oGBDetails = useSelector(state => state.GBDetailsReducer.oGBDetails);
   const [chatrelPending, setChatrelPending] = React.useState(null);
 
   const [currencySymbol, setCurrencySymbol] = React.useState();
   const [paymentData, setPaymentData] = React.useState();
   const [outstanding, setOutstanding] = useState(false);
   const [donationDiv, setDonationDiv] = useState(false);
+  const [thankYouMsg, setThankYouMsg] = useState(false);
+
   const [empty, setEmpty] = useState(false);
   let history = useHistory();
   let dispatch = useDispatch();
@@ -58,7 +63,7 @@ export default function Home() {
   axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
   .then(resp => {
     if (resp.status === 200) {
-      console.log("Self Chatrel Payment data:", resp.data);
+      //console.log("Self Chatrel Payment data:", resp.data);
       
       
       //Store New Token
@@ -67,11 +72,15 @@ export default function Home() {
         bSession:true
       }
       dispatch(storeSession(oSession));
-      
-      if(resp.data.chatrel.chatrelPayment)
+     //const x =               
+      //oGBDetails.sAuthRegion=resp.data.chatrel.authRegionProfile;
+      //dispatch(storeGBDetails({...oGBDetails,sAuthRegion:resp.data.chatrel.authRegionProfile}));
+     ////console.log('x',x,oGBDetails);
+      if(resp.data.message!=="Paid Until Missing")
       {
       if(resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0){
         setChatrelPending('0');
+        setThankYouMsg(true);
         if(resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt===0){
           setOutstanding(false);
         }
@@ -88,7 +97,7 @@ export default function Home() {
         setOutstanding(true);
       }
       setPaymentData(resp.data.chatrel);
-      console.log(resp.data.chatrel);
+      //console.log(resp.data.chatrel);
       
       
       if(resp.data.chatrel.gbChatrels[0].sAuthRegionCurrency === 'USD'){
@@ -102,21 +111,14 @@ export default function Home() {
       setEmpty(true);
     }
   }
-      console.log("Data fetched...", resp.data);
+      //console.log("Data fetched...", resp.data);
       
    
   })
   .catch(error => {
-    console.log(error.message);
-    console.log(error.response.status);
-    if (error.response.status === 401) {
-   
-      const oSession={
-        sJwtToken:"",
-        bSession:false
-      }
-      dispatch(storeSession(oSession));
-    }
+    //console.log(error.message);
+    //console.log(error.response.status);
+
   });
 
 }, []);
@@ -126,17 +128,34 @@ export default function Home() {
  const makePayment = (obj)=> {
  
   dispatch(storeCurrentGBDetails(obj));
-  history.push('/PaymentPage');
+  history.push('/Chatrel');
 }
 
 
 
   return (
     <>
+   
       <Card className="card-box mb-spacing-6-x2" style={{  padding: 50 }} >
    {/*     <h4>QUICK ACTIONS</h4>  */}
       
       <Grid container spacing={8}>
+    
+      { thankYouMsg && 
+      <Grid item xs={12} >
+    <Alert variant="outlined" icon={false} className="mb-1 shadow-info-sm w-50 mx-auto" severity="info">
+    <div className="d-flex align-items-center align-content-center">
+        <span className="font-size-xl d-block btn-icon d-40 mr-3 text-center bg-neutral-info rounded-sm text-info">
+            <FontAwesomeIcon icon={['fas', 'check']} />
+        </span>
+        <span>
+          <h5>  <strong className="d-block">Thank You!</strong> This year's Chatrel has been Contributed!</h5>
+</span>
+    </div>
+</Alert>
+        </Grid>
+
+   }
         <Grid item xs={12} sm={12} lg={6} >
       <iframe className="w-100 card-box card-box-alt  shadow-xxl rounded"  height="350" src="https://www.youtube.com/embed/FlUaitZfFAo?autoplay=1" frameborder="0" start  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       
@@ -156,7 +175,7 @@ export default function Home() {
                                                                 <div className="font-weight-bold text-black">
                                                                     Self Chatrel
                                                                 </div>
-                                                                <div className="text-black-50">Make Chatrel Payments for yourself online</div>
+                                                                <div className="text-black-50">Make Chatrel Contributions for yourself online</div>
                                                             </div>
                                                         </div>
                                                        { !empty && <div className="ml-auto">
@@ -166,36 +185,36 @@ export default function Home() {
                                                             </div>
                                                         </div>}
                                                     </ListItem>
-                                                    <ListItem component="a" button href="/Family" onClick={()=>{history.push('/Family')}} className="d-flex align-items-center py-3">
-                                                        <div className="d-flex align-items-center">
-                                                        <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-success text-white btn-icon mx-auto text-center shadow-success">
-                                                           <FontAwesomeIcon icon={['fas', 'heart']} className="display-4" />
-                                                         </div>
-                                                            <div style={{marginLeft:'10px'}}>
-                                                                <div className="font-weight-bold text-black">
-                                                                    Family Chatrel
-                                                                </div>
-                                                                <div className="text-black-50">Pay Instantly for all of your family members</div>
-                                                                
-                                                            </div>
-                                                        </div>
-                                                        
-                                                    </ListItem>
-                                                    <ListItem component="a" button href="/Friends" onClick={()=>{history.push('/Friends')}} className="d-flex align-items-center py-3">
+                                                    <ListItem component="a" button  onClick={()=>{history.push('/Friends')}} className="d-flex align-items-center py-3">
                                                         <div className="d-flex align-items-center">
                                                         <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-first text-white btn-icon mx-auto text-center shadow-first">
                                                            <FontAwesomeIcon icon={['fas', 'leaf']} className="display-4" />
                                                          </div>
                                                             <div style={{marginLeft:'10px'}}>
                                                                 <div className="font-weight-bold text-black">
-                                                                   Friend's Chatrel
+                                                                   Friends & Family Chatrel
                                                                 </div>
-                                                                <div className="text-black-50">Get payments of your friends done too</div>
+                                                                <div className="text-black-50">Contribute Instantly for all of your Friends & Family</div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </ListItem>
+                                                  <ListItem component="a" button  onClick={()=>{history.push('/ChatrelHistory')}} className="d-flex align-items-center py-3">
+                                                        <div className="d-flex align-items-center">
+                                                        <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-success text-white btn-icon mx-auto text-center shadow-success">
+                                                           <FontAwesomeIcon icon={['fas', 'history']} className="display-4" />
+                                                         </div>
+                                                            <div style={{marginLeft:'10px'}}>
+                                                                <div className="font-weight-bold text-black">
+                                                                    Chatrel History
+                                                                </div>
+                                                                <div className="text-black-50">Check your previous Chatrel donations</div>
                                                                 
                                                             </div>
                                                         </div>
                                                        
-                                                    </ListItem>
+                                                    </ListItem> 
                                                   
                                                 </List>
                                             </Card>}
@@ -220,21 +239,6 @@ export default function Home() {
                                                             </div>
                                                         </div>*/} 
                                                     </ListItem>
-                                                    <ListItem component="a" button href="/Family" onClick={()=>{history.push('/Family')}} className="d-flex align-items-center py-3">
-                                                        <div className="d-flex align-items-center">
-                                                        <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-success text-white btn-icon mx-auto text-center shadow-success">
-                                                           <FontAwesomeIcon icon={['fas', 'heart']} className="display-4" />
-                                                         </div>
-                                                            <div style={{marginLeft:'10px'}}>
-                                                                <div className="font-weight-bold text-black">
-                                                                    Family Chatrel
-                                                                </div>
-                                                               
-                                                                
-                                                            </div>
-                                                        </div>
-                                                        
-                                                    </ListItem>
                                                     <ListItem component="a" button href="/Friends" onClick={()=>{history.push('/Friends')}} className="d-flex align-items-center py-3">
                                                         <div className="d-flex align-items-center">
                                                         <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-first text-white btn-icon mx-auto text-center shadow-first">
@@ -242,14 +246,29 @@ export default function Home() {
                                                          </div>
                                                             <div style={{marginLeft:'10px'}}>
                                                                 <div className="font-weight-bold text-black">
-                                                                   Friend's Chatrel
+                                                                   Friends & Family Chatrel
                                                                 </div>
-                                                              
+                                                                {/* <div className="text-black-50">Pay Instantly for all of your Friends & Family</div> */}
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </ListItem>
+                                                    <ListItem component="a" button href="/ChatrelHistory" onClick={()=>{history.push('/ChatrelHistory')}} className="d-flex align-items-center py-3">
+                                                        <div className="d-flex align-items-center">
+                                                        <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-success text-white btn-icon mx-auto text-center shadow-success">
+                                                           <FontAwesomeIcon icon={['fas', 'history']} className="display-4" />
+                                                         </div>
+                                                            <div style={{marginLeft:'10px'}}>
+                                                                <div className="font-weight-bold text-black">
+                                                                    Chatrel History
+                                                                </div>
+                                                                {/* <div className="text-black-50">Check your previous Chatrel donations</div> */}
                                                                 
                                                             </div>
                                                         </div>
                                                        
-                                                    </ListItem>
+                                                    </ListItem> 
                                                   
                                                 </List>
                                             </Card>}
@@ -299,16 +318,19 @@ export default function Home() {
                                     suffix=""
                                 />
                                     </div>
-                                    <div className="font-size-lg text-dark opacity-8 mb-5">Chatrel Pending</div>
+                                    <div className="font-size-lg text-dark opacity-8 mb-5">Is your Pending Chatrel</div>
                                     <div className="divider mx-4 my-4" />
                                     <div className="text-center">
                                         <Button className="p-0 text-uppercase btn-link-success font-weight-bold font-size-sm btn-link" variant="text"
                                         onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' })}}
                                         >
-                                            <span>PAY NOW</span>
+                                            <span>PLEASE GO AHEAD & DONATE</span>
                                         </Button>
                                     </div>
-                                </div>
+                                </div>          
+
+
+
                             </Card>}
                            { (!outstanding && !empty && !donationDiv )&&
                             <Card className="card-box card-box-alt  shadow-xxl  p-2 ">
@@ -339,7 +361,7 @@ export default function Home() {
                                     <div className="font-weight-bold text-black display-4 mt-4 mb-1">
                                     Make Additional Donation
                                     </div>
-                                    <div className="font-size-lg text-dark opacity-8">Contribute more by paying additional donation towards the Tibetan Government.</div>
+                                    <div className="font-size-lg text-dark opacity-8">Contribute additional donation towards the Tibetan Government.</div>
                                     <div className="divider mx-4 my-4" />
                                     <div className="text-center">
                                         <Button className="p-0 text-uppercase btn-link-primary font-weight-bold font-size-sm btn-link" variant="text"
@@ -356,10 +378,11 @@ export default function Home() {
                                     <div className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-primary text-white btn-icon mx-auto text-center shadow-primary">
                                         <FontAwesomeIcon icon={['fas', 'briefcase']} className="display-3" />
                                     </div>
+                                   
                                     <div className="font-weight-bold text-black display-4 mt-4 mb-1">
-                                    Last Paid Chatrel Date not available in system. Please Contact CTA or file a dispute.
+                                    Last paid chatrel date not available.
                                     </div>
-                                    
+                                    <div className="font-size-lg text-dark opacity-8">Please Contact CTA or file a dispute.</div>
                                     <div className="divider mx-4 my-4" />
                                     <div className="text-center">
                                         <Button className="p-0 text-uppercase btn-link-primary font-weight-bold font-size-sm btn-link" variant="text"

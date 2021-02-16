@@ -69,7 +69,7 @@ export const ViewDialog = (props) => {
   const [progress, setProgress] = useState(0);
   
   const viewReceipt = (sReceiptNumber) => {
-    console.log("Passing receipt number:", sReceiptNumber);
+    //console.log("Passing receipt number:", sReceiptNumber);
     //history.push('/ChatrelPay/ChatrelReceipt', {sReceiptNumber: sReceiptNumber});
     history.push({
       pathname: '/Chatrel/ChatrelReceipt',
@@ -84,10 +84,10 @@ export const ViewDialog = (props) => {
     axios.get(`ChatrelPayment/GetUserProfileFromGBID?sGBID=` + props.sGBID)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
+          //console.log(resp.data);
           setData(resp.data);
        
-          // console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
+          // //console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
 
         }
       })
@@ -101,10 +101,10 @@ export const ViewDialog = (props) => {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
     function tick() {
       // reset when reaching 100%

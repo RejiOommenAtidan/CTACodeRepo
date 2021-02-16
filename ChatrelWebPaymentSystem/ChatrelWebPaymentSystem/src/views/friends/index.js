@@ -42,7 +42,7 @@ export default function Friends () {
   const theme = useTheme();
   const [sFirstName, setFirstName] = React.useState();
   const [sLastName, setLastName] = React.useState();
-  const [dtDOB, setDOB] = React.useState(Date.now());
+  const [dtDOB, setDOB] = React.useState(null);
   const [sFriendGBID, setFriendGBID] = React.useState();
 
     //Alert
@@ -65,7 +65,7 @@ export default function Friends () {
   const makePayment = (obj)=> {
   
     dispatch(storeCurrentGBDetails(obj));
-    history.push('/PaymentPage');
+    history.push('/Chatrel');
   }
   const [check, setCheck] = React.useState(false);
 
@@ -73,9 +73,10 @@ export default function Friends () {
   const verify = () => {
     //e.preventDefault()
     setBackdrop(true);
-    console.log(sFirstName,sLastName,sFriendGBID,Moment(dtDOB).format("YYYY-MM-DD"));
-    if(sFirstName && sLastName && dtDOB && sFriendGBID){
-      axios.get(`/ChatrelPayment/VerifyFriendDetails/?sGBID=${sFriendGBID}&sFirstName=${sFirstName}&sLastName=${sLastName}&dtDOB=${Moment(dtDOB).format("YYYY-MM-DD")}`)
+    ////console.log(sFirstName,sLastName,sFriendGBID,Moment(dtDOB).format("YYYY-MM-DD"));
+    //if(sFirstName && sLastName && dtDOB && sFriendGBID){
+      if(dtDOB && sFriendGBID){
+      axios.get(`/ChatrelPayment/VerifyFriendDetails/?sGBID=${sFriendGBID}&dtDOB=${Moment(dtDOB).format("YYYY-MM-DD")}`)
       .then(resp => {
         
         if(resp.status === 200){
@@ -84,10 +85,10 @@ export default function Friends () {
             bSession:true
           }
 dispatch(storeSession(oSession));
-          console.log(resp.data);
+          //console.log(resp.data);
           if(resp.data.verified === true){
           
-                makePayment({sGBID: sFriendGBID, sName: `${sFirstName} ${sLastName}`, sRelation: `Friend`, from:'Chatrel for Friend' })
+                makePayment({sGBID: sFriendGBID, sName: `${sFirstName} ${sLastName}`, sRelation: `Friend`, from:'Chatrel for Friends & Family' })
            
           }
           else{
@@ -102,16 +103,16 @@ dispatch(storeSession(oSession));
       
       })
       .catch(error => {
-          if(error.response.status === 400){
-          //  alert("Missing Parameters...");
-            setBackdrop(false);
-            setAlertMessage('Something went wrong');
-            setAlertType('danger');
-            snackbarOpen();
-          }
-          console.log(error.message);
-          console.log(error);
-  
+          // if(error.response.status === 400){
+          // //  alert("Missing Parameters...");
+          //   setBackdrop(false);
+          //   setAlertMessage('Please try again');
+          //   setAlertType('danger');
+          //   snackbarOpen();
+          // }
+          // //console.log(error.message);
+          // //console.log(error);
+          setBackdrop(false);
       });
     }
     else{
@@ -132,37 +133,11 @@ dispatch(storeSession(oSession));
                                             <FontAwesomeIcon icon={['fas', 'leaf']} className="display-4" />
                                         </div>
                                         <div className="font-weight-bold text-black display-4 mt-4 mb-3">
-                                            Pay for Friends
+                                            Friends & Family
                                         </div>
       <Grid container direction="column" /*alignContent="center"*/  spacing={2}  >
       
-            <Grid item xs={12} >
            
-                <TextField
-                  label="Enter First Name of Friend"
-                  // InputProps={{inputProps: {style: minWidth = "50px"} }}
-                 variant="outlined"
-                 fullWidth
-                  
-                  onChange={(e) => {setFirstName(e.target.value)}}
-                  error={(check && !sFirstName)}
-                  helperText={(check && !sFirstName) ?"This Field is required":""}
-                />
-             
-            </Grid>
-            <Grid item xs={12} >
-          
-                <TextField
-                  label="Enter Last Name of Friend"
-                  fullWidth
-                //  style={{minWidth: "250px"}}
-                  onChange={(e) => {setLastName(e.target.value)}}
-                  variant="outlined"
-                  error={(check && !sLastName)}
-                  helperText={(check && !sLastName) ?"This Field is required":""}
-                />
-             
-            </Grid>
             <Grid item xs={12} >
              
                 <TextField
@@ -208,7 +183,7 @@ dispatch(storeSession(oSession));
           <div className="divider mt-4" />
           <a type="submit" onClick={()=>{verify();}}  className="px-4 py-3 btn-transition-none text-white bg-first btn btn-white shadow-first d-flex justify-content-between align-items-center">
               
-              <div>Verify & Pay</div>
+              <div>Verify & Contribute</div>
               <FontAwesomeIcon icon={['fas', 'chevron-right']}/>
           </a>
       </div>

@@ -34,7 +34,9 @@ namespace CTAWebAPI.Services
                     "dtUpdated",
                     "nEnteredBy",
                     "nUpdatedBy",
-                    "binFileDoc"
+                    "binFileDoc",
+                    "sPassword",
+                    "sSalt"
                 };
                 #endregion
 

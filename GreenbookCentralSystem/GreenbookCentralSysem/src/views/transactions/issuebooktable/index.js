@@ -100,7 +100,7 @@ export const IssueBookTable = (props) => {
   const [editObj, setEditObj] = useState([]);
 
   const hi = () => {
-    console.log(props.gbId)
+    //console.log(props.gbId)
   };
 
   Moment.locale('en');
@@ -135,7 +135,7 @@ export const IssueBookTable = (props) => {
   const [snackbar, setSnackbar] = React.useState(false);
   const [backdrop, setBackdrop] = React.useState(true);
   const snackbarOpen = () => {
-    console.log('alert');
+    //console.log('alert');
     setSnackbar(true);
   };
   const snackbarClose = () => {
@@ -143,13 +143,13 @@ export const IssueBookTable = (props) => {
   };
 
   const historyGbId = () => {
-    console.log('GBID:' + props.gbId);
+    //console.log('GBID:' + props.gbId);
     axios.get(`IssueBook/GetIssueBookJoin/GBId=` + props.gbId)
       .then(resp => {
         if (resp.status === 200) {
           setHistoryData(resp.data);
           //   setHistoryTable(true);
-          // console.log(resp.data);
+          // //console.log(resp.data);
           // setdataAPI(resp.data)
           pendingGbId();
           
@@ -166,11 +166,11 @@ export const IssueBookTable = (props) => {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
-        console.log(error.message);
+        //console.log(error.config);
+        //console.log(error.message);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
@@ -181,7 +181,7 @@ export const IssueBookTable = (props) => {
         if (resp.status === 200) {
           setPendingData(resp.data);
           setHistoryTable(true);
-          console.log(resp.data);
+          //console.log(resp.data);
           // setdataAPI(resp.data)
           setBackdrop(false);
         }
@@ -197,10 +197,10 @@ export const IssueBookTable = (props) => {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
@@ -225,10 +225,10 @@ export const IssueBookTable = (props) => {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
@@ -243,8 +243,8 @@ export const IssueBookTable = (props) => {
     setEditModal(true);
   };
   const hello = () => {
-    console.log(selectData);
-    console.log(saveObj);
+    //console.log(selectData);
+    //console.log(saveObj);
   };
   const editModalClose = () => {
     setEditModal(false);
@@ -256,7 +256,7 @@ export const IssueBookTable = (props) => {
   const saveAPICall = (obj, changeObj) => {
     setBackdrop(true);
     setSaveModal(false);
-    console.log(obj);
+    //console.log(obj);
     axios.post(`IssueBook/AddIssueBook/MadebId=` + changeObj.id + `&nIssuedOrNotID=` + changeObj.nIssuedOrNotID + `&dtIssuedDate=` + changeObj.dtIssuedDate, obj)
       .then(resp => {
         if (resp.status === 200) {
@@ -279,10 +279,10 @@ export const IssueBookTable = (props) => {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
 
 
@@ -309,10 +309,10 @@ export const IssueBookTable = (props) => {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   }
 
@@ -340,11 +340,11 @@ export const IssueBookTable = (props) => {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
         alert(error.message);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   }
   useEffect(() => {

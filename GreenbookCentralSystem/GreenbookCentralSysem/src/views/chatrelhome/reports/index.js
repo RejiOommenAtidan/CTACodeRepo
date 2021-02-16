@@ -227,7 +227,7 @@ export default function Report() {
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['nChatrelAmount'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAmount']}` : `$ ${rowData['nChatrelAmount']}` : ''
+      //render: rowData => rowData['nChatrelAmount'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAmount']}` : `$ ${rowData['nChatrelAmount']}` : ''
     },
     {
       field: "nChatrelMeal",
@@ -243,7 +243,7 @@ export default function Report() {
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['nChatrelMeal'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelMeal']}` : `$ ${rowData['nChatrelMeal']}` : ''
+      //render: rowData => rowData['nChatrelMeal'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelMeal']}` : `$ ${rowData['nChatrelMeal']}` : ''
     },
     {
       field: "nCurrentChatrelSalaryAmt",
@@ -259,7 +259,7 @@ export default function Report() {
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['nCurrentChatrelSalaryAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nCurrentChatrelSalaryAmt']}` : `$ ${rowData['nCurrentChatrelSalaryAmt']}` : ''
+      //render: rowData => rowData['nCurrentChatrelSalaryAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nCurrentChatrelSalaryAmt']}` : `$ ${rowData['nCurrentChatrelSalaryAmt']}` : ''
     },
     {
       field: "dtCurrentChatrelFrom",
@@ -420,7 +420,7 @@ export default function Report() {
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['nChatrelBusinessDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelBusinessDonationAmt']}` : `$ ${rowData['nChatrelBusinessDonationAmt']}` : ''
+      //render: rowData => rowData['nChatrelBusinessDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelBusinessDonationAmt']}` : `$ ${rowData['nChatrelBusinessDonationAmt']}` : ''
     },
     {
       field: "nChatrelAdditionalDonationAmt",
@@ -436,7 +436,7 @@ export default function Report() {
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['nChatrelAdditionalDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAdditionalDonationAmt']}` : `$ ${rowData['nChatrelAdditionalDonationAmt']}` : ''
+      //render: rowData => rowData['nChatrelAdditionalDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAdditionalDonationAmt']}` : `$ ${rowData['nChatrelAdditionalDonationAmt']}` : ''
     },
     {
       field: "nChatrelTotalAmount",
@@ -452,7 +452,7 @@ export default function Report() {
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelTotalAmount']}` : `$ ${rowData['nChatrelTotalAmount']}`
+      //render: rowData => rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelTotalAmount']}` : `$ ${rowData['nChatrelTotalAmount']}`
     },
     {
       field: "sAuthRegion",
@@ -506,7 +506,7 @@ export default function Report() {
     sPaymentMode
   };
 
-  //console.log("Parameters", reportParams);
+  ////console.log("Parameters", reportParams);
 
   const getReport = () => {
     setdataAPI([]);
@@ -520,7 +520,7 @@ export default function Report() {
       .then(resp => {
         setBackdrop(false);
         if (resp.status === 200) {
-          console.log("Chatrel List", resp.data);
+          //console.log("Chatrel List", resp.data);
           var i = 1;
           resp.data.forEach((element) => {
             element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sDateFormat) : null;
@@ -538,7 +538,7 @@ export default function Report() {
         }
       })
       .catch(error => {
-        console.log(error.message);
+        //console.log(error.message);
         setNoRecords(true);
         setAlertMessage("Server Error fetching report data.\n");
         setAlertType('error');
@@ -556,12 +556,12 @@ export default function Report() {
     axios.get(`/AuthRegion/GetAuthRegionsForChatrelReport`)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log("AuthRegions fetched:", resp.data);
+          ////console.log("AuthRegions fetched:", resp.data);
           setAuthRegions(resp.data);
           axios.get(`/Country/GetCountriesForChatrelReport`)
             .then(resp => {
               if (resp.status === 200) {
-                //console.log("Countries: ", resp.data);
+                ////console.log("Countries: ", resp.data);
                 setCountries(resp.data);
               }
             })
@@ -570,7 +570,7 @@ export default function Report() {
               setAlertType('error');
               snackbarOpen();
               setBackdrop(false);
-              console.log(error.message);
+              //console.log(error.message);
             });
         }
       })
@@ -579,7 +579,7 @@ export default function Report() {
         setAlertType('error');
         snackbarOpen();
         setBackdrop(false);
-        console.log(error.message);
+        //console.log(error.message);
       });
 
 
@@ -719,7 +719,7 @@ export default function Report() {
             onChange={
               (e, value) => {
                 if(value !== null){
-                  console.log("OnChange region...", value);
+                  //console.log("OnChange region...", value);
                   setAuthRegionId(value);
                 }
                 
@@ -757,7 +757,7 @@ export default function Report() {
             getOptionLabel={(option) => option.sCountry}
             onChange={
               (e, value) => {
-                console.log("OnChange country...", value);
+                //console.log("OnChange country...", value);
                 setCountryID(value);
               }
             }

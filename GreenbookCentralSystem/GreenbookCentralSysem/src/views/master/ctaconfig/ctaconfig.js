@@ -180,14 +180,14 @@ export default function Chatrel() {
               handleError(error, history);
             })
             .then(release => {
-              //console.log(release); => udefined
+              ////console.log(release); => udefined
             });
         }
       })
       .catch(error => {
         if(error.response){
           if(error.response.status === 403){
-            console.log(error);
+            //console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
             snackbarOpen();
@@ -199,7 +199,7 @@ export default function Chatrel() {
         handleError(error, history);
       }) 
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
@@ -227,14 +227,14 @@ export default function Chatrel() {
               handleError(error, history);
             })
             .then(release => {
-              //console.log(release); => udefined
+              ////console.log(release); => udefined
             });
         }
       })
       .catch(error => {
         if(error.response){
           if(error.response.status === 403){
-            console.log(error);
+            //console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
             snackbarOpen();
@@ -246,7 +246,7 @@ export default function Chatrel() {
         handleError(error, history);
       }) 
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
@@ -254,7 +254,7 @@ export default function Chatrel() {
     axios.get(`/CTAConfig/GetAllCTAConfig`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
+          //console.log(resp.data);
           resp.data.forEach((item,index)=>{
             if(item.sKey === "CTAAdminEmailPassword" )
             resp.data[index].sValue = '*****' 
@@ -268,7 +268,7 @@ export default function Chatrel() {
         handleError(error, history);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 

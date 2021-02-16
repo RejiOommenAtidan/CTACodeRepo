@@ -204,7 +204,7 @@ export default function EnhancedTable() {
     axios.post(`/Occupation/EditOccupation/occupationId=` + occupationPK, occupationObj)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          ////console.log(resp.data);
           setEditModal(false);
           axios.get(`/Occupation/GetOccupations`)
             .then(resp => {
@@ -224,7 +224,7 @@ export default function EnhancedTable() {
       .catch(error => {
         if(error.response){
           if(error.response.status === 403){
-            console.log(error);
+            //console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
             snackbarOpen();
@@ -261,7 +261,7 @@ export default function EnhancedTable() {
       .catch(error => {
         if(error.response){
           if(error.response.status === 403){
-            console.log(error);
+            //console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
             snackbarOpen();
@@ -293,7 +293,7 @@ export default function EnhancedTable() {
     };
     axios.post(`/Occupation/DeleteOccupation`, occupationToDelete)
       .then(resp => {
-        console.log(occupationToDelete);
+        //console.log(occupationToDelete);
         if (resp.status === 200) {
           setDeleteModal(false);
           axios.get(`/Occupation/GetOccupations`)

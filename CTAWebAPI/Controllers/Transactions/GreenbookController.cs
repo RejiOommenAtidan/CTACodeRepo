@@ -9,10 +9,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using TimeZoneConverter;
 
 namespace CTAWebAPI.Controllers.Transactions
@@ -139,7 +141,7 @@ namespace CTAWebAPI.Controllers.Transactions
         [AuthorizeRole(FeatureID = 2)]
         [HttpPost]
         [Route("[action]")]
-        public IActionResult GetQuickResult(SimpleSearchVM simpleSearch)
+        public async Task<IActionResult> GetQuickResult(SimpleSearchVM simpleSearch)
         {
             if (String.IsNullOrEmpty(simpleSearch.sSearchField) || String.IsNullOrEmpty(simpleSearch.sSearchValue))
             {
@@ -147,7 +149,7 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             try
             {
-                IEnumerable<Object> greenBook = _greenBookVMRepository.GetQuickResult(simpleSearch.sSearchField, simpleSearch.sSearchValue);
+                IEnumerable<Object> greenBook = await _greenBookVMRepository.GetQuickResult(simpleSearch.sSearchField, simpleSearch.sSearchValue);
                 if (greenBook != null)
                 {
                     var totrec = greenBook.Count();
@@ -660,7 +662,7 @@ namespace CTAWebAPI.Controllers.Transactions
                             nRegionID = greenbook.nAuthRegionID,
                             nRecordID = greenbook.Id,
                             sGBID = sGBID,
-                            sFieldValuesOld = String.Format("Greenbook Id {0} Deleted", sGBID),
+                            sFieldValuesOld = JsonConvert.SerializeObject(new[] { new { Field = "Greenbook ID Deleted", PreviousValue = "", NewValue = sGBID } }),
                             sFieldValuesNew = String.Format("Greenbook Id {0} Deleted", sGBID),
                             nEnteredBy = nUserId
                         };
@@ -712,7 +714,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Get GB Data for New Entry
         [HttpGet]
         [Route("[action]/Id={Id:int}")]
-        public IActionResult GetGBDataNewEntry(int Id)
+        public async Task<IActionResult> GetGBDataNewEntry(int Id)
         {
             #region Get Data
             try
@@ -723,7 +725,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     SimpleSearchVM simpleSearch = new SimpleSearchVM();
                     simpleSearch.sSearchField = "sGBID";
                     simpleSearch.sSearchValue = givenGBID.nGBId.ToString();
-                    var result = _greenBookVMRepository.GetQuickResult(simpleSearch.sSearchField, simpleSearch.sSearchValue);
+                    var result = await _greenBookVMRepository.GetQuickResult(simpleSearch.sSearchField, simpleSearch.sSearchValue);
                     if (result.Count() == 0) 
                     {
                         GetGBDataByFormNumberVM getGBDataByFormNumberVM = _getGBDataByFormNumberVMRepository.GetGBDataByFormNumber(Id);

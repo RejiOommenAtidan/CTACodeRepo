@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -11,15 +11,15 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import { Card, Button } from 'react-native-elements';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import {Card, Button} from 'react-native-elements';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import { Loader } from '../components/Loader';
-import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import {Loader} from '../components/Loader';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -31,48 +31,18 @@ import {
   sFontNameBold,
   oActivityIndicatorStyle,
   sAPIBASEURL,
+  sFolderName,
+  sReceiptDownloadMessage,
 } from '../constants/CommonConfig';
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import RNFetchBlob from 'react-native-fetch-blob';
-import { storeJWTToken } from '../store/actions/GBDetailsAction';
+import {storeJWTToken} from '../store/actions/GBDetailsAction';
 // import { DownloadDirectoryPath } from 'react-native-fs';
 
 export const ChatrelHistoryScreen = (props) => {
-  const [bLoader, setbLoader] = useState(true);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
-  // const DATA = [
-  //   {
-  //     sChatrelRecieptNumber: 'W1',
-  //     dtEntered: '01-03-2020',
-  //     dtPeriodFrom: '2015',
-  //     dtPeriodTo: '2020',
-  //     sGBID: '1234567',
-  //     sFirstName: 'Malay',
-  //     sLastName: 'Doshi',
-  //     sRelation: 'Self',
-  //   },
-  //   {
-  //     sChatrelRecieptNumber: 'W2',
-  //     dtEntered: '01-03-2020',
-  //     dtPeriodFrom: '2015',
-  //     dtPeriodTo: '2020',
-  //     sGBID: '1234568',
-  //     sFirstName: 'Siddhesh',
-  //     sLastName: 'Lad',
-  //     sRelation: 'Friend',
-  //   },
-  //   {
-  //     sChatrelRecieptNumber: 'w3',
-  //     dtEntered: '01-03-2020',
-  //     dtPeriodFrom: '2015',
-  //     dtPeriodTo: '2020',
-  //     sGBID: '12345679',
-  //     sFirstName: 'Paresh',
-  //     sLastName: 'Doshi',
-  //     sRelation: 'Father',
-  //   },
-  // ];
+  const [bLoader, setbLoader] = useState(true);
 
   const oCurrentGBDetails = useSelector(
     (state) => state.CurrentGBDetailsReducer.oCurrentGBDetails,
@@ -80,14 +50,17 @@ export const ChatrelHistoryScreen = (props) => {
 
   const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
   const sJwtToken = useSelector((state) => state.GBDetailsReducer.sJwtToken);
+  const [paymentHistory, setPaymentHistory] = useState([]);
 
   const downloadFile = async (singleHistory) => {
     try {
+      //debugger;
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
       );
+      //alert(granted)
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        handleDownloadReceiptOnPress(singleHistory);
+        await handleDownloadReceiptOnPress(singleHistory);
       } else {
         Alert.alert(
           'Permission Denied!',
@@ -99,87 +72,161 @@ export const ChatrelHistoryScreen = (props) => {
     }
   };
 
-  const handleDownloadReceiptOnPress = (singleHistory) => {
+  const handleDownloadReceiptOnPress = async (singleHistory) => {
     console.log(singleHistory.sChatrelReceiptNumber);
-    // console.log("Receipt Number", sChatrelReceiptNumber);
-    // axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=` + singleHistory.sChatrelReceiptNumber, { responseType: 'blob' })
-    //   .then(resp => {
-    //     if (resp.status === 200) {
-    //       console.log("Response", resp);
+    setbLoader(true);
 
-    const { dirs } = RNFetchBlob.fs;
+    // const {dirs} = RNFetchBlob.config({
+    //   addAndroidDownloads: {
+    //     useDownloadManager: true, // <-- this is the only thing required
+    //     // Optional, override notification setting (default to true)
+    //     notification: true,
+    //     // Optional, but recommended since android DownloadManager will fail when
+    //     // the url does not contains a file extension, by default the mime type will be text/plain
+    //     description: 'Chatrel Receipt Downloaded Successfully!',
+    //     title: `ChatrelReceipt-` + singleHistory.sChatrelReceiptNumber + `.pdf`,
+    //     path:
+    //       `
+    //       ${Platform.select({
+    //         ios: dirs.DocumentDir,
+    //         android: dirs.DownloadDir,
+    //       })}/${sFolderName}/ChatrelReceipt-` +
+    //       singleHistory.sChatrelReceiptNumber +
+    //       `.pdf`,
+    //   },
+    // }).fs;
 
-    RNFetchBlob.config({
-      fileCache: true,
-      addAndroidDownloads: {
-        useDownloadManager: true,
-        notification: true,
-        mediaScannable: true,
-        title: `Chatrel Receipt.pdf`,
-        path: `${dirs.DownloadDir}/Chatrel Receipt.pdf`,
-      },
-    })
-      .fetch(
-        'GET',
-        sAPIBASEURL +
-        '/ChatrelPayment/GetReceipt/?sReceiptNumber=' +
-        singleHistory.sChatrelReceiptNumber,
-        {
-          Authorization: 'Bearer ' + sJwtToken,
-        },
+    const {dirs} = RNFetchBlob.fs;
+    // const {dirs} = RNFetchBlob.config({
+    //   fileCache: true,
+    //   addAndroidDownloads: {
+    //     useDownloadManager: true,
+    //     notification: true,
+    //     mediaScannable: true,
+    //     title: `ChatrelReceipt-` + singleHistory.sChatrelReceiptNumber + `.pdf`,
+    //     path: `${dirs.DownloadDir}/Chatrel Receipt.pdf`,
+    //   },
+    // }).fs;
+    axios
+      .get(
+        `/ChatrelPayment/GetReceipt/?sReceiptNumber=` +
+          singleHistory.sChatrelReceiptNumber,
       )
       .then((resp) => {
-        console.log(resp);
-        //if (resp.status === 200) {
-        //TODO: iOS
-        Platform.OS === "android" ?
-          ToastAndroid.show(
-            'Receipt Downloaded Successfully',
-            ToastAndroid.SHORT,
-            ToastAndroid.CENTER,
-          ) : null;
-        //}
+        if (resp.status === 200) {
+          const oSession = {
+            sJwtToken: resp.data.token,
+            bSession: true,
+          };
+          dispatch(storeJWTToken(oSession));
+          let fPath = Platform.select({
+            ios: dirs.DocumentDir,
+            android: dirs.DownloadDir,
+          });
+
+          debugger;
+
+          fPath = fPath + '/' + sFolderName;
+
+          fPath =
+            `${fPath}/ChatrelReceipt-` +
+            singleHistory.sChatrelReceiptNumber +
+            `.pdf`;
+
+          //alert("File Save Before reached")
+          if (Platform.OS === 'ios') {
+            RNFetchBlob.fs.createFile(fPath, resp.data.receipt, 'base64');
+          } else {
+            RNFetchBlob.fs.writeFile(fPath, resp.data.receipt, 'base64');
+          }
+
+          setbLoader(false);
+
+          // let pdfLocation =
+          //   RNFetchBlob.fs.dirs.DownloadDir +
+          //   '/' +
+          //   'ChatrelReceipt' +
+          //   singleHistory.sChatrelReceiptNumber +
+          //   '.pdf';
+          // RNFetchBlob.fs.writeFile(
+          //   pdfLocation,
+          //   RNFetchBlob.base64.encode(
+          //     'data:application/pdf;base64,' + resp.data.receipt,
+          //   ),
+          //   'base64',
+          // );
+          //alert("File ALert");
+          Platform.OS === 'android'
+            ? ToastAndroid.show(
+                sReceiptDownloadMessage,
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER,
+              )
+            : null;
+        }
       })
       .catch((error) => {
-        console.log('Error ', error.response);
-        if (error.response) {
-          console.error(error.response);
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
+        setbLoader(false);
+        if (error.response.status === 401) {
+          // const oSession = {
+          //   sJwtToken: '',
+          //   bSession: false,
+          // };
+          // dispatch(storeJWTToken(oSession));
         } else {
-          console.error('Error', error.message);
         }
-        console.log(error.config);
+      })
+      .then((release) => {
+        //console.log(release); => udefined
       });
 
-    // const url = URL.createObjectURL(new Blob([resp.data]));
-    // const link = document.createElement("a");
-    // link.href = url;
-    // link.setAttribute("download", "ChatrelReceipt.pdf");
-    // document.body.appendChild(link);
-    // link.click();
-    //   }
+    // RNFetchBlob.config({
+    //   fileCache: true,
+    //   addAndroidDownloads: {
+    //     useDownloadManager: true,
+    //     notification: true,
+    //     mediaScannable: true,
+    //     title: `Chatrel Receipt.pdf`,
+    //     path: `${dirs.DownloadDir}/Chatrel Receipt.pdf`,
+    //   },
     // })
-    // .catch(error => {
-    //   console.log("Error ", error.response);
-    //   if (error.response) {
-    //     console.error(error.response);
-    //     console.error(error.response.data);
-    //     console.error(error.response.status);
-    //     console.error(error.response.headers);
-    //   } else if (error.request) {
-    //     console.warn(error.request);
-    //   } else {
-    //     console.error('Error', error.message);
-    //   }
-    //   console.log(error.config);
-    // })
-    // .then(release => {
-    //   //console.log(release); => udefined
-    // });
+    //   .fetch(
+    //     'GET',
+    //     sAPIBASEURL +
+    //       '/ChatrelPayment/GetReceipt/?sReceiptNumber=' +
+    //       singleHistory.sChatrelReceiptNumber,
+    //     {
+    //       Authorization: 'Bearer ' + sJwtToken,
+    //     },
+    //   )
+    //   .then((resp) => {
+    //     debugger;
+    //     console.log(resp.json());
+    //     //if (resp.status === 200) {
+    //     //TODO: iOS
+    //     Platform.OS === 'android'
+    //       ? ToastAndroid.show(
+    //           'Receipt Downloaded Successfully',
+    //           ToastAndroid.SHORT,
+    //           ToastAndroid.CENTER,
+    //         )
+    //       : null;
+    //     //}
+    //   })
+    //   .catch((error) => {
+    //     console.log('Error ', error.response);
+    //     if (error.response) {
+    //       console.error(error.response);
+    //       console.error(error.response.data);
+    //       console.error(error.response.status);
+    //       console.error(error.response.headers);
+    //     } else if (error.request) {
+    //       console.warn(error.request);
+    //     } else {
+    //       console.error('Error', error.message);
+    //     }
+    //     console.log(error.config);
+    //   });
   };
 
   const getChatrelHistoryDetails = () => {
@@ -189,12 +236,17 @@ export const ChatrelHistoryScreen = (props) => {
       )
       .then((resp) => {
         if (resp.status === 200) {
-          dispatch(storeJWTToken(resp.data.token));
-          if (resp.data.message === "Payment History Found") {
+          const oSession = {
+            sJwtToken: resp.data.token,
+            bSession: true,
+          };
+          dispatch(storeJWTToken(oSession));
+          if (resp.data.message === 'Payment History Found') {
             setPaymentHistory(resp.data.paymentHistory);
+            console.log('Chatrel History Screen Called:');
+            console.log(resp.data.paymentHistory);
             setbLoader(false);
-          }
-          else {
+          } else {
             setPaymentHistory([]);
             setbLoader(false);
           }
@@ -202,21 +254,25 @@ export const ChatrelHistoryScreen = (props) => {
       })
       .catch((error) => {
         setbLoader(false);
-        Alert.alert('Something went wrong, please try again later.');
-        console.log(error.message);
-        console.log(error.config);
+        if (error.response.status === 401) {
+          // const oSession = {
+          //   sJwtToken: '',
+          //   bSession: false,
+          // };
+          // dispatch(storeJWTToken(oSession));
+        } else {
+          Alert.alert('Something went wrong, please try again later.');
+        }
       });
   };
 
   useEffect(() => {
     if (isFocused) {
       setbLoader(true);
-      console.log('Chatrel History Called');
+      //console.log('Chatrel History Called');
       getChatrelHistoryDetails();
     }
   }, [isFocused]);
-
-  const [paymentHistory, setPaymentHistory] = useState([]);
 
   return (
     <View style={styles.mainContainer}>
@@ -227,11 +283,18 @@ export const ChatrelHistoryScreen = (props) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
-        {paymentHistory.length === 0 && !bLoader && (
+        {(paymentHistory.length === 0 || paymentHistory === []) && !bLoader && (
           <View style={styles.zeroRecordContainer}>
             <Text style={styles.zeroRecordComponent}>
-              No Chatrel Payments Done So Far, Please pay your outstanding
-              Chatrel Amount
+              There is no chatrel contribution record in the database. You are
+              requested to upload your two year chatrel reciept copy{' '}
+              <Text
+                style={styles.navigateToFileDisputeComponent}
+                onPress={() => {
+                  props.navigation.navigate('FileDispute');
+                }}>
+                here
+              </Text>
             </Text>
           </View>
         )}
@@ -296,11 +359,11 @@ export const ChatrelHistoryScreen = (props) => {
 
                   <View style={styles.labelContainer}>
                     <Text
-                      style={{ ...styles.labelComponent, textAlign: 'right' }}>
+                      style={{...styles.labelComponent, textAlign: 'right'}}>
                       CHATREL DATE
                     </Text>
                     <Text
-                      style={{ ...styles.valueComponent, textAlign: 'right' }}>
+                      style={{...styles.valueComponent, textAlign: 'right'}}>
                       {Moment(singleHistory.dtPayment).format(sDateFormat)}
                     </Text>
                   </View>
@@ -328,11 +391,11 @@ export const ChatrelHistoryScreen = (props) => {
 
                   <View style={styles.labelContainer}>
                     <Text
-                      style={{ ...styles.labelComponent, textAlign: 'right' }}>
+                      style={{...styles.labelComponent, textAlign: 'right'}}>
                       PAYMENT MODE
                     </Text>
                     <Text
-                      style={{ ...styles.valueComponent, textAlign: 'right' }}>
+                      style={{...styles.valueComponent, textAlign: 'right'}}>
                       {singleHistory.sPaymentMode}
                     </Text>
                   </View>
@@ -351,6 +414,8 @@ export const ChatrelHistoryScreen = (props) => {
                   <View style={styles.labelContainer}>
                     <Text style={styles.labelComponent}>GREEN BOOK ID</Text>
                     <Text style={styles.valueComponent}>
+                      {singleHistory.sCountryIDPaidFor}
+                      {''}
                       {singleHistory.sGBIDPaidFor}
                     </Text>
                   </View>
@@ -360,11 +425,13 @@ export const ChatrelHistoryScreen = (props) => {
 
                   <View style={styles.labelContainer}>
                     <Text
-                      style={{ ...styles.labelComponent, textAlign: 'right' }}>
+                      style={{...styles.labelComponent, textAlign: 'right'}}>
                       PAID BY GREEN BOOK ID
                     </Text>
                     <Text
-                      style={{ ...styles.valueComponent, textAlign: 'right' }}>
+                      style={{...styles.valueComponent, textAlign: 'right'}}>
+                      {oGBDetails.sCountryID}
+                      {''}
                       {oGBDetails.sGBID}
                     </Text>
                   </View>
@@ -385,13 +452,17 @@ export const ChatrelHistoryScreen = (props) => {
                 </View> */}
                 <View style={styles.downloadReceiptContainer}>
                   <Button
-                    disabled={true}
+                    //disabled={true}
                     title={'DOWNLOAD RECEIPT'}
                     onPress={() => {
-                      Platform.OS === 'android'
-                        ? downloadFile(singleHistory)
-                        : handleDownloadReceiptOnPress(singleHistory);
-                      //handleDownloadReceiptOnPress(singleHistory);
+                      try {
+                        Platform.OS === 'android'
+                          ? downloadFile(singleHistory)
+                          : handleDownloadReceiptOnPress(singleHistory);
+                      } catch (error) {
+                        console.log(error);
+                        console.log(error.message);
+                      }
                     }}
                     iconRight
                     icon={{
@@ -449,7 +520,7 @@ export const ChatrelHistoryScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: { backgroundColor: Colors.white },
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
@@ -482,9 +553,14 @@ const styles = StyleSheet.create({
     //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
   },
-  zeroRecordContainer: {},
+  zeroRecordContainer: {
+    // width: hp(92.5),
+    width: wp(92.5),
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+  },
   zeroRecordComponent: {
-    textAlign: 'center',
+    textAlign: 'left',
     fontSize: wp(5),
     fontStyle: 'normal',
     fontWeight: 'normal',
@@ -504,7 +580,7 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: { width: 5, height: 5 },
+    shadowOffset: {width: 5, height: 5},
     shadowOpacity: 1,
 
     //For Android
@@ -518,7 +594,7 @@ const styles = StyleSheet.create({
     fontSize: wp(6),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.primary,
+    color: Colors.ChatrelInfoBlue,
     fontFamily: sFontName,
   },
   cardDividerComponent: {
@@ -710,11 +786,21 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: wp(5.5),
     fontStyle: 'normal',
-    color: Colors.darkYellowFamilyPage,
+    color: Colors.buttonYellow,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
   downloadReceiptContainer: {
     marginTop: hp(0.25),
+  },
+  navigateToFileDisputeComponent: {
+    textAlign: 'left',
+    fontSize: wp(5),
+    fontStyle: 'normal',
+    textDecorationLine: 'underline',
+    color: Colors.ChatrelInfoBlue,
+    textDecorationColor: Colors.ChatrelInfoBlue,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
 });

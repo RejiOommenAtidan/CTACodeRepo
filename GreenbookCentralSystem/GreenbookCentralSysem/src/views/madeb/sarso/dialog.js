@@ -37,7 +37,7 @@ function Alert(props) {
 }
 
 export const EditDialog = (props) => {
-    console.log("props", props)
+    //console.log("props", props)
     const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const snackbarClose = (event, reason) => {
@@ -99,21 +99,21 @@ export const EditDialog = (props) => {
     authRegions.forEach(element => {
         if (element.id === nAuthRegionID) {
             valueAuthRegion = element;
-            console.log(valueAuthRegion);
+            //console.log(valueAuthRegion);
         }
     });
 
     let valueTypeIssued = [];
-    // console.log(issueAction);
+    // //console.log(issueAction);
     typeIssuedData.forEach(element => {
         if (element.id === issueAction) {
             valueTypeIssued = element;
-            console.log(element);
+            //console.log(element);
         }
     });
     useEffect(() => {
         
-        console.log("Inside useEffect()");
+        //console.log("Inside useEffect()");
         const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
         setTimeout(() => setValue("AuthRegion", region, {
             shouldValidate: true,
@@ -231,7 +231,7 @@ placeholder="DD-MM-YYYY"
                                                             props.onChange(value);
                                                             //alert ("onChangeFired")
                                                             if (value !== null) {
-                                                                console.log(value.id);
+                                                                //console.log(value.id);
                                                                 setAuthRegionId(value.id);
                                                                 setAuthRegion(value);
                                                             }
@@ -327,7 +327,7 @@ placeholder="DD-MM-YYYY"
                                             onChange={
                                                 (e, value) => {
                                                     if (value !== null) {
-                                                        console.log(value.id);
+                                                        //console.log(value.id);
                                                         setMadebStatusID(value.id);
                                                     }
                                                     else {
@@ -428,10 +428,10 @@ placeholder="DD-MM-YYYY"
                                                 format={sDateFormatMUIDatepicker}
                                                 // returnMoment={true}
                                                 onChange={(date) => {
-                                                    //console.log(date.toISOString().split("T")[0]);
-                                                    //console.log(date.toDateString());
-                                                    // console.log(date.toLocaleDateString());
-                                                    //console.log(date);
+                                                    ////console.log(date.toISOString().split("T")[0]);
+                                                    ////console.log(date.toDateString());
+                                                    // //console.log(date.toLocaleDateString());
+                                                    ////console.log(date);
                                                     setReturnDate(date);
                                                 }}
                                                 value={returnDate}
@@ -462,10 +462,10 @@ placeholder="DD-MM-YYYY"
                                                 format={sDateFormatMUIDatepicker}
                                                 // returnMoment={true}
                                                 onChange={(date) => {
-                                                    //console.log(date.toISOString().split("T")[0]);
-                                                    //console.log(date.toDateString());
-                                                    // console.log(date.toLocaleDateString());
-                                                    //console.log(date);
+                                                    ////console.log(date.toISOString().split("T")[0]);
+                                                    ////console.log(date.toDateString());
+                                                    // //console.log(date.toLocaleDateString());
+                                                    ////console.log(date);
                                                     setRejectDate(date);
                                                 }}
                                                 value={rejectDate}
@@ -648,7 +648,7 @@ placeholder="DD-MM-YYYY"
                                                         (e, value) => {
                                                             props.onChange(value);
                                                             if (value !== null) {
-                                                                console.log(value.id);
+                                                                //console.log(value.id);
                                                                 setAuthRegionId(value.id);
                                                                 setAuthRegion(value);
                                                             }
@@ -744,7 +744,7 @@ placeholder="DD-MM-YYYY"
                                             onChange={
                                                 (e, value) => {
                                                     if (value !== null) {
-                                                        console.log(value.id);
+                                                        //console.log(value.id);
                                                         setMadebStatusID(value.id);
                                                         setValueMadebStatus(value);
                                                     }

@@ -77,12 +77,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChatrelReceipt(props){
   const location = useLocation();
-  console.log("Props contains:", props);
-  //console.log("location contains:", location.state);
-  console.log("location object", location);
+  //console.log("Props contains:", props);
+  ////console.log("location contains:", location.state);
+  //console.log("location object", location);
   const search = location.search;
   const sReceiptNumber = search.substr(search.indexOf('=')+1);
-  console.log("Receipt Number", sReceiptNumber);
+  //console.log("Receipt Number", sReceiptNumber);
   const classes = useStyles();
   const history = useHistory();
   
@@ -178,7 +178,7 @@ export default function ChatrelReceipt(props){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['nChatrelAmount'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAmount']}` : `$ ${rowData['nChatrelAmount']}` : ''
+      //render : rowData => rowData['nChatrelAmount'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAmount']}` : `$ ${rowData['nChatrelAmount']}` : ''
     },
     {
       field: "nChatrelMeal",
@@ -188,7 +188,7 @@ export default function ChatrelReceipt(props){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['nChatrelMeal'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelMeal']}` : `$ ${rowData['nChatrelMeal']}` : ''
+      //render : rowData => rowData['nChatrelMeal'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelMeal']}` : `$ ${rowData['nChatrelMeal']}` : ''
     },
     {
       field: "nCurrentChatrelSalaryAmt",
@@ -198,7 +198,7 @@ export default function ChatrelReceipt(props){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['nCurrentChatrelSalaryAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nCurrentChatrelSalaryAmt']}` : `$ ${rowData['nCurrentChatrelSalaryAmt']}` : ''
+      //render : rowData => rowData['nCurrentChatrelSalaryAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nCurrentChatrelSalaryAmt']}` : `$ ${rowData['nCurrentChatrelSalaryAmt']}` : ''
     },
     {
       field: "nChatrelLateFeesValue",
@@ -208,7 +208,7 @@ export default function ChatrelReceipt(props){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['nChatrelLateFeesValue'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelLateFeesValue']}` : `$ ${rowData['nChatrelLateFeesValue']}` : ''
+      //render : rowData => rowData['nChatrelLateFeesValue'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelLateFeesValue']}` : `$ ${rowData['nChatrelLateFeesValue']}` : ''
     },
     // {
     //   field: "dtCurrentChatrelFrom",
@@ -269,7 +269,7 @@ export default function ChatrelReceipt(props){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['nChatrelBusinessDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelBusinessDonationAmt']}` : `$ ${rowData['nChatrelBusinessDonationAmt']}`: ''
+      //render : rowData => rowData['nChatrelBusinessDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelBusinessDonationAmt']}` : `$ ${rowData['nChatrelBusinessDonationAmt']}`: ''
     },
     {
       field: "nChatrelAdditionalDonationAmt",
@@ -279,7 +279,7 @@ export default function ChatrelReceipt(props){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['nChatrelAdditionalDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAdditionalDonationAmt']}` : `$ ${rowData['nChatrelAdditionalDonationAmt']}` : ''
+      //render : rowData => rowData['nChatrelAdditionalDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAdditionalDonationAmt']}` : `$ ${rowData['nChatrelAdditionalDonationAmt']}` : ''
     },
     {
       field: "nChatrelTotalAmount",
@@ -289,7 +289,7 @@ export default function ChatrelReceipt(props){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render : rowData => rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelTotalAmount']}` : `$ ${rowData['nChatrelTotalAmount']}`
+      //render : rowData => rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelTotalAmount']}` : `$ ${rowData['nChatrelTotalAmount']}`
     },
     {
       field: "sAuthRegion",
@@ -317,7 +317,7 @@ export default function ChatrelReceipt(props){
     .then(resp => {
       setisLoading(false);
       if (resp.status === 200) {
-        console.log("Payment Breakup", resp.data);
+        //console.log("Payment Breakup", resp.data);
         resp.data.forEach((element) => {
         element.dtArrearsFrom = element.dtArrearsFrom ? Moment(element.dtArrearsFrom).format(sDateFormat) : null;
           element.dtArrearsTo = element.dtArrearsTo ? Moment(element.dtArrearsTo).format(sDateFormat) : null;
@@ -332,7 +332,7 @@ export default function ChatrelReceipt(props){
       }
     })
     .catch(error => {
-      console.log(error.message);
+      //console.log(error.message);
       setisLoading(false);
     });
     

@@ -94,17 +94,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function PaymentPage(props) {
+export default function Chatrel(props) {
   let history = useHistory();
   const dispatch = useDispatch();
   //const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   const fontName = 'Poppins';
 
-  console.log('Props contains:', props);
+  //console.log('Props contains:', props);
   // Who is paying
   const paidByGBID = useSelector(
     (state) => state.GBDetailsReducer.oGBDetails.sGBID
+  );
+  const sCountryID = useSelector(
+    (state) => state.GBDetailsReducer.oGBDetails.sCountryID
   );
   const userId = parseInt(paidByGBID);
   // GBID for whom we are paying
@@ -141,7 +144,7 @@ export default function PaymentPage(props) {
 
   const [displayFileDispute, setDisplayFileDispute] = React.useState(false);
 
-  //console.log(paidByGBID);
+  ////console.log(paidByGBID);
   //const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 
   const [paymentDiv, setPaymentDiv] = React.useState(true);
@@ -168,9 +171,9 @@ export default function PaymentPage(props) {
   const [donationNull, setDonationNull] = React.useState(false);
   const [gbChatrelsNull, setGBChatrelsNull] = React.useState(false);
 
-  console.log("AuthRegions set in 'authRegions'", authRegions);
-  console.log("Current Region set in 'authRegion'", authRegion);
-  console.log('Current paymentData is ', paymentData);
+  //console.log("AuthRegions set in 'authRegions'", authRegions);
+  //console.log("Current Region set in 'authRegion'", authRegion);
+  //console.log('Current paymentData is ', paymentData);
 
   const autoComplete = (
     <Autocomplete
@@ -190,7 +193,7 @@ export default function PaymentPage(props) {
       )}
       onChange={(e, value) => {
         if (value !== null) {
-          console.log(value.id);
+          //console.log(value.id);
           //setMadebStatusID(value.id);
         } else {
           //setMadebStatusID(0);
@@ -219,7 +222,7 @@ export default function PaymentPage(props) {
   };
 
   const updateAuthRegion = (e, value) => {
-    console.log('Auth region changed to ', value.id, 'at row ', e.target.id);
+    //console.log('Auth region changed to ', value.id, 'at row ', e.target.id);
     //const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
     //const index = e.target.id.substring(0, e.target.id.indexOf('_'));
     const index = parseInt(e.target.id);
@@ -242,7 +245,7 @@ export default function PaymentPage(props) {
   };
 
   const modify = (target) => {
-    console.log(target);
+    //console.log(target);
     let payObj = [...paymentData];
     let index;
     if (target.type === 'text') {
@@ -251,11 +254,21 @@ export default function PaymentPage(props) {
         ? parseFloat(target.value)
         : 0;
     } else {
-      console.log(target.value);
+      //console.log(target.value);
       index = parseInt(target.value);
       if (payObj[index].nCurrentChatrelSalaryAmt === 0) {
-        console.log( payObj[index]);
-        payObj[index].nCurrentChatrelSalaryAmt = payObj[index].nSalaryUSD;
+        //console.log( payObj[index]);
+       
+    
+        // payObj[index].nCurrentChatrelSalaryAmt = payObj[index].nSalaryUSD;
+        if(dataAPI.message==="No Outstandings"){
+          payObj[index].nCurrentChatrelSalaryAmt = dataAPI.nSalaryUSD;   
+
+        }
+        else{
+          payObj[index].nCurrentChatrelSalaryAmt = payObj[index].nSalaryUSD;
+        }
+       //payObj[index].nCurrentChatrelSalaryAmt = 50;
         //setPaymentData(payObj);
       } else {
         payObj[index].nCurrentChatrelSalaryAmt = 0;
@@ -267,7 +280,7 @@ export default function PaymentPage(props) {
 
   const calculate = (index) => {
     let payObj = [...paymentData];
-    console.log(payObj);
+    //console.log(payObj);
     let len = paymentData.length;
 
     if (index < len - 2) {
@@ -325,38 +338,43 @@ export default function PaymentPage(props) {
     obj.forEach((row) => {
       //temptotal+= row.nChatrelTotalAmount;
       temptotal += parseFloat(row.nChatrelTotalAmount.toFixed(2));
-      console.log(row.nChatrelTotalAmount);
+      //console.log(row.nChatrelTotalAmount);
     });
     setTotal(temptotal);
   };
-
+let textFieldDisabled=false;
   const runOnce = () => {
     if (paymentData && dollarToRupees && shouldRun) {
       if (!outstanding) {
         if (paymentData[0].nCurrentChatrelSalaryAmt > 0) {
-          console.log('we have no outstanding');
+          //console.log('we have no outstanding');
           const checkBox = document.getElementById('employed');
-          const rateField = document.getElementById('rate');
+          const inputText = document.getElementById('0');
+        //  const rateField = document.getElementById('rate');
           const totalField = document.getElementById('total');
-          if (checkBox) {
-            rateField.innerText = '';
+          if (paymentData[0].sAuthRegionCurrency==='USD') {
+          //  rateField.innerText = '';
             checkBox.checked = true;
             checkBox.disabled = true;
-            setPaymentData(
-              paymentData.map((element) => {
-                element.nChatrelTotalAmount = 0;
-                element.nCurrentChatrelSalaryAmt = 0;
-                return element;
-              })
-            );
+            // setPaymentData(
+            //   paymentData.map((element) => {
+            //     element.nChatrelTotalAmount = 0;
+            //     element.nCurrentChatrelSalaryAmt = 0;
+            //     return element;
+            //   })
+            // );
+
 
             //totalField.innerText = '';
             setTotal(0.0);
             setGBChatrelsNull(true);
           }
+          else{
+            textFieldDisabled=true;
+          }
         }
       } else {
-        console.log('we have outstanding');
+        //console.log('we have outstanding');
         const len = paymentData.length;
         for (var i = 0; i < len; i++) {
           calculate(i);
@@ -371,7 +389,7 @@ export default function PaymentPage(props) {
     html2canvas(domElement,{scrollX: 0,
       scrollY: -window.scrollY}).then(canvas => {
       const imgData = canvas.toDataURL("image/png");
-      console.log(imgData);
+      //console.log(imgData);
       //imgData.save();
       const pdf = new jsPdf();
       pdf.addImage(imgData, "PNG",10,10);
@@ -380,6 +398,7 @@ export default function PaymentPage(props) {
 
   };*/
   const [checked, setChecked] = useState(true);
+  const [basicResponse, setBasicResponse] = useState();
 
   const toggle = () => {
       setChecked(!checked)
@@ -393,7 +412,7 @@ export default function PaymentPage(props) {
       scrollY: -window.scrollY
     }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
-      console.log(imgData);
+      //console.log(imgData);
       //imgData.save();
       const pdf = new jsPdf();
       pdf.addImage(imgData, 'PNG', 10, 10);
@@ -475,13 +494,13 @@ export default function PaymentPage(props) {
      // sOrderId:paypalObj.id
     };
 
-    console.log('Final Obj:', finalObj);
+    //console.log('Final Obj:', finalObj);
     axios
       .post(`/ChatrelPayment/AddNewChatrelPayment`, finalObj)
       .then((resp) => {
         if (resp.status === 200) {
           //alert(resp.data);
-          console.log(resp.data);
+          //console.log(resp.data);
          
           const oSession={
             sJwtToken:resp.data.token,
@@ -497,21 +516,51 @@ export default function PaymentPage(props) {
           setPaymentDiv(false);
           setSuccessDiv(true);
           /* history.goBack();
-      console.log(resp.data); */
+      //console.log(resp.data); */
         }
       })
       .catch((error) => {
-        console.log(error.config);
-        console.log(error.message);
-        console.log(error.response);
+        //console.log(error.config);
+        //console.log(error.message);
+        //console.log(error.response);
       });
   };
+  const pingPong =() =>{
+    axios.get(`/ChatrelPayment/Ping`)
+    .then(resp => {
+      if (resp.status === 200) {
+        //console.log(resp.data);
+        const oSession={
+          sJwtToken:resp.data.token,
+          bSession:true
+        }
+        dispatch(storeSession(oSession));
+      }
+    })
+    .catch(error => {
+      //console.log("Error ", error.response);
+      if (error.response) {
+        console.error(error.response);
+      
+      } else if (error.request) {
+        console.warn(error.request);
+      } else {
+        console.error('Error', error.message);
+      }
+      //console.log(error.config);
+    })
+    .then(release => {
+      ////console.log(release); => udefined
+    });
+
+
+  }
   const getReceipt = (sChatrelReceiptNumber) => {
     setBackdrop(true);
-    console.log("Receipt Number", sChatrelReceiptNumber);
+    //console.log("Receipt Number", sChatrelReceiptNumber);
     axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=`+sChatrelReceiptNumber)
     .then(resp => {
-      console.log("Response", resp);
+      //console.log("Response", resp);
       
       if (resp.status === 200) {
         const oSession={
@@ -524,10 +573,10 @@ export default function PaymentPage(props) {
         const url = `data:application/pdf;base64,${resp.data.receipt}`;
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "ChatrelReceipt.pdf");
+        link.setAttribute("download", "ChatrelReceipt-"+sChatrelReceiptNumber+".pdf");
         document.body.appendChild(link);
         link.click();
-      //  console.log(resp.data);
+      //  //console.log(resp.data);
       //   resp.data.receipt.sGBID ='0'.repeat(7 - resp.data.receipt.sGBID.length) +
       //       resp.data.receipt.sGBID;
       //  setReceiptData(resp.data);
@@ -538,7 +587,7 @@ export default function PaymentPage(props) {
       }
     })
     .catch(error => {
-      console.log("Error ", error.response);
+      //console.log("Error ", error.response);
       if (error.response) {
         console.error(error.response);
         console.error(error.response.data);
@@ -549,24 +598,24 @@ export default function PaymentPage(props) {
       } else {
         console.error('Error', error.message);
       }
-      console.log(error.config);
+      //console.log(error.config);
     })
     .then(release => {
-      //console.log(release); => udefined
+      ////console.log(release); => udefined
     });
 
   }
   useEffect(() => {
-    console.log("Props Console:",props.location.state);
+    //console.log("Props Console:",props.location.state);
     axios
       .get(`/AuthRegion/GetAuthRegions`)
       .then((resp) => {
         if (resp.status === 200) {
           
-          console.log('AuthRegions fetched:', resp.data);
+          //console.log('AuthRegions fetched:', resp.data);
           setAuthRegions(resp.data);
       /*    if (props.location.state.pymtData) {
-            console.log('Status is ', props.location.state.outstanding);
+            //console.log('Status is ', props.location.state.outstanding);
             if (!props.location.state.outstanding) {
               setOutstanding(false);
               if (
@@ -591,10 +640,10 @@ export default function PaymentPage(props) {
             fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
               .then((response) => response.json())
               .then((data) => {
-                console.log('currency', data.rates.USD);
+                //console.log('currency', data.rates.USD);
                 setDollarToRupees(data.rates.USD);
               });
-            console.log('Got data from props');
+            //console.log('Got data from props');
 
             return;
           }*/
@@ -606,9 +655,9 @@ export default function PaymentPage(props) {
                   bSession:true
                 }
                 dispatch(storeSession(oSession));
-                console.log("test",resp.data);
+                //console.log("test resp",resp.data);
                 if(resp.data.message==="Paid Until Missing"){
-                  console.log("Inside File Dispute Condition");
+                  //console.log("Inside File Dispute Condition");
                   setDisplayFileDispute(true);
                 }
                 else{
@@ -616,7 +665,8 @@ export default function PaymentPage(props) {
                   
                   if (resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0) {
                     setOutstanding(false);
-                 
+                    setBasicResponse(resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt);
+                    //console.log('Salary amount',resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt);
                   }
                   setDataAPI(resp.data.chatrel);
                   setSummaryData(resp.data.chatrel.chatrelPayment);
@@ -631,25 +681,25 @@ export default function PaymentPage(props) {
                   fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
                     .then((response) => response.json())
                     .then((data) => {
-                      console.log('currency', data.rates.USD);
+                      //console.log('currency', data.rates.USD);
                       setDollarToRupees(data.rates.USD);
                       setBackdrop(false);
                     });
-                  console.log('Got data from props');
+                  //console.log('Got data from props');
       
                   }
               }
             })
             .catch((error) => {
-              console.log(error.message);
-              console.log(error.config);
-              //console.log(error.response.data);
+              //console.log(error.message);
+              //console.log(error.config);
+              ////console.log(error.response.data);
             });
         }
       })
       .catch((error) => {
-        console.log(error.message);
-        console.log(error.config);
+        //console.log(error.message);
+        //console.log(error.config);
       });
     //setPaymentData(payObj);
   }, []);
@@ -667,7 +717,7 @@ export default function PaymentPage(props) {
 
   useEffect(() => {
     runOnce();
-    console.log('dollar rate is ', dollarToRupees);
+    //console.log('dollar rate is ', dollarToRupees);
   }, [dollarToRupees]);
 
   useEffect(() => {
@@ -725,7 +775,7 @@ export default function PaymentPage(props) {
                   <Card
                     style={{  padding: 20,marginBottom:20,border:'1px solid grey'}} className="shadow-first shadow-xl">
                     <Grid container spacing={3} className="text-black">
-                      <Grid item xs={12} sm={3}>
+                      <Grid item xs={12} sm={4}>
                         <Card className="card-box border-first">
                           <div className="card-indicator bg-success" />
                           <CardContent className="px-4 py-3">
@@ -747,7 +797,7 @@ export default function PaymentPage(props) {
                           </CardContent>
                         </Card>
                       </Grid>
-                      <Grid item xs={12} sm={3}>
+                      <Grid item xs={12} sm={4}>
                         <Card className="card-box border-first">
                           <div className="card-indicator bg-success" />
                           <CardContent className="px-4 py-3">
@@ -764,12 +814,12 @@ export default function PaymentPage(props) {
                                 color: '#000'
                               }} /*className="pb-3 d-flex justify-content-between"*/
                             >
-                              <b>{dataAPI.chatrelPayment.sGBId}</b>
+                              <b>{dataAPI.sCountryID + dataAPI.chatrelPayment.sGBId}</b>
                             </div>
                           </CardContent>
                         </Card>
                       </Grid>
-                      <Grid item xs={12} sm={3}>
+                      <Grid item xs={12} sm={4}>
                         <Card className="card-box border-first">
                           <div className="card-indicator bg-success" />
                           <CardContent className="px-4 py-3">
@@ -791,7 +841,7 @@ export default function PaymentPage(props) {
                           </CardContent>
                         </Card>
                       </Grid>
-                      <Grid item xs={12} sm={3}>
+                      {/* <Grid item xs={12} sm={3}>
                         <Card className="card-box border-first">
                           <div className="card-indicator bg-success" />
                           <CardContent className="px-4 py-3">
@@ -806,13 +856,13 @@ export default function PaymentPage(props) {
                               style={{
                                 marginTop: '7px',
                                 color: '#000'
-                              }} /*className="pb-3 d-flex justify-content-between"*/
+                              }} 
                             >
                               <b>{paymentFor}</b>
                             </div>
                           </CardContent>
                         </Card>
-                      </Grid>
+                      </Grid> */}
                     </Grid>
                   </Card>
 
@@ -937,7 +987,8 @@ export default function PaymentPage(props) {
                   disabled={row.isChild}
                 />*/}
               <div className="m-2">
-                            <Switch id="employed" onChange={(e) => {console.log('test',e);modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                            <Switch id="employed" onChange={(e) => {//console.log('test',e);
+                            modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
                         </div>
             </Td>
             )}
@@ -987,7 +1038,8 @@ export default function PaymentPage(props) {
                 //   type="checkbox"
                 //   disabled={row.isChild}
                 // />  
-                 <Switch id="employed" onChange={(e) => {console.log('test',e);modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                 <Switch id="employed" onChange={(e) => {//console.log('test',e);
+                 modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
               }
               
             </Td>
@@ -1039,7 +1091,13 @@ export default function PaymentPage(props) {
                 //   type="checkbox"
                 //   disabled={row.isChild}
                 // />
-                <Switch id="employed" onChange={(e) => {modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                <Switch id="employed" onChange={(e) => {modify(e.target);}} 
+               
+                checked={row.nCurrentChatrelSalaryAmt>0?true:false} 
+                
+                disabled={basicResponse>0?true:false || row.isChild} 
+                //disabled={row.nCurrentChatrelSalaryAmt>0?true:false || row.isChild} 
+                 value={index} className="switch-small toggle-switch-first"/>
                 
           }
             </Td>
@@ -1049,6 +1107,9 @@ export default function PaymentPage(props) {
               <input
                 id={index}
                 type="text"
+              disabled={basicResponse>0?true:false || row.isChild}
+                // disabled={row.nCurrentChatrelSalaryAmt>0?true:false || row.isChild}
+               // disabled={textFieldDisabled}
                 style={{
                   maxWidth: '100px',
                   border: 'none',
@@ -1181,8 +1242,8 @@ export default function PaymentPage(props) {
             </div></Td>
             {row.sAuthRegionCurrency === 'USD' && (
             <Td  align="center">
-              {
-                <input
+              
+               {/* <input
                   id="employed"
                   value={index}
             
@@ -1191,8 +1252,11 @@ export default function PaymentPage(props) {
                   }}
                   type="checkbox"
                   disabled={row.isChild}
-                />
-              }
+                />*/}
+              <div className="m-2">
+                            <Switch id="employed" onChange={(e) => {//console.log('test',e);
+                            modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                        </div>
             </Td>
             )}
             {row.sAuthRegionCurrency === 'INR' && (
@@ -1231,16 +1295,18 @@ export default function PaymentPage(props) {
             {row.sAuthRegionCurrency === 'USD' && (
             <Td  align="center">
               {
-                <input
-                  id="employed"
-                  value={index}
+                // <input
+                //   id="employed"
+                //   value={index}
             
-                  onChange={(e) => {
-                    modify(e.target);
-                  }}
-                  type="checkbox"
-                  disabled={row.isChild}
-                />
+                //   onChange={(e) => {
+                //     modify(e.target);
+                //   }}
+                //   type="checkbox"
+                //   disabled={row.isChild}
+                // />  
+                 <Switch id="employed" onChange={(e) => {//console.log('test',e);
+                 modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
               }
             </Td>
             )}
@@ -1281,17 +1347,22 @@ export default function PaymentPage(props) {
           {row.sAuthRegionCurrency === 'USD' && (
             <Td  align="center">
               {
-                <input
-                  id="employed"
-                  value={index}
+                // <input
+                //   id="employed"
+                //   value={index}
             
-                  onChange={(e) => {
-                    modify(e.target);
-                  }}
-                  type="checkbox"
-                  disabled={row.isChild}
-                />
-              }
+                //   onChange={(e) => {
+                //     modify(e.target);
+                //   }}
+                //   type="checkbox"
+                //   disabled={row.isChild}
+                // />
+                <Switch id="employed" onChange={(e) => {modify(e.target);}}   checked={row.nCurrentChatrelSalaryAmt>0?true:false}  
+                // disabled={(dataAPI.gbChatrels[0].nCurrentChatrelSalaryAmt>0?true:false) && row.isChild}
+                 disabled={basicResponse>0?true:false || row.isChild} 
+                 value={index} className="switch-small toggle-switch-first"/>
+                
+          }
             </Td>
             )}
             {row.sAuthRegionCurrency === 'INR' && (
@@ -1299,6 +1370,9 @@ export default function PaymentPage(props) {
               <input
                 id={index}
                 type="text"
+               // disabled={(row.nCurrentChatrelSalaryAmt>0?true:false) && row.isChild}
+               disabled={basicResponse>0?true:false || row.isChild} 
+                //disabled={row.isChild}
                 style={{
                   maxWidth: '100px',
                   border: 'none',
@@ -1536,6 +1610,7 @@ export default function PaymentPage(props) {
                           className="h-50"
                           value={bdonation}
                          // variant="outlined"
+                         type='number'
                           onChange={(e) => {
                             if (e.target.value === '') {
                               calcTotal(paymentData, adonation, 0);
@@ -1544,9 +1619,9 @@ export default function PaymentPage(props) {
                               calcTotal(
                                 paymentData,
                                 adonation,
-                                parseInt(e.target.value)
+                                parseFloat(e.target.value)
                               );
-                              setBdonation(parseInt(e.target.value));
+                              setBdonation(parseFloat(e.target.value));
                             }
                           }}
                           inputProps={{ min: 0 }}
@@ -1557,7 +1632,9 @@ export default function PaymentPage(props) {
                               </InputAdornment>
                             )
                           }}
-                        /></div>
+                        />
+                        
+                        </div>
                       </Grid>
                       <Grid item xs={12} sm={6} align="center">
                         <div
@@ -1569,6 +1646,7 @@ export default function PaymentPage(props) {
                         <TextField
                          
                           value={adonation}
+                          type='number'
                           onChange={(e) => {
                             if (e.target.value === '') {
                               calcTotal(paymentData, 0, bdonation);
@@ -1576,10 +1654,10 @@ export default function PaymentPage(props) {
                             } else {
                               calcTotal(
                                 paymentData,
-                                parseInt(e.target.value),
+                                parseFloat(e.target.value),
                                 bdonation
                               );
-                              setAdonation(parseInt(e.target.value));
+                              setAdonation(parseFloat(e.target.value));
                             }
                           }}
                           inputProps={{ min: 0 }}
@@ -1643,12 +1721,12 @@ export default function PaymentPage(props) {
                         onSuccess={(details, data) => {
                           //setBackdrop(true);
                           //alert("Transaction completed by " + details.payer.name.given_name);
-                          console.log('Details:', details);
-                          console.log('Data', data);
+                          //console.log('Details:', details);
+                          //console.log('Data', data);
                           submit(details);
                         }}
                         onError={(err) => {
-                          console.log(err);
+                          //console.log(err);
                           setAlertMessage('Chatrel donation failed.');
                           setAlertType('error');
                           snackbarOpen();
@@ -1658,10 +1736,11 @@ export default function PaymentPage(props) {
                         }}
                         createOrder={(data, actions)=> { 
                           setBackdrop(true);
+                          pingPong();
                           return actions.order.create({ purchase_units: [ { amount: { value: total.toFixed(2), }, }, ], }); 
                         
                         }}
-                        // onError={(details, data)=>{console.log(details);}}
+                        // onError={(details, data)=>{//console.log(details);}}
                       />
                     </div>
                   )}

@@ -22,7 +22,7 @@ const LeftSidebar = (props) => {
 
   const sidebarDisplay = useMediaPredicate("(max-width: 1099px)");
 
-  console.log(sidebarDisplay);
+  //console.log(sidebarDisplay);
 /* useEffect(() => {
   if(window.innerWidth < 768 ){
     setDisplayStyle("block");

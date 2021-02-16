@@ -44,12 +44,12 @@ namespace CTAWebAPI.Controllers
         [Route("[action]")]
         public IActionResult AddNewChatrelPayment(ChatrelPaymentVM payment)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
                     string message = _chatrelPaymentVMRepository.Add(payment);
-                    if(message == "Records inserted successfully.")
+                    if (message == "Records inserted successfully.")
                     {
                         #region Information Logging
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, payment.chatrelPayment.nEnteredBy);
@@ -58,7 +58,7 @@ namespace CTAWebAPI.Controllers
                     }
                     return Problem(message);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     #region Exception Logging
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, payment.chatrelPayment.nEnteredBy);
@@ -86,7 +86,7 @@ namespace CTAWebAPI.Controllers
             try
             {
                 IEnumerable<Object> result = _chatrelPaymentVMRepository.GetAllChatrelPayments();
-                if(result != null && result.Count() > 0)
+                if (result != null && result.Count() > 0)
                 {
                     #region Information Logging 
                     _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
@@ -95,10 +95,10 @@ namespace CTAWebAPI.Controllers
                 }
                 return NoContent();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 #region Exception Logging 
-                
+
                 _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
 
@@ -112,23 +112,23 @@ namespace CTAWebAPI.Controllers
         [Route("[action]")]
         public IActionResult DisplayChatrelPayment(string sGBID)
         {
-            if(String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID))
+            if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID))
             {
                 return BadRequest("Required parameters are missing.");
             }
             try
             {
                 Object chatrel = _chatrelPaymentRepository.DisplayChatrelPayment(sGBID);
-                if(chatrel != null)
+                if (chatrel != null)
                 {
-                    if(chatrel.ToString() == "Greenbook ID does not Exist.")
+                    if (chatrel.ToString() == "Greenbook ID does not Exist.")
                     {
                         #region Information Logging 
                         _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
                         #endregion
                         return NotFound(chatrel.ToString());
                     }
-                    if(chatrel.ToString() == "Paid Until Value not found")
+                    if (chatrel.ToString() == "Paid Until Value not found")
                     {
                         #region Information Logging 
                         _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
@@ -145,7 +145,7 @@ namespace CTAWebAPI.Controllers
                     return NoContent();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 #region Exception Logging 
 
@@ -233,7 +233,7 @@ namespace CTAWebAPI.Controllers
             {
                 return BadRequest("Required parameters are missing.");
             }
-            if(dtDOB == null)
+            if (dtDOB == null)
             {
                 return BadRequest("Required parameters are missing.");
             }
@@ -280,7 +280,7 @@ namespace CTAWebAPI.Controllers
             attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
 
             byte[] attach = Convert.FromBase64String(attachment);
-           
+
             MimeMessage message = new MimeMessage();
             MailboxAddress from = new MailboxAddress(sName, emailFrom);
             MailboxAddress to = new MailboxAddress("CTA Team", emailTo);
@@ -288,12 +288,12 @@ namespace CTAWebAPI.Controllers
             BodyBuilder messageBody = new BodyBuilder();
             messageBody.TextBody = mailText;
             messageBody.Attachments.Add("Attachment File", attach);
-            
+
 
             message.From.Add(from);
             message.To.Add(to);
             message.Subject = String.Format("Email from {0}, GreenBook Id: {1}", sName, sGBID);
-            
+
             message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
             message.Body = messageBody.ToMessageBody();
             // Message ready. Now to use smtp client to despatch message
@@ -304,7 +304,7 @@ namespace CTAWebAPI.Controllers
             smtpClient.Disconnect(true);
             smtpClient.Dispose();
             return Ok("Email sent successfully.");
-            
+
         }
         [AuthorizeRole(FeatureID = 50)]
         [HttpGet]
@@ -318,7 +318,7 @@ namespace CTAWebAPI.Controllers
             try
             {
                 IEnumerable<object> result = await _chatrelPaymentVMRepository.SearchUsers(sGBID, sFirstName, sFathersName, sMothersName);
-                if(result.Count() > 0)
+                if (result.Count() > 0)
                 {
                     #region Information Logging 
                     _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
@@ -339,6 +339,8 @@ namespace CTAWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+
         [AuthorizeRole(FeatureID = 50)]
         [HttpGet]
         [Route("[action]")]
@@ -372,6 +374,8 @@ namespace CTAWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+
         [AuthorizeRole(FeatureID = 49)]
         [HttpGet]
         [Route("[action]")]
@@ -406,12 +410,13 @@ namespace CTAWebAPI.Controllers
             }
         }
 
+
         [AuthorizeRole(FeatureID = 52)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult GetChatrelPaymentReport([FromBody] ChatrelReportVM chatrelReportVM)
         {
-           
+
             try
             {
                 IEnumerable<Object> result = _chatrelPaymentVMRepository.GetChatrelPaymentReport(chatrelReportVM);
@@ -437,5 +442,37 @@ namespace CTAWebAPI.Controllers
             }
         }
 
+        #region Quick Search in Chatrel List
+        //[AuthorizeRole(FeatureID = 52)]
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> GetQuickChatrelList([FromBody] Dictionary<string, string> searchParams = null)
+        {
+            try
+            {
+                IEnumerable<Object> result = await _chatrelPaymentVMRepository.GetQuickChatrelList(searchParams);
+
+                if (result != null && result.Count() > 0)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok(result);
+                }
+                else
+                {
+                    return Ok("No Data");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+        #endregion
     }
 }

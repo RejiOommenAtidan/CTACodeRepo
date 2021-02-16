@@ -37,6 +37,8 @@ const Test = lazy(() => import('./views/test'));
 const PaypalTest = lazy(() => import('./views/test/paypaltest.js'));
 const Login = lazy(() => import('./views/login'));
 const AccessDenied = lazy(() => import('./views/error/locationerror.js'));
+//const Page404 = lazy(() => import('./views/error/404Page'));
+const Page404 = lazy(() => import('./example-pages/PageError404/index.js'));
 const Profile = lazy(() => import("./views/profile/index.js"));
 const FileDispute = lazy(() => import("./views/filedispute/index.js"));
 const ContactUs = lazy(() => import("./views/Contact/index.js"));
@@ -44,8 +46,8 @@ const PrivacyPolicy = lazy(() => import("./views/privacy-policy/index.js"));
 
 const Family = lazy(() => import("./views/family"));
 const Friends = lazy(() => import("./views/friends"));
-const PaymentHistory = lazy(() => import('./views/paymenthistory'));
-const PaymentPage = lazy(() => import('./views/paymentpage'));
+const ChatrelHistory = lazy(() => import('./views/paymenthistory'));
+const Chatrel = lazy(() => import('./views/paymentpage'));
 const SelfPayment = lazy(() => import('./views/paymentpage/selfpayment.js'));
 
 const Routes = () => {
@@ -66,6 +68,7 @@ const Routes = () => {
     dispatch(removeGBDetails());
     setSessionTimeout(false);
     history.push('/Login');
+   // window.location.reload('/Login');
       
   }
 
@@ -74,22 +77,31 @@ const Routes = () => {
   //const timerId = null;
   if (oSession !== null)
     {
-      if(!oSession.bSession){
-        console.log('bSession');
-        setSessionTimeout(true);
-        //alert('logout');
-      }
+   
       let oldToken=axios.defaults.headers.common['Authorization'];
-      console.log('old',oldToken);
-      console.log('new','Bearer ' + oSession.sJwtToken);
+      //console.log('old',oldToken);
+      //console.log('new','Bearer ' + oSession.sJwtToken);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + oSession.sJwtToken;
       if(oldToken !== 'Bearer ' + oSession.sJwtToken){
-        console.log('Timer Reset',timerId);
+        //console.log('Timer Reset',timerId);
+        
+          var base64Url = oSession.sJwtToken.split('.')[1];
+          var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          }).join(''));
+          const jwtObject=JSON.parse(jsonPayload);
+          ////console.log('JWT Token:',JSON.parse(jsonPayload));
+  
 
        if(timerId){
         clearTimeout(timerId);
        }
-      const timer = () => setTimeout(()=>{setSessionTimeout(true);},1000*60*15);
+
+      // ////console.log(jwtObject.exp-Date.now()); 
+      // //console.log(Math.floor(Date.now() / 1000)-jwtObject.exp); 
+      // //console.log(Date.now() -(jwtObject.exp * 1000));
+      const timer = () => setTimeout(()=>{setSessionTimeout(true);},((jwtObject.exp * 1000)-Date.now()));
       setTimerId(timer());
        
        
@@ -98,7 +110,7 @@ const Routes = () => {
       
 
 
-      console.log("Token changed:",oSession.sJwtToken);
+      //console.log("Token changed:",oSession.sJwtToken);
    
     }
     // if(sessionTimeout)
@@ -107,7 +119,24 @@ const Routes = () => {
     //    setSessionTimeout(false);
     // }
 
-
+    axios.interceptors.response.use((response) => {
+      // Any status code that lie within the range of 2xx cause this function to trigger
+      // Do something with response data
+      //console.log("Interceptor valid response", response);
+      return response;
+    },  (error) => {
+      // Any status codes that falls outside the range of 2xx cause this function to trigger
+      // Do something with response error
+      if(error.response.status === 401){
+        //console.log("we hit 401");
+        //history.go(0);
+        //history.push('/Login');
+        
+        setSessionTimeout(true);
+        return;
+      }
+      return Promise.reject(error);
+    });
 
   const pageVariants = {
     initial: {
@@ -137,27 +166,27 @@ const Routes = () => {
     }, []);
 
     // const bSession = useSelector(state => state.SessionReducer.bSession);
-   // console.log("session",bSession);
+   // //console.log("session",bSession);
     /*if(bSession){
       
-      console.log(new Date());
+      //console.log(new Date());
       //alert('timeout');
     }*/
    // const a = new Date();
 //    const b = new Date(a.getTime() + 1000*30);
     // const checkSession=()=>{
     //   let x = new Date();
-    //   console.log('old',bSession);
-    //   console.log('new',x);
+    //   //console.log('old',bSession);
+    //   //console.log('new',x);
     //   if(bSession.getTime()<= x.getTime()){
     //     alert('hi');
     //   }
     // }
    /* while (bSession){
-      setTimeout(() => console.log('hi'), 1000*60);
+      setTimeout(() => //console.log('hi'), 1000*60);
     }*/
    
-  //   console.log("Location:",window.location.pathname);
+  //   //console.log("Location:",window.location.pathname);
   //   const[timer,setTimer]=useState(false);
   //  /* setTimer(window.location.pathname !=="/Login");*/
   //   useEffect(() => {
@@ -176,7 +205,7 @@ const Routes = () => {
   //   else{
   //    // alert('no');
   //   }
-  //   console.log(timeout);
+  //   //console.log(timeout);
     
 
     return (
@@ -213,7 +242,8 @@ const Routes = () => {
               '/Test',
               '/PaypalTest',
               '/Failure',
-              '/Success'
+              '/Success',
+              '/404'
                
           
           
@@ -232,6 +262,7 @@ const Routes = () => {
                     <Route path="/PaypalTest" component={PaypalTest} ></Route>
                     <Route path="/Failure" component={Failure} ></Route>
                     <Route path="/Success" component={Success} ></Route>
+                    <Route path="/404" component={Page404} ></Route>
                   </motion.div>
                 </Switch>
               </PresentationLayout>
@@ -259,12 +290,12 @@ const Routes = () => {
 
             <Route
               path={[
-                '/Family',
+            //    '/Family',
                 '/Friends',
-                '/PaymentHistory',
+                '/ChatrelHistory',
                // '/Test',
                 '/Home',
-                '/PaymentPage',
+                '/Chatrel',
                 '/SelfPayment',
                 '/Profile',
                 '/FileDispute',
@@ -295,22 +326,22 @@ const Routes = () => {
                       path="/Test"
                       component={Test}
                  />*/}
-                     <Route
+                     {/* <Route
                       path="/Family"
                       component={Family}
-                    />
+                    /> */}
                     <Route
                       path="/Friends"
                       component={Friends}
                     />
                     <Route
-                      path="/PaymentHistory"
-                      component={PaymentHistory}
+                      path="/ChatrelHistory"
+                      component={ChatrelHistory}
                     />
                  
                     <Route
-                      path='/PaymentPage'
-                      component={PaymentPage}
+                      path='/Chatrel'
+                      component={Chatrel}
                     />
 
                     <Route
@@ -326,7 +357,8 @@ const Routes = () => {
                     <Route
                       path='/ContactUs'
                       component={ContactUs}
-                    />                      
+                    />
+                                          
                   </motion.div>
                 </Switch>
               </LeftSidebar>
@@ -349,6 +381,7 @@ const Routes = () => {
                 </Switch>
               </CollapsedSidebar>
             </Route>
+            <Route path='*' exact={true} component={Page404} />
           </Switch>
           <Dialog open={sessionTimeout} onClose={logout} classes={{ paper: 'shadow-xl-first rounded' }}>
                             <div className="text-center p-5">
@@ -358,7 +391,7 @@ const Routes = () => {
                                     </div>
                                 </div>
                                 <h4 className="font-weight-bold mt-4">Session Timeout</h4>
-                                <p className="mb-0 text-black-50">Your session has timed out. Please signin again.</p>
+                                <p className="mb-0 text-black-50">Your session has timed out. Please sign in again.</p>
                                 <div className="pt-4">
                                     <Button onClick={logout} className="btn-outline-first border-1 m-2" variant="outlined">
                                         <span className="btn-wrapper--label">

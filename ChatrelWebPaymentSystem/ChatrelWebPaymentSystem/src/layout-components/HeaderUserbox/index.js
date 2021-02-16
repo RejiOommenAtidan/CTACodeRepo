@@ -9,7 +9,8 @@ import {
   List,
   ListItem,
   Tooltip,
-  Divider
+  Divider,
+  Dialog
 } from '@material-ui/core';
 import { useMediaQuery } from 'react-responsive'
 
@@ -66,7 +67,7 @@ const HeaderUserbox = () => {
   let dispatch = useDispatch();
 const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
-console.log(userObj);
+//console.log(userObj);
 if(userObj===null){
  history.push("/login");
 } 
@@ -77,11 +78,11 @@ const [chatrelPending, setChatrelPending] = React.useState(null);
 const [currencySymbol, setCurrencySymbol] = React.useState();
 const [paymentData, setPaymentData] = React.useState();
 const [outstanding, setOutstanding] = useState(true);
- 
+const [logoutBox, setLogoutBox] = useState(false);
 const makePayment = (obj)=> {
   
   dispatch(storeCurrentGBDetails(obj));
-  history.push('/PaymentPage');
+  history.push('/Chatrel');
 }
 const selfPayment=() => {
  
@@ -117,7 +118,7 @@ const selfPayment=() => {
 
         <div className="d-none d-xl-block pl-2" style={{fontSize:"16px" }}>
           <div className="font-weight-bold pt-2 line-height-1" >{userObj.name}</div>
-          <span className="text-black-50">{userGBObj.sGBID}</span>
+          <span className="text-black-50">{userGBObj.sCountryID+userGBObj.sGBID}</span>
           
         </div>
         <span className="pl-1 pl-xl-3">
@@ -150,13 +151,13 @@ const selfPayment=() => {
            {  <ListItem button onClick={()=>{handleClose();selfPayment();}} className="d-block text-left">
               Self Chatrel
              </ListItem>}
-            <ListItem button onClick={()=>{handleClose();history.push('/Family');}} className="d-block text-left">
+            {/* <ListItem button onClick={()=>{handleClose();history.push('/Family');}} className="d-block text-left">
                Family Chatrel
-            </ListItem>
+            </ListItem> */}
             <ListItem button  onClick={()=>{handleClose();history.push('/Friends');}} className="d-block text-left">
-            Friend's Chatrel
+            Friends & Family
             </ListItem>
-            <ListItem button onClick={()=>{handleClose();history.push('/PaymentHistory');}} className="d-block text-left">
+            <ListItem button onClick={()=>{handleClose();history.push('/ChatrelHistory');}} className="d-block text-left">
               Chatrel History
             </ListItem>
             <ListItem button onClick={()=>{handleClose();history.push('/FileDispute');}}  className="d-block text-left">
@@ -170,10 +171,42 @@ const selfPayment=() => {
          
           <Divider className="w-100" /></>}
           <div className="d-block rounded-bottom py-3 text-center" style={{paddingBottom:'0px'}}>
-          <GoogleLogoutButton/>
+          <Button className="btn-google m-2 shadow-first"  style={{   backgroundColor: 'rgb(42, 92, 255)'}}   onClick={()=>{setLogoutBox(true);}} /*disabled={renderProps.disabled}*/ >
+        <span className="btn-wrapper--icon">
+            <FontAwesomeIcon icon={['fab', 'google']} className="font-size-lg" />
+        </span>
+        <span className="btn-wrapper--label">
+        Sign Out
+    </span>
+    </Button>
+          {/* <GoogleLogoutButton/> */}
           </div>
         </div>
       </Menu>
+      <Dialog open={logoutBox} onClose={()=>{setLogoutBox(false)}} classes={{ paper: 'shadow-xl-first rounded' }}>
+                            <div className="text-center p-5">
+                                <div className="avatar-icon-wrapper rounded-circle m-0">
+                                    <div className="d-inline-flex justify-content-center p-0 rounded-circle btn-icon avatar-icon-wrapper bg-neutral-first text-first m-0 d-90">
+                                        <FontAwesomeIcon icon={['fas', 'sign-out-alt']} className="d-flex align-self-center display-4 "/>
+                                    </div>
+                                </div>
+                                <h4 className="font-weight-bold mt-4">Logout?</h4>
+                                <p className="mb-0 text-black">Are you sure you want to Logout?</p>
+                                <div className="pt-4">
+                                <Button className="btn-outline-first border-1 m-2" onClick={()=>{setLogoutBox(false)}} variant="outlined">
+                                        <span className="btn-wrapper--label">
+                                            No
+                                        </span>
+                                    </Button>
+                                    {/* <Button className="btn-outline-first border-1 m-2" variant="outlined">
+                                        <span className="btn-wrapper--label">
+                                            Yes
+                                        </span>
+                                    </Button> */}
+                                    <GoogleLogoutButton/>
+                                </div>
+                            </div>
+                        </Dialog>
     </>
   );
 };

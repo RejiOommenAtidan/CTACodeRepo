@@ -46,7 +46,7 @@ export const EmailDialog = (props) => {
   const [body, setBody] = React.useState(madebName + ' case no:' + formNumber.toString() + ' \nName: ' + name + '\nPostal Address:');
   const [backdrop, setBackdrop] = React.useState(false);
 
-  console.log(props.emailInObj);
+  //console.log(props.emailInObj);
 
 
   const SendEmail = () => {
@@ -64,7 +64,7 @@ export const EmailDialog = (props) => {
     axios.post(`Madeb/SendEmail`, emailOutObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
+          //console.log(resp.data);
           //alert("Success.\n" + resp.data);
           setAlertMessage('Email Sent Successfully');
           setAlertType('success');
@@ -86,7 +86,7 @@ export const EmailDialog = (props) => {
     axios.get(`/CTAConfig/GetCTAConfigByKey/Key=CTAAdminEmail`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data.sValue);
+          //console.log(resp.data.sValue);
           setSender(resp.data.sValue);
         }
       })
@@ -94,7 +94,7 @@ export const EmailDialog = (props) => {
         handleError(error, history);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   }, []);
 

@@ -105,7 +105,7 @@ export const EditDialog = (props) => {
 }
 
 {/*export const DeleteDialog = (props) => {
-  console.log("Delete Dialog");
+  //console.log("Delete Dialog");
   return (
     <Dialog
       open={props.deleteModal}
@@ -133,7 +133,7 @@ export const EditDialog = (props) => {
 {/*export const AddDialog = (props) => {
   const [lUserRights, setlUserRights] = React.useState(props.lUserRights);
   const [lstFeature, setlstFeature] = React.useState(props.lstFeature);
-  //console.log("Add Dialog");
+  ////console.log("Add Dialog");
 
   const [Id, setId] = React.useState(0)
   const [nFeatureID, setnFeatureID] = React.useState(0);
@@ -143,7 +143,7 @@ export const EditDialog = (props) => {
   const [sUserRightsName, setsUserRightsName] = React.useState('');
 
   const handleChange = (e) => {
-    //console.log(e);
+    ////console.log(e);
     if (bRights ) {
       setbRights(false);
     }
@@ -166,7 +166,7 @@ export const EditDialog = (props) => {
                   onChange={
                     (e, value) => {
                       if (value !== null) {
-                        console.log(value);
+                        //console.log(value);
                         setnFeatureID(value.id);
                         setsFeature(value.sFeature);
                       }
@@ -211,7 +211,7 @@ export const EditDialog = (props) => {
                   onChange={
                     (e, value) => {
                       if (value !== null) {
-                        console.log(value);
+                        //console.log(value);
                         setnUserRightsId(value.id);
                         setsUserRightsName(value.sUserRightsName);
                       }
@@ -282,7 +282,7 @@ export const EditDialog = (props) => {
               bRights
             }
           )
-          // console.log(
+          // //console.log(
           //   Id,
           //   nFeatureID,
           //   nUserRightsId,

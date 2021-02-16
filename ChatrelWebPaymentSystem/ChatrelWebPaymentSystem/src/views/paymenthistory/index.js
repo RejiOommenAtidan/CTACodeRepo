@@ -19,6 +19,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Moment from 'moment';
 import { useSelector} from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -54,8 +55,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function Family () {
+  let history = useHistory();
   const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   const sGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
+  const sCountryID=useSelector(state => state.GBDetailsReducer.oGBDetails.sCountryID);
   const [paymentHistory,setPaymentHistory]=React.useState();
   const [backdrop,setBackdrop]=React.useState(true);
   const classes = useStyles();
@@ -71,13 +74,13 @@ export default function Family () {
     setOpen(false);
   };
   const dispatch = useDispatch();
-
+  
   const getReceipt = (sChatrelReceiptNumber) => {
     setBackdrop(true);
-    console.log("Receipt Number", sChatrelReceiptNumber);
+    //console.log("Receipt Number", sChatrelReceiptNumber);
     axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=`+sChatrelReceiptNumber/*,  { responseType: 'blob' }*/)
     .then(resp => {
-      console.log("Response", resp.data);
+      //console.log("Response", resp.data);
       
       if (resp.status === 200) {
         const oSession={
@@ -90,10 +93,10 @@ export default function Family () {
         const url = `data:application/pdf;base64,${resp.data.receipt}`;
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "ChatrelReceipt.pdf");
+        link.setAttribute("download", "ChatrelReceipt-"+sChatrelReceiptNumber+".pdf");
         document.body.appendChild(link);
         link.click();
-      //  console.log(resp.data);
+      //  //console.log(resp.data);
       //   resp.data.receipt.sGBID ='0'.repeat(7 - resp.data.receipt.sGBID.length) +
       //       resp.data.receipt.sGBID;
       //  setReceiptData(resp.data);
@@ -104,7 +107,7 @@ export default function Family () {
       }
     })
     .catch(error => {
-      console.log("Error ", error.response);
+      //console.log("Error ", error.response);
       if (error.response) {
         console.error(error.response);
         console.error(error.response.data);
@@ -115,10 +118,10 @@ export default function Family () {
       } else {
         console.error('Error', error.message);
       }
-      console.log(error.config);
+      //console.log(error.config);
     })
     .then(release => {
-      //console.log(release); => udefined
+      ////console.log(release); => udefined
     });
 
   }
@@ -137,7 +140,7 @@ export default function Family () {
   //    }*/
   //   }).then(canvas => {
   //     const imgData = canvas.toDataURL("image/png");
-  //     console.log(imgData);
+  //     //console.log(imgData);
   //     //imgData.save();
   //     const pdf = new jsPdf();
   //     pdf.addImage(imgData, "PNG",10,10);
@@ -154,20 +157,13 @@ export default function Family () {
           const oSession={ sJwtToken:resp.data.token,bSession:true }
           dispatch(storeSession(oSession));
          setPaymentHistory(resp.data.paymentHistory);
-         console.log(resp.data.length);
+         //console.log(resp.data);
          setBackdrop(false);
          
         }
       })
       .catch(error => {
-        if (error.response.status === 401) {
-   
-          const oSession={
-            sJwtToken:"",
-            bSession:false
-          }
-          dispatch(storeSession(oSession));
-        }
+       
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -177,10 +173,10 @@ export default function Family () {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
      }, []);
   return (
@@ -194,7 +190,7 @@ export default function Family () {
         <Alert className="alerts-alternate mb-4 w-50 mx-auto" severity="info">
         <div className="d-flex align-items-center align-content-start">
             <span>
-                <strong className="d-block">NO CHATREL PAYMENTS DONE SO FAR</strong> Please pay your outstanding Chatrel Amount
+                <strong className="d-block">CONTRIBUTION STATUS</strong> Please donate your outstanding Chatrel Amount or File a Dispute <Button className="p-0 btn-transparent btn-link btn-link-first" onClick={()=>{history.push('FileDispute')}}>here</Button>
         </span>
         </div>
         </Alert>
@@ -223,7 +219,7 @@ export default function Family () {
           <Th style={{textAlign:'center'}}>GB ID</Th>
           <Th style={{textAlign:'center'}}>PAID BY</Th>
           <Th style={{textAlign:'center'}}>NAME</Th>
-          <Th style={{textAlign:'center'}}>RELATION</Th>
+          {/* <Th style={{textAlign:'center'}}>RELATION</Th> */}
           <Th style={{textAlign:'center'}}>CURRENCY</Th>
           <Th style={{textAlign:'center'}}>AMOUNT</Th>
           <Th style={{textAlign:'center'}}>MODE</Th>
@@ -236,18 +232,18 @@ export default function Family () {
         <Tr style={{borderTop:'1px solid grey',borderRadius:'5px',marginBottom:'5px',height:'60px'}}>
           <Td align="center">{Moment(row.dtPayment).format("DD-MM-yyyy")}</Td>
           <Td align="center">{row.sChatrelReceiptNumber}</Td>
-          <Td align="center">{row.sGBIDPaidFor}</Td>
-          <Td align="center">{row.sPaidByGBId}</Td>
+          <Td align="center">{row.sCountryIDPaidFor+row.sGBIDPaidFor}</Td>
+          <Td align="center">{sCountryID+row.sPaidByGBId}</Td>
           <Td align="center">{row.sFirstName + ' ' + row.sLastName}</Td>
-          <Td align="center">{row.sRelation}</Td>
+          {/* <Td align="center">{row.sRelation}</Td> */}
           <Td align="center">{row.sPaymentCurrency} <Flag country={row.sPaymentCurrency==="USD"?"US":"IN"} size={20} /></Td>
-          <Td align="center" > <b style={{color:'#29cf00'}}>{row.sPaymentCurrency==="USD"?"$":"₹" }{row.nChatrelTotalAmount}</b></Td>
+          <Td align="center" > <b style={{color:'#29cf00'}}>{row.nChatrelTotalAmount}</b></Td>
           <Td align="center"><div className="m-1 text-second badge badge-neutral-second">{row.sPaymentMode}</div></Td>
           <Td align="center">
           {row.sPaymentStatus==="Success" &&
             <div className="badge badge-success"> Success</div>}
           </Td>
-          <Td align="center"> <Button style={{padding:'5px'}} onClick={()=>{getReceipt(row.sChatrelReceiptNumber )}} className="btn-primary m-1">
+          <Td align="center"> <Button style={{padding:'5px'}} disabled={row.sPaymentMode!=="Online"} onClick={()=>{getReceipt(row.sChatrelReceiptNumber )}} className="btn-primary m-1">
                                 <span className="btn-wrapper--icon">
                                     <FontAwesomeIcon icon={['far', 'save']} />
                                 </span>
@@ -268,7 +264,7 @@ export default function Family () {
           <Th style={{textAlign:'center'}}>GB ID</Th>
           <Th style={{textAlign:'center'}}>PAID BY</Th>
           <Th style={{textAlign:'center'}}>NAME</Th>
-          <Th style={{textAlign:'center'}}>RELATION</Th>
+          {/* <Th style={{textAlign:'center'}}>RELATION</Th> */}
           <Th style={{textAlign:'center'}}>CURRENCY</Th>
           <Th style={{textAlign:'center'}}>AMOUNT</Th>
           <Th style={{textAlign:'center'}}>MODE</Th>
@@ -284,7 +280,7 @@ export default function Family () {
           <Td align="center">{row.sGBIDPaidFor}</Td>
           <Td align="center">{row.sPaidByGBId}</Td>
           <Td align="center">{row.sFirstName + ' ' + row.sLastName}</Td>
-          <Td align="center">{row.sRelation}</Td>
+          {/* <Td align="center">{row.sRelation}</Td> */}
           <Td align="center">{row.sPaymentCurrency} <Flag country={row.sPaymentCurrency==="USD"?"US":"IN"} size={20} /></Td>
           <Td align="center" > <b style={{color:'#29cf00'}}>{row.sPaymentCurrency==="USD"?"$":"₹" }{row.nChatrelTotalAmount}</b></Td>
           <Td align="center"><div className="m-1 text-second badge badge-neutral-second">{row.sPaymentMode}</div></Td>
@@ -292,7 +288,7 @@ export default function Family () {
           {row.sPaymentStatus==="Success" &&
             <div className="badge badge-success"> Success</div>}
           </Td>
-          <Td align="center"> <Button style={{padding:'5px'}} onClick={()=>{getReceipt(row.sChatrelReceiptNumber )}} className="btn-primary m-1">
+          <Td align="center"> <Button style={{padding:'5px'}} disabled={row.sPaymentMode!=="Online"} onClick={()=>{getReceipt(row.sChatrelReceiptNumber )}} className="btn-primary m-1">
                                 <span className="btn-wrapper--icon">
                                     <FontAwesomeIcon icon={['far', 'save']} />
                                 </span>

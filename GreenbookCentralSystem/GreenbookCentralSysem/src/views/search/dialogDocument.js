@@ -24,19 +24,19 @@ export const AddDocumentDialog = (props) => {
     const { register, handleSubmit, errors, formState } = useForm();
     const handleSubmitAddDocumentRecord = () => {
         let resultNameTemp = lGBDocument.find(document => document.sTitle === sTitle);
-        console.log(resultNameTemp);
+        //console.log(resultNameTemp);
         //setResultName(resultNameTemp);
         
         if (resultNameTemp){
             setResultName('File name already exists');
-            console.log("No");
+            //console.log("No");
             setsTitle("");
             setsFileExtension("");
             setbinFileDoc("")
             return false
         }
         else if(binFileDoc){
-            console.log("Yes");
+            //console.log("Yes");
             
             props.addDocumentAPICall({
                 sGBID: props.sGBID,
@@ -51,7 +51,7 @@ export const AddDocumentDialog = (props) => {
         }
         else{
             setResultName('Please select a file');
-            console.log("No");
+            //console.log("No");
             setsTitle("");
             setsFileExtension("");
             setbinFileDoc("")
@@ -93,7 +93,7 @@ export const AddDocumentDialog = (props) => {
 
     reader.addEventListener("load", function () {
         setbinFileDoc(reader.result);
-        console.log(reader.result);
+        //console.log(reader.result);
     }, false);
 
     const handleSelectChange = (event) => {

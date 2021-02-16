@@ -287,7 +287,7 @@ export default function EnhancedTable() {
   };
 
   const deleteAPICall = () => {
-    // console.log(this.state.selectedUser);
+    // //console.log(this.state.selectedUser);
     // let MadebTypeID = madebTypePK;
     const madebTypeToDelete = {
       ID: madebTypePK,
@@ -295,14 +295,14 @@ export default function EnhancedTable() {
     };
     axios.post(`/MadebType/DeleteMadebType`, madebTypeToDelete)
       .then(resp => {
-        console.log(madebTypeToDelete);
+        //console.log(madebTypeToDelete);
         if (resp.status === 200) {
-          console.log(resp.data);
+          //console.log(resp.data);
           setDeleteModal(false);
           axios.get(`/MadebType/GetMadebTypes`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
+                //console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
@@ -335,10 +335,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 

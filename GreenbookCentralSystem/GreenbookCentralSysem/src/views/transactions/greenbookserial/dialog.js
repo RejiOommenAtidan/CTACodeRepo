@@ -23,11 +23,11 @@ import Moment from "moment";
 export const EditDialog = (props) => {
   Moment.locale("en");
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  console.log("Hello from Edit Dialog");
+  //console.log("Hello from Edit Dialog");
   const { register, handleSubmit, watch, errors, setValue, formState } = useForm();
 
   const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
-  console.log(props.gbSerialObj);
+  //console.log(props.gbSerialObj);
   // const [snackbarOpen,setSnackbarOpen]=React.useState(false);
   // const snackbarClose = (event, reason) => {
   //   if (reason === 'clickaway') {
@@ -71,7 +71,7 @@ export const EditDialog = (props) => {
 
   const markBookAsDamaged = () => {
     setOpenDialog(false);
-    console.log("Book no. to mark damaged:", nBookNo);
+    //console.log("Book no. to mark damaged:", nBookNo);
     setGbId('');
     setName('');
     setCountryID(null);
@@ -103,7 +103,7 @@ export const EditDialog = (props) => {
     nAuthRegionId,
     nUpdatedBy: userId
   }
-  console.log("gbSerialObj Object in dialog", gbSerialObj);
+  //console.log("gbSerialObj Object in dialog", gbSerialObj);
 
   let valueAuthRegion = [];
 
@@ -114,7 +114,7 @@ export const EditDialog = (props) => {
   });
 
   let valueMadebTypes = [];
-  console.log(nMadebTypeId);
+  //console.log(nMadebTypeId);
   madebTypes.forEach(element => {
     if (element.id === nMadebTypeId) {
       valueMadebTypes = element;
@@ -122,7 +122,7 @@ export const EditDialog = (props) => {
   });
 
   let valueCountryName = [];
-  console.log("Country list\n", countries);
+  //console.log("Country list\n", countries);
   countries.forEach(element => {
     if (element.sCountryID === sCountryID) {
       valueCountryName = element;
@@ -213,7 +213,7 @@ placeholder="DD-MM-YYYY"
                       value={nBookNo}
                       onChange={(e) => {
                         setBookNo(parseInt(e.target.value));
-                        console.log("Value of Book Serial number changed to:", parseInt(e.target.value));
+                        //console.log("Value of Book Serial number changed to:", parseInt(e.target.value));
                       }}
                       InputProps={{
                         readOnly: true
@@ -260,7 +260,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log("Value in Country id:", value.sCountryID);
+                            //console.log("Value in Country id:", value.sCountryID);
                             setCountryID(value.sCountryID);
                           }
                           else {
@@ -337,7 +337,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log(value.id);
+                            //console.log(value.id);
                             setMadebTypeId(value.id);
                             //setMadebTypeIdDual(value.id);
                           }
@@ -398,7 +398,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log(value.id);
+                            //console.log(value.id);
                             setAuthRegionId(value.id);
                           }
                           else {
@@ -445,7 +445,7 @@ placeholder="DD-MM-YYYY"
                       rowsMax={2}
                       onChange={(e) => {
                         setRemarks(e.target.value);
-                        console.log("Value of remarks changed to:", e.target.value);
+                        //console.log("Value of remarks changed to:", e.target.value);
                       }}
                     />
                   </FormControl>
@@ -519,9 +519,9 @@ placeholder="DD-MM-YYYY"
 
 // export const AddDialog = (props) => {
 //   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-//   console.log("Hello from Add dialog");
+//   //console.log("Hello from Add dialog");
 //   const { register, handleSubmit, watch, errors, formState } = useForm();
-//   console.log("Serial Object\n", props.gbSerialObj);
+//   //console.log("Serial Object\n", props.gbSerialObj);
 //   // const [snackbarOpen,setSnackbarOpen]=React.useState(false);
 //   // const snackbarClose = (event, reason) => {
 //   //   if (reason === 'clickaway') {
@@ -572,7 +572,7 @@ placeholder="DD-MM-YYYY"
 //     nEnteredBy: userId,
 //     nUpdatedBy: userId
 //   }
-//   console.log("gbSerialObj Object received in Add dialog", gbSerialObj);
+//   //console.log("gbSerialObj Object received in Add dialog", gbSerialObj);
 
 //   // let valueAuthRegion = [];
 
@@ -583,7 +583,7 @@ placeholder="DD-MM-YYYY"
 //   //   });
 
 //   //let valueMadebTypes = [];
-//   // //console.log(nMadebTypeId);
+//   // ////console.log(nMadebTypeId);
 //   // madebTypes.forEach(element => {
 //   //   if(element.id === nMadebTypeId){
 //   //     valueMadebTypes = element;
@@ -591,17 +591,17 @@ placeholder="DD-MM-YYYY"
 //   // });
 
 //   //let valueCountryName = [];
-//   // console.log("Country list\n", countries);
+//   // //console.log("Country list\n", countries);
 //   // countries.forEach(element => {
 //   //   if(element.sCountryID === sCountryID){
 //   //     valueCountryName = element;
-//   //     console.log("valueCountryName variable: ", valueCountryName);
+//   //     //console.log("valueCountryName variable: ", valueCountryName);
 //   //   }
 //   // });
 
 
 //   const formPopulate = (value) => {
-//     console.log("Value in GBID: ", value);
+//     //console.log("Value in GBID: ", value);
 //     const gbid = value;
 //     const event = new Event('change', {
 //       bubbles: true
@@ -617,8 +617,8 @@ placeholder="DD-MM-YYYY"
 //     axios.get(`Greenbook/GetGreenbook/sGBID=` + gbid)
 //       .then(resp => {
 //         if (resp.status === 200) {
-//           console.log("Got gb record\n", resp.data);
-//           console.log("Name Element:", sNameElement);
+//           //console.log("Got gb record\n", resp.data);
+//           //console.log("Name Element:", sNameElement);
 //           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
 //           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
 //           const lname = resp.data.sLastName ? resp.data.sLastName : '';
@@ -662,13 +662,13 @@ placeholder="DD-MM-YYYY"
 //           setName('');
 //           setCountryID('');
 //           setAuthRegionId(0);
-//           console.log(resp);
+//           //console.log(resp);
 //         }
 //       })
 //       .catch((error) => {
 //         setName('');
 
-//         console.log(error);
+//         //console.log(error);
 //       });
 //   };
 //   const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
@@ -714,7 +714,7 @@ placeholder="DD-MM-YYYY"
 //                       value={nBookNo}
 //                       onChange={(e) => {
 //                         setBookNo(parseInt(e.target.value));
-//                         console.log("Value of Book Serial number changed to:", parseInt(e.target.value));
+//                         //console.log("Value of Book Serial number changed to:", parseInt(e.target.value));
 //                       }}
 //                       InputProps={{
 //                         readOnly: true
@@ -777,7 +777,7 @@ placeholder="DD-MM-YYYY"
 //                       onChange={
 //                         (e, value) => {
 //                           if (value !== null) {
-//                             console.log("Value in Country id:", value.sCountryID);
+//                             //console.log("Value in Country id:", value.sCountryID);
 //                             setCountryID(value.sCountryID);
 //                             setValueCountryName(value);
 //                           }
@@ -827,7 +827,7 @@ placeholder="DD-MM-YYYY"
 //                       onChange={
 //                         (e, value) => {
 //                           if (value !== null) {
-//                             console.log(value.id);
+//                             //console.log(value.id);
 //                             setMadebTypeId(value.id);
 //                             setValueMadebTypes(value);
 //                           }
@@ -897,7 +897,7 @@ placeholder="DD-MM-YYYY"
 //                       onChange={
 //                         (e, value) => {
 //                           if (value !== null) {
-//                             console.log(value.id);
+//                             //console.log(value.id);
 //                             setAuthRegionId(value.id);
 //                           }
 //                           else {
@@ -948,7 +948,7 @@ placeholder="DD-MM-YYYY"
 //                       value={remarks}
 //                       onChange={(e) => {
 //                         setRemarks(e.target.value);
-//                         console.log("Value of remarks changed to:", e.target.value);
+//                         //console.log("Value of remarks changed to:", e.target.value);
 //                       }}
 //                     />
 //                   </FormControl>

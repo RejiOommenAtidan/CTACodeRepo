@@ -7,18 +7,18 @@ import {
   Platform,
   Animated,
 } from 'react-native';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { Chatrel } from '../components/Chatrel';
+import {Chatrel} from '../components/Chatrel';
 import Colors from '../constants/Colors';
-import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import Resolution from '../constants/ResolutionBreakpoint';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { sFontName, sFontNameBold } from '../constants/CommonConfig';
-import { useCollapsibleHeader } from 'react-navigation-collapsible';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import {useCollapsibleHeader} from 'react-navigation-collapsible';
 
 export const SelfChatrelScreen = (props) => {
   return (
@@ -26,7 +26,7 @@ export const SelfChatrelScreen = (props) => {
       {/*<View style={styles.headerContainer}>
         <Text style={styles.headerComponent}>Self Chatrel</Text>
   </View>*/}
-      <Chatrel props={"Self"}></Chatrel>
+      <Chatrel props={'Self'}></Chatrel>
     </View>
   );
 };
@@ -50,7 +50,7 @@ export const SelfChatrelScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: { backgroundColor: Colors.white },
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 

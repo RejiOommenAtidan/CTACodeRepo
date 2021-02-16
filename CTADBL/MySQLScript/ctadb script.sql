@@ -849,7 +849,8 @@ INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtEntered`,`nEnteredBy`,`dt
 (6, 'CTAEmailRelayServer', 'set email relay server here', now(), 1, now(), 1),
 (7, 'CTAEmailServerPort', 'set email server port here', now(), 1, now(), 1),
 (8, 'CTAEmailUseSSL', 'set ssl here', now(), 1, now(), 1),
-(9, 'CTAEmailCC', 'set cc email here', now(), 1, now(), 1);
+(9, 'CTAEmailCC', 'set cc email here', now(), 1, now(), 1),
+(10, 'LoginSessionTimeout', '600', now(), 1, now(), 1);
 
 
 
@@ -1665,6 +1666,19 @@ INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `d
 INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(50, 7, 1, now(), 1, now(), 1);
 INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(51, 7, 1, now(), 1, now(), 1);
 INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(52, 7, 1, now(), 1, now(), 1);
+
+-- Feature Id 2 is Search and 6 and 7 is ChatrelAdmin and ChatrelGuest rights
+update lnkfeatureuserrights
+set bRights = 0
+where  nUserRightsID = 7 
+	and nFeatureID = 2;
+    
+update lnkfeatureuserrights
+set bRights = 0
+where  nUserRightsID = 6 
+	and nFeatureID = 2;
+
+
 -- 
 -- Store Procedure GreenBook By GBID
 -- 
@@ -1765,7 +1779,7 @@ BEGIN
 	DELETE FROM tblMadeb WHERE tblMadeb.sGBID = sGBIDIN;
 	DELETE FROM tblgreenbook WHERE tblgreenbook.sGBID = sGBIDIN;
 
-    COMMIT WORK;
+    COMMIT;
     SET result = row_count();
 END$$
 
@@ -1904,8 +1918,8 @@ inner join (',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion", "tblgr
         )
 where 
     tblgreenbookissued.nMadebTypeId= ', nMadebTypeId 
-    ,' and ',IF(nMadebTypeId = 1, "tblgreenbookissued.dtEntered", "tblgreenbookissued.dtIssuedDate" ),' >= ''' ,  dtRecordFrom
-    ,''' and ',IF(nMadebTypeId = 1, "tblgreenbookissued.dtEntered", "tblgreenbookissued.dtIssuedDate" ),' <= ''', dtRecordTo
+    ,' and ',IF(nMadebTypeId = 1, "DATE(tblgreenbookissued.dtEntered)", "DATE(tblgreenbookissued.dtIssuedDate)" ),' >= ''' ,  dtRecordFrom
+    ,''' and ',IF(nMadebTypeId = 1, "DATE(tblgreenbookissued.dtEntered)", "DATE(tblgreenbookissued.dtIssuedDate)" ),' <= ''', dtRecordTo
     ,''' group by ',sGroupBy 
      ,' order by ',sOrderBy );
     -- select @SQLText;
@@ -1949,8 +1963,8 @@ BEGIN
 			) 
 	where 
 		tblgreenbookissued.nMadebTypeId=', nMadebTypeId 
-		,' and ',IF(nMadebTypeId = 1, "tblgreenbookissued.dtEntered", "tblgreenbookissued.dtIssuedDate" ),' >= ''' ,  dtRecordFrom
-		,''' and ',IF(nMadebTypeId = 1, "tblgreenbookissued.dtEntered", "tblgreenbookissued.dtIssuedDate" ),' <= ''', dtRecordTo
+		,' and ',IF(nMadebTypeId = 1, "DATE(tblgreenbookissued.dtEntered)", "DATE(tblgreenbookissued.dtIssuedDate)" ),' >= ''' ,  dtRecordFrom
+		,''' and ',IF(nMadebTypeId = 1, "DATE(tblgreenbookissued.dtEntered)", "DATE(tblgreenbookissued.dtIssuedDate)" ),' <= ''', dtRecordTo
 	,''' order by ',sOrderBy );
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -2383,7 +2397,6 @@ where
 END$$
 DELIMITER ;
 
-
 DROP procedure IF EXISTS  spValidateBulkUploadedDataByBatchNumber;
 DELIMITER $$
 
@@ -2414,6 +2427,7 @@ declare Country varchar(255);
 declare PaymentMode varchar(255);
 declare sStatus varchar(255);
 declare DateFormatInExcel varchar(255) default '%d/%m/%Y';
+declare DateFormatRegexString varchar(255) default '(?:(?:(?:0[1-9]|1[0-9]|2[0-8])(\/|\-)(?:0[1-9]|1[0-2])|(?:29|30)(\/|\-)(?:0[13-9]|1[0-2])|31(\/|\-)(?:0[13578]|1[02]))(\/|\-)[1-9][0-9]{3}|29(\/|\-)02(?:(\/|\-)[1-9][0-9](?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00))';
 
 
 declare done int(11);
@@ -2461,12 +2475,15 @@ SET SQL_SAFE_UPDATES=0;
 		--  						ArrearsTo,BusinessDonation,AdditionalDonation,TotalAmount,ReceiptNo,PaymentDate,Region,Country,PaymentMode,
 		--  						sStatus;
 
-        
-        
         IF ( (SELECT COUNT(*) FROM tblgreenbook WHERE CHAR_LENGTH(GBID) = 9 AND sGBID=cast(SUBSTRING(GBID FROM 3)  as unsigned)) <= 0) THEN
 		-- Checking GBID present in DB
 				UPDATE `tblchatrelbulkdata` 
 					SET `sRemarkText` = 'GBID is not present in DB or Invalid GBID ' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF ( (SELECT COUNT(*) FROM tblgreenbook WHERE CHAR_LENGTH(PaidByGBId) = 9 AND sGBID=cast(SUBSTRING(PaidByGBId FROM 3)  as unsigned)) <= 0) THEN
+		-- Checking PaidByGBId present in DB
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'PaidByGBId is not present in DB or Invalid PaidByGBId ' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF ( (SELECT COUNT(*) FROM tblChatrelPayment WHERE schatrelReceiptnumber = ReceiptNo) > 0) THEN
 		-- Checking ReceiptNo is present in DB
@@ -2486,7 +2503,7 @@ SET SQL_SAFE_UPDATES=0;
         ELSEIF (Chatrel is null or TRIM(Chatrel) = '') THEN
         -- Checking Chatrel Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Chatrel Amount cannot be 0 or NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Chatrel Amount cannot be 0 or blank' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF ((TRIM(Chatrel) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
         -- Checking Chatrel Value as required
@@ -2496,7 +2513,7 @@ SET SQL_SAFE_UPDATES=0;
 		ELSEIF (Meal is null or TRIM(Meal) = '') THEN
         -- Checking Meal Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Meal Amount cannot be NULL (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Meal Amount cannot be blank (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF ((TRIM(Meal) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
         -- Checking Meal Value as required
@@ -2506,7 +2523,7 @@ SET SQL_SAFE_UPDATES=0;
 		ELSEIF (Salary is null or TRIM(Salary) = '') THEN
         -- Checking Salary Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Salary Amount cannot be NULL (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Salary Amount cannot be blank (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF ((TRIM(Salary) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
         -- Checking Salary Value as required
@@ -2516,7 +2533,7 @@ SET SQL_SAFE_UPDATES=0;
 		ELSEIF (ArrearsPlusLateFees is null or TRIM(ArrearsPlusLateFees) = '') THEN
         -- Checking ArrearsPlusLateFees Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Arrears Plus Late Fees Amount cannot be NULL (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Arrears Plus Late Fees Amount cannot be blank (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF ((TRIM(ArrearsPlusLateFees) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
         -- Checking ArrearsPlusLateFees Value as required
@@ -2526,7 +2543,7 @@ SET SQL_SAFE_UPDATES=0;
 		ELSEIF (AdditionalDonation is null or TRIM(AdditionalDonation) = '') THEN
         -- Checking AdditionalDonation Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Additional Donation Amount cannot be NULL (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Additional Donation Amount cannot be blank (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF ((TRIM(AdditionalDonation) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
         -- Checking AdditionalDonation Value as required
@@ -2536,7 +2553,7 @@ SET SQL_SAFE_UPDATES=0;
 		ELSEIF (BusinessDonation is null or TRIM(BusinessDonation) = '') THEN
         -- Checking BusinessDonation Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Business Donation Amount cannot be NULL (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Business Donation Amount cannot be blank (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF ((TRIM(BusinessDonation) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
         -- Checking BusinessDonation Value as required
@@ -2546,7 +2563,7 @@ SET SQL_SAFE_UPDATES=0;
 		ELSEIF (TotalAmount is null or TRIM(TotalAmount) = '') THEN
         -- Checking TotalAmount Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Total Amount cannot be NULL (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Total Amount cannot be blank (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF ((TRIM(TotalAmount) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
         -- Checking TotalAmount Value as required
@@ -2561,66 +2578,115 @@ SET SQL_SAFE_UPDATES=0;
         ELSEIF (FinancialYear REGEXP '^-?[0-9]+$' = 0) THEN
         -- Checking FinancialYear Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Financial Year cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Financial Year cannot be blank' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF (ReceiptNo is null or TRIM(ReceiptNo)  = '') THEN
         -- Checking ReceiptNo Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Receipt No cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Receipt No cannot be blank' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
-		ELSEIF (ArrearsFrom is not null AND STR_TO_DATE(ArrearsFrom,DateFormatInExcel) is NULL) THEN
+		ELSEIF ( trim(ArrearsFrom) <> '' AND ArrearsFrom not regexp DateFormatRegexString) THEN 
 				UPDATE `tblchatrelbulkdata` 
 					SET `sRemarkText` = 'Arrears From format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
-		ELSEIF (ArrearsTo is not null AND STR_TO_DATE(ArrearsTo,DateFormatInExcel) is NULL) THEN
+		ELSEIF (trim(ArrearsTo) <> '' AND ArrearsTo not regexp DateFormatRegexString)  THEN
 				UPDATE `tblchatrelbulkdata` 
 					SET `sRemarkText` = 'Arrears To format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF (ChatrelFrom is null or TRIM(ChatrelFrom)  = '') THEN
         -- Checking ChatrelFrom Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Chatrel From cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Chatrel From cannot be blank' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
-		ELSEIF (ChatrelFrom is not null AND STR_TO_DATE(ChatrelFrom,DateFormatInExcel) is NULL) THEN
+		ELSEIF (ChatrelFrom is not null AND ChatrelFrom not regexp DateFormatRegexString) THEN
 				UPDATE `tblchatrelbulkdata` 
 					SET `sRemarkText` = 'Chatrel From format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;		
 		ELSEIF (ChatrelTo is null or TRIM(ChatrelTo)  = '') THEN
         -- Checking ChatrelTo Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Chatrel To cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Chatrel To cannot be blank' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
-		ELSEIF (ChatrelTo is not null AND STR_TO_DATE(ChatrelTo,DateFormatInExcel) is NULL) THEN
+		ELSEIF (ChatrelTo is not null AND ChatrelTo not regexp DateFormatRegexString) THEN
 				UPDATE `tblchatrelbulkdata` 
 					SET `sRemarkText` = 'Chatrel To format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
-                WHERE `tblchatrelbulkdata`.`id` = ID;		
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (PaymentMode is null  or TRIM(PaymentMode) = '') THEN
+        -- Checking PaymentMode Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Payment Mode cannot be blank' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF (PaymentDate is null  or TRIM(PaymentDate) = '') THEN
         -- Checking PaymentDate Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Payment Date cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Payment Date cannot be blank' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
-		ELSEIF (STR_TO_DATE(PaymentDate,DateFormatInExcel) is NULL) THEN
+		ELSEIF (PaymentDate not regexp DateFormatRegexString) THEN
 				UPDATE `tblchatrelbulkdata` 
 					SET `sRemarkText` = 'Payment Date format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF (Region is null   or TRIM(Region) = '') THEN
         -- Checking Region Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Region cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Region cannot be blank' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF ((SELECT COUNT(*) FROM lstauthregion WHERE sAuthRegion = TRIM(Region)) <= 0) THEN
+        -- Checking Country Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Region is not present in DB',  `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF (Country is null   or TRIM(Country) = '') THEN
         -- Checking Country Value as required
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'Country cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'Country cannot be blank' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF ((SELECT COUNT(*) FROM lstCountry WHERE sCountry = TRIM(Country)) <= 0) THEN
+        -- Checking Country Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Country is not present in DB' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (CAST(Chatrel AS decimal(11,2)) +
+				CAST(Meal AS decimal(11,2)) +
+                CAST(Salary AS decimal(11,2)) +
+                CAST(ArrearsPlusLateFees AS decimal(11,2)) +
+                CAST(BusinessDonation AS decimal(11,2)) +
+                CAST(AdditionalDonation AS decimal(11,2))  !=  CAST(TotalAmount AS decimal(11,2))
+                ) THEN
+        -- Checking Total Amount Calculation Validation
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Total Amount Calculation is not correct.' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF ( trim(ArrearsFrom) <> '' AND  ArrearsFrom regexp DateFormatRegexString) THEN 
+         
+				SET @ArrearsFromYear = if(ArrearsFrom LIKE '%-%',Year(STR_TO_DATE(ArrearsFrom, "%d-%m-%Y")),Year(STR_TO_DATE(ArrearsFrom, "%d/%m/%Y")));
+				SET @ArrearsToYear = if(ArrearsTo LIKE '%-%',Year(STR_TO_DATE(ArrearsTo, "%d-%m-%Y")),Year(STR_TO_DATE(ArrearsTo, "%d/%m/%Y")));
+				SET @ArrearsTotalYear = @ArrearsToYear - @ArrearsFromYear;
+				IF(@ArrearsTotalYear > 0) THEN
+					SET @ArrearsFeesPerYear = CAST(CAST(ArrearsPlusLateFees AS decimal(11,2))/@ArrearsTotalYear as decimal(11,2));
+					IF(@ArrearsFeesPerYear >= (CAST(Chatrel AS decimal(11,2)) + CAST(Meal AS decimal(11,2)))) THEN
+						UPDATE `tblchatrelbulkdata` 
+							SET `bValidate` = 1 , `sStatus` = 'Validate Success', `sRemarkText` = null
+						WHERE `tblchatrelbulkdata`.`id` = ID;
+                    ELSE
+						UPDATE `tblchatrelbulkdata` 
+							SET `sRemarkText` = 'Arrears Plus Late Fee Amount is not greater than or equal to (Chatrel + Meal) Amount across Arrears Year.' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+						WHERE `tblchatrelbulkdata`.`id` = ID;
+					END IF;
+				ELSE
+					UPDATE `tblchatrelbulkdata` 
+							SET `sRemarkText` = 'Arrears Year From and To Range is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					WHERE `tblchatrelbulkdata`.`id` = ID;
+				END IF;
+        -- Checking Total Amount Calculation Validation
+				
 		ELSE
 		-- ELSE this tblchatrelbulkdata record is good for save
 				UPDATE `tblchatrelbulkdata` 
-					SET `bValidate` = 1 , `sStatus` = 'Validate Sucess', `sRemarkText` = null
+					SET `bValidate` = 1 , `sStatus` = 'Validate Success', `sRemarkText` = null
                 WHERE `tblchatrelbulkdata`.`id` = ID;
                 -- select ID;
         END IF;
-
+        
       end loop igmLoop;
       close cur1;
 END$$
@@ -2658,10 +2724,13 @@ declare PaymentMode varchar(255);
 declare sStatus varchar(255);
 DECLARE startLoop INT ;
 
+declare DateFormatInExcel varchar(255) default '%d/%m/%Y';
+declare DateFormatRegexString varchar(255) default '(?:(?:(?:0[1-9]|1[0-9]|2[0-8])(\/|\-)(?:0[1-9]|1[0-2])|(?:29|30)(\/|\-)(?:0[13-9]|1[0-2])|31(\/|\-)(?:0[13578]|1[02]))(\/|\-)[1-9][0-9]{3}|29(\/|\-)02(?:(\/|\-)[1-9][0-9](?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00))';
 
 declare done int(11);
-declare ChatrelCountry_str varchar(255);
-declare ChatrelRegion_Id varchar(255);
+
+DECLARE errno INT;
+
 declare cur1 cursor for SELECT 	
 								`tblchatrelbulkdata`.`ID`,
 								`tblchatrelbulkdata`.`GBID`,
@@ -2688,7 +2757,13 @@ declare cur1 cursor for SELECT
 								`tblchatrelbulkdata`.`sStatus`
 							FROM `tblchatrelbulkdata` where sBatchNumber = strBatchNumber and bValidate = 1;
 declare continue handler for not found set done=1;
-
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+		GET CURRENT DIAGNOSTICS CONDITION 1 errno = MYSQL_ERRNO;
+		-- SELECT errno AS MYSQL_ERROR;
+        SET rowsinserted = errno;
+		ROLLBACK;
+    END;
 				-- if finds Data duplicate then exit the Proc
 				IF ( (
 					SELECT COUNT(*) FROM tblChatrelPayment 
@@ -2703,6 +2778,11 @@ declare continue handler for not found set done=1;
 								
 								LEAVE proc_label;
 				END IF;
+
+SET SQL_SAFE_UPDATES=0;
+
+  
+START TRANSACTION;
 
 INSERT INTO `tblchatrelpayment`
 (
@@ -2738,7 +2818,7 @@ SELECT
     null,
     null,
     null,
-    STR_TO_DATE(`tblchatrelbulkdata`.`PaymentDate`,'%d/%m/%Y') as PaymentDate,
+    if(`tblchatrelbulkdata`.`PaymentDate` LIKE '%-%',STR_TO_DATE(`tblchatrelbulkdata`.`PaymentDate`, "%d-%m-%Y"),STR_TO_DATE(`tblchatrelbulkdata`.`PaymentDate`, "%d/%m/%Y")),
     now(),
     1,
 	now(),
@@ -2749,9 +2829,10 @@ SET rowsinserted = ROW_COUNT();
 
 
 SET SQL_SAFE_UPDATES=0;
-    set done = 0;
+
     open cur1;
     igmLoop: loop
+		set done = 0;   
         fetch cur1 into ID,GBID,Name,PaidByGBId,Currency,Chatrel,Meal,Salary,ChatrelFrom,ChatrelTo,FinancialYear,ArrearsPlusLateFees,ArrearsFrom,
 								ArrearsTo,BusinessDonation,AdditionalDonation,TotalAmount,ReceiptNo,PaymentDate,Region,Country,PaymentMode,
 								sStatus;
@@ -2763,13 +2844,14 @@ SET SQL_SAFE_UPDATES=0;
 		--  						sStatus;
         
         -- Insert lnk Tables with ID
+			SELECT lstauthregion.ID into @ChatrelRegion_Id from lstauthregion where lstauthregion.sAuthRegion = Region limit 1;		
 			SELECT tblChatrelPayment.Id into @ChatrelPaymentID_var FROM tblChatrelPayment WHERE sChatrelReceiptNumber = ReceiptNo limit 1;		
-			SELECT lstcountry.sCountryID into ChatrelCountry_str from lstcountry where lstcountry.sCountry = Country;
-			SELECT lstauthregion.Id into ChatrelRegion_Id from lstauthregion where lstauthregion.sAuthRegion = Region;
-
-			IF(ArrearsFrom is not null or ArrearsTo is not null) THEN
-				SET @ArrearsFromYear = Year(STR_TO_DATE(ArrearsFrom, "%d/%m/%Y"));
-                SET @ArrearsToYear = Year(STR_TO_DATE(ArrearsTo, "%d/%m/%Y"));
+		    SELECT lstcountry.sCountryID into @ChatrelCountry_str from lstcountry where lstcountry.sCountry = Country limit 1;		
+			
+				-- select trim(ArrearsFrom) is not null AND ArrearsFrom regexp DateFormatRegexString;
+            IF(trim(ArrearsFrom) is not null AND ArrearsFrom regexp DateFormatRegexString) THEN
+				SET @ArrearsFromYear = if(ArrearsFrom LIKE '%-%',Year(STR_TO_DATE(ArrearsFrom, "%d-%m-%Y")),Year(STR_TO_DATE(ArrearsFrom, "%d/%m/%Y")));
+                SET @ArrearsToYear = if(ArrearsTo LIKE '%-%',Year(STR_TO_DATE(ArrearsTo, "%d-%m-%Y")),Year(STR_TO_DATE(ArrearsTo, "%d/%m/%Y")));
                 SET @ArrearsTotalYear = @ArrearsToYear - @ArrearsFromYear;
                 SET @ArrearsFeesPerYear = CAST(CAST(ArrearsPlusLateFees AS decimal(11,2))/@ArrearsTotalYear as decimal(11,2));
                 
@@ -2783,9 +2865,12 @@ SET SQL_SAFE_UPDATES=0;
                     SET @ArrearsToDate = concat('31/03/',@ArrearsFromYear + 1);
                     SET @ArrearsChatrelFees = CAST(Chatrel AS decimal(11,2));
                     SET @ArrearsMealFees = CAST(Meal AS decimal(11,2));
-                    SET @ArrearsChatrelSalaryAmt = @ArrearsFeesPerYear - (@ArrearsChatrelFees + @ArrearsMealFees);
-					
-					-- SELECT @ArrearsFromDate, @ArrearsToDate, @ArrearsFeesPerYear;
+					SET @ArrearsSalaryFee = IF(@ArrearsChatrelFees+@ArrearsMealFees > @ArrearsFeesPerYear, 
+											0, 
+                                            @ArrearsFeesPerYear - (@ArrearsChatrelFees+@ArrearsMealFees));
+                    
+                    
+					 -- SELECT @ArrearsFromDate, @ArrearsToDate, @ArrearsFeesPerYear;
 						INSERT INTO `lnkgbchatrel`
 						(
 							`chatrelpaymentID`,
@@ -2825,33 +2910,36 @@ SET SQL_SAFE_UPDATES=0;
 							NULL,
 							NULL,
 							@ArrearsFeesPerYear,
-							STR_TO_DATE(@ArrearsFromDate,'%d/%m/%Y'),
-							STR_TO_DATE(@ArrearsToDate,'%d/%m/%Y'),
-							@ArrearsChatrelSalaryAmt,
-							null,
-							null,
+                            if(@ArrearsFromDate LIKE '%-%',STR_TO_DATE(@ArrearsFromDate, "%d-%m-%Y"),STR_TO_DATE(@ArrearsFromDate, "%d/%m/%Y")),
+                            if(@ArrearsToDate LIKE '%-%',STR_TO_DATE(@ArrearsToDate, "%d-%m-%Y"),STR_TO_DATE(@ArrearsToDate, "%d/%m/%Y")),
+							@ArrearsSalaryFee,
+							NULL,
+							NULL,
 							@ArrearsFeesPerYear,
 							ReceiptNo,
-							ChatrelRegion_Id,
-							ChatrelCountry_str,
+							@ChatrelRegion_Id,
+							@ChatrelCountry_str,
 							Currency,
 							Currency,
 							1,
 							cast(SUBSTRING(PaidByGBId FROM 3)  as unsigned),
-							STR_TO_DATE(PaymentDate,'%d/%m/%Y'),
+							if(PaymentDate LIKE '%-%',STR_TO_DATE(PaymentDate, "%d-%m-%Y"),STR_TO_DATE(PaymentDate, "%d/%m/%Y")),
 							now(),
 							1,
 							now(),
 							1
 						);
+                        
+                        
                     
                     SET @ArrearsFromYear = @ArrearsFromYear + 1;
 				SET startLoop = startLoop + 1;
 				ITERATE loop_label;   
 				END LOOP;
-                
-                
-            END IF;
+            END IF;     
+
+            
+            -- select @ChatrelPaymentID_var,cast(SUBSTRING(GBID FROM 3)  as unsigned),Chatrel,Meal,FinancialYear;
 			INSERT INTO `lnkgbchatrel`
 			(
 				`chatrelpaymentID`,
@@ -2890,24 +2978,21 @@ SET SQL_SAFE_UPDATES=0;
 				FinancialYear,
 				NULL,
 				NULL,
-				-- ArrearsPlusLateFees,
-				-- ArrearsFrom,
-				-- ArrearsTo,
 				NULL,
 				NULL,
 				NULL,
 				Salary,
-				STR_TO_DATE(ChatrelFrom,'%d/%m/%Y'),
-				STR_TO_DATE(ChatrelTo,'%d/%m/%Y'),
+				if(ChatrelFrom LIKE '%-%',STR_TO_DATE(ChatrelFrom, "%d-%m-%Y"),STR_TO_DATE(ChatrelFrom, "%d/%m/%Y")),
+				if(ChatrelTo LIKE '%-%',STR_TO_DATE(ChatrelTo, "%d-%m-%Y"),STR_TO_DATE(ChatrelTo, "%d/%m/%Y")),
 				cast(Chatrel as decimal(11,2)) + cast(Meal as decimal(11,2)) + cast(Salary as decimal(11,2)),
 				ReceiptNo,
-				ChatrelRegion_Id,
-				ChatrelCountry_str,
+				@ChatrelRegion_Id,
+				@ChatrelCountry_str,
 				Currency,
 				Currency,
 				1,
 				cast(SUBSTRING(PaidByGBId FROM 3)  as unsigned),
-				STR_TO_DATE(PaymentDate,'%d/%m/%Y'),
+				if(PaymentDate LIKE '%-%',STR_TO_DATE(PaymentDate, "%d-%m-%Y"),STR_TO_DATE(PaymentDate, "%d/%m/%Y")),
 				now(),
 				1,
 				now(),
@@ -2915,9 +3000,11 @@ SET SQL_SAFE_UPDATES=0;
 			);
             
             -- updating sPaidUntil By sGBId in tblgreenbook
-            Update tblgreenbook 
-			set sPaidUntil = FinancialYear
-            where sGBId = cast(SUBSTRING(GBID FROM 3)  as unsigned);
+            -- select sGBID, FinancialYear, now() from tblgreenbook where sGBID=cast(SUBSTRING(GBID FROM 3)  as unsigned);
+            
+             Update tblgreenbook 
+			 set tblgreenbook.sPaidUntil = FinancialYear
+             where tblgreenbook.sGBId = cast(cast(SUBSTRING(GBID FROM 3)  as unsigned) as CHAR);
 
 			IF	(cast(AdditionalDonation as decimal(11,2)) != 0 or cast(BusinessDonation as decimal(11,2)) != 0) THEN
 				INSERT INTO `lnkgbchatreldonation`
@@ -2946,28 +3033,26 @@ SET SQL_SAFE_UPDATES=0;
 					AdditionalDonation,
 					BusinessDonation,
 					ReceiptNo,
-					ChatrelRegion_Id,
-					ChatrelCountry_str,
+					@ChatrelRegion_Id,
+					@ChatrelCountry_str,
 					Currency,
 					Currency,
 					1,
 					cast(SUBSTRING(PaidByGBId FROM 3)  as unsigned),
-					STR_TO_DATE(PaymentDate,'%d/%m/%Y'),
+					if(PaymentDate LIKE '%-%',STR_TO_DATE(PaymentDate, "%d-%m-%Y"),STR_TO_DATE(PaymentDate, "%d/%m/%Y")),
 					now(),
 					1,
 					now(),
 					1
 				);
 			END IF;
-            
 
       END LOOP igmLoop;
       CLOSE cur1;
+COMMIT;
      SELECT rowsinserted;
 END$$
 DELIMITER ;
-
-
 
 
 CREATE INDEX MDB_GBID ON tblmadeb(sGBID);

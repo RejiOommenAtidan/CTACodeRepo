@@ -77,7 +77,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                                     `lnkgbchatrel`.`nEnteredBy`,
                                     `lnkgbchatrel`.`dtUpdated`,
                                     `lnkgbchatrel`.`nUpdatedBy`
-                                FROM `ctadb`.`lnkgbchatrel`
+                                FROM `lnkgbchatrel`
                                 LIMIT @limit;";
             using (var command = new MySqlCommand(sql))
             {
@@ -115,7 +115,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                                     `lnkgbchatrel`.`nEnteredBy`,
                                     `lnkgbchatrel`.`dtUpdated`,
                                     `lnkgbchatrel`.`nUpdatedBy`
-                                FROM `ctadb`.`lnkgbchatrel`
+                                FROM `lnkgbchatrel`
                                 WHERE Id = @Id;";
             using (var command = new MySqlCommand(sql))
             {
@@ -153,7 +153,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                                     `lnkgbchatrel`.`nEnteredBy`,
                                     `lnkgbchatrel`.`dtUpdated`,
                                     `lnkgbchatrel`.`nUpdatedBy`
-                                FROM `ctadb`.`lnkgbchatrel`
+                                FROM `lnkgbchatrel`
                                 WHERE sGBID = @sGBID;";
             using (var command = new MySqlCommand(sql))
             {
@@ -191,7 +191,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                                     `lnkgbchatrel`.`nEnteredBy`,
                                     `lnkgbchatrel`.`dtUpdated`,
                                     `lnkgbchatrel`.`nUpdatedBy`
-                                FROM `ctadb`.`lnkgbchatrel`
+                                FROM `lnkgbchatrel`
                                 WHERE sGBID = @sGBID
                                 AND nChatrelYear = @year;";
             using (var command = new MySqlCommand(sql))
@@ -207,7 +207,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             string sql = @"SELECT 
                                 nAuthRegionID 
                            FROM 
-                                ctadb.lnkgbchatrel 
+                                lnkgbchatrel 
                            WHERE 
                                 sGBID = @sGBID
                            ORDER BY 

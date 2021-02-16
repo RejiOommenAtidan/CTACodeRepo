@@ -27,7 +27,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export const EditDialog = (props) => {
 
-  // console.log("Props object", props);
+  // //console.log("Props object", props);
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors, formState } = useForm();
   const [authRegion, setAuthRegion] = useState(props.authRegionObj.authRegion);
@@ -53,7 +53,7 @@ export const EditDialog = (props) => {
     }
   })
 
-  // console.log("Country select is : ", valueCountry);
+  // //console.log("Country select is : ", valueCountry);
 
   const handleSubmitEditRecord = () => {
     props.editAPICall(
@@ -84,7 +84,7 @@ export const EditDialog = (props) => {
                     onChange={
                       (e, value) => {
                         if (value !== null) {
-                          console.log(value.sCountryID);
+                          //console.log(value.sCountryID);
                           setCountryID(value.sCountryID);
                         }
                         else {
@@ -132,7 +132,7 @@ export const EditDialog = (props) => {
                     native = {false}
                     children = {opts}
                     value = {value}
-                    onChange={(e) => { console.log(e.target.value);
+                    onChange={(e) => { //console.log(e.target.value);
                       setCountryID(e.target.value) }}
                   >
                   </Select>
@@ -264,7 +264,7 @@ export const AddDialog = (props) => {
                     onChange={
                       (e, value) => {
                         if (value !== null) {
-                          console.log(value.sCountryID);
+                          //console.log(value.sCountryID);
                           setCountryID(value.sCountryID);
                         }
                         else {
@@ -378,10 +378,10 @@ export const AddDialog = (props) => {
 }
 
 const Children = (props) => {
-  console.log("Children");
+  //console.log("Children");
   return (props.dataAPI.map((data) => {
     debugger;
-    console.log(data);
+    //console.log(data);
     return (<option>{data.sCountryID}</option>)
   }));
 }

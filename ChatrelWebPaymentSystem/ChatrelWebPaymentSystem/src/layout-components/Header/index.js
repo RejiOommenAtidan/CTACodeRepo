@@ -27,7 +27,7 @@ const Header = (props) => {
   
 
   const responsive = useMediaQuery({query: '(max-width: 1100px)'})
-  console.log(responsive);
+  //console.log(responsive);
 
   const {
     headerShadow,
@@ -37,20 +37,29 @@ const Header = (props) => {
   } = props;
   let history = useHistory();
   let dispatch = useDispatch();
+  const userObj = useSelector(state => state.GLoginReducer.oGoogle);
+  if(userObj===null){
+    //history.push("/Login");
+    window.location='/Login';
+   }
+
+
+
   const toggleSidebarMobile = () => {
     setSidebarToggleMobile(!sidebarToggleMobile);
   };
- // console.log(window.location.pathname);
+ // //console.log(window.location.pathname);
     const[location,setLocation]=React.useState("");
-    const userObj = useSelector(state => state.GLoginReducer.oGoogle);
-    console.log(useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails));
+   // const userObj = useSelector(state => state.GLoginReducer.oGoogle);
+    //console.log(useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails));
 const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
-const currentLocation = useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
 
-console.log(userObj);
+
+//console.log(userObj);
 if(userObj===null){
- history.push("/login");
+ history.push("/Login");
 } 
+const currentLocation = useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
 const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
 const paidByName= useSelector(state => state.GBDetailsReducer.oGBDetails.sName);
 const [chatrelPending, setChatrelPending] = React.useState(null);
@@ -60,9 +69,9 @@ const [paymentData, setPaymentData] = React.useState();
 const [outstanding, setOutstanding] = useState(true);
  
 const makePayment = (obj)=> {
- // console.log("Inside Make payment method for " , obj, data)
+ // //console.log("Inside Make payment method for " , obj, data)
   dispatch(storeCurrentGBDetails(obj));
-  history.push('/PaymentPage');
+  history.push('/Chatrel');
 }
 const selfPayment=() => {
  
@@ -70,26 +79,26 @@ const selfPayment=() => {
 }
 const locationFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
 const isSelfSelected =()=>{
-  if(locationFrom=="Self Chatrel" && window.location.pathname=="/PaymentPage"){
+  if(locationFrom=="Self Chatrel" && window.location.pathname=="/Chatrel"){
     return true
   }
   else {
     return false
   }
 }
-const isFamilySelected =()=>{
-  if(locationFrom=="Chatrel for Family" && window.location.pathname=="/PaymentPage"){
-    return true
-  }
-  else if(window.location.pathname=="/Family") {
-    return true
-  }
-  else{
-    return false
-  }
-}
+// const isFamilySelected =()=>{
+//   if(locationFrom=="Chatrel for Family" && window.location.pathname=="/Chatrel"){
+//     return true
+//   }
+//   else if(window.location.pathname=="/Family") {
+//     return true
+//   }
+//   else{
+//     return false
+//   }
+// }
 const isFriendsSelected =()=>{
-  if(locationFrom=="Chatrel for Friends" && window.location.pathname=="/PaymentPage"){
+  if(locationFrom=="Chatrel for Friends & Family" && window.location.pathname=="/Chatrel"){
     return true
   }
   else if(window.location.pathname=="/Friends") {
@@ -175,13 +184,13 @@ useEffect(() => {
                             <ListItem button onClick={()=>{selfPayment();}} selected={isSelfSelected()} >
                                 <span>Self Chatrel</span>
                             </ListItem>
-                            <ListItem button onClick={()=>{history.push('/Family');}}  selected={isFamilySelected()} >               
+                            {/* <ListItem button onClick={()=>{history.push('/Family');}}  selected={isFamilySelected()} >               
                                 <span>Family Chatrel </span>
-                            </ListItem>
+                            </ListItem> */}
                             <ListItem button onClick={()=>{history.push('/Friends');}}  selected={isFriendsSelected()} >
-                                <span> Friend's Chatrel</span>
+                                <span> Friends & Family</span>
                             </ListItem>
-                            <ListItem button onClick={()=>{history.push('/PaymentHistory');}}  selected={window.location.pathname == '/PaymentHistory'?true:false } >
+                            <ListItem button onClick={()=>{history.push('/ChatrelHistory');}}  selected={window.location.pathname == '/ChatrelHistory'?true:false } >
                                 <span> Chatrel History </span>
                             </ListItem>
                             <ListItem button onClick={()=>{history.push('/FileDispute');}}  selected={window.location.pathname == '/FileDispute'?true:false} >

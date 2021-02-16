@@ -2,7 +2,6 @@
 {
     partial class CTAApp
     {
-
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -115,8 +114,8 @@
             this.txtConnectionString.Name = "txtConnectionString";
             this.txtConnectionString.Size = new System.Drawing.Size(639, 23);
             this.txtConnectionString.TabIndex = 9;
-            this.txtConnectionString.Text = "server=ctamysqldb01.mysql.database.azure.com;port=3306;database=ctadb;uid=ctamysq" +
-    "ldba@ctamysqldb01;pwd=ekxp9qvo$12na;sslmode=preferred;";
+            this.txtConnectionString.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=ctadb08022021; " +
+    "Uid=ctamysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;";
             // 
             // label1
             // 
@@ -225,8 +224,6 @@
             // checkBoxDummyProfile
             // 
             this.checkBoxDummyProfile.AutoSize = true;
-            this.checkBoxDummyProfile.Checked = true;
-            this.checkBoxDummyProfile.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxDummyProfile.Location = new System.Drawing.Point(270, 53);
             this.checkBoxDummyProfile.Name = "checkBoxDummyProfile";
             this.checkBoxDummyProfile.Size = new System.Drawing.Size(117, 19);

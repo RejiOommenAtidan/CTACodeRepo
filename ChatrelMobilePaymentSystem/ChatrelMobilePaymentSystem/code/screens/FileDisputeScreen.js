@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -8,13 +8,13 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import { storeJWTToken } from '../store/actions/GBDetailsAction';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import {storeJWTToken} from '../store/actions/GBDetailsAction';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { Platform } from 'react-native';
-import { Input, Card, Icon } from 'react-native-elements';
+import {Platform} from 'react-native';
+import {Input, Card, Icon, Image} from 'react-native-elements';
 import DocumentPicker from 'react-native-document-picker';
-import { Button } from 'react-native-elements';
+import {Button} from 'react-native-elements';
 import RNFS from 'react-native-fs';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
@@ -22,7 +22,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { useForm, Controller } from 'react-hook-form';
+import {useForm, Controller} from 'react-hook-form';
 import {
   errorComponent,
   errorContainer,
@@ -31,37 +31,85 @@ import {
   oActivityIndicatorStyle,
   oRequiredStyles,
 } from '../constants/CommonConfig';
-import { useIsFocused } from '@react-navigation/native';
-import { useSelector, useDispatch } from 'react-redux';
-import { Loader } from '../components/Loader';
+import {useIsFocused} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
+import {Loader} from '../components/Loader';
 import axios from 'axios';
-import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import {RNCamera} from 'react-native-camera';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const FileDisputeScreen = (props) => {
+  const nNoOfFilesAllowed = 2;
+  const sNoOfFilesAllowed = 'two files';
+  const nFileSizeLimitInMB = 5;
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [bLoader, setbLoader] = useState(false);
-  const { control, handleSubmit, errors } = useForm();
-  const [sDisputeSingleFile, setsDisputeSingleFile] = useState('');
-  const [sFileName, setsFileName] = useState(null);
-  const [sFileType, setsFileType] = useState('');
+  const {control, handleSubmit, errors} = useForm();
+  // const [sDisputeSingleFile, setsDisputeSingleFile] = useState('');
+  // const [sFileName, setsFileName] = useState(null);
+  // const [sFileType, setsFileType] = useState('');
   // const [sDisputeSubject, setsDisputeSubject] = useState('');
+  const [bCameraVisible, setbCameraVisible] = useState(false);
+  const [bShowPreview, setbShowPreview] = useState(false);
+  const [sPhotoBase64String, setsPhotoBase64String] = useState(false);
+  let singleImageObject = {};
+  let singleImageArray = [];
+  let sImageName = 'CTA Dispute Capture';
+  let sImageFileExtension = 'jpg';
+  const showCameraView = () => {
+    setbCameraVisible(true);
+    setaFileResults([]);
+  };
+  const togglebCameraVisible = () => {
+    setbCameraVisible(!bCameraVisible);
+  };
+  let bContinueLoop = true;
+  const [aFileResults, setaFileResults] = useState([]);
   const [sDisputeMessage, setsDisputeMessage] = useState('');
   //For GB ID
   const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
-  const [sGBID, setGBID] = React.useState(oGBDetails.sGBID);
+  const [sGBID, setGBID] = React.useState(oGBDetails?.sGBID);
 
   //For Name
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
-  const [sName, setName] = React.useState(oGoogle.user.name);
+  const [sName, setName] = React.useState(oGoogle?.user?.name);
 
-  const nNumberOfLines = 9;
+  const nNumberOfLines = 8;
+
+  const ref = React.createRef();
+
+  const takePicture = async () => {
+    if (ref.current) {
+      setbShowPreview(false);
+      singleImageObject = {};
+      const options = {quality: 0.75, base64: true};
+      const data = await ref.current.takePictureAsync(options);
+      setbCameraVisible(false);
+      setbShowPreview(true);
+      setsPhotoBase64String(data.uri);
+      var sizeInBytes =
+        4 * Math.ceil(data.base64.length / 3) * 0.5624896334383812;
+      var sizeInKb = sizeInBytes / 1024;
+      var sizeInMb = sizeInMb / 1024;
+      singleImageObject.sFileExtension = sImageFileExtension;
+      singleImageObject.binFileDoc = data.base64;
+      singleImageObject.sTitle = sImageName;
+      singleImageObject.size = sizeInMb;
+      let myTempArray = [];
+      myTempArray.push(singleImageObject);
+      setaFileResults(myTempArray);
+    }
+  };
 
   const handleDispute = () => {
-    if (sDisputeSingleFile === '') {
+    ////Check for File Length zero or empty condition
+    //debugger;
+    debugger;
+    if (aFileResults.length === 0 || aFileResults === []) {
       Alert.alert(
-        'Attention required',
+        'Attention Required',
         'Please select a file',
         [
           {
@@ -70,62 +118,158 @@ export const FileDisputeScreen = (props) => {
             style: 'default',
           },
         ],
-        { cancelable: true },
+        {cancelable: true},
       );
       return;
     }
 
-    setbLoader(true);
+    ////Check for File Count
 
-    const submit = {
-      sGBID: sGBID,
-      sName: sName,
-      description: sDisputeMessage,
-      sTitle: sFileName.split(".").shift(),
-      file: sDisputeSingleFile,
-      sFileExtension: sFileType,
-    };
+    // if (aFileResults.length > nNoOfFilesAllowed) {
+    //   //debugger;
+    //   Alert.alert(
+    //     'Attention Required',
+    //     'Maximum ' + sNoOfFilesAllowed + ' Allowed.',
+    //     [
+    //       {
+    //         text: 'Ok',
+    //         onPress: () => {
+    //           true;
+    //         },
+    //         style: 'default',
+    //       },
+    //     ],
+    //     {cancelable: false},
+    //   );
+    //   return;
+    // }
 
-    // console.log(submit);
-    // setbLoader(false);
+    ////Check for File Size
 
-    axios
-      .post(`/ChatrelPayment/SubmitDispute`, submit)
-      .then((resp) => {
-        if (resp.status === 200) {
-          setsDisputeMessage("");
-          setsFileName(null);
-          setsDisputeSingleFile("");
-          setbLoader(false);
-          const token = resp.data.token;
-          dispatch(storeJWTToken(token));
-          Alert.alert(
-            'Success',
-            'Thanks for uploading. Your details are sent to the CTA Team & they shall get in touch with you soon.',
-            [
-              {
-                text: 'Ok',
-                onPress: () => true,
-                style: 'default',
-              }
-            ],
-            { cancelable: true },
-          );
-        } else {
-          setbLoader(false);
-          alert('Something went wrong, please try again late');
-        }
-      })
-      .catch((error) => {
-        setbLoader(false);
-        alert('Something went wrong, please try again later');
-        console.log(error);
-      });
+    // for (var singleFile in aFileResults) {
+    //   //debugger;
+    //   if (singleFile.size === nNoOfFilesAllowed * 1024 * 1024) {
+    //     Alert.alert(
+    //       'Attention Required',
+    //       'Maximum file size limit: ' + nFileSizeLimitInMB + ' MB.',
+    //       [
+    //         {
+    //           text: 'Ok',
+    //           onPress: () => true,
+    //           style: 'default',
+    //         },
+    //       ],
+    //       {cancelable: true},
+    //     );
+    //     return;
+    //   }
+    // }
+
+    // bContinueLoop = true;
+    // aFileResults.every((singleFile, index) => {
+    //   //debugger;
+    //   if (singleFile.size > nFileSizeLimitInMB * 1024 * 1024) {
+    //     bContinueLoop = false;
+    //     Alert.alert(
+    //       'Attention Required',
+    //       'Maximum file size limit: ' + nFileSizeLimitInMB + ' MB.',
+    //       [
+    //         {
+    //           text: 'Ok',
+    //           onPress: () => {
+    //             true;
+    //           },
+    //           style: 'default',
+    //         },
+    //       ],
+    //       {cancelable: false},
+    //     );
+    //     return false;
+    //   }
+    // });
+
+    if (bContinueLoop) {
+      setbLoader(true);
+      debugger;
+      const submit = {
+        sGBID: sGBID,
+        sName: sName,
+        description: sDisputeMessage,
+        aFileResults: aFileResults,
+      };
+      //console.log('Final Object');
+      //console.log(submit);
+      // setbLoader(false);
+
+      // Alert.alert(
+      //   'Success',
+      //   'Object Created.',
+      //   [
+      //     {
+      //       text: 'Ok',
+      //       onPress: () => true,
+      //       style: 'default',
+      //     },
+      //   ],
+      //   {cancelable: false},
+      // );
+
+      debugger;
+
+      axios
+        .post(`/ChatrelPayment/SubmitDispute`, submit)
+        .then((resp) => {
+          if (resp.status === 200) {
+            debugger;
+            setsDisputeMessage('');
+            setaFileResults([]);
+            setbCameraVisible(false);
+            setbShowPreview(false);
+            setbLoader(false);
+            const oSession = {
+              sJwtToken: resp.data.token,
+              bSession: true,
+            };
+            dispatch(storeJWTToken(oSession));
+            Alert.alert(
+              'Success',
+              'Thanks for uploading. Your details are sent to the CTA Team & they shall get in touch with you soon.',
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => true,
+                  style: 'default',
+                },
+              ],
+              {cancelable: false},
+            );
+          } else {
+            setbLoader(false);
+            alert('Something went wrong, please try again later.');
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            // const oSession = {
+            //   sJwtToken: '',
+            //   bSession: false,
+            // };
+            // dispatch(storeJWTToken(oSession));
+          } else {
+            alert('Something went wrong, please try again later.');
+          }
+        });
+    }
   };
 
-  const selectOneFile = async () => {
+  const selectMultipleFile = async () => {
+    //Opening Document Picker for selection of multiple file
+    setaFileResults([]);
+    setbShowPreview(false);
+    setbCameraVisible(false);
+    bContinueLoop = true;
     try {
-      const res = await DocumentPicker.pick({
+      const aResults = await DocumentPicker.pickMultiple({
         type: [
           DocumentPicker.types.doc,
           DocumentPicker.types.docx,
@@ -133,45 +277,138 @@ export const FileDisputeScreen = (props) => {
           DocumentPicker.types.images,
         ],
       });
+      ////debugger;
+      for (const singleResult of aResults) {
+        console.log('Single result: ' + singleResult);
+        //Printing the log related to the file
+        //console.log('res : ' + JSON.stringify(singleResult));
+        //// console.log('OG URI : ' + singleResult.uri);
+        //console.log('Type : ' + singleResult.type);
+        //console.log('File Name : ' + singleResult.name);
+        //console.log('File Size : ' + singleResult.size);
+        const uri = Platform.select({
+          android: singleResult.uri,
+          ios: decodeURIComponent(singleResult.uri)?.replace?.('file://', ''),
+        });
+        //console.log('URI Platform Wise: ' + uri);
+        RNFS.readFile(uri, 'base64').then((singleFileBase64Result) => {
+          ////debugger;
+          //console.log('Base 64 String File Wise: ' + singleFileBase64Result);
+          singleResult.binFileDoc = singleFileBase64Result;
+          singleResult.sFileExtension = singleResult.name.split('.').pop();
+        });
+        singleResult.sTitle = singleResult.name;
+      }
 
-      //TODO:
-      //if file size less than 2mb then accept
-      //else
-      //show feedback and set all to start state
+      if (aResults.length > nNoOfFilesAllowed) {
+        //debugger;
+        bContinueLoop = false;
+        Alert.alert(
+          'Attention Required',
+          'Maximum ' + sNoOfFilesAllowed + ' Allowed.',
+          [
+            {
+              text: 'Ok',
+              onPress: () => {
+                true;
+              },
+              style: 'default',
+            },
+          ],
+          {cancelable: false},
+        );
+        return;
+      }
 
-      const uri = Platform.select({
-        android: res.uri,
-        ios: decodeURIComponent(res.uri)?.replace?.('file://', ''),
+      aResults.every((singleFile, index) => {
+        //debugger;
+        if (singleFile.size > nFileSizeLimitInMB * 1024 * 1024) {
+          bContinueLoop = false;
+          Alert.alert(
+            'Attention Required',
+            'Maximum file size limit: ' + nFileSizeLimitInMB + ' MB.',
+            [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  true;
+                },
+                style: 'default',
+              },
+            ],
+            {cancelable: false},
+          );
+          return false;
+        }
       });
+      if (bContinueLoop) setaFileResults(aResults);
 
-      console.log("uri: " + uri);
-
-      RNFS.readFile(uri, 'base64').then((result) => {
-        //console.log(result)
-        setsDisputeSingleFile(result);
-      });
-      //setsFileType(res.type);
-
-      setsFileType(res.name.split('.').pop());
-      setsFileName(res.name);
-
+      //console.log(aResults);
     } catch (err) {
       //Handling any exception (If any)
       if (DocumentPicker.isCancel(err)) {
-        //If user canceled the document selection & set all to start state
-        console.info('File Not Selected for Uploading');
-        setsDisputeSingleFile('');
-        setsFileName(null);
-        setsFileType('');
+        //If user canceled the document selection
+        console.log('Canceled from multiple doc picker');
       } else {
-        console.info('Unknown Error: ' + JSON.stringify(err));
+        //For Unknown Error
+        console.log('Unknown Error: ' + JSON.stringify(err));
+        //throw err;
       }
     }
   };
 
+  // const selectOneFile = async () => {
+  //   try {
+  //     const res = await DocumentPicker.pick({
+  //       type: [
+  //         DocumentPicker.types.doc,
+  //         DocumentPicker.types.docx,
+  //         DocumentPicker.types.pdf,
+  //         DocumentPicker.types.images,
+  //       ],
+  //     });
+
+  //     //TODO:
+  //     //if file size less than 2mb then accept
+  //     //else
+  //     //show feedback and set all to start state
+
+  //     const uri = Platform.select({
+  //       android: res.uri,
+  //       ios: decodeURIComponent(res.uri)?.replace?.('file://', ''),
+  //     });
+
+  //     console.log('uri: ' + uri);
+
+  //     RNFS.readFile(uri, 'base64').then((result) => {
+  //       //console.log(result)
+  //       setsDisputeSingleFile(result);
+  //     });
+  //     //setsFileType(res.type);
+
+  //     setsFileType(res.name.split('.').pop());
+  //     setsFileName(res.name);
+  //   } catch (err) {
+  //     //Handling any exception (If any)
+  //     if (DocumentPicker.isCancel(err)) {
+  //       //If user canceled the document selection & set all to start state
+  //       console.info('File Not Selected for Uploading');
+  //       setsDisputeSingleFile('');
+  //       setsFileName(null);
+  //       setsFileType('');
+  //     } else {
+  //       console.info('Unknown Error: ' + JSON.stringify(err));
+  //     }
+  //   }
+  // };
+
   useEffect(() => {
     if (isFocused) {
       setbLoader(false);
+      setsDisputeMessage('');
+      setaFileResults([]);
+      setbShowPreview(false);
+      setbCameraVisible(false);
       console.log('File Dispute Called');
     }
   }, [isFocused]);
@@ -195,8 +432,7 @@ export const FileDisputeScreen = (props) => {
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}>
       <View style={styles.mainContainer}>
-        <Loader
-          loading={bLoader} />
+        <Loader loading={bLoader} />
         {/*<View style={styles.headingContainer}>
           <Text style={styles.headingComponent}>Submit a Dispute</Text>
     </View>*/}
@@ -259,14 +495,14 @@ export const FileDisputeScreen = (props) => {
             <Text>
               <Text style={styles.enterMessagelabelComponent}>
                 ENTER DESCRIPTION
-                </Text>
+              </Text>
               <Text style={oRequiredStyles}>*</Text>
             </Text>
           </View>
           <View style={styles.messageContainer}>
             <Controller
               control={control}
-              render={({ onChange, onBlur, value }) => (
+              render={({onChange, onBlur, value}) => (
                 <Input
                   value={sDisputeMessage}
                   onBlur={onBlur}
@@ -276,7 +512,7 @@ export const FileDisputeScreen = (props) => {
                   }}
                   placeholder="Description"
                   placeholderTextColor={Colors.grey}
-                  autoFocus={false}
+                  //autoFocus={true}
                   autoCapitalize={'none'}
                   autoCompleteType={'off'}
                   autoCorrect={false}
@@ -305,12 +541,12 @@ export const FileDisputeScreen = (props) => {
                 />
               )}
               name="name_sDisputeMessage"
-              rules={{ required: true }}
+              rules={{required: true}}
               defaultValue=""
             />
             {errors.name_sDisputeMessage && (
-              <View style={{ ...errorContainer }}>
-                <Text style={errorComponent}>Please enter a description</Text>
+              <View style={{...errorContainer}}>
+                <Text style={errorComponent}>Please enter a Description.</Text>
               </View>
             )}
           </View>
@@ -318,7 +554,7 @@ export const FileDisputeScreen = (props) => {
             <Text>
               <Text style={styles.attachImageLabelComponent}>
                 ATTACH DOCUMENT
-                </Text>
+              </Text>
               <Text style={oRequiredStyles}>*</Text>
             </Text>
           </View>
@@ -328,12 +564,12 @@ export const FileDisputeScreen = (props) => {
               icon={{
                 type: 'font-awesome',
                 name: 'paperclip',
-                color: Colors.blue,
+                color: Colors.ChatrelInfoBlue,
               }}
               title="UPLOAD DOCUMENT"
               type="outline"
               titleStyle={{
-                color: Colors.blue,
+                color: Colors.ChatrelInfoBlue,
                 fontFamily: sFontName,
                 fontStyle: 'normal',
                 fontWeight: 'normal',
@@ -343,13 +579,135 @@ export const FileDisputeScreen = (props) => {
                 borderWidth: 1,
                 marginVertical: hp(1),
               }}
-              onPress={selectOneFile}
+              onPress={selectMultipleFile}
             />
+            {!bCameraVisible && (
+              <Button
+                iconRight
+                icon={{
+                  type: 'feather',
+                  name: 'camera',
+                  color: Colors.ChatrelInfoBlue,
+                }}
+                title="TAKE PHOTO"
+                type="outline"
+                titleStyle={{
+                  color: Colors.ChatrelInfoBlue,
+                  fontFamily: sFontName,
+                  fontStyle: 'normal',
+                  fontWeight: 'normal',
+                }}
+                buttonStyle={{
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  marginVertical: hp(1),
+                }}
+                onPress={showCameraView}
+              />
+            )}
+            {bCameraVisible && (
+              <View
+                style={{
+                  marginVertical: hp(7.5),
+                  flex: 1,
+                  height: hp(50),
+                }}>
+                <RNCamera
+                  style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    // height: hp(50),
+                    // width:200
+                    // marginHorizontal:
+                    //   Dimensions.get('window').width *
+                    //   Resolution.nWidthScreenMargin,
+                  }}
+                  useNativeZoom
+                  ref={ref}
+                  type={RNCamera.Constants.Type.back}
+                  flashMode={RNCamera.Constants.FlashMode.auto}
+                  androidCameraPermissionOptions={{
+                    title: 'Permission to use camera',
+                    message: 'We need your permission to use your camera',
+                    buttonPositive: 'Ok',
+                    buttonNegative: 'Cancel',
+                  }}
+                  // androidRecordAudioPermissionOptions={{
+                  //   title: 'Permission to use audio recording',
+                  //   message: 'We need your permission to use your audio',
+                  //   buttonPositive: 'Ok',
+                  //   buttonNegative: 'Cancel',
+                  // }}
+                  // onGoogleVisionBarcodesDetected={({ barcodes }) => {
+                  //   console.log(barcodes);
+                  // }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                    }}>
+                    <Icon
+                      touchSoundDisabled={false}
+                      size={45}
+                      name="camera-retro"
+                      type="font-awesome"
+                      color={Colors.white}
+                      onPress={() => takePicture()}
+                    />
+                  </View>
+                  {/* <Text
+                    style={{
+                      color: Colors.black,
+                      fontFamily: sFontName,
+                      fontStyle: 'normal',
+                      fontWeight: 'normal',
+                      justifyContent: 'flex-end',
+                    }}
+                    onPress={takePicture}>
+                    CAPTURE
+                  </Text> */}
+                </RNCamera>
+              </View>
+            )}
+            {bShowPreview && (
+              <View
+                style={{
+                  marginVertical: hp(2.5),
+                  flex: 1,
+                }}>
+                <View style={styles.selectedFileContainer}>
+                  <Text style={styles.selectedFileComponent}>
+                    Image Preview:
+                  </Text>
+                </View>
+                <Image
+                  source={{uri: sPhotoBase64String}}
+                  style={{height: hp(50)}}
+                />
+              </View>
+            )}
           </View>
-          {sFileName !== null && (
+          <View style={styles.noteContainer}>
+            <Text style={styles.noteComponent}>
+              {' - Maximum ' + sNoOfFilesAllowed + ' Allowed.'}
+            </Text>
+            <Text style={styles.noteComponent}>
+              {' - Maximum file size limit: ' + nFileSizeLimitInMB + ' MB.'}
+            </Text>
+          </View>
+          {(aFileResults !== [] || aFileResults.length !== 0) && (
             <View style={styles.selectedFileContainer}>
               <Text style={styles.selectedFileComponent}>
-                Selected File: {sFileName}
+                Selected {aFileResults.length === 1 ? 'File' : 'Files'}:{' '}
+                {aFileResults.map((fileResult, index) => {
+                  return (
+                    <Text style={styles.selectedFileComponent}>
+                      {fileResult.sTitle}
+                      {aFileResults.length - 1 === index ? '' : ', '}
+                    </Text>
+                  );
+                })}
               </Text>
             </View>
           )}
@@ -390,7 +748,7 @@ export const FileDisputeScreen = (props) => {
       </View>
     </ScrollView>
   );
-}
+};
 //};
 
 export const FileDisputeScreenOptions = (navData) => {
@@ -409,7 +767,7 @@ export const FileDisputeScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: { backgroundColor: Colors.white, shadowColor: 'transparent' },
+    cardStyle: {backgroundColor: Colors.white, shadowColor: 'transparent'},
   };
 };
 
@@ -480,15 +838,28 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   selectedFileContainer: {
-    marginBottom: hp(1),
+    marginBottom: hp(2),
   },
   selectedFileComponent: {
     textAlign: 'left',
-    fontSize: wp(3.25),
+    fontSize: wp(3.5),
     fontStyle: 'normal',
     color: Colors.blackText,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    // lineHeight:
+  },
+  noteContainer: {
+    marginBottom: hp(2),
+  },
+  noteComponent: {
+    color: Colors.shadowColor,
+    textAlign: 'left',
+    fontSize: wp(4),
+    fontStyle: 'italic',
+    fontWeight: 'normal',
+
+    fontFamily: sFontName,
   },
   infoContainer: {
     marginBottom: hp(2),
@@ -521,7 +892,7 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: { width: 5, height: 5 },
+    shadowOffset: {width: 5, height: 5},
     shadowOpacity: 1,
 
     //For Android
@@ -540,7 +911,7 @@ const styles = StyleSheet.create({
     marginBottom: hp(5.5),
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: { width: 5, height: 5 },
+    shadowOffset: {width: 5, height: 5},
     shadowOpacity: 1,
   },
   iconStyles: {

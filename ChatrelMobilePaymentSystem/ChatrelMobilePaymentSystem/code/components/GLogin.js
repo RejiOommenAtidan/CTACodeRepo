@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Platform} from 'react-native';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -9,10 +9,6 @@ import {sClientIDAndroid, sClientIDIOS} from '../constants/CommonConfig';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeGoogleCreds} from '../store/actions/GLoginAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 
 export const GLogin = (props) => {
   const dispatch = useDispatch();
@@ -23,11 +19,11 @@ export const GLogin = (props) => {
     GoogleSignin.configure({
       webClientId: sClientIDAndroid,
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-      forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+      forceCodeForRefreshToken: true, // [Android]
       iosClientId: sClientIDIOS, // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     });
 
-    //isSignedIn();
+    Platform.OS === 'android' ? isSignedIn() : null;
 
     // getUserDataFromAsnycStorage().then(data => {
     //   //console.info(data);
@@ -92,7 +88,7 @@ export const GLogin = (props) => {
     if (!!isSignedIn) {
       getCurrentUserInfo();
     } else {
-      console.info('Please Login');
+      console.info('Please Sign in');
     }
   };
 

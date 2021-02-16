@@ -77,38 +77,38 @@ namespace ChatrelDBL.BaseClassRepositories.Masters
         //    }
         //}
 
-        public IEnumerable<Country> SearchCountries(string a)
-        {
-            string addToSql = "";
+        //public IEnumerable<Country> SearchCountries(string a)
+        //{
+        //    string addToSql = "";
 
-            var country = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(a);
-            //Dictionary<string, dynamic> parameters = country.GetType().GetProperties().ToDictionary(prop => prop.Name, prop => prop.GetValue(country, null));
-            foreach (KeyValuePair<string, dynamic> item in country)
-            {
-                if (item.Value != null)
-                {
-                    if (item.Value.GetType() == typeof(string))
-                    {
-                        if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
-                        {
-                            addToSql += String.Format(@"{0} LIKE '%{1}%' and ", item.Key, item.Value);
-                        }
-                    }
-                }
-            }
-            if (String.IsNullOrEmpty(addToSql))
-            {
-                return GetAllCountries();
-            }
+        //    var country = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(a);
+        //    //Dictionary<string, dynamic> parameters = country.GetType().GetProperties().ToDictionary(prop => prop.Name, prop => prop.GetValue(country, null));
+        //    foreach (KeyValuePair<string, dynamic> item in country)
+        //    {
+        //        if (item.Value != null)
+        //        {
+        //            if (item.Value.GetType() == typeof(string))
+        //            {
+        //                if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+        //                {
+        //                    addToSql += String.Format(@"{0} LIKE '%{1}%' and ", item.Key, item.Value);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    if (String.IsNullOrEmpty(addToSql))
+        //    {
+        //        return GetAllCountries();
+        //    }
 
-            string sql = String.Format(@"SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE {0} 1 = 1", addToSql);
+        //    string sql = String.Format(@"SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE {0} 1 = 1", addToSql);
 
-            using (var command = new MySqlCommand(sql))
-            {
-                //command.Parameters.AddWithValue("param", param);
-                return GetRecords(command);
-            }
-        }
+        //    using (var command = new MySqlCommand(sql))
+        //    {
+        //        //command.Parameters.AddWithValue("param", param);
+        //        return GetRecords(command);
+        //    }
+        //}
 
         #endregion
 

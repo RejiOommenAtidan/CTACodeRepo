@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   Switch,
   Text,
@@ -10,15 +10,15 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { Platform } from 'react-native';
-import { Input, Button, Card, Icon } from 'react-native-elements';
+import {Platform} from 'react-native';
+import {Input, Button, Card, Icon} from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Moment from 'moment';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import { useForm, Controller } from 'react-hook-form';
+import {useForm, Controller} from 'react-hook-form';
 import {
   errorComponent,
   errorContainer,
@@ -29,38 +29,47 @@ import {
   oRequiredStyles,
 } from '../constants/CommonConfig';
 
-import { storeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
+import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { sFontName, sFontNameBold } from '../constants/CommonConfig';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
 import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { Loader } from '../components/Loader';
-import { storeGBDetails, removeGBDetails, removeJWTToken, storeJWTToken } from '../store/actions/GBDetailsAction';
-import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import {useSelector, useDispatch} from 'react-redux';
+import {Loader} from '../components/Loader';
+import {
+  storeGBDetails,
+  removeGBDetails,
+  removeJWTToken,
+  storeJWTToken,
+} from '../store/actions/GBDetailsAction';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+import {useIsFocused} from '@react-navigation/native';
 
 export const FriendChatrelIntermediateScreen = (props) => {
   const dispatch = useDispatch();
-  const { control, handleSubmit, errors } = useForm();
+  const {control, handleSubmit, errors} = useForm();
   const [bLoader, setbLoader] = useState(false);
   const onSubmit = () => {
     setbLoader(true);
+
     let oFriendGBDetails = {
       sFriendGBID: nFriendGBID,
-      sFirstName: sFriendFirstname,
-      sLastName: sFriendLastname,
-      dtDOB: Moment(dtFriendDOB, sDateFormatDatePicker).format(sISODateFormat),
+      // sFirstName: sFriendFirstname,
+      // sLastName: sFriendLastname,
+      dtDOB: Moment(dtFriendDOB, sDateFormat).format(sISODateFormat),
+      // dtDOB: dtFriendDOB,
     };
-    console.log(oFriendGBDetails);
-
+    console.log('Friend GB Details: ' + oFriendGBDetails.dtDOB);
+    debugger;
     axios
       .get(
         `/ChatrelPayment/VerifyFriendDetails/?sGBID=${oFriendGBDetails.sFriendGBID}&sFirstName=${oFriendGBDetails.sFirstName}&sLastName=${oFriendGBDetails.sLastName}&dtDOB=${oFriendGBDetails.dtDOB}`,
       )
       .then((resp) => {
-        if (resp.status === 200 && resp.data === true) {
+        if (resp.status === 200 && resp.data.verified === true) {
+          //debugger;
           //console.log(resp.data);
           // if(resp.data === true){
           // axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sFriendGBID)
@@ -72,8 +81,11 @@ export const FriendChatrelIntermediateScreen = (props) => {
           // .catch(error => {
           //   console.log(error.message);
           // });
-          const token = resp.data.token;
-          dispatch(storeJWTToken(token));
+          const oSession = {
+            sJwtToken: resp.data.token,
+            bSession: true,
+          };
+          dispatch(storeJWTToken(oSession));
           setbLoader(false);
           let oGBDetails = {
             sGBID: nFriendGBID,
@@ -85,40 +97,62 @@ export const FriendChatrelIntermediateScreen = (props) => {
             ToastAndroid.BOTTOM,
           );
           dispatch(storeCurrentGBDetails(oGBDetails));
-          setsFriendFirstname("");
-          setsFriendLastname("");
-          setnFriendGBID("");
+          // setsFriendFirstname('');
+          // setsFriendLastname('');
+          setnFriendGBID('');
           setdtFriendDOB(null);
           props.navigation.navigate('FriendChatrel');
         } else {
           setbLoader(false);
+          const oSession = {
+            sJwtToken: resp.data.token,
+            bSession: true,
+          };
+          dispatch(storeJWTToken(oSession));
           alert("Values don't match with database. Enter correct values.");
         }
       })
       .catch((error) => {
-        // if (error.response.status === 400) {
-        //   console.info('Missing Parameters...');
-        // }
         setbLoader(false);
-        alert("Values don't match with database. Enter correct values.");
-        console.log(error.message);
-        console.log(error);
+        if (error.response.status === 401) {
+          // const oSession = {
+          //   sJwtToken: '',
+          //   bSession: false,
+          // };
+          // dispatch(storeJWTToken(oSession));
+        } else {
+          alert("Values don't match with database. Enter correct values.");
+        }
       });
   };
+
+  // const sFriendLastnameRef = useRef(null);
+  const nFriendGBIDRef = useRef(null);
+  const dtFriendDOBRef = useRef(null);
+  // const [sFriendFirstname, setsFriendFirstname] = useState('');
+  // const [sFriendLastname, setsFriendLastname] = useState('');
   const [nFriendGBID, setnFriendGBID] = useState('');
-  const [sFriendFirstname, setsFriendFirstname] = useState('');
-  const [sFriendLastname, setsFriendLastname] = useState('');
-  const [bShowFriendGBID, setbShowFriendGBID] = useState(true);
   const [dtFriendDOB, setdtFriendDOB] = useState(null);
-  const dtToday = Moment().format(sDateFormatDatePicker);
+  // const [bShowFriendGBID, setbShowFriendGBID] = useState(true);
+  const dtToday = Moment().format(sDateFormat);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      console.log('Friend and Family Chatrel Screen Called');
+      // setsFriendFirstname('');
+      // setsFriendLastname('');
+      setdtFriendDOB(null);
+      setnFriendGBID('');
+    }
+  }, [isFocused]);
 
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}>
       <View style={styles.mainContainer}>
-        <Loader
-          loading={bLoader} />
+        <Loader loading={bLoader} />
         {/*<View style={styles.headingContainer}>
           <Text style={styles.headingComponent}>Chatrel For Friends</Text>
   </View>*/}
@@ -139,7 +173,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
           }
           titleStyle={{}}
           containerStyle={styles.cardContainerStyle}>
-          <View style={styles.labelContainer}>
+          {/* <View style={styles.labelContainer}>
             <Text>
               <Text style={styles.labelComponent}>FIRST NAME</Text>
               <Text style={oRequiredStyles}>*</Text>
@@ -148,8 +182,14 @@ export const FriendChatrelIntermediateScreen = (props) => {
           <View style={styles.valueContainer}>
             <Controller
               control={control}
-              render={({ onChange, onBlur, value }) => (
+              render={({onChange, onBlur, value}) => (
                 <Input
+                  blurOnSubmit={false}
+                  //autoFocus={true}
+                  returnKeyType={'next'}
+                  onSubmitEditing={() => {
+                    sFriendLastnameRef.current.focus();
+                  }}
                   // inputContainerStyle={{borderBottomWidth: 0}}
                   containerStyle={styles.valueContainerStyle}
                   inputStyle={
@@ -161,7 +201,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   }
                   style={styles.valueComponent}
                   //label="Friend's Firstname"
-                  placeholder="Enter First Name of Friend"
+                  placeholder="Enter First Name"
                   placeholderTextColor={Colors.grey}
                   //autoFocus={true}
                   //autoCapitalize={"characters"}
@@ -183,18 +223,16 @@ export const FriendChatrelIntermediateScreen = (props) => {
                 />
               )}
               name="name_sFriendFirstName"
-              rules={{ required: true }}
+              rules={{required: true}}
               defaultValue=""
             />
             {errors.name_sFriendFirstName && (
               <View style={errorContainer}>
-                <Text style={errorComponent}>
-                  Please enter first name of friend
-                </Text>
+                <Text style={errorComponent}>Please enter First Name.</Text>
               </View>
             )}
-          </View>
-          <View style={styles.labelContainer}>
+          </View> */}
+          {/* <View style={styles.labelContainer}>
             <Text>
               <Text style={styles.labelComponent}>LAST NAME</Text>
               <Text style={oRequiredStyles}>*</Text>
@@ -203,9 +241,15 @@ export const FriendChatrelIntermediateScreen = (props) => {
           <View style={styles.valueContainer}>
             <Controller
               control={control}
-              render={({ onChange, onBlur, value }) => (
+              render={({onChange, onBlur, value}) => (
                 <Input
                   //inputContainerStyle={{borderBottomWidth: 0}}
+                  blurOnSubmit={false}
+                  returnKeyType={'next'}
+                  onSubmitEditing={() => {
+                    nFriendGBIDRef.current.focus();
+                  }}
+                  ref={sFriendLastnameRef}
                   inputStyle={
                     {
                       //height: hp(2.5),
@@ -218,7 +262,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   containerStyle={styles.valueContainerStyle}
                   style={styles.valueComponent}
                   //label="Friend's Lastname"
-                  placeholder="Enter Last Name of Friend"
+                  placeholder="Enter Last Name"
                   placeholderTextColor={Colors.grey}
                   //autoFocus={true}
                   //autoCapitalize={"characters"}
@@ -240,17 +284,15 @@ export const FriendChatrelIntermediateScreen = (props) => {
                 />
               )}
               name="name_sFriendLastName"
-              rules={{ required: true }}
+              rules={{required: true}}
               defaultValue=""
             />
             {errors.name_sFriendLastName && (
               <View style={errorContainer}>
-                <Text style={errorComponent}>
-                  Please enter last name of friend
-                </Text>
+                <Text style={errorComponent}>Please enter Last Name.</Text>
               </View>
             )}
-          </View>
+          </View> */}
           {/*GBID*/}
           <View style={styles.labelContainer}>
             <Text>
@@ -261,8 +303,13 @@ export const FriendChatrelIntermediateScreen = (props) => {
           <View style={styles.valueComponent}>
             <Controller
               control={control}
-              render={({ onChange, onBlur, value }) => (
+              render={({onChange, onBlur, value}) => (
                 <Input
+                  blurOnSubmit={false}
+                  onSubmitEditing={() => {
+                    dtFriendDOBRef.current.onPressDate();
+                  }}
+                  ref={nFriendGBIDRef}
                   //inputContainerStyle={{borderBottomWidth: 0}}
                   //inputStyle={{
                   //height: hp(2.5),
@@ -296,13 +343,13 @@ export const FriendChatrelIntermediateScreen = (props) => {
                 />
               )}
               name="name_nFriendGBID"
-              rules={{ required: true }}
+              rules={{required: true}}
               defaultValue=""
             />
             {errors.name_nFriendGBID && (
               <View style={errorContainer}>
                 <Text style={errorComponent}>
-                  Please enter Green Book Number
+                  Please enter Green Book Number.
                 </Text>
               </View>
             )}
@@ -324,8 +371,10 @@ export const FriendChatrelIntermediateScreen = (props) => {
           <View style={styles.dobValueContainer}>
             <Controller
               control={control}
-              render={({ onChange, onBlur, value }) => (
+              render={({onChange, onBlur, value}) => (
                 <DatePicker
+                  blurOnSubmit={true}
+                  ref={dtFriendDOBRef}
                   useNativeDriver={true}
                   androidMode={'calendar'}
                   style={{
@@ -341,8 +390,8 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   }}
                   date={dtFriendDOB}
                   mode="date"
-                  placeholder="Enter Date of Birth"
-                  format={sDateFormatDatePicker}
+                  placeholder="DD-MM-YYYY"
+                  format={sDateFormat}
                   //minDate={dtToday}
                   maxDate={dtToday}
                   confirmBtnText="Confirm"
@@ -401,20 +450,20 @@ export const FriendChatrelIntermediateScreen = (props) => {
                 />
               )}
               name="name_dtFriendDOB"
-              rules={{ required: true }}
+              rules={{required: true}}
               defaultValue=""
             />
           </View>
           {errors.name_dtFriendDOB && (
             <View style={errorContainer}>
-              <Text style={{ ...errorComponent, marginTop: hp(1) }}>
-                Please enter Date of Birth
+              <Text style={{...errorComponent, marginTop: hp(1)}}>
+                Please enter Date of Birth.
               </Text>
             </View>
           )}
           <View style={styles.buttonContainer}>
             <Button
-              title="VERIFY AND PAY"
+              title="VERIFY AND CONTRIBUTE"
               onPress={handleSubmit(onSubmit)}
               titleStyle={{
                 color: Colors.white,
@@ -424,7 +473,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
               }}
               containerStyle={{
                 marginTop: hp(3),
-                marginBottom: hp(1)
+                marginBottom: hp(1),
               }}
               buttonStyle={{
                 backgroundColor: Colors.primary,
@@ -442,7 +491,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
 
 export const FriendChatrelIntermediateScreenOptions = (navData) => {
   return {
-    headerTitle: "FRIEND'S CHATREL",
+    headerTitle: 'FRIENDS & FAMILY',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -459,7 +508,7 @@ export const FriendChatrelIntermediateScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: { backgroundColor: Colors.white },
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
@@ -529,7 +578,7 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: { width: 5, height: 5 },
+    shadowOffset: {width: 5, height: 5},
     shadowOpacity: 1,
 
     //For Android
@@ -540,7 +589,7 @@ const styles = StyleSheet.create({
     marginBottom: hp(5.5),
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: { width: 5, height: 5 },
+    shadowOffset: {width: 5, height: 5},
     shadowOpacity: 1,
   },
   iconStyles: {

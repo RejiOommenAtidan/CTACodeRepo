@@ -22,7 +22,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export const EditDialog = (props) => {
-  console.log(props);
+  //console.log(props);
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitEditRecord = () => {

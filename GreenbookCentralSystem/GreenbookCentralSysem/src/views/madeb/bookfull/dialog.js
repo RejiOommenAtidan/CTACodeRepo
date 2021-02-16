@@ -55,7 +55,7 @@ export const EditDialog = (props) => {
   }
   const [snackbar, setSnackbar] = React.useState(false);
   const snackbarOpen = () => {
-    console.log('alert');
+    //console.log('alert');
     setSnackbar(true);
   }
   const snackbarClose = () => {
@@ -64,7 +64,7 @@ export const EditDialog = (props) => {
 
   const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
 
-  console.log(props.bookFullObj);
+  //console.log(props.bookFullObj);
 
   const handleSubmitEditRecord = () => {
     //alert("Form Submitted");
@@ -98,7 +98,7 @@ export const EditDialog = (props) => {
   const [sMadebStatusRemark, setMadebStatusRemark] = React.useState(props.bookFullObj.sMadebStatusRemark);
   const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
 
-  console.log("Auth region is ", authRegion.sAuthRegion);
+  //console.log("Auth region is ", authRegion.sAuthRegion);
 
   const madeb = {
     id: id,
@@ -120,7 +120,7 @@ export const EditDialog = (props) => {
     sMadebStatusRemark,
     nUpdatedBy: userId
   }
-  console.log("Madeb Edit Object received in dialog", madeb);
+  //console.log("Madeb Edit Object received in dialog", madeb);
   //  const childrenAuthRegion =  () => { 
   //         return (authRegions.map((data) => (<option value={data.id}>{data.sAuthRegion}</option> )  ))
   //     };  
@@ -137,7 +137,7 @@ export const EditDialog = (props) => {
   //   return (typeIssuedData.map((data) =>  (<option value={data.id}>{data.sTypeIssued}</option>)))};
   // const optsTypeIssued = childrenTypeIssued();
   let valueTypeIssued = [];
-  console.log(nIssuedOrNotID);
+  //console.log(nIssuedOrNotID);
   typeIssuedData.forEach(element => {
     if (element.id === nIssuedOrNotID) {
       valueTypeIssued = element;
@@ -167,7 +167,7 @@ export const EditDialog = (props) => {
       snackbarOpen();
       return;
     }
-    console.log("Value in GBID: ", value);
+    //console.log("Value in GBID: ", value);
     const gbid = value;
     const event = new Event('change', {
       bubbles: true
@@ -177,7 +177,7 @@ export const EditDialog = (props) => {
     axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=` + gbid)
       .then(resp => {
         if (resp.status === 200) {
-          console.log("Got gb record\n", resp.data);
+          //console.log("Got gb record\n", resp.data);
 
           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
@@ -201,7 +201,7 @@ export const EditDialog = (props) => {
           setFname('');
           setPreviousGBSNo('');
           setAuthRegion([]);
-          console.log("Not found", resp);
+          //console.log("Not found", resp);
           setAlertMessage(`No record found for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -213,7 +213,7 @@ export const EditDialog = (props) => {
           setFname('');
           setPreviousGBSNo('');
           setAuthRegion([]);
-          console.log("Not found", error.response.data);
+          //console.log("Not found", error.response.data);
           setAlertMessage(`${error.response.data}`);
           setAlertType('warning');
           snackbarOpen();
@@ -223,7 +223,7 @@ export const EditDialog = (props) => {
           setFname('');
           setPreviousGBSNo('');
           setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
           setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -233,13 +233,13 @@ export const EditDialog = (props) => {
           setFname('');
           setPreviousGBSNo('');
           setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
         }
       });
   };
 
   useEffect(() => {
-    console.log("Inside useEffect()");
+    //console.log("Inside useEffect()");
     const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
     setTimeout(() => setValue("AuthRegion", region, {
       shouldValidate: true,
@@ -409,7 +409,7 @@ placeholder="DD-MM-YYYY"
                               props.onChange(value);
                               //alert ("onChangeFired")
                               if (value !== null) {
-                                console.log(value.id);
+                                //console.log(value.id);
                                 setAuthRegionId(value.id);
                                 setAuthRegion(value);
                               }
@@ -474,7 +474,7 @@ placeholder="DD-MM-YYYY"
                       value={saney}
                       onChange={(e) => {
                         setSaney(parseInt(e.target.value));
-                        console.log("Value of saney changed to:", e.target.value);
+                        //console.log("Value of saney changed to:", e.target.value);
                       }}
                     />
                   </FormControl>
@@ -490,7 +490,7 @@ placeholder="DD-MM-YYYY"
                       value={currentGBSno}
                       onChange={(e) => {
                         setCurrentGBSNo(parseInt(e.target.value));
-                        console.log("Value of currentGB changed to:", parseInt(e.target.value));
+                        //console.log("Value of currentGB changed to:", parseInt(e.target.value));
                       }}
                       inputRef={register({
                         required: true
@@ -512,7 +512,7 @@ placeholder="DD-MM-YYYY"
                       value={previousGBSno}
                       onChange={(e) => {
                         setPreviousGBSNo(parseInt(e.target.value));
-                        console.log("Value of previousGB changed to:", e.target.value);
+                        //console.log("Value of previousGB changed to:", e.target.value);
                       }}
                     // inputRef={register({
                     //   required: true
@@ -531,7 +531,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log(value.id);
+                            //console.log(value.id);
                             setMadebStatusID(value.id);
                           }
                           else {
@@ -621,7 +621,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log(value.id);
+                            //console.log(value.id);
                             setIssueAction(value.id);
                           }
                           else {
@@ -795,7 +795,7 @@ export const AddDialog = (props) => {
   }
   const [snackbar, setSnackbar] = React.useState(false);
   const snackbarOpen = () => {
-    console.log('alert');
+    //console.log('alert');
     setSnackbar(true);
   }
   const snackbarClose = () => {
@@ -821,7 +821,7 @@ export const AddDialog = (props) => {
       snackbarOpen();
       return;
     }
-    console.log("Value in GBID: ", value);
+    //console.log("Value in GBID: ", value);
     const gbid = value;
     const event = new Event('change', {
       bubbles: true
@@ -830,7 +830,7 @@ export const AddDialog = (props) => {
     axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=` + gbid)
       .then(resp => {
         if (resp.status === 200) {
-          console.log("Got gb record\n", resp.data);
+          //console.log("Got gb record\n", resp.data);
 
           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
@@ -855,7 +855,7 @@ export const AddDialog = (props) => {
           setFname('');
           setPreviousGBSNo('');
           setAuthRegion([]);
-          console.log("Not found", resp);
+          //console.log("Not found", resp);
           setAlertMessage(`No record found for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -867,7 +867,7 @@ export const AddDialog = (props) => {
           setFname('');
           setPreviousGBSNo('');
           setAuthRegion([]);
-          console.log("Not found", error.response.data);
+          //console.log("Not found", error.response.data);
           setAlertMessage(`${error.response.data}`);
           setAlertType('warning');
           snackbarOpen();
@@ -877,7 +877,7 @@ export const AddDialog = (props) => {
           setFname('');
           setPreviousGBSNo('');
           setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
           setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -887,12 +887,12 @@ export const AddDialog = (props) => {
           setFname('');
           setPreviousGBSNo('');
           setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
         }
       });
   };
 
-  console.log(props.selectData);
+  //console.log(props.selectData);
   const [authRegions, setAuthRegions] = React.useState(props.selectData['authRegions']);
   const [typeIssuedData, settypeIssuedData] = React.useState(props.selectData['typeIssued']);
 
@@ -936,7 +936,7 @@ export const AddDialog = (props) => {
     nUpdatedBy: userId
   }
   const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
-  console.log("Madeb Object in Add dialog", madeb);
+  //console.log("Madeb Object in Add dialog", madeb);
 
   // const idsAuthRegion = authRegions.map((data) => data.sAuthRegion);
   //const childrenAuthRegion =  () => { 
@@ -1075,7 +1075,7 @@ placeholder="DD-MM-YYYY"
                               props.onChange(value);
                               //alert ("onChangeFired")
                               if (value !== null) {
-                                console.log(value.id);
+                                //console.log(value.id);
                                 setAuthRegionId(value.id);
                                 setAuthRegion(value);
                               }
@@ -1128,7 +1128,7 @@ placeholder="DD-MM-YYYY"
                       InputLabelProps={previousGBSno && { shrink: true }}
                       onChange={(e) => {
                         setPreviousGBSNo(parseInt(e.target.value));
-                        console.log("Value of previousGB changed to:", parseInt(e.target.value));
+                        //console.log("Value of previousGB changed to:", parseInt(e.target.value));
                       }}
                     />
                   </FormControl>
@@ -1174,7 +1174,7 @@ placeholder="DD-MM-YYYY"
                       value={saney}
                       onChange={(e) => {
                         setSaney(parseInt(e.target.value));
-                        console.log("Value of saney changed to:", parseInt(e.target.value));
+                        //console.log("Value of saney changed to:", parseInt(e.target.value));
                       }}
                     />
                   </FormControl>
@@ -1190,7 +1190,7 @@ placeholder="DD-MM-YYYY"
                       value={currentGBSno}
                       onChange={(e) => {
                         setCurrentGBSNo(parseInt(e.target.value));
-                        console.log("Value of currentGB changed to:", parseInt(e.target.value));
+                        //console.log("Value of currentGB changed to:", parseInt(e.target.value));
                       }}
                       inputRef={register({
                         required: true
@@ -1210,7 +1210,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log(value.id);
+                            //console.log(value.id);
                             setMadebStatusID(value.id);
                           }
                           else {

@@ -88,12 +88,12 @@ export default function GiveGBId() {
 
   const handleSubmit = () => {
     const sGBIDEntered = textBox.value;
-    console.log("gbid entered", sGBIDEntered);
+    //console.log("gbid entered", sGBIDEntered);
 
     if(isEmpty(sGBIDEntered)){
       return;
     }
-    console.log("Submit Event\n");
+    //console.log("Submit Event\n");
     setOpenDialog(true);
   };
 
@@ -113,7 +113,7 @@ export default function GiveGBId() {
           }
         })
         .catch(error => {
-          console.log(error.message);
+          //console.log(error.message);
           if(error.response){
             if(error.response.status === 403){
               //setAlertMessage(`Green Book ID ${sGBID} does not exists`);

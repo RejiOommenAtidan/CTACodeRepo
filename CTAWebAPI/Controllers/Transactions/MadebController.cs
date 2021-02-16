@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using TimeZoneConverter;
 
 namespace CTAWebAPI.Controllers.Transactions
@@ -565,12 +566,17 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Send Email 
+        [Authorize]
         [HttpPost]
         [Route("[action]")]
         public IActionResult SendEmail(EmailSent email)
         {
             if (email != null)
             {
+                if (String.IsNullOrEmpty(email.sReceiver))
+                {
+                    return BadRequest("Empty email receipient");
+                }
                 try
                 {
                     //TODO: remove mail details as given by client afwrds
@@ -582,18 +588,34 @@ namespace CTAWebAPI.Controllers.Transactions
                         string sEmailRelayServer = CTAConfigRepository.GetValueByKey("CTAEmailRelayServer").ToString();
                         int nPort = Convert.ToInt32(CTAConfigRepository.GetValueByKey("CTAEmailServerPort"));
                         bool bUseSSL = Convert.ToBoolean(CTAConfigRepository.GetValueByKey("CTAEmailUseSSL"));
+                        string sEmailFrom = CTAConfigRepository.GetValueByKey("CTAAdminEmail");
 
                         MimeMessage message = new MimeMessage();
-                        MailboxAddress from = new MailboxAddress("CTA Team", email.sFrom);
+                        MailboxAddress from = new MailboxAddress("CTA Team", sEmailFrom);
                         MailboxAddress to = new MailboxAddress(email.sName, email.sReceiver);
-                        MailboxAddress toCC = new MailboxAddress("CTA Team CC", sEmailCC);
+                        if (!String.IsNullOrEmpty(sEmailCC))
+                        {
+                            //CC Section
+                            MailboxAddress toCC = new MailboxAddress("CTA Team CC", sEmailCC);
+                            message.Cc.Add(toCC);
+                        }
+                        
                         BodyBuilder messageBody = new BodyBuilder();
-                        messageBody.TextBody = email.sBody;
+
+                        //Regex.IsMatch(email.sBody, @"[\u0F00-\u0FFF]");
+                        var result = Regex.Matches(email.sBody, @"[\u0F00-\u0FFF]");
+                        var final = result.Distinct();
+                        foreach(var item in final)
+                        {
+                            email.sBody = email.sBody.Replace(item.Value, @$"<span style='font-size:1.7rem; font-weight:600;'>{item}</span>");
+                        }
+                        messageBody.HtmlBody = email.sBody;
+                        //messageBody.TextBody = email.sBody;
 
                         message.From.Add(from);
                         message.To.Add(to);
-                        //CC Section
-                        message.Cc.Add(toCC);
+                        
+                        
                         message.Subject = email.sSubject;
                         message.Body = messageBody.ToMessageBody();
                         message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using TimeZoneConverter;
 
 namespace CTADBL.ViewModelsRepositories
@@ -168,7 +169,7 @@ namespace CTADBL.ViewModelsRepositories
 
         #region Quick Result Approach
 
-        public IEnumerable<Object> GetQuickResult(string parameter, string value)
+        public async Task<IEnumerable<Object>> GetQuickResult(string parameter, string value)
         {
             //string operation = parameter == "sGBID" ? "=" : "LIKE";
             string operation = "LIKE";
@@ -215,7 +216,7 @@ namespace CTADBL.ViewModelsRepositories
                 command.CommandType = CommandType.Text;
                 MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
                 DataSet ds = new DataSet();
-                mySqlDataAdapter.Fill(ds);
+                await mySqlDataAdapter.FillAsync(ds);
 
                 DataTableCollection tables = ds.Tables;
                 var result = tables[0].AsEnumerable().Select(row => new
@@ -245,63 +246,72 @@ namespace CTADBL.ViewModelsRepositories
 
         public IEnumerable<Object> GetQuickResultComplex(DetailedSearchVM detailedSearch)
         {
-            string addToSql = "";
-            Dictionary<string, dynamic> parameters = detailedSearch.GetType().GetProperties().ToDictionary(prop => prop.Name, prop => prop.GetValue(detailedSearch, null));
-
-            foreach (KeyValuePair<string, dynamic> item in parameters)
+            using (var command = new MySqlCommand())
             {
-                if (item.Value != null)
+                string sql = @"SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, IF (gb.dtDeceased is null,CAST(year(curdate()) - year(dtDOB) AS UNSIGNED), CAST(year(gb.dtDeceased) - year(dtDOB) AS UNSIGNED)) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID  FROM tblgreenbook as gb WHERE ";
+
+                string addToSql = String.Empty;
+                Dictionary<string, dynamic> parameters = detailedSearch.GetType().GetProperties().ToDictionary(prop => prop.Name, prop => prop.GetValue(detailedSearch, null));
+
+                foreach (KeyValuePair<string, dynamic> item in parameters)
                 {
-                    if (item.Key == "nFromAge")
+                    if (item.Value != null)
                     {
-                        //if(item.Value.GetType().ToString() != "System.Int32")
-                        //{
-                        //    continue;
-                        //}
-
-                        if (item.Value > 0)
+                        if (item.Key == "nFromAge")
                         {
-                            int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).Year - Convert.ToInt32(item.Value);
-                            addToSql += String.Format(@"year(gb.dtDOB) <= {0} and ", year);
-                        }
+                            //if(item.Value.GetType().ToString() != "System.Int32")
+                            //{
+                            //    continue;
+                            //}
 
-                    }
-                    else if (item.Key == "nToAge")
-                    {
-                        if (item.Value > 0)
+                            if (item.Value > 0)
+                            {
+                                int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).Year - Convert.ToInt32(item.Value);
+                                addToSql += @$"year(gb.dtDOB) <= @{item.Key} and ";
+                                command.Parameters.AddWithValue(item.Key, Convert.ToInt32(item.Value));
+                            }
+
+                        }
+                        else if (item.Key == "nToAge")
                         {
-                            int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).Year - Convert.ToInt32(item.Value);
-                            addToSql += String.Format(@"year(gb.dtDOB) >= {0} and ", year);
-                        }
+                            if (item.Value > 0)
+                            {
+                                int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).Year - Convert.ToInt32(item.Value);
+                                addToSql += @$"year(gb.dtDOB) >= @{item.Key} and ";
+                                command.Parameters.AddWithValue(item.Key, Convert.ToInt32(item.Value));
+                            }
 
-                    }
-                    else if (item.Key == "dtDOB")
-                    {
-                        if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                        }
+                        else if (item.Key == "dtDOB")
                         {
-                            addToSql += String.Format(@"gb.{0} = '{1}' and ", item.Key, item.Value);
-                        }
+                            if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                            {
+                                addToSql += @$"gb.{item.Key} = @{item.Key} and ";
+                                command.Parameters.AddWithValue(item.Key, item.Value.ToString());
+                            }
 
-                    }
-                    else
-                    {
-                        if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
-                            addToSql += String.Format(@"gb.{0} LIKE '%{1}%' and ", item.Key, item.Value.Replace("\'", "\'\'"));
+                        }
+                        else
+                        {
+                            if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                            {
+                                addToSql += @$"gb.{item.Key} LIKE @{item.Key} and ";
+                                command.Parameters.AddWithValue(item.Key, '%' + item.Value.Replace("\'", "\'\'") + '%');
+                            }
+                                
+                                
+                        }
                     }
                 }
-            }
 
-            addToSql = addToSql.Replace("\\", "\\\\\\\\");
+                addToSql = addToSql.Replace("\\", "\\\\\\\\");
+                sql += addToSql;
+                sql += " 1 = 1 LIMIT 100";
 
-            string sql = "SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, IF (gb.dtDeceased is null,CAST(year(curdate()) - year(dtDOB) AS UNSIGNED), CAST(year(gb.dtDeceased) - year(dtDOB) AS UNSIGNED)) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID  FROM tblgreenbook as gb WHERE " + addToSql +" 1 = 1 LIMIT 500";
-
-            
-
-
-            using (var command = new MySqlCommand(sql))
-            {
+                //string sql = "SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, IF (gb.dtDeceased is null,CAST(year(curdate()) - year(dtDOB) AS UNSIGNED), CAST(year(gb.dtDeceased) - year(dtDOB) AS UNSIGNED)) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID  FROM tblgreenbook as gb WHERE " + addToSql + " 1 = 1 LIMIT 500";
                 command.Connection = _connection;
                 command.CommandType = CommandType.Text;
+                command.CommandText = sql;
                 MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
                 DataSet ds = new DataSet();
                 mySqlDataAdapter.Fill(ds);

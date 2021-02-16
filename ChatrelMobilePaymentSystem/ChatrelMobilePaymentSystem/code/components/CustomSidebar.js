@@ -3,32 +3,32 @@ import {
   SafeAreaView,
   View,
   StyleSheet,
-  Image,
   Text,
-  Linking,
   Platform,
   Alert,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer';
-import { useSelector } from 'react-redux';
-import { Avatar } from 'react-native-elements';
+import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+import {useSelector} from 'react-redux';
+import {Avatar} from 'react-native-elements';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Colors from '../../code/constants/Colors';
-import { sFontName, sFontNameBold } from '../constants/CommonConfig';
-import { GoogleSignin } from '@react-native-community/google-signin';
-import { useDispatch } from 'react-redux';
-import { removeGoogleCreds } from '../store/actions/GLoginAction';
-import { removeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
-import { removeGBDetails, removeJWTToken } from '../store/actions/GBDetailsAction';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import {GoogleSignin} from '@react-native-community/google-signin';
+import {useDispatch} from 'react-redux';
+import {removeGoogleCreds} from '../store/actions/GLoginAction';
+import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
+import {
+  removeGBDetails,
+  removeJWTToken,
+} from '../store/actions/GBDetailsAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {sAPIBASEURL} from '../constants/CommonConfig';
+import {decode as atob, decode, encode as btoa} from 'base-64';
 // import {useNavigation} from '@react-navigation/native';
 
 export const CustomSidebarMenu = (props) => {
@@ -58,9 +58,9 @@ export const CustomSidebarMenu = (props) => {
           onPress: () => true,
           style: 'cancel',
         },
-        { text: 'Yes', onPress: () => removeCompleteDetails() },
+        {text: 'Yes', onPress: () => removeCompleteDetails()},
       ],
-      { cancelable: false },
+      {cancelable: false},
     );
     const removeCompleteDetails = async () => {
       try {
@@ -79,8 +79,95 @@ export const CustomSidebarMenu = (props) => {
       }
     };
   };
+  axios.defaults.baseURL = sAPIBASEURL;
+  const [sessionTimeout, setSessionTimeout] = React.useState(false);
+  const [timerId, setTimerId] = React.useState(null);
+  const sJwtToken = useSelector((state) => state.GBDetailsReducer.sJwtToken);
+  if (
+    sJwtToken?.sJwtToken !== null &&
+    sJwtToken?.sJwtToken !== undefined &&
+    sJwtToken?.sJwtToken !== ''
+  ) {
+    let oldToken = axios.defaults.headers.common['Authorization'];
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${sJwtToken.sJwtToken}`;
+
+    // if (oSession !== null)
+    // {
+    if (!sJwtToken.bSession) {
+      console.log('bSession');
+      setSessionTimeout(true);
+    }
+
+    console.log('old', oldToken);
+    console.log('new', 'Bearer ' + sJwtToken.sJwtToken);
+    axios.defaults.headers.common['Authorization'] =
+      'Bearer ' + sJwtToken.sJwtToken;
+    // debugger;
+    if (oldToken !== 'Bearer ' + sJwtToken.sJwtToken) {
+      console.log('Timer Reset', timerId);
+
+      var base64Url = sJwtToken.sJwtToken.split('.')[1];
+      var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      var jsonPayload = decodeURIComponent(
+        decode(base64)
+          .split('')
+          .map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join(''),
+      );
+      const jwtObject = JSON.parse(jsonPayload);
+      console.log('JWT Token:', JSON.parse(jsonPayload));
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+
+      console.log(timerId);
+
+      //console.log(jwtObject.exp-Date.now());
+      console.log(Math.floor(Date.now() / 1000) - jwtObject.exp);
+      console.log(Date.now() - jwtObject.exp * 1000);
+      const timer = () =>
+        setTimeout(() => {
+          setSessionTimeout(true);
+          // console.log('Logged Out After 15 Minutes');
+          Alert.alert(
+            'Session Timeout',
+            'Your session has expired. Please login again.',
+            [
+              {
+                text: 'Ok',
+                onPress: async () => {
+                  try {
+                    await GoogleSignin.revokeAccess();
+                    await GoogleSignin.signOut();
+                    await AsyncStorage.multiRemove(keysToRemove, (err) => {
+                      dispatch(removeGoogleCreds);
+                      dispatch(removeGBDetails);
+                      dispatch(removeJWTToken);
+                      dispatch(removeCurrentGBDetails);
+                      navigation.navigate('Login');
+                    });
+                  } catch (error) {
+                    console.error(error);
+                    navigation.navigate('Login');
+                  }
+                },
+                style: 'default',
+              },
+            ],
+            {cancelable: false},
+          );
+        }, jwtObject.exp * 1000 - Date.now());
+      // }, 1000 * 60 * 15);
+      setTimerId(timer());
+    }
+    console.log('Token changed:', sJwtToken.sJwtToken);
+  }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1}}>
       {/*Avatar*/}
       <View
         style={{
@@ -112,9 +199,7 @@ export const CustomSidebarMenu = (props) => {
             marginHorizontal: hp(1.5),
             flexDirection: 'column',
             justifyContent: 'space-between',
-            //alignItems:"center",
             alignContent: 'space-between',
-
             //alignItems:"center",
             //alignSelf:"center"
           }}>
@@ -166,8 +251,6 @@ export const CustomSidebarMenu = (props) => {
         }}
       />
       <DrawerContentScrollView {...props}>
-        {/* {console.log(props)} */}
-        {/* <DrawerItemList {...props} /> */}
         {state.routes.map((route) => {
           const {
             drawerLabel,
@@ -185,7 +268,7 @@ export const CustomSidebarMenu = (props) => {
               inactiveTintColor={inactiveTintColor}
               icon={drawerIcon}
               key={route.key}
-              label={({ color, focused }) => (
+              label={({color, focused}) => (
                 <Text
                   style={{
                     ...labelStyle,
@@ -233,7 +316,7 @@ export const CustomSidebarMenu = (props) => {
             width: '100%',
             height: 1,
             backgroundColor: Colors.separatorColor,
-            //marginTop: hp(1),
+            marginTop: hp(1),
           }}
         />
         <DrawerItem

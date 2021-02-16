@@ -1,13 +1,15 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import { Switch, Route, Redirect, useLocation, useHistory } from 'react-router-dom';
+import { removeAuthDetails } from "./actions/userAuthenticateAction";
 import { AnimatePresence, motion } from 'framer-motion';
 import { ClimbingBoxLoader, MoonLoader } from 'react-spinners';
 import { ThemeProvider } from '@material-ui/styles';
 import MuiTheme from './theme';
 import { PrivateRoute } from './auth/_components/PrivateRoute';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-
+import {Button,List,ListItem,Dialog} from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // Layout Blueprints
 import {
   LeftSidebar,
@@ -90,6 +92,7 @@ const ChatrelReceipt = lazy(() => import('./views/chatrelpay/chatrelreceipt'));
 const ChatrelBulkUpload = lazy(() => import('./views/chatrelhome/bulkupload'));
 const ChatrelReport = lazy(() => import('./views/chatrelhome/reports'));
 const ChatrelAddSingle = lazy(() => import('./views/chatrelhome/addchatrel'));
+const ChatrelListSearch = lazy(() => import('./views/chatrelpay/chatrel_list/chatrel_list_with_search'));
 
 //Report
 
@@ -121,6 +124,9 @@ const ReportDeletedGB = lazy(() => import('./views/reports/DeletedGB'));
 //const IssuedOverAll = lazy(() => import('./views/reports/IssuedOverAll/index.js'));
 
 const Routes = () => {
+  const [sessionTimeout,setSessionTimeout]=React.useState(false);
+  const dispatch = useDispatch();
+  const history = useHistory();
   const location = useLocation();
   const oUserAuth = useSelector(
     (state) => state.UserAuthenticationReducer.oUserAuth
@@ -129,6 +135,41 @@ const Routes = () => {
     axios.defaults.headers.common['Authorization'] =
       'Bearer ' + oUserAuth.sJWTToken;
 
+  axios.interceptors.response.use((response) => {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    //console.log("Interceptor valid response", response);
+    return response;
+  },  (error) => {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    //console.log("path",window.location.pathname);
+
+    if(error.response.status === 401 && window.location.pathname!=='/Login' && window.location.pathname!=='/login'){
+      //console.log("we hit 401");
+      //history.go(0);
+      //history.push('/Login');
+      
+      //alert("Your session has expired. Please login again.");
+
+      //window.location.replace('/Login');
+      setSessionTimeout(true);
+      //window.location.reload('/Login');
+      //dispatch(removeAuthDetails());
+
+      return;
+    }
+    return Promise.reject(error);
+  });
+  const logout =() =>{
+    //alert('logout');
+    
+     
+    window.location.reload('/Login');
+    dispatch(removeAuthDetails());
+    //history.push('/Login');
+      
+  }
   const pageVariants = {
     initial: {
       opacity: 0
@@ -266,6 +307,7 @@ const Routes = () => {
                 '/ChatrelPay/MainPage',
                 '/ChatrelPay/PaymentPage',
                 '/Chatrel/ChatrelList',
+                '/Chatrel/ChatrelListSearch',
                 '/Chatrel/ChatrelReceipt',
                 '/Chatrel',
                 '/Chatrel/SearchUsers',
@@ -553,6 +595,12 @@ const Routes = () => {
                       exact
                     />
                     <PrivateRoute
+                      path="/Chatrel/ChatrelListSearch"
+                      feature={48}
+                      component={ChatrelListSearch}
+                      exact
+                    />
+                    <PrivateRoute
                       path="/Chatrel/ChatrelReceipt"
                       feature={49}
                       component={ChatrelReceipt}
@@ -622,6 +670,25 @@ const Routes = () => {
               </CollapsedSidebar>
             </Route>*/}
           </Switch>
+          <Dialog open={sessionTimeout} onClose={logout} classes={{ paper: 'shadow-xl-first rounded' }}>
+                            <div className="text-center p-5">
+                                <div className="avatar-icon-wrapper rounded-circle m-0">
+                                    <div className="d-inline-flex justify-content-center p-0 rounded-circle btn-icon avatar-icon-wrapper bg-neutral-first text-first m-0 d-130">
+                                        <FontAwesomeIcon icon={['fas', 'hourglass-end']} className="d-flex align-self-center display-3"/>
+                                    </div>
+                                </div>
+                                <h4 className="font-weight-bold mt-4">Session Timeout</h4>
+                                <p className="mb-0 text-black-50">Your session has timed out. Please sign in again.</p>
+                                <div className="pt-4">
+                                    <Button onClick={logout} className="btn-outline-first border-1 m-2" variant="outlined">
+                                        <span className="btn-wrapper--label">
+                                            Close
+                    </span>
+                                    </Button>
+                                   
+                                </div>
+                            </div>
+                        </Dialog>
         </Suspense>
       </AnimatePresence>
     </ThemeProvider>

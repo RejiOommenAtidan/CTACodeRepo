@@ -211,7 +211,7 @@ export default function EnhancedTable() {
       .catch(error => {
         if(error.response){
           if(error.response.status === 403){
-            console.log(error);
+            //console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
             snackbarOpen();
@@ -248,7 +248,7 @@ export default function EnhancedTable() {
       .catch(error => {
         if(error.response){
           if(error.response.status === 403){
-            console.log(error);
+            //console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
             snackbarOpen();
@@ -278,7 +278,7 @@ export default function EnhancedTable() {
     };
     axios.post(`/Province/DeleteProvince/`, provinceToDelete)
       .then(resp => {
-        console.log(provinceToDelete);
+        //console.log(provinceToDelete);
         if (resp.status === 200) {
           setDeleteModal(false);
           axios.get(`/Province/GetProvinces`)

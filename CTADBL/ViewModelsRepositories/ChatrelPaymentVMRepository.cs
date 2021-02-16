@@ -45,15 +45,15 @@ namespace CTADBL.ViewModelsRepositories
         public string Add(ChatrelPaymentVM chatrelPaymentVM)
         {
 
-            
+
             ChatrelPayment chatrelPayment = chatrelPaymentVM.chatrelPayment;
             IEnumerable<GBChatrel> chatrels = chatrelPaymentVM.gbChatrels;
             GBChatrelDonation gbChatrelDonation = chatrelPaymentVM.gbChatrelDonation;
-            if(gbChatrelDonation == null && chatrels == null)
+            if (gbChatrelDonation == null && chatrels == null)
             {
                 return ("No donation amount.");
             }
-            else 
+            else
             {
                 Greenbook greenbook = _greenBookRepository.GetGreenbookByGBID(chatrelPayment.sGBId);
                 if (chatrelPayment.sPaymentMode == ChatrelPayment.Online)
@@ -69,7 +69,7 @@ namespace CTADBL.ViewModelsRepositories
                 greenbook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                 greenbook.sPaidUntil = chatrelPayment.nChatrelYear.ToString();
 
-                if(chatrels != null)
+                if (chatrels != null)
                 {
                     foreach (var chatrel in chatrels)
                     {
@@ -82,7 +82,7 @@ namespace CTADBL.ViewModelsRepositories
                         chatrel.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     }
                 }
-                
+
 
                 var builder = new SqlQueryBuilder<ChatrelPayment>(chatrelPayment);
                 MySqlCommand command = builder.GetInsertCommand();
@@ -96,7 +96,7 @@ namespace CTADBL.ViewModelsRepositories
                 {
                     command.ExecuteNonQuery();
                     long insertId = command.LastInsertedId;
-                    if(chatrels != null)
+                    if (chatrels != null)
                     {
                         foreach (var chatrel in chatrels)
                         {
@@ -106,7 +106,7 @@ namespace CTADBL.ViewModelsRepositories
                             int rows = command.ExecuteNonQuery();
                         }
                     }
-                    if(gbChatrelDonation != null)
+                    if (gbChatrelDonation != null)
                     {
                         gbChatrelDonation.chatrelpaymentID = Convert.ToInt32(insertId);
                         gbChatrelDonation.sChatrelReceiptNumber = chatrelPayment.sChatrelReceiptNumber;
@@ -159,7 +159,7 @@ namespace CTADBL.ViewModelsRepositories
                 int maxNumber = Convert.ToInt32(command.ExecuteScalar());
                 return String.Format("CTA{0}", maxNumber);
             }
-                
+
         }
 
 
@@ -179,7 +179,7 @@ namespace CTADBL.ViewModelsRepositories
                 {
                     //name = String.Format(@"t2.sFirstName LIKE '{0}' AND ", sFirstName);
                     parameters += $@" AND t2.sFirstName LIKE @sFirstName ";
-                    command.Parameters.AddWithValue("sFirstName", sFirstName+'%');
+                    command.Parameters.AddWithValue("sFirstName", sFirstName + '%');
                 }
                 if (sFathersName != null && !String.IsNullOrEmpty(sFathersName.Trim()))
                 {
@@ -200,7 +200,7 @@ namespace CTADBL.ViewModelsRepositories
                 DataSet ds = new DataSet();
                 await mySqlDataAdapter.FillAsync(ds);
                 DataTableCollection tables = ds.Tables;
-                
+
                 var result = tables[0].AsEnumerable().Select(row => new
                 {
                     sGBID = row.Field<string>("sGBID"),
@@ -267,20 +267,77 @@ namespace CTADBL.ViewModelsRepositories
 
         #region Get Chatrel List Quick (Chatrel List with Limited Columns + Search)
 
-        public IEnumerable<Object> GetQuickChatrelList(Dictionary<string, dynamic> searchParams = null)
+        public async Task<IEnumerable<Object>> GetQuickChatrelList(Dictionary<string, string> searchParams = null)
         {
-            string sql = @"SET session sql_mode = ''; SELECT t.sGBID, t.sChatrelReceiptNumber, concat(t.nChatrelYear, '-', (CAST(substring(t.nChatrelYear, 3) AS UNSIGNED)+1))  AS sFinancialYear, t.dtPayment, CONCAT(t2.sFirstName,' ',IFNULL(t2.sLastName, '')) AS sName,  t.sPaidByGBId, t.sPaymentCurrency, t.nChatrelTotalAmount, t.sPaymentMode, l.sAuthRegion, l3.sCountry FROM tblchatrelpayment t LEFT JOIN tblgreenbook t2 ON t2.sGBID = t.sGBId LEFT JOIN lnkgbchatrel l2 ON t.id = l2.chatrelpaymentID AND l2.nArrearsAmount IS NULL LEFT JOIN lnkgbchatreldonation l4 ON l4.chatrelpaymentID = t.Id  LEFT JOIN lstauthregion l ON l.ID = l2.nAuthRegionID OR l.ID = l4.nAuthRegionID LEFT JOIN lstcountry l3 ON l3.sCountryID = l2.sCountryID OR l3.sCountryID = l4.sCountryID  WHERE t.sChatrelReceiptNumber IS NOT NULL ORDER BY t.dtPayment DESC LIMIT @records;";
+            /* Search params :
+             * 
+             * 1. Payment Mode.
+             * 2. Region
+             * 3. Country
+             * 4. Payment Date
+             * 5. Receipt No.
+             * 6. GB ID
+             */
 
-            int records = 50;
-
-            using (var command = new MySqlCommand(sql))
+            string sql = @"SET session sql_mode = ''; SELECT t.sGBID, t.sChatrelReceiptNumber, concat(t.nChatrelYear, '-', (CAST(substring(t.nChatrelYear, 3) AS UNSIGNED)+1))  AS sFinancialYear, t.dtPayment, t2.sFirstName, t2.sLastName, CONCAT(t2.sFirstName,' ',IFNULL(t2.sLastName, '')) AS sName,  t.sPaidByGBId, t.sPaymentCurrency, t.nChatrelTotalAmount, t.sPaymentMode, l.sAuthRegion, l3.sCountry FROM tblchatrelpayment t LEFT JOIN tblgreenbook t2 ON t2.sGBID = t.sGBId LEFT JOIN lnkgbchatrel l2 ON t.id = l2.chatrelpaymentID AND l2.nArrearsAmount IS NULL LEFT JOIN lnkgbchatreldonation l4 ON l4.chatrelpaymentID = t.Id  LEFT JOIN lstauthregion l ON l.ID = l2.nAuthRegionID OR l.ID = l4.nAuthRegionID LEFT JOIN lstcountry l3 ON l3.sCountryID = l2.sCountryID OR l3.sCountryID = l4.sCountryID  WHERE t.sChatrelReceiptNumber IS NOT NULL ";
+            using (var command = new MySqlCommand())
             {
+                foreach (KeyValuePair<string, string> item in searchParams)
+                {
+                    if (item.Value != null)
+                    {
+                        if (item.Key == "dtPaymentFrom")
+                        {
+                            if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                            {
+                                sql += $@" AND t.dtPayment >= @{item.Key}";
+                                command.Parameters.AddWithValue(item.Key, item.Value.ToString());
+                            }
+                            continue;
+                        }
+                        if (item.Key == "dtPaymentTo")
+                        {
+                            if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                            {
+                                sql += $@" AND t.dtPayment <= @{item.Key}";
+                                command.Parameters.AddWithValue(item.Key, item.Value.ToString());
+                            }
+                            continue;
+                        }
+                        if (item.Key == "sAuthRegion")
+                        {
+                            sql += $@" AND l.{item.Key} LIKE @{item.Key}";
+                            command.Parameters.AddWithValue(item.Key, item.Value.ToString() + '%');
+                            continue;
+                        }
+                        if (item.Key == "sCountry")
+                        {
+                            sql += $@" AND l3.{item.Key} LIKE @{item.Key}";
+                            command.Parameters.AddWithValue(item.Key, item.Value.ToString() + '%');
+                            continue;
+                        }
+                        if (item.Key == "sFirstName" || item.Key == "sLastName")
+                        {
+                            sql += $@" AND t2.{item.Key} LIKE @{item.Key}";
+                            command.Parameters.AddWithValue(item.Key, item.Value.ToString() + '%');
+                            continue;
+                        }
+                        if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                        {
+                            sql += $@" AND t.{item.Key} LIKE @{item.Key}";
+                            command.Parameters.AddWithValue(item.Key, item.Value.ToString() + '%');
+                        }
+                    }
+                }
+                int records = 50;
+                sql += " ORDER BY t.dtPayment DESC LIMIT @records;";
+                command.CommandText = sql;
                 command.Parameters.AddWithValue("records", records);
                 command.CommandType = CommandType.Text;
                 command.Connection = _connection;
                 MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
                 DataSet ds = new DataSet();
-                mySqlDataAdapter.Fill(ds);
+                await mySqlDataAdapter.FillAsync(ds);
                 DataTableCollection tables = ds.Tables;
                 var result = tables[0].AsEnumerable().Select(row => new
                 {
@@ -309,11 +366,11 @@ namespace CTADBL.ViewModelsRepositories
         {
             //string sql = @"SELECT l.sGBID, t3.sChatrelReceiptNumber, t3.dtPayment, t2.sFirstName,  l.sPaidByGBId, l.sPaymentCurrency, l.nChatrelAmount*l.nConversionRate AS nChatrelAmount, l.nChatrelMeal*l.nConversionRate AS nChatrelMeal, l.nCurrentChatrelSalaryAmt*l.nConversionRate AS nCurrentChatrelSalaryAmt, l.dtCurrentChatrelFrom, l.dtCurrentChatrelTo, concat(date_format(dtCurrentChatrelFrom, '%Y'), '-', date_format(dtCurrentChatrelTo, '%y')) AS sFinancialYear, l2.nArrears, l2.dtArrearsFrom, l2.dtArrearsTo, l4.nChatrelBusinessDonationAmt, l4.nChatrelAdditionalDonationAmt, t3.nChatrelTotalAmount, l5.sAuthRegion, t3.sPaymentMode FROM lnkgbchatrel l INNER JOIN (SELECT l3.chatrelpaymentID, sum(l3.nArrearsAmount*l3.nConversionRate) AS nArrears, min(l3.dtArrearsFrom) AS dtArrearsFrom, max(l3.dtArrearsTo) AS dtArrearsTo FROM lnkgbchatrel l3 WHERE l3.nArrearsAmount IS NOT NULL GROUP BY l3.sChatrelReceiptNumber ) AS l2 ON l.chatrelpaymentID = l2.chatrelpaymentID INNER JOIN tblchatrelpayment t3 ON t3.Id = l.chatrelpaymentID LEFT JOIN tblgreenbook t2 ON t2.sGBID = l.sGBId LEFT JOIN lnkgbchatreldonation l4 ON t3.Id = l4.chatrelpaymentID LEFT JOIN lstauthregion l5 ON l5.ID = l.nAuthRegionID WHERE l.nArrearsAmount IS NULL LIMIT @records;";
 
-            string sql = @"SET session sql_mode = ''; SELECT t.sGBID, t.sChatrelReceiptNumber, t.dtPayment, CONCAT(t2.sFirstName,' ',IFNULL(t2.sLastName, '')) AS sName,  t.sPaidByGBId, t.sPaymentCurrency, ROUND(l.nChatrelAmount*l.nConversionRate, 2) AS nChatrelAmount, ROUND(l.nChatrelMeal*l.nConversionRate, 2) AS nChatrelMeal, ROUND(l.nCurrentChatrelSalaryAmt*l.nConversionRate, 2) AS nCurrentChatrelSalaryAmt, l.dtCurrentChatrelFrom, l.dtCurrentChatrelTo, concat(date_format(dtCurrentChatrelFrom, '%Y'), '-', date_format(dtCurrentChatrelTo, '%y')) AS sFinancialYear, l2.nArrears, l2.dtArrearsFrom, l2.dtArrearsTo, l4.nChatrelBusinessDonationAmt, l4.nChatrelAdditionalDonationAmt, t.nChatrelTotalAmount, l5.sAuthRegion, t.sPaymentMode FROM tblchatrelpayment t LEFT JOIN lnkgbchatrel l ON t.id = l.chatrelpaymentID LEFT JOIN (SELECT l3.chatrelpaymentID, ROUND(sum(l3.nArrearsAmount*l3.nConversionRate), 2) AS nArrears, min(l3.dtArrearsFrom) AS dtArrearsFrom, max(l3.dtArrearsTo) AS dtArrearsTo FROM lnkgbchatrel l3 WHERE l3.nArrearsAmount IS NOT NULL GROUP BY l3.sChatrelReceiptNumber ) AS l2 ON l2.chatrelpaymentID = t.Id LEFT JOIN lnkgbchatreldonation l4 ON t.Id = l4.chatrelpaymentID LEFT JOIN tblgreenbook t2 ON t2.sGBID = t.sGBId  LEFT JOIN lstauthregion l5 ON l5.ID = l.nAuthRegionID OR l5.ID = l4.nAuthRegionID WHERE l.nArrearsAmount IS NULL AND t.sChatrelReceiptNumber IS NOT NULL LIMIT @records;";
+            string sql = @"SET session sql_mode = ''; SELECT t.sGBID, t.sChatrelReceiptNumber, t.dtPayment, CONCAT(t2.sFirstName,' ',IFNULL(t2.sLastName, '')) AS sName,  t.sPaidByGBId, t.sPaymentCurrency, ROUND(l.nChatrelAmount*l.nConversionRate, 2) AS nChatrelAmount, ROUND(l.nChatrelMeal*l.nConversionRate, 2) AS nChatrelMeal, ROUND(l.nCurrentChatrelSalaryAmt*l.nConversionRate, 2) AS nCurrentChatrelSalaryAmt, l.dtCurrentChatrelFrom, l.dtCurrentChatrelTo, concat(date_format(dtCurrentChatrelFrom, '%Y'), '-', date_format(dtCurrentChatrelTo, '%y')) AS sFinancialYear, l2.nArrears, l2.dtArrearsFrom, l2.dtArrearsTo, l4.nChatrelBusinessDonationAmt, l4.nChatrelAdditionalDonationAmt, t.nChatrelTotalAmount, l5.sAuthRegion, t.sPaymentMode FROM tblchatrelpayment t LEFT JOIN lnkgbchatrel l ON t.id = l.chatrelpaymentID LEFT JOIN (SELECT l3.chatrelpaymentID, ROUND(sum(l3.nArrearsAmount*l3.nConversionRate), 2) AS nArrears, min(l3.dtArrearsFrom) AS dtArrearsFrom, max(l3.dtArrearsTo) AS dtArrearsTo FROM lnkgbchatrel l3 WHERE l3.nArrearsAmount IS NOT NULL GROUP BY l3.sChatrelReceiptNumber ) AS l2 ON l2.chatrelpaymentID = t.Id LEFT JOIN lnkgbchatreldonation l4 ON t.Id = l4.chatrelpaymentID LEFT JOIN tblgreenbook t2 ON t2.sGBID = t.sGBId  LEFT JOIN lstauthregion l5 ON l5.ID = l.nAuthRegionID OR l5.ID = l4.nAuthRegionID WHERE l.nArrearsAmount IS NULL AND t.sChatrelReceiptNumber IS NOT NULL ORDER BY t.dtPayment DESC LIMIT @records;";
 
 
             int records = Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount"));
-            
+
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("records", records);
@@ -357,7 +414,9 @@ namespace CTADBL.ViewModelsRepositories
 
         public IEnumerable<Object> GetPaymentBreakup(string sChatrelReceiptNumber)
         {
-            string sql = @"SELECT t.dtPayment, t.sGBId, t.nChatrelYear, t.nChatrelTotalAmount AS nReceiptTotal, t.sChatrelReceiptNumber, t.sPaymentMode, t.sPaymentCurrency, t.sPaidByGBId, concat(date_format(l.dtCurrentChatrelFrom, '%Y'), '-', date_format(l.dtCurrentChatrelTo, '%y')) AS sFinancialYear, ROUND(l.nChatrelAmount*l.nConversionRate, 2) AS nChatrelAmount, ROUND(l.nChatrelMeal*l.nConversionRate,2) AS nChatrelMeal, ROUND(l.nCurrentChatrelSalaryAmt*l.nConversionRate, 2) AS nCurrentChatrelSalaryAmt, ROUND(l.nChatrelLateFeesValue*l.nConversionRate, 2) AS nChatrelLateFeesValue, ROUND(l.nArrearsAmount*l.nConversionRate, 2) AS TotalArrears, l.nChatrelTotalAmount, l.dtArrearsFrom, l.dtArrearsTo, l3.sAuthRegion, NULL AS nChatrelBusinessDonationAmt, NULL AS nChatrelAdditionalDonationAmt FROM tblchatrelpayment t INNER JOIN lnkgbchatrel l ON t.Id = l.chatrelpaymentID LEFT JOIN lstauthregion l3 ON l3.ID = l.nAuthRegionID WHERE t.sChatrelReceiptNumber = @sChatrelReceiptNumber UNION SELECT t2.dtPayment, t2.sGBId, t2.nChatrelYear, t2.nChatrelTotalAmount, t2.sChatrelReceiptNumber, t2.sPaymentMode, t2.sPaymentCurrency, t2.sPaidByGBId, concat((t2.nChatrelYear), '-', (substr(t2.nChatrelYear, 3)+1)) AS sFinancialYear, NULL, NULL, NULL, NULL, NULL, ROUND((l2.nChatrelBusinessDonationAmt + l2.nChatrelAdditionalDonationAmt), 2), NULL, NULL, l4.sAuthRegion, ROUND(l2.nChatrelBusinessDonationAmt,2) AS nChatrelBusinessDonationAmt, ROUND(l2.nChatrelAdditionalDonationAmt, 2) AS nChatrelAdditionalDonationAmt FROM tblchatrelpayment t2 INNER JOIN lnkgbchatreldonation l2 ON t2.Id = l2.chatrelpaymentID LEFT JOIN lstauthregion l4 ON l4.ID = l2.nAuthRegionID WHERE t2.sChatrelReceiptNumber = @sChatrelReceiptNumber;";
+            //string sql = @"SELECT t.dtPayment, t.sGBId, t.nChatrelYear, t.nChatrelTotalAmount AS nReceiptTotal, t.sChatrelReceiptNumber, t.sPaymentMode, t.sPaymentCurrency, t.sPaidByGBId, concat(date_format(l.dtCurrentChatrelFrom, '%Y'), '-', date_format(l.dtCurrentChatrelTo, '%y')) AS sFinancialYear, ROUND(l.nChatrelAmount*l.nConversionRate, 2) AS nChatrelAmount, ROUND(l.nChatrelMeal*l.nConversionRate,2) AS nChatrelMeal, ROUND(l.nCurrentChatrelSalaryAmt*l.nConversionRate, 2) AS nCurrentChatrelSalaryAmt, ROUND(l.nChatrelLateFeesValue*l.nConversionRate, 2) AS nChatrelLateFeesValue, ROUND(l.nArrearsAmount*l.nConversionRate, 2) AS TotalArrears, l.nChatrelTotalAmount, l.dtArrearsFrom, l.dtArrearsTo, l3.sAuthRegion, NULL AS nChatrelBusinessDonationAmt, NULL AS nChatrelAdditionalDonationAmt FROM tblchatrelpayment t INNER JOIN lnkgbchatrel l ON t.Id = l.chatrelpaymentID LEFT JOIN lstauthregion l3 ON l3.ID = l.nAuthRegionID WHERE t.sChatrelReceiptNumber = @sChatrelReceiptNumber UNION SELECT t2.dtPayment, t2.sGBId, t2.nChatrelYear, t2.nChatrelTotalAmount, t2.sChatrelReceiptNumber, t2.sPaymentMode, t2.sPaymentCurrency, t2.sPaidByGBId, concat((t2.nChatrelYear), '-', (substr(t2.nChatrelYear, 3)+1)) AS sFinancialYear, NULL, NULL, NULL, NULL, NULL, ROUND((l2.nChatrelBusinessDonationAmt + l2.nChatrelAdditionalDonationAmt), 2), NULL, NULL, l4.sAuthRegion, ROUND(l2.nChatrelBusinessDonationAmt,2) AS nChatrelBusinessDonationAmt, ROUND(l2.nChatrelAdditionalDonationAmt, 2) AS nChatrelAdditionalDonationAmt FROM tblchatrelpayment t2 INNER JOIN lnkgbchatreldonation l2 ON t2.Id = l2.chatrelpaymentID LEFT JOIN lstauthregion l4 ON l4.ID = l2.nAuthRegionID WHERE t2.sChatrelReceiptNumber = @sChatrelReceiptNumber;";
+
+            string sql = @"SELECT t.dtPayment, t.sGBId, t.nChatrelYear, format(t.nChatrelTotalAmount, 2) AS nReceiptTotal, t.sChatrelReceiptNumber, t.sPaymentMode, t.sPaymentCurrency, t.sPaidByGBId, concat((COALESCE(date_format(l.dtArrearsFrom, '%Y'), t.nChatrelYear)), '-', COALESCE(date_format(l.dtArrearsTo, '%y'), (substr(t.nChatrelYear, 3)+1))) AS sFinancialYear, format(l.nChatrelAmount*l.nConversionRate, 2) AS nChatrelAmount, format(l.nChatrelMeal*l.nConversionRate, 2) AS nChatrelMeal, format(l.nCurrentChatrelSalaryAmt*l.nConversionRate, 2) AS nCurrentChatrelSalaryAmt, format(l.nChatrelLateFeesValue*l.nConversionRate, 2) AS nChatrelLateFeesValue, format(l.nArrearsAmount*l.nConversionRate, 2) AS TotalArrears, format(l.nChatrelTotalAmount, 2) AS nChatrelTotalAmount, l.dtArrearsFrom, l.dtArrearsTo, COALESCE(l3.sAuthRegion, l4.sAuthRegion) AS sAuthRegion, format(l2.nChatrelBusinessDonationAmt, 2) AS nChatrelBusinessDonationAmt, format(l2.nChatrelAdditionalDonationAmt, 2) AS nChatrelAdditionalDonationAmt FROM tblchatrelpayment t LEFT JOIN lnkgbchatrel l ON t.Id = l.chatrelpaymentID LEFT JOIN lnkgbchatreldonation l2 ON t.Id = l2.chatrelpaymentID AND l.nArrearsAmount IS NULL LEFT JOIN lstauthregion l3 ON l3.ID = l.nAuthRegionID LEFT JOIN lstauthregion l4 ON l4.ID = l2.nAuthRegionID WHERE t.sChatrelReceiptNumber = @sChatrelReceiptNumber order by coalesce(l.dtArrearsFrom, l.dtCurrentChatrelFrom);";
 
             using (var command = new MySqlCommand(sql))
             {
@@ -373,23 +432,23 @@ namespace CTADBL.ViewModelsRepositories
                     dtPayment = row.Field<DateTime?>("dtPayment"),
                     sGBID = row.Field<string>("sGBID"),
                     nChatrelYear = row.Field<int?>("nChatrelYear"),
-                    nReceiptTotal = row.Field<decimal>("nReceiptTotal"),
+                    nReceiptTotal = row.Field<string>("nReceiptTotal"),
                     sChatrelReceiptNumber = row.Field<string>("sChatrelReceiptNumber"),
                     sPaymentMode = row.Field<string>("sPaymentMode"),
                     sPaymentCurrency = row.Field<string>("sPaymentCurrency"),
                     sPaidByGBId = row.Field<string>("sPaidByGBId"),
                     sFinancialYear = row.Field<string>("sFinancialYear"),
-                    nChatrelAmount = row.Field<decimal?>("nChatrelAmount"),
-                    nChatrelMeal = row.Field<decimal?>("nChatrelMeal"),
-                    nCurrentChatrelSalaryAmt = row.Field<decimal?>("nCurrentChatrelSalaryAmt"),
-                    nChatrelLateFeesValue = row.Field<decimal?>("nChatrelLateFeesValue"),
-                    nArrears = row.Field<decimal?>("TotalArrears"),
-                    nChatrelTotalAmount = row.Field<decimal?>("nChatrelTotalAmount"),
+                    nChatrelAmount = row.Field<string?>("nChatrelAmount"),
+                    nChatrelMeal = row.Field<string?>("nChatrelMeal"),
+                    nCurrentChatrelSalaryAmt = row.Field<string?>("nCurrentChatrelSalaryAmt"),
+                    nChatrelLateFeesValue = row.Field<string?>("nChatrelLateFeesValue"),
+                    nArrears = row.Field<string?>("TotalArrears"),
+                    nChatrelTotalAmount = row.Field<string?>("nChatrelTotalAmount"),
                     dtArrearsFrom = row.Field<DateTime?>("dtArrearsFrom"),
                     dtArrearsTo = row.Field<DateTime?>("dtArrearsTo"),
                     sAuthRegion = row.Field<string>("sAuthRegion"),
-                    nChatrelBusinessDonationAmt = row.Field<decimal?>("nChatrelBusinessDonationAmt"),
-                    nChatrelAdditionalDonationAmt = row.Field<decimal?>("nChatrelAdditionalDonationAmt"),
+                    nChatrelBusinessDonationAmt = row.Field<string?>("nChatrelBusinessDonationAmt"),
+                    nChatrelAdditionalDonationAmt = row.Field<string?>("nChatrelAdditionalDonationAmt"),
                 });
 
                 return result;
@@ -400,9 +459,9 @@ namespace CTADBL.ViewModelsRepositories
         #region Chatrel Payment Report (Chatrel Report)
         public IEnumerable<Object> GetChatrelPaymentReport(ChatrelReportVM chatrelReportVM)
         {
-            
+
             string addParams = String.Empty;
-            
+
             //if(dtFrom == null && dtTo == null)
             //{
             //    int startyear = DateTime.Today.Month < 4 ? DateTime.Today.Year - 1 : DateTime.Today.Year;
@@ -411,28 +470,28 @@ namespace CTADBL.ViewModelsRepositories
             //    dtTo = DateTime.Parse(endyear.ToString() + "-03-31");
             //}
 
-           if(chatrelReportVM.AuthRegions.Count() > 0)
+            if (chatrelReportVM.AuthRegions.Count() > 0)
             {
                 addParams += "AND (";
-                foreach(AuthRegion region in chatrelReportVM.AuthRegions)
+                foreach (AuthRegion region in chatrelReportVM.AuthRegions)
                 {
-                    addParams += " sAuthRegion = '"+region.sAuthRegion+"' OR";
+                    addParams += " sAuthRegion = '" + region.sAuthRegion + "' OR";
                 }
                 addParams = addParams.Substring(0, addParams.Length - 2);
                 addParams += ")";
             }
 
-           if(chatrelReportVM.Countries.Count() > 0)
+            if (chatrelReportVM.Countries.Count() > 0)
             {
                 addParams += "AND (";
-                foreach(Country country in chatrelReportVM.Countries)
+                foreach (Country country in chatrelReportVM.Countries)
                 {
-                    addParams += " sCountry = '"+country.sCountry+"' OR";
+                    addParams += " sCountry = '" + country.sCountry + "' OR";
                 }
                 addParams = addParams.Substring(0, addParams.Length - 2);
                 addParams += ")";
             }
-            
+
             int records = 5000;
 
             //string sql = String.Format(@"SELECT t.sGBID, t.sChatrelReceiptNumber, t.dtPayment, t2.sFirstName,  t.sPaidByGBId, t.sPaymentCurrency, l.nChatrelAmount*l.nConversionRate AS nChatrelAmount, l.nChatrelMeal*l.nConversionRate AS nChatrelMeal, l.nCurrentChatrelSalaryAmt*l.nConversionRate AS nCurrentChatrelSalaryAmt, l.dtCurrentChatrelFrom, l.dtCurrentChatrelTo, concat(date_format(dtCurrentChatrelFrom, '%Y'), '-', date_format(dtCurrentChatrelTo, '%y')) AS sFinancialYear, l2.nArrears, l2.dtArrearsFrom, l2.dtArrearsTo, l4.nChatrelBusinessDonationAmt, l4.nChatrelAdditionalDonationAmt, t.nChatrelTotalAmount, l5.sAuthRegion, t.sPaymentMode FROM tblchatrelpayment t LEFT JOIN lnkgbchatrel l ON t.id = l.chatrelpaymentID LEFT JOIN (SELECT l3.chatrelpaymentID, sum(l3.nArrearsAmount*l3.nConversionRate) AS nArrears, min(l3.dtArrearsFrom) AS dtArrearsFrom, max(l3.dtArrearsTo) AS dtArrearsTo FROM lnkgbchatrel l3 WHERE l3.nArrearsAmount IS NOT NULL GROUP BY l3.sChatrelReceiptNumber ) AS l2 ON l2.chatrelpaymentID = t.Id LEFT JOIN lnkgbchatreldonation l4 ON t.Id = l4.chatrelpaymentID LEFT JOIN tblgreenbook t2 ON t2.sGBID = t.sGBId  LEFT JOIN lstauthregion l5 ON l5.ID = l.nAuthRegionID OR l5.ID = l4.nAuthRegionID WHERE l.nArrearsAmount IS NULL AND t.sChatrelReceiptNumber IS NOT NULL AND t.sPaymentMode =@sPaymentMode AND t.dtPayment >=  AND t.dtPayment <= {0} AND 1 = 1 LIMIT @records;", addParams);

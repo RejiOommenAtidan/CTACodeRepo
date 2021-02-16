@@ -20,6 +20,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* ChatrelMobilePaymentSystemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChatrelMobilePaymentSystemTests.m */; };
 		6B19BC3444A649188F235864 /* libPods-ChatrelMobilePaymentSystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6102C9CCC66779CB2063F33D /* libPods-ChatrelMobilePaymentSystem.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		94B8BFB33B7C4CB2A8CF5F40 /* Mircosoft Himalaya.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9904C504E99043CF96852DAB /* Mircosoft Himalaya.ttf */; };
 		9CF562CA878D4EC3A0F7FDD1 /* Cairo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 983C7858A7184A669CA72AF7 /* Cairo-Regular.ttf */; };
 		C39CBD2316000E2B744A5E5C /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9769228F034D7DC46BCFA25F /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */; };
 		D9420E2925ADD99C00B379B4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D9420E2825ADD99C00B379B4 /* GoogleService-Info.plist */; };
@@ -90,6 +91,7 @@
 		946E7D738566C3553C66E797 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9769228F034D7DC46BCFA25F /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		983C7858A7184A669CA72AF7 /* Cairo-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Cairo-Regular.ttf"; path = "../code/assets/fonts/Cairo-Regular.ttf"; sourceTree = "<group>"; };
+		9904C504E99043CF96852DAB /* Mircosoft Himalaya.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Mircosoft Himalaya.ttf"; path = "../code/assets/fonts/Mircosoft Himalaya.ttf"; sourceTree = "<group>"; };
 		9B8BF06C112C4667850CD04C /* Kanit-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Thin.ttf"; path = "../code/assets/fonts/Kanit-Thin.ttf"; sourceTree = "<group>"; };
 		9C601274195747F99288E405 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		9F36FC5276B84302A9939492 /* Kanit-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Bold.ttf"; path = "../code/assets/fonts/Kanit-Bold.ttf"; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				D75BF48495144774979759C4 /* SF Pro.ttf */,
 				47BC2B204C75499ABE9DE727 /* JosefinSans-Bold.ttf */,
 				167CEB9EA7E149B3944E3CC1 /* JosefinSans-Regular.ttf */,
+				9904C504E99043CF96852DAB /* Mircosoft Himalaya.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -445,6 +448,7 @@
 				0FABE4B5667446278E11CA8C /* SF Pro.ttf in Resources */,
 				E1D300F5FED845E684113D06 /* JosefinSans-Bold.ttf in Resources */,
 				FC358B10EFB340A1A230308C /* JosefinSans-Regular.ttf in Resources */,
+				94B8BFB33B7C4CB2A8CF5F40 /* Mircosoft Himalaya.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

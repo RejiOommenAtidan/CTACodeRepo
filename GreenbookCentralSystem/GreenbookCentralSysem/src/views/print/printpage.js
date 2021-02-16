@@ -190,7 +190,7 @@ export default function EnhancedTable() {
     axios.get(`Region/GetRegion`)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          ////console.log(resp.data);
           setRegionData(resp.data);
           getData();
         }
@@ -205,15 +205,15 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
   const search = (sGBID) => {
-    console.log("Search by GBID called...");
+    //console.log("Search by GBID called...");
     if (sGBID === 0) {
       setAlertMessage('Enter GB Number');
       setAlertType('error');
@@ -231,7 +231,7 @@ export default function EnhancedTable() {
       //  axios.get(`PrintGreenBook/GetPrintList/?records=10`)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          ////console.log(resp.data);
           setObj([resp.data]);
           setBackdrop(false);
         }
@@ -247,10 +247,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
 
   };
@@ -275,10 +275,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   }
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
@@ -286,7 +286,7 @@ export default function EnhancedTable() {
     //var controls = new Array();
     //controls.push("controls1");
     //controls.push("controls2");
-    console.log(userId)
+    //console.log(userId)
     axios.get(`/PrintGreenBook/AddPrintActionLog/?nUserId=` + userId)
       .then(resp => {
         if (resp.status === 200) {
@@ -295,7 +295,7 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
-        console.log(error.message);
+        //console.log(error.message);
       })
   }
   useEffect(() => {

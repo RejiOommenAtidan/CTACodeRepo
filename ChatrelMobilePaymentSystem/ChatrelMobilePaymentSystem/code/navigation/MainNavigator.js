@@ -1,10 +1,10 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -22,8 +22,8 @@ import {
   MyProfileScreen,
   MyProfileScreenOptions,
 } from '../screens/MyProfileScreen';
-import { GBDetailScreen, GBDetailScreenOptions } from '../screens/GBDetailScreen';
-import HomeScreen, { HomeScreenOptions } from '../screens/HomeScreen';
+import {GBDetailScreen, GBDetailScreenOptions} from '../screens/GBDetailScreen';
+import HomeScreen, {HomeScreenOptions} from '../screens/HomeScreen';
 import {
   SelfChatrelScreen,
   SelfChatrelScreenOptions,
@@ -36,28 +36,30 @@ import {
   FriendChatrelScreen,
   FriendChatrelScreenOptions,
 } from '../screens/FriendChatrelScreen';
-import {
-  FamilyChatrelScreen,
-  FamilyChatrelScreenOptions,
-} from '../screens/FamilyChatrel';
+// import {
+//   FamilyChatrelScreen,
+//   FamilyChatrelScreenOptions,
+// } from '../screens/FamilyChatrel';
 import {
   FamilyChatrelIntermediateScreen,
   FamilyChatrelIntermediateScreenOptions,
 } from '../screens/FamilyChatrelIntermediateScreen';
-import { LoginScreen, LoginScreenOptions } from '../screens/LoginScreen';
+import {LoginScreen, LoginScreenOptions} from '../screens/LoginScreen';
 import Colors from '../constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { sFontName, sFontNameBold } from '../constants/CommonConfig';
-import { CustomSidebarMenu } from '../components/CustomSidebar';
-import { MyWebView, MyWebViewOptions } from '../components/MyWebView';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import {CustomSidebarMenu} from '../components/CustomSidebar';
+import {MyWebView, MyWebViewOptions} from '../components/MyWebView';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { GLogout } from '../components/GLogout';
+import {GLogout} from '../components/GLogout';
+import {ContactUsScreen, ContactUsScreenOptions} from '../screens/ContactUs';
 
 const defaultStackNavOptions = {
   headerMode: 'screen',
@@ -147,21 +149,21 @@ const FamilyChatrelIntermediateNavigator = () => {
   );
 };
 
-const FamilyChatrelStackNavigator = createStackNavigator();
+// const FamilyChatrelStackNavigator = createStackNavigator();
 
-const FamilyChatrelNavigator = () => {
-  return (
-    <FamilyChatrelStackNavigator.Navigator
-      screenOptions={defaultStackNavOptions}>
-      <FamilyChatrelStackNavigator.Screen
-        name="FamilyChatrel"
-        component={FamilyChatrelScreen}
-        options={
-          FamilyChatrelScreenOptions
-        }></FamilyChatrelStackNavigator.Screen>
-    </FamilyChatrelStackNavigator.Navigator>
-  );
-};
+// const FamilyChatrelNavigator = () => {
+//   return (
+//     <FamilyChatrelStackNavigator.Navigator
+//       screenOptions={defaultStackNavOptions}>
+//       <FamilyChatrelStackNavigator.Screen
+//         name="FamilyChatrel"
+//         component={FamilyChatrelScreen}
+//         options={
+//           FamilyChatrelScreenOptions
+//         }></FamilyChatrelStackNavigator.Screen>
+//     </FamilyChatrelStackNavigator.Navigator>
+//   );
+// };
 
 const FriendChatrelIntermediateStackNavigator = createStackNavigator();
 
@@ -224,6 +226,19 @@ const MyProfileNavigator = () => {
   );
 };
 
+const ContactUsStackNavigator = createStackNavigator();
+
+const ContactUsNavigator = () => {
+  return (
+    <ContactUsStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <ContactUsStackNavigator.Screen
+        name="ContactUs"
+        component={ContactUsScreen}
+        options={ContactUsScreenOptions}></ContactUsStackNavigator.Screen>
+    </ContactUsStackNavigator.Navigator>
+  );
+};
+
 const FileDisputeStackNavigator = createStackNavigator();
 
 const FileDisputeNavigator = () => {
@@ -276,14 +291,14 @@ export const MainNavigator = () => {
               (routeName) =>
                 routeName !== 'Login' &&
                 routeName !== 'GBDetail' &&
-                routeName !== 'FamilyChatrel' &&
+                //routeName !== 'FamilyChatrel' &&
                 routeName !== 'FriendChatrel',
             ),
             routes: props.state.routes.filter(
               (route) =>
                 route.name !== 'Login' &&
                 route.name !== 'GBDetail' &&
-                route.name !== 'FamilyChatrel' &&
+                //route.name !== 'FamilyChatrel' &&
                 route.name !== 'FriendChatrel',
             ),
           },
@@ -328,7 +343,7 @@ export const MainNavigator = () => {
         name={'Home'}
         component={HomeNavigator}
         options={{
-          drawerIcon: ({ focused, size }) => (
+          drawerIcon: ({focused, size}) => (
             <AntDesign
               name="home"
               size={size}
@@ -351,7 +366,7 @@ export const MainNavigator = () => {
         name={'SelfChatrel'}
         component={SelfChatrelNavigator}
         options={{
-          drawerIcon: ({ focused, size }) => (
+          drawerIcon: ({focused, size}) => (
             <Ionicons
               name="wallet-outline"
               size={size}
@@ -367,11 +382,11 @@ export const MainNavigator = () => {
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
       {/*FamilyChatrelIntermediate*/}
-      <MainDrawerNavigator.Screen
+      {/* <MainDrawerNavigator.Screen
         name={'FamilyChatrelIntermediate'}
         component={FamilyChatrelIntermediateNavigator}
         options={{
-          drawerIcon: ({ focused, size }) => (
+          drawerIcon: ({focused, size}) => (
             <AntDesign
               name="hearto"
               size={size}
@@ -385,14 +400,14 @@ export const MainNavigator = () => {
           drawerLabel: 'FAMILY CHATREL',
           gestureEnabled: true,
           swipeEnabled: true,
-        }}></MainDrawerNavigator.Screen>
+        }}></MainDrawerNavigator.Screen> */}
 
       {/*FriendChatrelIntermediate*/}
       <MainDrawerNavigator.Screen
         name={'FriendChatrelIntermediate'}
         component={FriendChatrelIntermediateNavigator}
         options={{
-          drawerIcon: ({ focused, size }) => (
+          drawerIcon: ({focused, size}) => (
             <Ionicons
               name="leaf-outline"
               size={size}
@@ -403,7 +418,7 @@ export const MainNavigator = () => {
               }}
             />
           ),
-          drawerLabel: 'FRIEND\'S CHATREL',
+          drawerLabel: 'FRIENDS & FAMILY',
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
@@ -413,7 +428,7 @@ export const MainNavigator = () => {
         name={'ChatrelHistory'}
         component={ChatrelHistoryNavigator}
         options={{
-          drawerIcon: ({ focused, size }) => (
+          drawerIcon: ({focused, size}) => (
             <Entypo
               name="list"
               size={size}
@@ -433,7 +448,7 @@ export const MainNavigator = () => {
         name={'FileDispute'}
         component={FileDisputeNavigator}
         options={{
-          drawerIcon: ({ focused, size }) => (
+          drawerIcon: ({focused, size}) => (
             <MaterialCommunityIcons
               name="email-alert-outline"
               size={size}
@@ -453,7 +468,7 @@ export const MainNavigator = () => {
         name={'MyProfile'}
         component={MyProfileNavigator}
         options={{
-          drawerIcon: ({ focused, size }) => (
+          drawerIcon: ({focused, size}) => (
             <Ionicons
               name="person-outline"
               size={size}
@@ -468,6 +483,26 @@ export const MainNavigator = () => {
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
+      {/*ContactUs*/}
+      <MainDrawerNavigator.Screen
+        name={'ContactUs'}
+        component={ContactUsNavigator}
+        options={{
+          drawerIcon: ({focused, size}) => (
+            <SimpleLineIcons
+              name="envelope-letter"
+              size={size}
+              color={focused ? Colors.primary : Colors.black}
+              style={{
+                justifyContent: 'flex-start',
+                marginLeft: wp(2.5),
+              }}
+            />
+          ),
+          drawerLabel: 'CONTACT US',
+          gestureEnabled: true,
+          swipeEnabled: true,
+        }}></MainDrawerNavigator.Screen>
       {/*non screen*/}
       {/*Login*/}
       <MainDrawerNavigator.Screen
@@ -475,8 +510,8 @@ export const MainNavigator = () => {
         component={LoginNavigator}
         options={{
           //Make it false after dev ends
-          gestureEnabled: true,
-          swipeEnabled: true,
+          gestureEnabled: false,
+          swipeEnabled: false,
         }}></MainDrawerNavigator.Screen>
       {/*GBDetails*/}
       <MainDrawerNavigator.Screen
@@ -487,9 +522,9 @@ export const MainNavigator = () => {
           swipeEnabled: false,
         }}></MainDrawerNavigator.Screen>
       {/*FamilyChatrel*/}
-      <MainDrawerNavigator.Screen
+      {/* <MainDrawerNavigator.Screen
         name={'FamilyChatrel'}
-        component={FamilyChatrelNavigator}></MainDrawerNavigator.Screen>
+        component={FamilyChatrelNavigator}></MainDrawerNavigator.Screen> */}
       {/*FriendChatrel*/}
       <MainDrawerNavigator.Screen
         name={'FriendChatrel'}
@@ -508,7 +543,6 @@ export const MainNavigator = () => {
           swipeEnabled: false,
         }}></MainDrawerNavigator.Screen>*/}
     </MainDrawerNavigator.Navigator>
-
   );
 };
 

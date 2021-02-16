@@ -192,7 +192,7 @@ export default function Feature() {
               handleError(error, history);
             })
             .then(release => {
-              //console.log(release); => udefined
+              ////console.log(release); => udefined
             });
         }
       })
@@ -200,7 +200,7 @@ export default function Feature() {
         handleError(error, history);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
@@ -219,7 +219,7 @@ export default function Feature() {
               handleError(error, history);
             })
             .then(release => {
-              //console.log(release); => udefined
+              ////console.log(release); => udefined
             });
         }
       })
@@ -227,7 +227,7 @@ export default function Feature() {
         handleError(error, history);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
@@ -250,7 +250,7 @@ export default function Feature() {
         handleError(error, history);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   }, []);
 

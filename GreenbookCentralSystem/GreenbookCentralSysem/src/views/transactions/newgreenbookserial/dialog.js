@@ -26,16 +26,16 @@ import Moment from "moment";
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   Moment.locale("en");
-  console.log("Hello from Add dialog");
+  //console.log("Hello from Add dialog");
 
-  console.log("gbSerialObj Object received in Add dialog: ", props.gbSerialObj);
+  //console.log("gbSerialObj Object received in Add dialog: ", props.gbSerialObj);
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
 
   let clicked = false;
 
   const handleSubmitEditRecord = (e) => {
-    console.log("Plain", e);
-    console.log("Clicked state", clicked);
+    //console.log("Plain", e);
+    //console.log("Clicked state", clicked);
     //alert("Submission Called.");
     // const btn1 = document.getElementById('save');
     // const btn2 = document.getElementById('saveEdit');
@@ -85,7 +85,7 @@ export const AddDialog = (props) => {
 
   const markBookAsDamaged = () => {
     setOpenDialog(false);
-    console.log("Book no. to mark damaged:", nBookNo);
+    //console.log("Book no. to mark damaged:", nBookNo);
     setGbId("DAMAGED");
     setName('');
     setCountryID(null);
@@ -114,13 +114,13 @@ export const AddDialog = (props) => {
     nEnteredBy: userId,
     nUpdatedBy: userId
   }
-  console.log("Object gbSerial modified as: ", gbSerialObj);
+  //console.log("Object gbSerial modified as: ", gbSerialObj);
 
-  console.log("Save button", saveBtn);
-  console.log("SaveEdit button", saveEditBtn);
+  //console.log("Save button", saveBtn);
+  //console.log("SaveEdit button", saveEditBtn);
 
   const formPopulate = (value) => {
-    console.log("Value in GBID: ", value);
+    //console.log("Value in GBID: ", value);
     const gbid = value;
     const event = new Event('change', {
       bubbles: true
@@ -136,8 +136,8 @@ export const AddDialog = (props) => {
     axios.get(`Greenbook/GetGreenbook/sGBID=` + gbid)
       .then(resp => {
         if (resp.status === 200) {
-          console.log("Got gb record\n", resp.data);
-          console.log("Name Element:", sNameElement);
+          //console.log("Got gb record\n", resp.data);
+          //console.log("Name Element:", sNameElement);
           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
           const lname = resp.data.sLastName ? resp.data.sLastName : '';
@@ -180,13 +180,13 @@ export const AddDialog = (props) => {
           setName('');
           setCountryID('');
           setAuthRegionId(0);
-          console.log(resp);
+          //console.log(resp);
         }
       })
       .catch((error) => {
         setName('');
 
-        console.log(error);
+        //console.log(error);
       });
   };
   
@@ -290,7 +290,7 @@ placeholder="DD-MM-YYYY"
                       value={nBookNo}
                       onChange={(e) => {
                         setBookNo(parseInt(e.target.value));
-                        console.log("Value of Book Serial number changed to:", parseInt(e.target.value));
+                        //console.log("Value of Book Serial number changed to:", parseInt(e.target.value));
                       }}
                       InputProps={{
                         readOnly: true
@@ -361,7 +361,7 @@ placeholder="DD-MM-YYYY"
                         (e, value) => {
                           if (value !== null) {
                             debugger
-                            console.log("Value in Country id:", value.sCountryID);
+                            //console.log("Value in Country id:", value.sCountryID);
                             setCountryID(value.sCountryID);
                             setValueCountryName(value);
                           }
@@ -409,7 +409,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log(value.id);
+                            //console.log(value.id);
                             setMadebTypeId(value.id);
                             setValueMadebTypes(value);
                           }
@@ -479,7 +479,7 @@ placeholder="DD-MM-YYYY"
                                       onChange={  
                                         (e, value) => {
                                           if (value !== null) {
-                                            console.log(value.id);
+                                            //console.log(value.id);
                                             setAuthRegionId(value.id);
                                           }
                                           else {
@@ -558,7 +558,7 @@ placeholder="DD-MM-YYYY"
                               props.onChange(value);
                               //alert ("onChangeFired")
                               if (value !== null) {
-                                console.log(value.id);
+                                //console.log(value.id);
                                 setAuthRegionId(value.id);
                                 setAuthRegion(value);
                               }
@@ -592,7 +592,7 @@ placeholder="DD-MM-YYYY"
                       value={remarks}
                       onChange={(e) => {
                         setRemarks(e.target.value);
-                        console.log("Value of remarks changed to:", e.target.value);
+                        //console.log("Value of remarks changed to:", e.target.value);
                       }}
                     />
                   </FormControl>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -6,22 +6,32 @@ import {
   PermissionsAndroid,
   Platform,
 } from 'react-native';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { Dimensions } from 'react-native';
+import {Dimensions} from 'react-native';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../../code/constants/Colors';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { useSelector } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import CTALogo from '../../code/assets/CTALogo.png';
-import { sFontName, sFontNameBold } from '../constants/CommonConfig';
-import { Avatar, Badge, Icon, withBadge, Card } from 'react-native-elements';
-import { CustomHeaderRightButton } from '../components/HeaderRightButton';
-import { BoxShadow, BorderShadow } from 'react-native-shadow';
-// import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import {
+  sDateFormat,
+  sDateFormatDatePicker,
+  sFontName,
+  sFontNameBold,
+} from '../constants/CommonConfig';
+import {Avatar, Badge, Icon, withBadge, Card} from 'react-native-elements';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+import {BoxShadow, BorderShadow} from 'react-native-shadow';
+import {useIsFocused} from '@react-navigation/native';
+import {Loader} from '../components/Loader';
+import axios from 'axios';
+import {storeJWTToken} from '../store/actions/GBDetailsAction';
+import Moment from 'moment';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export const MyProfileScreen = (props) => {
   // const oUserHardcodedMyProfile = {
@@ -32,6 +42,48 @@ export const MyProfileScreen = (props) => {
   //   sEmailAddress: 'a.b@gmail.com',
   //   sAuthorityRegion: 'Thimpu',
   // };
+  const isFocused = useIsFocused();
+  const [bLoader, setbLoader] = useState(true);
+  const [oDataAPI, setoDataAPI] = useState({});
+  const dispatch = useDispatch();
+  const sJwtToken = useSelector((state) => state.GBDetailsReducer.sJwtToken);
+
+  useEffect(() => {
+    if (isFocused) {
+      getChatrelDetails();
+      console.log('My Profile Called');
+      debugger;
+    }
+  }, [isFocused]);
+
+  const getChatrelDetails = () => {
+    setbLoader(true);
+    axios
+      .get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=` + oGBDetails.sGBID)
+      .then((resp) => {
+        console.log(resp.data);
+        setoDataAPI(resp.data);
+        const oSession = {
+          sJwtToken: resp.data.token,
+          bSession: true,
+        };
+        dispatch(storeJWTToken(oSession));
+        setbLoader(false);
+      })
+      .catch((error) => {
+        setbLoader(false);
+        if (error.response.status === 401) {
+          // const oSession = {
+          //   sJwtToken: '',
+          //   bSession: false,
+          // };
+          // dispatch(storeJWTToken(oSession));
+        } else {
+          // setbLoader(false);
+          alert('Something went wrong, please try again later.');
+        }
+      });
+  };
 
   const isPermitted = async () => {
     if (Platform.OS === 'android') {
@@ -675,7 +727,11 @@ export const MyProfileScreen = (props) => {
   // const nBadgeSize = 25;
 
   return (
-    <View style={styles.mainContainer}>
+    <ScrollView
+      style={styles.mainContainer}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}>
+      <Loader loading={bLoader} />
       {/*<View style={styles.headerContainer}>
                 <Text style={styles.headerComponent}>
                     My Profile
@@ -753,7 +809,6 @@ export const MyProfileScreen = (props) => {
           </Card>
         </BoxShadow>
               )}*/}
-
       <Card
         containerStyle={styles.cardContainerStyle}
         title={
@@ -775,50 +830,96 @@ export const MyProfileScreen = (props) => {
               status="success"
               containerStyle={styles.badgeContainerStyle}
             />*/}
+            <Text style={styles.headerFullNameComponent}>
+              {oGoogle.user.givenName + ' ' + oGoogle.user.familyName}
+            </Text>
           </View>
         }
         titleStyle={{}}>
         <Card.Divider style={styles.cardDividerStyle} />
+        {/*EMAIL ADDRESS*/}
         <View style={styles.coverViewStyles}>
           <View style={styles.labelContainer}>
-            <Text style={styles.labelComponent}>FULL NAME</Text>
-            <Text style={styles.valueComponent}>
+            {/* <Text style={styles.labelComponent}>FULL NAME</Text> */}
+            {/* <Text style={styles.valueComponent}>
               {oGoogle.user.givenName + ' ' + oGoogle.user.familyName}
-            </Text>
-          </View>
-          <View style={styles.labelContainer}>
-            <Text style={{ ...styles.labelComponent, textAlign: 'right' }}>
-              GREEN BOOK ID
-            </Text>
-            <Text style={{ ...styles.valueComponent, textAlign: 'right' }}>
-              {oGBDetails.sGBID}
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.coverViewStyles}>
-          <View style={styles.labelContainer}>
-            <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
-            <Text style={{ ...styles.valueComponent, marginBottom: 0 }}>
-              {oGBDetails.dtDOB}
-            </Text>
-          </View>
-          <View style={styles.labelContainer}>
-            <Text
-              style={{
-                ...styles.labelComponent,
-                textAlign: 'right',
-              }}>
-              EMAIL ADDRESS
-            </Text>
+            </Text> */}
+            <Icon
+              style={styles.iconStyle}
+              name="envelope"
+              type="font-awesome"
+              color={Colors.MyProfileEmailColor}
+            />
             <Text
               style={{
                 ...styles.valueComponent,
-                textAlign: 'right',
-                marginBottom: 0,
               }}>
               {oGoogle.user.email}
-              {/* {oUserHardcodedMyProfile.sName} */}
+            </Text>
+            <Text
+              style={{
+                ...styles.labelComponent,
+              }}>
+              EMAIL ADDRESS
+            </Text>
+          </View>
+        </View>
+        {/*GB ID*/}
+        <View style={styles.coverViewStyles}>
+          <View style={styles.labelContainer}>
+            <Icon
+              name="id-card"
+              style={styles.iconStyle}
+              type="font-awesome"
+              color={Colors.MyProfileGBIDColor}
+            />
+            <Text style={{...styles.valueComponent}}>
+              {oDataAPI?.chatrel?.sCountryID}
+              {''}
+              {oGBDetails.sGBID}
+            </Text>
+            <Text style={{...styles.labelComponent}}>GREEN BOOK ID</Text>
+          </View>
+        </View>
+        {/*AGE*/}
+        <View style={styles.coverViewStyles}>
+          <View style={styles.labelContainer}>
+            <Icon
+              style={styles.iconStyle}
+              name="calendar-day"
+              type="font-awesome-5"
+              color={Colors.MyProfileAgeColor}
+            />
+            <Text style={{...styles.valueComponent}}>
+              {Moment(new Date(), sDateFormat).diff(
+                Moment(oGBDetails.dtDOB, sDateFormat),
+                'years',
+              )}
+            </Text>
+            <Text style={styles.labelComponent}>AGE</Text>
+          </View>
+        </View>
+        {/*AUTH REGION*/}
+        <View style={styles.coverViewStyles}>
+          <View style={styles.labelContainer}>
+            <Icon
+              style={styles.iconStyle}
+              name="map-marker-alt"
+              type="font-awesome-5"
+              color={Colors.MyProfileAuthorityRegionColor}
+            />
+            <Text
+              style={{
+                ...styles.valueComponent,
+              }}>
+              {oDataAPI?.chatrel?.authRegionProfile}
+            </Text>
+            <Text
+              style={{
+                ...styles.labelComponent,
+                marginBottom: 0,
+              }}>
+              AUTHORITY REGION
             </Text>
           </View>
         </View>
@@ -840,7 +941,7 @@ export const MyProfileScreen = (props) => {
       </Text>
 </View>*/}
       </Card>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -863,7 +964,7 @@ export const MyProfileScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: { backgroundColor: Colors.white },
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
@@ -910,16 +1011,32 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.websiteLightBlueColor,
   },
   labelContainer: {
-    marginBottom: hp(1.25),
+    // marginBottom: hp(1),
   },
   labelComponent: {
     fontSize: wp(3.5),
-    textAlign: 'left',
+    textAlign: 'center',
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.labelColorLight,
     fontFamily: sFontName,
-    marginBottom: hp(1),
+    // marginBottom: hp(1),
+  },
+  headerFullNameContainer: {
+    // width: wp(32),
+    // height: hp(4),
+    // marginBottom:
+    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 18 : 30,
+  },
+  headerFullNameComponent: {
+    textAlign: 'center',
+    fontSize: wp(7.5),
+    fontStyle: 'normal',
+    marginVertical: hp(1),
+    color: Colors.blackTextAPI,
+    // marginBottom: wp(5),
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
   valueContainer: {
     // width: wp(75),
@@ -930,13 +1047,14 @@ const styles = StyleSheet.create({
     // flexDirection:'row'
   },
   valueComponent: {
-    textAlign: 'left',
-    fontSize: wp(4.75),
+    textAlign: 'center',
+    fontSize: wp(5),
     fontStyle: 'normal',
-    fontWeight: 'normal',
     color: Colors.blackTextAPI,
     fontFamily: sFontName,
-    marginBottom: wp(5),
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    marginBottom: wp(2.5),
     // flex:1
     // flexWrap: 'wrap',
     // flexShrink: 1,
@@ -955,21 +1073,22 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 25,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: { width: 5, height: 5 },
+    shadowOffset: {width: 5, height: 5},
     shadowOpacity: 1,
 
     //For Android
     elevation: 25,
     overflow: 'visible',
+    marginBottom: hp(1),
   },
 
   titleViewStyle: {
-    marginBottom: hp(2),
+    marginBottom: hp(1),
   },
 
   avatarContainerStyle: {
     alignSelf: 'center',
-    marginTop: hp(1),
+    // marginTop: hp(1),
 
     // backgroundColor: Colors.white,
 
@@ -997,7 +1116,12 @@ const styles = StyleSheet.create({
   coverViewStyles: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignSelf: 'center',
+    marginBottom: hp(3.5),
+  },
+  iconStyle: {
     marginBottom: hp(1),
   },
 });

@@ -1,4 +1,4 @@
-import { Dimensions, Platform } from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 import Colors from './Colors';
 import Resolution from './ResolutionBreakpoint';
 import {
@@ -6,17 +6,22 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 ////Local Windows
-export const sAPIBASEURL = "http://10.0.2.2:49700/api";
+// export const sAPIBASEURL = "http://10.0.2.2:49700/api";
 
 ////Local mac
 // export const sAPIBASEURL = "http://10.0.2.2:5000/api";
 
 ////QA
-// export const sAPIBASEURL = 'https://chatrel-webapi.azurewebsites.net/api';
+export const sAPIBASEURL = 'https://chatrel-webapi.azurewebsites.net/api';
 
-////Dev Azure (For Mobile App)
+////UAT
+// export const sAPIBASEURL = 'https://chatrel-webapi-uat.azurewebsites.net/api';
+
+////Dev Azure
 // export const sAPIBASEURL = 'https://chatrel-webapi-dev.azurewebsites.net/api';
 
+export const sFolderName = "Chatrel Receipts";
+export const sReceiptDownloadMessage = "Chatrel Receipt Downloaded Successfully in Downloads Folder";
 
 export const sAdminEmail = 'admin@CTA.com';
 export const sSnackbarAddMessage = 'Record Added successfully';
@@ -26,13 +31,21 @@ export const sDateFormatDatePicker = 'MM/DD/YYYY';
 export const sISODateFormat = 'YYYY-MM-DD';
 export const sClientIDAndroid =
   '987929460767-jf4d713glngd3o109vdqj6mt3c2e0fju.apps.googleusercontent.com';
-export const sClientIDIOS = '1071046831303-84cupk037kmsgsdu94v1c79c069kv9ki.apps.googleusercontent.com';
-export const sPayPalBASEURL = "https://api.sandbox.paypal.com";
+export const sClientIDIOS =
+  '987929460767-gfij1cqojpciksu9i69j4q20rjoe2j41.apps.googleusercontent.com';
+export const sPayPalBASEURL = 'https://api.sandbox.paypal.com';
 export const sPayPalClientID =
-  'AeIfCd7BHacsWwdqkIYfxmPQrN8UZU2Sap_dor00t7Z8Y9pLLJiwK_v2-lNy8vIhaSU9AFAiC5l8l7Gx';
-export const sClientSecret = "EG24EW1m5DMtdT9d0OQ0R5IiMUTJ4wM2mixJ0IJCH6GC5J72EyMcGEkvlsIGxuY1TIU8a5iAlfiLdXQ6";
+  'AdqxwGp5tKswa3OfXdw5dcCp5SQNtAEkDmPI9InDri3FcXnGCfWfpwhBsLRenYqMwrUrUTLLbnGTOM14';
+export const sClientSecret =
+  'ECrAFFlN_jB_Z62_rc9Ukt2Mv7Yeov2saaDbNCT3Ef_bP9JS2ke9y_G-8VGqQiTB7o3sGJRGFeBF-QKD';
+
+export const sSuccessPayPalWebPageURL =
+  'https://chatrel-webapp.azurewebsites.net/Success';
+export const sFailurePayPalWebPageURL =
+  'https://chatrel-webapp.azurewebsites.net/Failure';
 export const sFontName = 'JosefinSans-Regular';
 export const sFontNameBold = 'JosefinSans-Bold';
+export const sHimalayaFontName = 'Microsoft Himalaya';
 export const errorContainer = {
   marginBottom: hp(1),
 };

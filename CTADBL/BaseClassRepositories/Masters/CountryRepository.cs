@@ -78,6 +78,8 @@ namespace CTADBL.BaseClassRepositories.Masters
         }
 
         #endregion
+
+
         #region Search Calls
 
         //public IEnumerable<Country> SearchCountries(string param)
@@ -93,33 +95,39 @@ namespace CTADBL.BaseClassRepositories.Masters
 
         public IEnumerable<Country> SearchCountries(string a)
         {
-            string addToSql = "";
             
-            var country = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(a);
-            //Dictionary<string, dynamic> parameters = country.GetType().GetProperties().ToDictionary(prop => prop.Name, prop => prop.GetValue(country, null));
-            foreach (KeyValuePair<string, dynamic> item in country)
+
+            using (var command = new MySqlCommand())
             {
-                if (item.Value != null)
+
+                string sql = String.Format(@"SELECT ID, sCountryID, sCountry, nDefaultAuthRegionID, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE ");
+                string addToSql = "";
+
+                var country = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(a);
+                //Dictionary<string, dynamic> parameters = country.GetType().GetProperties().ToDictionary(prop => prop.Name, prop => prop.GetValue(country, null));
+                foreach (KeyValuePair<string, dynamic> item in country)
                 {
-                    if(item.Value.GetType() == typeof(string))
+                    if (item.Value != null)
                     {
-                        if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                        if (item.Value.GetType() == typeof(string))
                         {
-                            addToSql += String.Format(@"{0} LIKE '%{1}%' and ", item.Key, item.Value);
+                            if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                            {
+                                addToSql += @$"{item.Key} LIKE @{item.Key} and ";
+                                command.Parameters.AddWithValue(item.Key, '%' + item.Value + '%');
+                            }
                         }
                     }
                 }
-            }
-            if (String.IsNullOrEmpty(addToSql))
-            {
-                return GetAllCountries();
-            }
+                if (String.IsNullOrEmpty(addToSql))
+                {
+                    return GetAllCountries();
+                }
+                
+                sql += addToSql;
+                sql += " 1 = 1";
 
-            string sql = String.Format(@"SELECT ID, sCountryID, sCountry, nDefaultAuthRegionID, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE {0} 1 = 1", addToSql);
-
-            using (var command = new MySqlCommand(sql))
-            {
-                //command.Parameters.AddWithValue("param", param);
+                command.CommandText = sql;
                 return GetRecords(command);
             }
         }

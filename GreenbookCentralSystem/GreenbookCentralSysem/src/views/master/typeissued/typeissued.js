@@ -99,9 +99,9 @@ export default function TypeIssued() {
 	borderRight: '1px solid grey',        width: "80%"
       }
       // customFilterAndSearch: (term, rowData)=>{
-      //   console.log(term);
-      //   //console.log(field);
-      //   //console.log(rowData);
+      //   //console.log(term);
+      //   ////console.log(field);
+      //   ////console.log(rowData);
       // }
     },
     // {
@@ -159,14 +159,14 @@ export default function TypeIssued() {
               handleError(error, history);
             })
             .then(release => {
-              //console.log(release); => udefined
+              ////console.log(release); => udefined
             });
         }
       })
       .catch(error => {
         if(error.response){
           if(error.response.status === 403){
-            console.log(error);
+            //console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
             snackbarOpen();
@@ -178,7 +178,7 @@ export default function TypeIssued() {
         handleError(error, history);
       }) 
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
@@ -202,14 +202,14 @@ export default function TypeIssued() {
               handleError(error, history);
             })
             .then(release => {
-              //console.log(release); => udefined
+              ////console.log(release); => udefined
             });
         }
       })
       .catch(error => {
         if(error.response){
           if(error.response.status === 403){
-            console.log(error);
+            //console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
             snackbarOpen();
@@ -221,7 +221,7 @@ export default function TypeIssued() {
         handleError(error, history);
       }) 
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
@@ -248,7 +248,7 @@ export default function TypeIssued() {
         handleError(error, history);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 

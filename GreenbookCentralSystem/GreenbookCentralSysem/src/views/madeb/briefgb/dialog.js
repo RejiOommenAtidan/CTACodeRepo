@@ -46,11 +46,11 @@ export const EditDialog = (props) => {
 
   const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
 
-  console.log("Props object", props.briefGBObj);
+  //console.log("Props object", props.briefGBObj);
 
   const handleSubmitEditRecord = () => {
     //alert("Form Submitted.");
-    console.log("Submit edit form");
+    //console.log("Submit edit form");
     props.editAPICall(madeb);
     // setMessage("Record Successfully Edited");
     // setAlertType('success');
@@ -82,7 +82,7 @@ export const EditDialog = (props) => {
   const [sMadebStatusRemark, setMadebStatusRemark] = React.useState(props.briefGBObj.sMadebStatusRemark);
   const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
 
-  console.log("Auth region is ", authRegion.sAuthRegion);
+  //console.log("Auth region is ", authRegion.sAuthRegion);
   //setValue("AuthRegion", authRegion,{shouldValidate: true, shouldDirty: true});
 
   // Dropdowns
@@ -128,7 +128,7 @@ export const EditDialog = (props) => {
     sMadebStatusRemark,
     nUpdatedBy: userId
   }
-  console.log("Madeb Edit Object received in dialog", madeb);
+  //console.log("Madeb Edit Object received in dialog", madeb);
   //  const childrenAuthRegion =  () => { 
   //         return (authRegions.map((data) => (<option value={data.id}>{data.sAuthRegion}</option> )  ))
   //     };  
@@ -140,7 +140,7 @@ export const EditDialog = (props) => {
   // const optsTypeIssued = childrenTypeIssued();
 
   let valueTypeIssued = [];
-  console.log(nIssuedOrNotID);
+  //console.log(nIssuedOrNotID);
   typeIssuedData.forEach(element => {
     if (element.id === nIssuedOrNotID) {
       valueTypeIssued = element;
@@ -166,7 +166,7 @@ export const EditDialog = (props) => {
       snackbarOpen();
       return;
     }
-    console.log("Value in GBID: ", value);
+    //console.log("Value in GBID: ", value);
     const gbid = value;
     const event = new Event('change', {
       bubbles: true
@@ -176,7 +176,7 @@ export const EditDialog = (props) => {
     axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=` + gbid)
       .then(resp => {
         if (resp.status === 200) {
-          console.log("Got gb record\n", resp.data);
+          //console.log("Got gb record\n", resp.data);
 
           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
@@ -198,7 +198,7 @@ export const EditDialog = (props) => {
           setPreviousGBSNo('');
           setFname('');
           setAuthRegion([]);
-          console.log("Not found", resp);
+          //console.log("Not found", resp);
           setAlertMessage(`No record found for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -210,7 +210,7 @@ export const EditDialog = (props) => {
           setPreviousGBSNo('');
           setFname('');
           setAuthRegion([]);
-          console.log("Not found", error.response.data);
+          //console.log("Not found", error.response.data);
           setAlertMessage(`${error.response.data}`);
           setAlertType('warning');
           snackbarOpen();
@@ -220,7 +220,7 @@ export const EditDialog = (props) => {
           setPreviousGBSNo('');
           setFname('');
           setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
           setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -230,13 +230,13 @@ export const EditDialog = (props) => {
           setPreviousGBSNo('');
           setFname('');
           setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
         }
       });
   };
 
   useEffect(() => {
-    console.log("Inside useEffect()");
+    //console.log("Inside useEffect()");
     const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
     setTimeout(() => setValue("AuthRegion", region, {
       shouldValidate: true,
@@ -409,7 +409,7 @@ placeholder="DD-MM-YYYY"
                               props.onChange(value);
                               //alert ("onChangeFired")
                               if (value !== null) {
-                                console.log(value.id);
+                                //console.log(value.id);
                                 setAuthRegionId(value.id);
                                 setAuthRegion(value);
                               }
@@ -474,7 +474,7 @@ placeholder="DD-MM-YYYY"
                       onChange={(e) => {
                         const val = parseInt(e.target.value);
                         val > 0 ? setReceiptNo(val) : setReceiptNo(null);
-                        console.log("Value of Receipt changed to:", val);
+                        //console.log("Value of Receipt changed to:", val);
                       }}
                     />
                   </FormControl>
@@ -490,7 +490,7 @@ placeholder="DD-MM-YYYY"
                       onChange={(e) => {
                         const val = parseInt(e.target.value);
                         val > 0 ? setSaney(val) : setSaney(null);
-                        console.log("Value of saney changed to:", e.target.value);
+                        //console.log("Value of saney changed to:", e.target.value);
                       }}
                     />
                   </FormControl>
@@ -507,7 +507,7 @@ placeholder="DD-MM-YYYY"
                       onChange={(e) => {
                         const val = parseInt(e.target.value);
                         val > 0 ? setCurrentGBSNo(val) : setCurrentGBSNo(null);
-                        console.log("Value of currentGB changed to:", parseInt(e.target.value));
+                        //console.log("Value of currentGB changed to:", parseInt(e.target.value));
                       }}
                     />
                   </FormControl>
@@ -528,7 +528,7 @@ placeholder="DD-MM-YYYY"
                       onChange={(e) => {
                         const val = parseInt(e.target.value);
                         val > 0 ? setPreviousGBSNo(val) : setPreviousGBSNo(null);
-                        console.log("Value of previousGB changed to:", e.target.value);
+                        //console.log("Value of previousGB changed to:", e.target.value);
                       }}
                     />
                   </FormControl>
@@ -541,7 +541,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log(value.id);
+                            //console.log(value.id);
                             setMadebStatusID(value.id);
                           }
                           else {
@@ -628,7 +628,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log(value.id);
+                            //console.log(value.id);
                             setIssueAction(value.id);
                           }
                           else {
@@ -866,7 +866,7 @@ export const AddDialog = (props) => {
       snackbarOpen();
       return;
     }
-    console.log("Value in GBID: ", value);
+    //console.log("Value in GBID: ", value);
     const gbid = value;
     const event = new Event('change', {
       bubbles: true
@@ -881,8 +881,8 @@ export const AddDialog = (props) => {
     axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=` + gbid)
       .then(resp => {
         if (resp.status === 200) {
-          console.log("Got gb record\n", resp.data);
-          console.log("Name Element:", sNameElement);
+          //console.log("Got gb record\n", resp.data);
+          //console.log("Name Element:", sNameElement);
           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
           const lname = resp.data.sLastName ? resp.data.sLastName : '';
@@ -915,7 +915,7 @@ export const AddDialog = (props) => {
           setFname('');
           setPreviousGBSNo('');
           setAuthRegion([]);
-          console.log("Not found", resp);
+          //console.log("Not found", resp);
           setAlertMessage(`No record found for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -927,7 +927,7 @@ export const AddDialog = (props) => {
           setFname('');
           setPreviousGBSNo('');
           setAuthRegion([]);
-          console.log("Not found", error.response.data);
+          //console.log("Not found", error.response.data);
           setAlertMessage(`${error.response.data}`);
           setAlertType('warning');
           snackbarOpen();
@@ -937,7 +937,7 @@ export const AddDialog = (props) => {
           setFname('');
           setPreviousGBSNo('');
           setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
           setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -947,12 +947,12 @@ export const AddDialog = (props) => {
           setFname('');
           setPreviousGBSNo('');
           setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
         }
       });
   };
 
-  console.log(props.selectData);
+  //console.log(props.selectData);
   const [authRegions, setAuthRegions] = React.useState(props.selectData['authRegions']);
   const [typeIssuedData, settypeIssuedData] = React.useState(props.selectData['typeIssued']);
 
@@ -999,7 +999,7 @@ export const AddDialog = (props) => {
   let valueMadebStatus = props.selectData['madebStatuses'].find((x) => x.id === nMadebStatusID);
 
   const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
-  console.log("Madeb Object in Add dialog", madeb);
+  //console.log("Madeb Object in Add dialog", madeb);
 
   // const idsAuthRegion = authRegions.map((data) => data.sAuthRegion);
   //const childrenAuthRegion =  () => { 
@@ -1114,7 +1114,7 @@ placeholder="DD-MM-YYYY"
                                       onChange={  
                                         (e, value) => {
                                           if (value !== null) {
-                                            console.log(value.id);
+                                            //console.log(value.id);
                                             setAuthRegionId(value.id);
                                             setAuthRegion(value);
                                             clearErrors("authority_text")
@@ -1190,7 +1190,7 @@ placeholder="DD-MM-YYYY"
                               props.onChange(value);
                               //alert ("onChangeFired")
                               if (value !== null) {
-                                console.log(value.id);
+                                //console.log(value.id);
                                 setAuthRegionId(value.id);
                                 setAuthRegion(value);
                               }
@@ -1276,7 +1276,7 @@ placeholder="DD-MM-YYYY"
                       onChange={(e) => {
                         const val = parseInt(e.target.value);
                         val > 0 ? setReceiptNo(val) : setReceiptNo(null);
-                        console.log("Value of Receipt changed to:", val);
+                        //console.log("Value of Receipt changed to:", val);
                       }}
                     />
                   </FormControl>
@@ -1292,7 +1292,7 @@ placeholder="DD-MM-YYYY"
                       onChange={(e) => {
                         const val = parseInt(e.target.value);
                         val > 0 ? setSaney(val) : setSaney(null);
-                        console.log("Value of saney changed to:", val);
+                        //console.log("Value of saney changed to:", val);
                       }}
                     />
                   </FormControl>
@@ -1309,7 +1309,7 @@ placeholder="DD-MM-YYYY"
                       onChange={(e) => {
                         const val = parseInt(e.target.value);
                         val > 0 ? setCurrentGBSNo(val) : setCurrentGBSNo(null);
-                        console.log("Value of currentGB changed to:", val);
+                        //console.log("Value of currentGB changed to:", val);
                       }}
                     // inputRef={register({
                     //   required: true
@@ -1337,7 +1337,7 @@ placeholder="DD-MM-YYYY"
                       onChange={(e) => {
                         const val = parseInt(e.target.value);
                         val > 0 ? setPreviousGBSNo(val) : setPreviousGBSNo(null);
-                        console.log("Value of previousGB changed to:", parseInt(e.target.value));
+                        //console.log("Value of previousGB changed to:", parseInt(e.target.value));
                       }}
                     />
                   </FormControl>
@@ -1350,7 +1350,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log(value.id);
+                            //console.log(value.id);
                             setMadebStatusID(value.id);
                           }
                           else {

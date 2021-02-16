@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -7,16 +7,16 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
-import { storeJWTToken } from '../store/actions/GBDetailsAction';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import {storeJWTToken} from '../store/actions/GBDetailsAction';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { Platform } from 'react-native';
-import { Card, Button } from 'react-native-elements';
+import {Platform} from 'react-native';
+import {Card, Button} from 'react-native-elements';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import { CustomHeaderRightButton } from '../components/HeaderRightButton';
-import { Loader } from '../components/Loader';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+import {Loader} from '../components/Loader';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -28,9 +28,9 @@ import {
   oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import Moment from 'moment';
-import { useSelector, useDispatch } from 'react-redux';
-import { storeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
-import { useIsFocused } from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
+import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
+import {useIsFocused} from '@react-navigation/native';
 
 export const FamilyChatrelIntermediateScreen = (props) => {
   const isFocused = useIsFocused();
@@ -112,8 +112,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
   };
   return (
     <View style={styles.mainContainer}>
-      <Loader
-        loading={bLoader} />
+      <Loader loading={bLoader} />
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>FAMILY MEMBERS</Text>
   </View>*/}
@@ -152,7 +151,9 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                     <Text style={styles.chatrelLabelComponent}>
                       {member.dPending?.chatrelPayment?.nChatrelTotalAmount
                         ? `$${member.dPending?.chatrelPayment?.nChatrelTotalAmount}`
-                        : member.sGBIDRelation === null ? "NA" : "Paid"}
+                        : member.sGBIDRelation === null
+                        ? 'NA'
+                        : 'Paid'}
                     </Text>
                   </View>
                 </View>
@@ -195,10 +196,10 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                 </View> */}
                 {/*Age*/}
                 <View style={styles.labelContainer}>
-                  <Text style={{ ...styles.labelComponent, textAlign: 'right' }}>
+                  <Text style={{...styles.labelComponent, textAlign: 'right'}}>
                     AGE
                   </Text>
-                  <Text style={{ ...styles.valueComponent, textAlign: 'right' }}>
+                  <Text style={{...styles.valueComponent, textAlign: 'right'}}>
                     {member.nAge}
                   </Text>
                 </View>
@@ -223,10 +224,10 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                 </View> */}
                 {/*Relation*/}
                 <View style={styles.labelContainer}>
-                  <Text style={{ ...styles.labelComponent, textAlign: 'right' }}>
+                  <Text style={{...styles.labelComponent, textAlign: 'right'}}>
                     RELATION
                   </Text>
-                  <Text style={{ ...styles.valueComponent, textAlign: 'right' }}>
+                  <Text style={{...styles.valueComponent, textAlign: 'right'}}>
                     {member.sRelation}
                   </Text>
                 </View>
@@ -235,9 +236,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
               </View>
               <View style={styles.payNowContainer}>
                 <Button
-                  disabled={
-                    member.sGBIDRelation === null
-                  }
+                  disabled={member.sGBIDRelation === null}
                   onPress={() => {
                     handleFamilyMemberPress(member);
                   }}
@@ -287,7 +286,7 @@ export const FamilyChatrelIntermediateScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: { backgroundColor: Colors.white },
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
@@ -340,7 +339,7 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: { width: 5, height: 5 },
+    shadowOffset: {width: 5, height: 5},
     shadowOpacity: 1,
 
     //For Android
@@ -365,7 +364,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: wp(5.5),
     fontStyle: 'normal',
-    color: Colors.darkYellowFamilyPage,
+    color: Colors.buttonYellow,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },

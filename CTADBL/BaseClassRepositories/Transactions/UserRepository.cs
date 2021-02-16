@@ -53,6 +53,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sFullName`,
                             `sOffice`,
                             `sPassword`,
+                            `sSalt`,
                             `nUserRightsId`,
                             `bActive`,
                             `dtEntered`,
@@ -74,6 +75,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sFullName`,
                             `sOffice`,
                             `sPassword`,
+                            `sSalt`,
                             `nUserRightsId`,
                             `bActive`,
                             `dtEntered`,
@@ -113,6 +115,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sFullName`,
                             `sOffice`,
                             `sPassword`,
+                            `sSalt`,
                             `nUserRightsId`,
                             `bActive`,
                             `dtEntered`,
@@ -140,6 +143,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             user.sFullname = (string)reader["sFullName"];
             user.sOffice = (string)reader["sOffice"];
             user.sPassword = (string)reader["sPassword"];
+            user.sSalt = reader.IsDBNull("sSalt") ? null : (string)reader["sSalt"];
             user.nUserRightsId = (int)reader["nUserRightsId"];
             user.bActive = (bool)reader["bActive"];
             //Common Properties
@@ -149,7 +153,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             user.nUpdatedBy = (int)reader["nUpdatedBy"];
 
             // Decrypt the password before returning
-            user.sPassword = PasswordEncryption.DecryptString(user.sPassword);
+            //user.sPassword = PasswordEncryption.DecryptString(user.sPassword);
             
             return user;
         }

@@ -62,7 +62,13 @@ const useStyles = makeStyles((theme) => ({
       // This is green.A700 as hex.
       main: '#11cb5f',
     },
-  }
+  },
+  expansionHeading: {
+    color: '#ffffff'
+  },
+  expansionPanel: {
+    backgroundColor: '#4e5287'
+  },
 }));
 
 export default function EnhancedTable() {
@@ -400,7 +406,7 @@ export default function EnhancedTable() {
         borderRight: '1px solid grey'
       },
       customSort: (a, b) => {
-        //console.log(a, b);
+        ////console.log(a, b);
         if(!a.madeb.dtFormattedReturnEmail){
           return -1;
         }
@@ -428,7 +434,7 @@ export default function EnhancedTable() {
         borderRight: '1px solid grey'
       },
       customSort: (a, b) => {
-        //console.log(a, b);
+        ////console.log(a, b);
         if(!a.madeb.dtFormattedReject){
           return -1;
         }
@@ -572,7 +578,7 @@ export default function EnhancedTable() {
       sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });
 
-    console.log(sarsoObj);
+    //console.log(sarsoObj);
     setEditModal(true);
   }
   const editAPICall = (madeb) => {
@@ -582,12 +588,12 @@ export default function EnhancedTable() {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    console.log(madeb);
+    //console.log(madeb);
     setBackdrop(true);
     axios.post(`/Madeb/EditMadeb/ID=` + id, madeb/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          ////console.log(resp.data);
           setEditModal(false);
           setAlertMessage('Record Successfully Edited');
           setAlertType('success');
@@ -619,10 +625,10 @@ export default function EnhancedTable() {
               } else {
                 console.error('Error', error.message);
               }
-              console.log(error.config);
+              //console.log(error.config);
             })
             .then(release => {
-              //console.log(release); => udefined
+              ////console.log(release); => udefined
             });
         }
       })
@@ -640,10 +646,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
 
@@ -654,7 +660,7 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           setBackdrop(false);
           setSelectData(resp.data);
-          console.log("SelectData:",resp.data);
+          //console.log("SelectData:",resp.data);
         }
       })
       .catch(error => {
@@ -668,10 +674,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   }
 
@@ -715,10 +721,10 @@ export default function EnhancedTable() {
               } else {
                 console.error('Error', error.message);
               }
-              console.log(error.config);
+              //console.log(error.config);
             })
             .then(release => {
-              //console.log(release); => udefined
+              ////console.log(release); => udefined
             });
           //window.location = window.location;
         }
@@ -737,10 +743,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   };
   
@@ -752,7 +758,7 @@ export default function EnhancedTable() {
     axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=1`)
       .then(resp => {
         if (resp.status === 200) {
-           console.log(resp.data);
+           //console.log(resp.data);
           // myApiData = resp.data;
           // myApiData = myApiData.map(singleMadeb=>{
           //   ...singleMadeb,
@@ -782,10 +788,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        //console.log(error.config);
       })
       .then(release => {
-        //console.log(release); => udefined
+        ////console.log(release); => udefined
       });
   }, []);
 

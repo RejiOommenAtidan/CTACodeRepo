@@ -94,7 +94,7 @@ export const EditDialog = (props) => {
       snackbarOpen();
       return;
     }
-    console.log("Value in GBID: ", value);
+    //console.log("Value in GBID: ", value);
     const gbid = value;
     const event = new Event('change', {
       bubbles: true
@@ -109,8 +109,8 @@ export const EditDialog = (props) => {
     axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=` + gbid)
       .then(resp => {
         if (resp.status === 200) {
-          console.log("Got gb record\n", resp.data);
-          console.log("Name Element:", sNameElement);
+          //console.log("Got gb record\n", resp.data);
+          //console.log("Name Element:", sNameElement);
           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
           const lname = resp.data.sLastName ? resp.data.sLastName : '';
@@ -145,7 +145,7 @@ export const EditDialog = (props) => {
           setName('');
 
           setAuthRegion([]);
-          console.log("Not found", resp);
+          //console.log("Not found", resp);
           setAlertMessage(`No record found for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -156,7 +156,7 @@ export const EditDialog = (props) => {
           setName('');
 
           setAuthRegion([]);
-          console.log("Not found", error.response.data);
+          //console.log("Not found", error.response.data);
           setAlertMessage(`${error.response.data}`);
           setAlertType('warning');
           snackbarOpen();
@@ -164,7 +164,7 @@ export const EditDialog = (props) => {
         else if (error.response.status === 500) {
           setName('');
           setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
           setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -173,7 +173,7 @@ export const EditDialog = (props) => {
           setName('');
 
           setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
         }
       });
   };
@@ -204,16 +204,16 @@ export const EditDialog = (props) => {
   authRegions.forEach(element => {
     if (element.id === nAuthRegionID) {
       valueAuthRegion = element;
-      console.log(valueAuthRegion);
+      //console.log(valueAuthRegion);
     }
   });
 
   let valueTypeIssued = [];
-  // console.log(issueAction);
+  // //console.log(issueAction);
   typeIssuedData.forEach(element => {
     if (element.id === issueAction) {
       valueTypeIssued = element;
-      console.log(element);
+      //console.log(element);
     }
   });
 
@@ -221,7 +221,7 @@ export const EditDialog = (props) => {
 
   valueMadebStatus = madebStatuses.find((x) => x.id === nMadebStatusID);
   useEffect(() => {
-    console.log("Inside useEffect()");
+    //console.log("Inside useEffect()");
     const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
     setTimeout(() => setValue("AuthRegion", region, {
       shouldValidate: true,
@@ -319,7 +319,7 @@ placeholder="DD-MM-YYYY"
                             (e, value) => {
                               props.onChange(value);
                               if (value !== null) {
-                                console.log(value.id);
+                                //console.log(value.id);
                                 setAuthRegionId(value.id);
                                 setAuthRegion(value);
                               }
@@ -442,7 +442,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log(value.id);
+                            //console.log(value.id);
                             setMadebStatusID(value.id);
                           }
                           else {
@@ -512,7 +512,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log(value.id);
+                            //console.log(value.id);
                             setIssueAction(value.id);
                           }
                           else {
@@ -566,10 +566,10 @@ placeholder="DD-MM-YYYY"
                         format={sDateFormatMUIDatepicker}
                         // returnMoment={true}
                         onChange={(date) => {
-                          //console.log(date.toISOString().split("T")[0]);
-                          //console.log(date.toDateString());
-                          // console.log(date.toLocaleDateString());
-                          //console.log(date);
+                          ////console.log(date.toISOString().split("T")[0]);
+                          ////console.log(date.toDateString());
+                          // //console.log(date.toLocaleDateString());
+                          ////console.log(date);
                           setReturnDate(date);
                         }}
                         value={returnDate}
@@ -600,10 +600,10 @@ placeholder="DD-MM-YYYY"
                         format={sDateFormatMUIDatepicker}
                         // returnMoment={true}
                         onChange={(date) => {
-                          //console.log(date.toISOString().split("T")[0]);
-                          //console.log(date.toDateString());
-                          // console.log(date.toLocaleDateString());
-                          //console.log(date);
+                          ////console.log(date.toISOString().split("T")[0]);
+                          ////console.log(date.toDateString());
+                          // //console.log(date.toLocaleDateString());
+                          ////console.log(date);
                           setRejectDate(date);
                         }}
                         value={rejectDate}
@@ -651,7 +651,7 @@ placeholder="DD-MM-YYYY"
 }
 
 export const AddDialog = (props) => {
-  //console.log(props.selectData);
+  ////console.log(props.selectData);
   // SnackBar Alerts 
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [alertMessage, setAlertMessage] = useState("");
@@ -663,7 +663,7 @@ export const AddDialog = (props) => {
   };
   const [snackbar, setSnackbar] = React.useState(false);
   const snackbarOpen = () => {
-    console.log('alert');
+    //console.log('alert');
     setSnackbar(true);
   }
   const snackbarClose = () => {
@@ -685,7 +685,7 @@ export const AddDialog = (props) => {
       snackbarOpen();
       return;
     }
-    console.log("Value in GBID: ", value);
+    //console.log("Value in GBID: ", value);
     const gbid = value;
     const event = new Event('change', {
       bubbles: true
@@ -695,13 +695,13 @@ export const AddDialog = (props) => {
     axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=` + gbid)
       .then(resp => {
         if (resp.status === 200) {
-          console.log("Got gb record\n", resp.data);
+          //console.log("Got gb record\n", resp.data);
 
           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
           const lname = resp.data.sLastName ? resp.data.sLastName : '';
           //setName(`${name} ${mname} ${lname}`);
-          console.log(name);
+          //console.log(name);
           setName(`${name} ${mname} ${lname}`);
 
           clearErrors("sName");
@@ -719,7 +719,7 @@ export const AddDialog = (props) => {
           setName('');
 
           setAuthRegion([]);
-          console.log("Not found", resp);
+          //console.log("Not found", resp);
           setAlertMessage(`No record found for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -730,7 +730,7 @@ export const AddDialog = (props) => {
           setName('');
 
           setAuthRegion([]);
-          console.log("Not found", error.response.data);
+          //console.log("Not found", error.response.data);
           setAlertMessage(`${error.response.data}`);
           setAlertType('warning');
           snackbarOpen();
@@ -739,7 +739,7 @@ export const AddDialog = (props) => {
           setName('');
 
           setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
           setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -748,7 +748,7 @@ export const AddDialog = (props) => {
           setName('');
 
           setAuthRegion([]);
-          console.log(error);
+          //console.log(error);
         }
       });
   };
@@ -887,7 +887,7 @@ placeholder="DD-MM-YYYY"
                             (e, value) => {
                               props.onChange(value);
                               if (value !== null) {
-                                console.log(value.id);
+                                //console.log(value.id);
                                 setAuthRegionId(value.id);
                                 setAuthRegion(value);
                               }
@@ -1038,7 +1038,7 @@ placeholder="DD-MM-YYYY"
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            console.log(value.id);
+                            //console.log(value.id);
                             setMadebStatusID(value.id);
                           }
                           else {

@@ -1,0 +1,8 @@
+//REMOVED
+// "react-native-paypal-lib": "^1.0.9",
+
+//CAN BE REMOVED
+//"react-native-collapsible": "^1.5.3",
+//"react-native-html-to-pdf": "^0.9.1",
+//"react-native-material-menu": "^1.2.0",
+//"react-navigation-collapsible": "^5.8.1",

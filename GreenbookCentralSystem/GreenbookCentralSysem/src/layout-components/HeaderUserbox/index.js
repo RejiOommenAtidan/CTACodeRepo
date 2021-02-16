@@ -22,6 +22,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { sButtonColor, sButtonSize, sButtonVariant } from '../../config/commonConfig';
+import axios from 'axios';
 
 const StyledBadge = withStyles({
   badge: {
@@ -77,8 +78,23 @@ const HeaderUserbox = () => {
 
   const logUserOut = () => {
     setAnchorEl(null);
+    axios.get(`/User/Logout`)
+    .then(resp => {
+      if(resp.status === 200){
+        //console.log("Api logout success")
+       // window.location.reload('/Login');
     dispatch(removeAuthDetails());
-    history.push('/Login');
+        //dispatch(removeAuthDetails());
+        //history.push('/Login');
+      }
+    })
+    .catch(error => {
+      window.location.reload('/Login');
+    dispatch(removeAuthDetails());
+      //dispatch(removeAuthDetails());
+      //history.push('/Login');
+    });
+    
   };
 
   const handleChangePasswordClose = () => {

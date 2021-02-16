@@ -1,16 +1,16 @@
 import React from 'react';
-import { Text, View, StyleSheet, Dimensions, Platform } from 'react-native';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import {Text, View, StyleSheet, Dimensions, Platform} from 'react-native';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { Chatrel } from '../components/Chatrel';
+import {Chatrel} from '../components/Chatrel';
 import Colors from '../constants/Colors';
 import Resolution from '../constants/ResolutionBreakpoint';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { sFontName, sFontNameBold } from '../constants/CommonConfig';
-import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 
 export const FriendChatrelScreen = (props) => {
   return (
@@ -18,14 +18,14 @@ export const FriendChatrelScreen = (props) => {
       {/*<View style={styles.headerContainer}>
       <Text style={styles.headerComponent}>Friend Chatrel</Text>
       </View>*/}
-      <Chatrel props={"Friend"}></Chatrel>
+      <Chatrel props={'Friend'}></Chatrel>
     </View>
   );
 };
 
 export const FriendChatrelScreenOptions = (navData) => {
   return {
-    headerTitle: "FRIEND'S CHATREL",
+    headerTitle: 'FRIENDS & FAMILY',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -42,7 +42,7 @@ export const FriendChatrelScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: { backgroundColor: Colors.white },
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
