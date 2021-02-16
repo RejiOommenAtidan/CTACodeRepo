@@ -1221,7 +1221,7 @@ set spaiduntil = '2015'
 where sGBId='9675';
 
 -- clear Chatrel from UAT for 9996070
-delete from .tblchatrelpayment where sGBId='9996070';
+delete from tblchatrelpayment where sGBId='9996070';
 delete from lnkgbchatrel where sGBId='9996070';
 delete from lnkgbchatreldonation where sGBId='9996070';
 update tblgreenbook 
