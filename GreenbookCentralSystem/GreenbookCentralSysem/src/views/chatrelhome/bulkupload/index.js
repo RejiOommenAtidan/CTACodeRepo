@@ -591,27 +591,27 @@ export default function BulkUpload(props) {
     }
     setCSVFile(reader.result);
 
-    ////console.log(data);
+    //console.log(data);
     let char = '';
     if (data.indexOf('\r') > -1) {
       char = '\r';
-      //console.log("character is '\\r'");
+      console.log("character is '\\r'");
     }
     if (data.indexOf('\r\n') > -1) {
       char = '\r\n';
-      //console.log("character is '\\r\\n'");
+      console.log("character is '\\r\\n'");
     }
     let header = data.split(char, 1);
     //header = header[0].slice(0, -1);
     header = header[0].split(',');
-    //console.log('Headers', header);
+    console.log('Headers', header);
     if (JSON.stringify(header) === JSON.stringify(defaultHeader)) {
-      //console.log("Headers match");
+      console.log("Headers match");
       const converter = csvTojson({
         delimiter: ',',
       });
       converter.fromString(data).then((obj) => {
-        //console.log("Json: ", obj);
+        console.log("Json: ", obj);
         if (obj) {
           obj.forEach(element => {
             element.nEnteredBy = userId;
@@ -632,7 +632,7 @@ export default function BulkUpload(props) {
 
     }
     else {
-      //console.log("Headers don't match");
+      console.log("Headers don't match");
       setAlertMessage("Headers don't match");
       setAlertType('error');
       setHeaderOK(false);
@@ -653,7 +653,7 @@ export default function BulkUpload(props) {
       .then(resp => {
         setBackdrop(false);
         if (resp.status === 200) {
-          //console.log(resp.data);
+          console.log(resp.data);
           setBatchNumber(resp.data[0].sBatchNumber);
           setDataAPI(resp.data);
           setShowTable(true);
@@ -675,7 +675,7 @@ export default function BulkUpload(props) {
         setAlertMessage("Error while verifying CSV file with server.\n" + error.response.data);
         setAlertType('error');
         snackbarOpen();
-        //console.log(error.response);
+        console.log(error.response);
 
       });
   };
@@ -686,7 +686,7 @@ export default function BulkUpload(props) {
     setDataAPI([]);
     setShowTable(false);
     const file = document.getElementById("csv").files;
-    //console.log("File in input is:", file);
+    console.log("File in input is:", file);
     if (file) {
       reader.readAsText(file[0]);
       setTitle(file[0].name);
@@ -696,7 +696,7 @@ export default function BulkUpload(props) {
   }
 
   const handleSubmit = () => {
-    //console.log("Batch Number ", sBatchNumber);
+    console.log("Batch Number ", sBatchNumber);
     setBackdrop(true);
     axios.post(`ChatrelBulkData/SubmitBulkData/?sBatchNumber=${sBatchNumber}`)
       .then(resp => {
@@ -725,7 +725,7 @@ export default function BulkUpload(props) {
         setAlertMessage("Error while submitting Bulk Data\n" + error.response.data);
         setAlertType('error');
         snackbarOpen();
-        //console.log(error.response);
+        console.log(error.response);
 
       })
   };

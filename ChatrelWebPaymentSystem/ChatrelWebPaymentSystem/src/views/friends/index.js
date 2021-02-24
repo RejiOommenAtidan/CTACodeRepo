@@ -73,7 +73,7 @@ export default function Friends () {
   const verify = () => {
     //e.preventDefault()
     setBackdrop(true);
-    ////console.log(sFirstName,sLastName,sFriendGBID,Moment(dtDOB).format("YYYY-MM-DD"));
+    //console.log(sFirstName,sLastName,sFriendGBID,Moment(dtDOB).format("YYYY-MM-DD"));
     //if(sFirstName && sLastName && dtDOB && sFriendGBID){
       if(dtDOB && sFriendGBID){
       axios.get(`/ChatrelPayment/VerifyFriendDetails/?sGBID=${sFriendGBID}&dtDOB=${Moment(dtDOB).format("YYYY-MM-DD")}`)
@@ -85,7 +85,7 @@ export default function Friends () {
             bSession:true
           }
 dispatch(storeSession(oSession));
-          //console.log(resp.data);
+          console.log(resp.data);
           if(resp.data.verified === true){
           
                 makePayment({sGBID: sFriendGBID, sName: `${sFirstName} ${sLastName}`, sRelation: `Friend`, from:'Chatrel for Friends & Family' })
@@ -110,8 +110,8 @@ dispatch(storeSession(oSession));
           //   setAlertType('danger');
           //   snackbarOpen();
           // }
-          // //console.log(error.message);
-          // //console.log(error);
+          // console.log(error.message);
+          // console.log(error);
           setBackdrop(false);
       });
     }

@@ -25,26 +25,15 @@ namespace CTADBL.ViewModelsRepositories
 
         #region Get Calls
 
+
         public IEnumerable<GreenBookSerialNumberVM> GetGreenBookSerialNumbers(int records, DateTime? dtFrom, DateTime? dtUpto, int? nBookNo)
         {
             string addToSql = String.Empty;
             string append = String.Empty;
-            if(dtFrom != null && dtUpto != null)
+
+            using (var command = new MySqlCommand())
             {
-                addToSql = String.Format(@"AND dtDate >= '{0}' AND dtDate <= '{1}' ORDER BY dtDate", dtFrom.GetValueOrDefault().ToString("yyyy-MM-dd"), dtUpto.GetValueOrDefault().ToString("yyyy-MM-dd"));
-                append = @"ORDER BY dtDate";
-            }
-            else if (nBookNo != null)
-            {
-                addToSql = String.Format(@"AND nBookNo LIKE '{0}%'", nBookNo);
-                append = @"ORDER BY nBookNo";
-            }
-            else
-            {
-                addToSql = String.Format(@" ORDER BY gb.nBookNo DESC LIMIT 200");
-                append = String.Format(@" ORDER BY gbsn.nBookNo DESC");
-            }
-            string sql = String.Format(@"SELECT md.sMadebType, au.sAuthRegion, concat(grbk.sFirstName, ' ' , IFNULL(grbk.sMiddleName, ''), ' ', IFNULL(grbk.sLastName, '')) as sName, gbsn.*  FROM (SELECT gb.Id, gb.nBookNo, gb.sGBId, gb.Remarks, gb.dtDate, gb.sName, gb.sCountryID, 
+                string sql = @"SELECT md.sMadebType, au.sAuthRegion, concat(grbk.sFirstName, ' ' , IFNULL(grbk.sMiddleName, ''), ' ', IFNULL(grbk.sLastName, '')) as sName, grbk.sCountryID, gbsn.*  FROM (SELECT gb.Id, gb.nBookNo, gb.sGBId, gb.Remarks, gb.dtDate, gb.sName,  
                              gb.nMadebTypeId, 
                              gb.nFormNumber, 
                              gb.nAuthRegionId, 
@@ -52,21 +41,47 @@ namespace CTADBL.ViewModelsRepositories
                              gb.nEnteredBy,
                              gb.dtUpdated,
                              gb.nUpdatedBy FROM tblgreenbookserial AS gb
-                             WHERE 1 = 1 {0}
-                             ) as gbsn
+                             WHERE ";
+
+                if (dtFrom != null && dtUpto != null)
+                {
+                    addToSql = @"dtDate >= @dtFrom AND dtDate <= @dtUpto ORDER BY dtDate  ) as gbsn
                              LEFT JOIN tblgreenbook AS grbk
                              ON gbsn.sGBId = grbk.sGBID
                              LEFT JOIN lstmadebtype AS md
                              ON gbsn.nMadebTypeId = md.Id
                              LEFT JOIN lstauthregion AS au
-                             ON gbsn.nAuthRegionId = au.ID {1}", addToSql, append);
+                             ON gbsn.nAuthRegionId = au.ID ORDER BY dtDate";
+                    command.Parameters.AddWithValue("dtFrom", dtFrom.GetValueOrDefault().ToString("yyyy-MM-dd"));
+                    command.Parameters.AddWithValue("dtUpto", dtUpto.GetValueOrDefault().ToString("yyyy-MM-dd"));
 
-            //sql += records > 0 ? (@" LIMIT " + records + ";") : sql += ";";
+                }
+                else if (nBookNo != null)
+                {
+                    addToSql = @"nBookNo LIKE @nBookNo ) as gbsn
+                             LEFT JOIN tblgreenbook AS grbk
+                             ON gbsn.sGBId = grbk.sGBID
+                             LEFT JOIN lstmadebtype AS md
+                             ON gbsn.nMadebTypeId = md.Id
+                             LEFT JOIN lstauthregion AS au
+                             ON gbsn.nAuthRegionId = au.ID ORDER BY nBookNo ";
+                    command.Parameters.AddWithValue("nBookNo", nBookNo.Value.ToString() + '%');
+                }
+                else
+                {
+                    addToSql = @" 1 = 1 ORDER BY gb.nBookNo DESC ) as gbsn
+                             LEFT JOIN tblgreenbook AS grbk
+                             ON gbsn.sGBId = grbk.sGBID
+                             LEFT JOIN lstmadebtype AS md
+                             ON gbsn.nMadebTypeId = md.Id
+                             LEFT JOIN lstauthregion AS au
+                             ON gbsn.nAuthRegionId = au.ID ORDER BY gbsn.nBookNo DESC";
 
-            using (var command = new MySqlCommand(sql))
-            {
-                
+                }
 
+                sql += addToSql;
+                sql += records > 0 ? " LIMIT @records;" : ";";
+                command.CommandText = sql;
                 command.Parameters.AddWithValue("records", records);
                 IEnumerable<GreenBookSerialNumberVM> result = GetRecords(command);
                 //result = result.OrderBy(a => a.greenBookSerialNumber.nBookNo);
@@ -75,6 +90,57 @@ namespace CTADBL.ViewModelsRepositories
 
             }
         }
+
+        //public IEnumerable<GreenBookSerialNumberVM> GetGreenBookSerialNumbers(int records, DateTime? dtFrom, DateTime? dtUpto, int? nBookNo)
+        //{
+        //    string addToSql = String.Empty;
+        //    string append = String.Empty;
+        //    if(dtFrom != null && dtUpto != null)
+        //    {
+        //        addToSql = String.Format(@"AND dtDate >= '{0}' AND dtDate <= '{1}' ORDER BY dtDate", dtFrom.GetValueOrDefault().ToString("yyyy-MM-dd"), dtUpto.GetValueOrDefault().ToString("yyyy-MM-dd"));
+        //        append = @"ORDER BY dtDate";
+        //    }
+        //    else if (nBookNo != null)
+        //    {
+        //        addToSql = String.Format(@"AND nBookNo LIKE '{0}%'", nBookNo);
+        //        append = @"ORDER BY nBookNo";
+        //    }
+        //    else
+        //    {
+        //        addToSql = String.Format(@" ORDER BY gb.nBookNo DESC LIMIT 200");
+        //        append = String.Format(@" ORDER BY gbsn.nBookNo DESC");
+        //    }
+        //    string sql = String.Format(@"SELECT md.sMadebType, au.sAuthRegion, concat(grbk.sFirstName, ' ' , IFNULL(grbk.sMiddleName, ''), ' ', IFNULL(grbk.sLastName, '')) as sName, grbk.sCountryID, gbsn.*  FROM (SELECT gb.Id, gb.nBookNo, gb.sGBId, gb.Remarks, gb.dtDate, gb.sName,  
+        //                     gb.nMadebTypeId, 
+        //                     gb.nFormNumber, 
+        //                     gb.nAuthRegionId, 
+        //                     gb.dtEntered,
+        //                     gb.nEnteredBy,
+        //                     gb.dtUpdated,
+        //                     gb.nUpdatedBy FROM tblgreenbookserial AS gb
+        //                     WHERE 1 = 1 {0}
+        //                     ) as gbsn
+        //                     LEFT JOIN tblgreenbook AS grbk
+        //                     ON gbsn.sGBId = grbk.sGBID
+        //                     LEFT JOIN lstmadebtype AS md
+        //                     ON gbsn.nMadebTypeId = md.Id
+        //                     LEFT JOIN lstauthregion AS au
+        //                     ON gbsn.nAuthRegionId = au.ID {1}", addToSql, append);
+
+        //    //sql += records > 0 ? (@" LIMIT " + records + ";") : sql += ";";
+
+        //    using (var command = new MySqlCommand(sql))
+        //    {
+
+
+        //        command.Parameters.AddWithValue("records", records);
+        //        IEnumerable<GreenBookSerialNumberVM> result = GetRecords(command);
+        //        //result = result.OrderBy(a => a.greenBookSerialNumber.nBookNo);
+        //        //result = result.Reverse();
+        //        return result;
+
+        //    }
+        //}
 
         public GreenBookSerialNumberVM GetGreenBookSerialNumberBySerialNumber(int serialNumber)
         {

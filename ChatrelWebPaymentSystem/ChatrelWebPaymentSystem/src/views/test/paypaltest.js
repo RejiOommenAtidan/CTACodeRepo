@@ -16,12 +16,12 @@ export default function CoverHome() {
             onSuccess={(details, data) => {
             //setBackdrop(true);
             //alert("Transaction completed by " + details.payer.name.given_name);
-            //console.log('Details:', details);
-            //console.log('Data', data);
+            console.log('Details:', details);
+            console.log('Data', data);
             //submit(details);
             }}
             onError={(err) => {
-            //console.log(err);
+            console.log(err);
             // setAlertMessage('Chatrel donation failed.');
             // setAlertType('error');
             // snackbarOpen();
@@ -34,7 +34,7 @@ export default function CoverHome() {
             return actions.order.create({ purchase_units: [ { amount: { value: total.toFixed(2), }, }, ], }); 
 
             }}*/
-            // onError={(details, data)=>{//console.log(details);}}
+            // onError={(details, data)=>{console.log(details);}}
             />
 
 

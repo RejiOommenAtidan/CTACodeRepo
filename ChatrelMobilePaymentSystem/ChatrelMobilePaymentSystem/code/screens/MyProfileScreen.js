@@ -3,8 +3,9 @@ import {
   Text,
   View,
   StyleSheet,
-  PermissionsAndroid,
   Platform,
+  ScrollView,
+  PermissionsAndroid,
 } from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -16,22 +17,21 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useSelector, useDispatch} from 'react-redux';
-import CTALogo from '../../code/assets/CTALogo.png';
 import {
   sDateFormat,
-  sDateFormatDatePicker,
   sFontName,
   sFontNameBold,
+  sDateFormatDatePicker,
 } from '../constants/CommonConfig';
 import {Avatar, Badge, Icon, withBadge, Card} from 'react-native-elements';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
-import {BoxShadow, BorderShadow} from 'react-native-shadow';
 import {useIsFocused} from '@react-navigation/native';
 import {Loader} from '../components/Loader';
 import axios from 'axios';
 import {storeJWTToken} from '../store/actions/GBDetailsAction';
 import Moment from 'moment';
-import {ScrollView} from 'react-native-gesture-handler';
+import CTALogo from '../../code/assets/CTALogo.png';
+// import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+// import {BoxShadow, BorderShadow} from 'react-native-shadow';
 
 export const MyProfileScreen = (props) => {
   // const oUserHardcodedMyProfile = {
@@ -50,9 +50,8 @@ export const MyProfileScreen = (props) => {
 
   useEffect(() => {
     if (isFocused) {
-      getChatrelDetails();
       console.log('My Profile Called');
-      debugger;
+      getChatrelDetails();
     }
   }, [isFocused]);
 
@@ -85,636 +84,636 @@ export const MyProfileScreen = (props) => {
       });
   };
 
-  const isPermitted = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          {
-            title: 'External Storage Write Permission',
-            message: 'App needs access to Store data',
-          },
-        );
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      } catch (err) {
-        alert('Write permission err', err);
-        return false;
-      }
-    } else {
-      return true;
-    }
-  };
+  // const isPermitted = async () => {
+  //   if (Platform.OS === 'android') {
+  //     try {
+  //       const granted = await PermissionsAndroid.request(
+  //         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+  //         {
+  //           title: 'External Storage Write Permission',
+  //           message: 'App needs access to Store data',
+  //         },
+  //       );
+  //       return granted === PermissionsAndroid.RESULTS.GRANTED;
+  //     } catch (err) {
+  //       alert('Write permission err', err);
+  //       return false;
+  //     }
+  //   } else {
+  //     return true;
+  //   }
+  // };
 
-  const createPDF = async (paypalObj) => {
-    if (await isPermitted()) {
-      let sMyHTML = `
-      <table
-                    /*ref={ref}*/ id="mytable"
-                    className="mytable"
-                    cellspacing="0"
-                    style={{
-                      border: '3px solid #000000',
-                      background: \`linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.7)),url(${CTALogo})\`,
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'center'
-                    }}>
-                    <tr>
-                      <td width="20"></td>
-                      <td width="200"></td>
-                      <td width="175"></td>
-                      <td width="175"></td>
+  // const createPDF = async (paypalObj) => {
+  //   if (await isPermitted()) {
+  //     let sMyHTML = `
+  //     <table
+  //                   /*ref={ref}*/ id="mytable"
+  //                   className="mytable"
+  //                   cellspacing="0"
+  //                   style={{
+  //                     border: '3px solid #000000',
+  //                     background: \`linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.7)),url(${CTALogo})\`,
+  //                     backgroundRepeat: 'no-repeat',
+  //                     backgroundPosition: 'center'
+  //                   }}>
+  //                   <tr>
+  //                     <td width="20"></td>
+  //                     <td width="200"></td>
+  //                     <td width="175"></td>
+  //                     <td width="175"></td>
 
-                      <td width="20"></td>
-                    </tr>
-                    <tr>
-                      <td width="20"></td>
-                      <td colSpan="2" height="35" align="left" valign="middle">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={5}
-                            color="#000000">
-                            ༄༅། །བཙན་བྱོལ་བོད་མིའི་དཔྱ་དངུལ་བྱུང་འཛིན་ཨང་།
-                          </font>
-                        </b>
-                      </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td width="20"></td>
+  //                     <td colSpan="2" height="35" align="left" valign="middle">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={5}
+  //                           color="#000000">
+  //                           ༄༅། །བཙན་བྱོལ་བོད་མིའི་དཔྱ་དངུལ་བྱུང་འཛིན་ཨང་།
+  //                         </font>
+  //                       </b>
+  //                     </td>
 
-                      <td align="right">
-                        <img
-                          width="75px"
-                          height="75px"
-                          src={'data:image/png;base64,' + receiptData.qrcode}
-                        />
-                      </td>
-                      <td width="20"></td>
-                    </tr>
-                    <tr>
-                      <td width="20"></td>
-                      <td colspan="2" height="28" align="left" valign="middle">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            མིང་།
-                          </font>
-                          <font size={4} color="#000000">
-                            {' '}
-                            {receiptData.receipt.sFirstName}
-                          </font>
-                        </b>
-                      </td>
-                      <td align="right" valign="middle">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            རང་ལོ། {receiptData.receipt.nAge}
-                          </font>
-                        </b>
-                      </td>
-                      <td width="20"></td>
-                    </tr>
-                    <tr>
-                      <td
-                        colspan="5"
-                        /* style={{borderRight:"3px solid #000000"}}*/ height="27"
-                        align="left"
-                        valign="top">
-                        <table>
-                          <tr>
-                            <td
-                              style={{
-                                width: '200px',
-                                paddingLeft: '20px',
-                                borderTop: '3px solid #000000'
-                              }}>
-                              <b>
-                                <font
-                                  face="Microsoft Himalaya"
-                                  size={4}
-                                  color="#000000">
-                                  {' '}
-                                  དཔྱ་དེབ་ཨང་།
-                                </font>
-                              </b>
-                            </td>
-                            <td
-                              align="center"
-                              style={{ border: '3px solid #000000' }}
-                              width="32">
-                              <b>
-                                <font size={4} color="#000000">
-                                  X
-                                </font>
-                              </b>
-                            </td>
-                            <td
-                              align="center"
-                              style={{
-                                borderTop: '3px solid #000000',
-                                borderBottom: '3px solid #000000',
-                                borderRight: '3px solid #000000'
-                              }}
-                              width="32">
-                              <b>
-                                <font size={4} color="#000000">
-                                  X
-                                </font>
-                              </b>
-                            </td>
-                            <td
-                              align="center"
-                              style={{
-                                borderTop: '3px solid #000000',
-                                borderBottom: '3px solid #000000',
-                                borderRight: '3px solid #000000'
-                              }}
-                              width="32">
-                              <b>
-                                <font size={4} color="#000000">
-                                  {receiptData.receipt.sGBID.charAt(0)}
-                                </font>
-                              </b>
-                            </td>
-                            <td
-                              align="center"
-                              style={{
-                                borderTop: '3px solid #000000',
-                                borderBottom: '3px solid #000000',
-                                borderRight: '3px solid #000000'
-                              }}
-                              width="32">
-                              <b>
-                                <font size={4} color="#000000">
-                                  {receiptData.receipt.sGBID.charAt(1)}
-                                </font>
-                              </b>
-                            </td>
-                            <td
-                              align="center"
-                              style={{
-                                borderTop: '3px solid #000000',
-                                borderBottom: '3px solid #000000',
-                                borderRight: '3px solid #000000'
-                              }}
-                              width="32">
-                              <b>
-                                <font size={4} color="#000000">
-                                  {receiptData.receipt.sGBID.charAt(2)}
-                                </font>
-                              </b>
-                            </td>
-                            <td
-                              align="center"
-                              style={{
-                                borderTop: '3px solid #000000',
-                                borderBottom: '3px solid #000000',
-                                borderRight: '3px solid #000000'
-                              }}
-                              width="32">
-                              <b>
-                                <font size={4} color="#000000">
-                                  {receiptData.receipt.sGBID.charAt(3)}
-                                </font>
-                              </b>
-                            </td>
-                            <td
-                              align="center"
-                              style={{
-                                borderTop: '3px solid #000000',
-                                borderBottom: '3px solid #000000',
-                                borderRight: '3px solid #000000'
-                              }}
-                              width="32">
-                              <b>
-                                <font size={4} color="#000000">
-                                  {receiptData.receipt.sGBID.charAt(4)}
-                                </font>
-                              </b>
-                            </td>
-                            <td
-                              align="center"
-                              style={{
-                                borderTop: '3px solid #000000',
-                                borderBottom: '3px solid #000000',
-                                borderRight: '3px solid #000000'
-                              }}
-                              width="32">
-                              <b>
-                                <font size={4} color="#000000">
-                                  {receiptData.receipt.sGBID.charAt(5)}
-                                </font>
-                              </b>
-                            </td>
-                            <td
-                              align="center"
-                              style={{
-                                borderTop: '3px solid #000000',
-                                borderBottom: '3px solid #000000',
-                                borderRight: '3px solid #000000'
-                              }}
-                              width="32">
-                              <b>
-                                <font size={4} color="#000000">
-                                  {receiptData.receipt.sGBID.charAt(6)}
-                                </font>
-                              </b>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
+  //                     <td align="right">
+  //                       <img
+  //                         width="75px"
+  //                         height="75px"
+  //                         src={'data:image/png;base64,' + receiptData.qrcode}
+  //                       />
+  //                     </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td width="20"></td>
+  //                     <td colspan="2" height="28" align="left" valign="middle">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           མིང་།
+  //                         </font>
+  //                         <font size={4} color="#000000">
+  //                           {' '}
+  //                           {receiptData.receipt.sFirstName}
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td align="right" valign="middle">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           རང་ལོ། {receiptData.receipt.nAge}
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td
+  //                       colspan="5"
+  //                       /* style={{borderRight:"3px solid #000000"}}*/ height="27"
+  //                       align="left"
+  //                       valign="top">
+  //                       <table>
+  //                         <tr>
+  //                           <td
+  //                             style={{
+  //                               width: '200px',
+  //                               paddingLeft: '20px',
+  //                               borderTop: '3px solid #000000'
+  //                             }}>
+  //                             <b>
+  //                               <font
+  //                                 face="Microsoft Himalaya"
+  //                                 size={4}
+  //                                 color="#000000">
+  //                                 {' '}
+  //                                 དཔྱ་དེབ་ཨང་།
+  //                               </font>
+  //                             </b>
+  //                           </td>
+  //                           <td
+  //                             align="center"
+  //                             style={{ border: '3px solid #000000' }}
+  //                             width="32">
+  //                             <b>
+  //                               <font size={4} color="#000000">
+  //                                 X
+  //                               </font>
+  //                             </b>
+  //                           </td>
+  //                           <td
+  //                             align="center"
+  //                             style={{
+  //                               borderTop: '3px solid #000000',
+  //                               borderBottom: '3px solid #000000',
+  //                               borderRight: '3px solid #000000'
+  //                             }}
+  //                             width="32">
+  //                             <b>
+  //                               <font size={4} color="#000000">
+  //                                 X
+  //                               </font>
+  //                             </b>
+  //                           </td>
+  //                           <td
+  //                             align="center"
+  //                             style={{
+  //                               borderTop: '3px solid #000000',
+  //                               borderBottom: '3px solid #000000',
+  //                               borderRight: '3px solid #000000'
+  //                             }}
+  //                             width="32">
+  //                             <b>
+  //                               <font size={4} color="#000000">
+  //                                 {receiptData.receipt.sGBID.charAt(0)}
+  //                               </font>
+  //                             </b>
+  //                           </td>
+  //                           <td
+  //                             align="center"
+  //                             style={{
+  //                               borderTop: '3px solid #000000',
+  //                               borderBottom: '3px solid #000000',
+  //                               borderRight: '3px solid #000000'
+  //                             }}
+  //                             width="32">
+  //                             <b>
+  //                               <font size={4} color="#000000">
+  //                                 {receiptData.receipt.sGBID.charAt(1)}
+  //                               </font>
+  //                             </b>
+  //                           </td>
+  //                           <td
+  //                             align="center"
+  //                             style={{
+  //                               borderTop: '3px solid #000000',
+  //                               borderBottom: '3px solid #000000',
+  //                               borderRight: '3px solid #000000'
+  //                             }}
+  //                             width="32">
+  //                             <b>
+  //                               <font size={4} color="#000000">
+  //                                 {receiptData.receipt.sGBID.charAt(2)}
+  //                               </font>
+  //                             </b>
+  //                           </td>
+  //                           <td
+  //                             align="center"
+  //                             style={{
+  //                               borderTop: '3px solid #000000',
+  //                               borderBottom: '3px solid #000000',
+  //                               borderRight: '3px solid #000000'
+  //                             }}
+  //                             width="32">
+  //                             <b>
+  //                               <font size={4} color="#000000">
+  //                                 {receiptData.receipt.sGBID.charAt(3)}
+  //                               </font>
+  //                             </b>
+  //                           </td>
+  //                           <td
+  //                             align="center"
+  //                             style={{
+  //                               borderTop: '3px solid #000000',
+  //                               borderBottom: '3px solid #000000',
+  //                               borderRight: '3px solid #000000'
+  //                             }}
+  //                             width="32">
+  //                             <b>
+  //                               <font size={4} color="#000000">
+  //                                 {receiptData.receipt.sGBID.charAt(4)}
+  //                               </font>
+  //                             </b>
+  //                           </td>
+  //                           <td
+  //                             align="center"
+  //                             style={{
+  //                               borderTop: '3px solid #000000',
+  //                               borderBottom: '3px solid #000000',
+  //                               borderRight: '3px solid #000000'
+  //                             }}
+  //                             width="32">
+  //                             <b>
+  //                               <font size={4} color="#000000">
+  //                                 {receiptData.receipt.sGBID.charAt(5)}
+  //                               </font>
+  //                             </b>
+  //                           </td>
+  //                           <td
+  //                             align="center"
+  //                             style={{
+  //                               borderTop: '3px solid #000000',
+  //                               borderBottom: '3px solid #000000',
+  //                               borderRight: '3px solid #000000'
+  //                             }}
+  //                             width="32">
+  //                             <b>
+  //                               <font size={4} color="#000000">
+  //                                 {receiptData.receipt.sGBID.charAt(6)}
+  //                               </font>
+  //                             </b>
+  //                           </td>
+  //                         </tr>
+  //                       </table>
+  //                     </td>
+  //                   </tr>
 
-                    <tr>
-                      <td width="20"></td>
-                      <td colSpan="3" height="7" align="left" valign="top">
-                        <font
-                          face="Microsoft Himalaya"
-                          size={4}
-                          color="#000000"></font>
-                      </td>
-                      <td width="20"></td>
-                    </tr>
-                    <tr>
-                      <td
-                        width="20"
-                        height="26"
-                        style={{ borderBottom: '1px solid #000000' }}></td>
-                      <td
-                        colspan="2"
-                        style={{ borderBottom: '1px solid #000000' }}
-                        align="left"
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            ༡། དཔྱ་དངུལ།
-                          </font>
-                        </b>
-                      </td>
-                      <td
-                        style={{ borderBottom: '2px solid #000000' }}
-                        align="left"
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            སྒོར།{' '}
-                            {receiptData.receipt.nChatrelAmount.toFixed(2)}
-                          </font>
-                        </b>
-                      </td>
-                      <td
-                        width="20"
-                        style={{ borderBottom: '2px solid #000000' }}></td>
-                    </tr>
-                    <tr>
-                      <td
-                        width="20"
-                        style={{ borderBottom: '1px solid #000000' }}
-                        height="26"></td>
-                      <td
-                        colspan="2"
-                        style={{ borderBottom: '1px solid #000000' }}
-                        align="left"
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            ༢། ཟས་བཅད་དོད།
-                          </font>
-                        </b>
-                      </td>
-                      <td
-                        style={{ borderBottom: '2px solid #000000' }}
-                        align="left"
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            སྒོར། {receiptData.receipt.nChatrelMeal.toFixed(2)}
-                          </font>
-                        </b>
-                      </td>
-                      <td
-                        width="20"
-                        style={{ borderBottom: '2px solid #000000' }}></td>
-                    </tr>
-                    <tr>
-                      <td
-                        width="20"
-                        style={{ borderBottom: '1px solid #000000' }}
-                        height="26"></td>
-                      <td
-                        colspan="2"
-                        style={{ borderBottom: '1px solid #000000' }}
-                        align="left"
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            ༣། ཕོགས་འབབ།
-                          </font>
-                        </b>
-                      </td>
-                      <td
-                        style={{ borderBottom: '2px solid #000000' }}
-                        align="left"
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            སྒོར།{' '}
-                            {receiptData.receipt.nCurrentChatrelSalaryAmt.toFixed(
-                              2
-                            )}
-                          </font>
-                        </b>
-                      </td>
-                      <td
-                        width="20"
-                        style={{ borderBottom: '2px solid #000000' }}></td>
-                    </tr>
-                    <tr>
-                      <td
-                        width="20"
-                        style={{ borderBottom: '1px solid #000000' }}
-                        height="26"></td>
-                      <td
-                        colspan="2"
-                        style={{ borderBottom: '1px solid #000000' }}
-                        align="left"
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            ༤། ཚོང་ཁེའི་བློས་བཅད་ཞལ་འདེབས།
-                          </font>
-                        </b>
-                      </td>
-                      <td
-                        style={{ borderBottom: '2px solid #000000' }}
-                        align="left"
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            སྒོར།{' '}
-                            {receiptData.receipt.nChatrelBusinessDonationAmt
-                              ? receiptData.receipt.nChatrelBusinessDonationAmt.toFixed(
-                                  2
-                                )
-                              : 0}
-                          </font>
-                        </b>
-                      </td>
-                      <td
-                        width="20"
-                        style={{ borderBottom: '2px solid #000000' }}></td>
-                    </tr>
-                    <tr>
-                      <td
-                        width="20"
-                        style={{ borderBottom: '1px solid #000000' }}
-                        height="26"></td>
-                      <td
-                        colspan="2"
-                        style={{ borderBottom: '1px solid #000000' }}
-                        align="left"
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            ༥། དཔྱ་དངུལ་འབུལ་ཆད་འབབ།
-                          </font>
-                        </b>
-                      </td>
-                      <td
-                        style={{ borderBottom: '2px solid #000000' }}
-                        align="left"
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            སྒོར།{' '}
-                            {(
-                              receiptData.receipt.nArrears +
-                              receiptData.receipt.nLateFees
-                            ).toFixed(2)}{' '}
-                            ({receiptData.receipt.dtArrearsFrom.split('-')[0]}-
-                            {receiptData.receipt.dtArrearsTo.split('-')[0]})
-                          </font>
-                        </b>
-                      </td>
-                      <td
-                        width="20"
-                        style={{ borderBottom: '2px solid #000000' }}></td>
-                    </tr>
-                    <tr>
-                      <td
-                        width="20"
-                        style={{ borderBottom: '1px solid #000000' }}
-                        height="26"></td>
-                      <td
-                        colspan="2"
-                        style={{ borderBottom: '1px solid #000000' }}
-                        align="left"
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            ༦། འཕར་འབུལ་ཞལ་འདེབས།
-                          </font>
-                        </b>
-                      </td>
-                      <td
-                        style={{ borderBottom: '2px solid #000000' }}
-                        align="left"
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            སྒོར།{' '}
-                            {receiptData.receipt.nChatrelAddtionalDonationAmt
-                              ? receiptData.receipt.nChatrelAddtionalDonationAmt.toFixed(
-                                  2
-                                )
-                              : 0}
-                          </font>
-                        </b>
-                      </td>
-                      <td
-                        width="20"
-                        style={{ borderBottom: '2px solid #000000' }}></td>
-                    </tr>
-                    <tr>
-                      <td width="20"></td>
-                      <td colSpan="3" height="10" align="left" valign="top">
-                        <font
-                          face="Microsoft Himalaya"
-                          size={4}
-                          color="#000000"></font>
-                      </td>
-                      <td width="20"></td>
-                    </tr>
-                    <tr>
-                      <td width="20" height="34"></td>
-                      <td colspan="2" align="left" valign="bottom">
-                        <font
-                          face="Microsoft Himalaya"
-                          size={4}
-                          color="#000000">
-                          <b>བཅས་བསྡོམས་</b>{' '}
-                          US$/CA$/AU$/NT$/CHF/EURO/GBP/YEN/RR/
-                        </font>
-                      </td>
-                      <td
-                        align="left"
-                        style={{ paddingLeft: '30px' }}
-                        valign="bottom">
-                        <b>
-                          <font
-                            face="Microsoft Himalaya"
-                            size={4}
-                            color="#000000">
-                            སྒོར{' '}
-                          </font>
-                          <font size={4} color="#000000">
-                            {(
-                              receiptData.receipt.nChatrelAmount +
-                              receiptData.receipt.nChatrelMeal +
-                              receiptData.receipt.nCurrentChatrelSalaryAmt +
-                              receiptData.receipt.nArrears +
-                              receiptData.receipt.nLateFees +
-                              receiptData.receipt.nChatrelAddtionalDonationAmt +
-                              receiptData.receipt.nChatrelBusinessDonationAmt
-                            ).toFixed(2)}
-                          </font>{' '}
-                        </b>
-                      </td>
-                      <td width="20"></td>
-                    </tr>
-                    <tr>
-                      <td width="20" height="31"></td>
-                      <td colspan="3" align="left" valign="middle">
-                        <font
-                          face="Microsoft Himalaya"
-                          size={4}
-                          color="#000000">
-                          <b>
-                            ཕྱི་ལོ་༌་་་་་་་་་་་་་་༌༌༌༌༌་་་་་་་་་་་་༌༌༌༌༌༌༌༌༌༌༌ལོའི་དཔྱ་དངུལ་འབུལ་འབབ་རྩིས་འབུལ་བྱུང་བའི་འཛིན་དུ།{' '}
-                          </b>
-                        </font>
-                      </td>
-                      <td width="20"></td>
-                    </tr>
-                    <tr>
-                      <td width="20"></td>
-                      <td colSpan="3" height="32" align="left" valign="top">
-                        <font
-                          face="Microsoft Himalaya"
-                          size={4}
-                          color="#000000"></font>
-                      </td>
-                      <td width="20"></td>
-                    </tr>
-                    <tr>
-                      <td width="20" height="33"></td>
-                      <td colspan="3" align="left" valign="middle">
-                        <font
-                          face="Microsoft Himalaya"
-                          size={4}
-                          color="#000000">
-                          <b>
-                            བོད་རིགས་སྤྱི་མཐུན་ཚོགས་པའམ་བོད་རིགས་ཚོགས་པའི་ལས་དམ་དང་མཚན་རྟགས།
-                            &nbsp;&nbsp;&nbsp; ཕྱི་ལོ༌
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ཟླ་
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ཚེས་
-                            &nbsp;&nbsp;&nbsp; ལ།
-                          </b>
-                        </font>
-                      </td>
-                      <td width="20"></td>
-                    </tr>
-                    <tr>
-                      <td width="20"></td>
-                      <td colSpan="3" height="16" align="left" valign="top">
-                        <font size={2} color="#000000">
-                          This is computer generated Chatrel receipt, no
-                          signature required.
-                        </font>
-                      </td>
-                      <td width="20"></td>
-                    </tr>
-                    <tr>
-                      <td width="20"></td>
-                      <td colSpan="3" height="16" align="left" valign="top">
-                        <font size={2} color="#000000">
-                          You are advised to update chatrel contribution on your
-                          Greenbook from Office of Tibet or
-                        </font>
-                      </td>
-                      <td width="20"></td>
-                    </tr>
-                    <tr>
-                      <td width="20"></td>
-                      <td colSpan="3" height="16" align="left" valign="top">
-                        <font size={2} color="#000000">
-                          concerned Tibetan Association/Tibetan Community.
-                        </font>
-                      </td>
-                      <td width="20"></td>
-                    </tr>
-                    <tr>
-                      <td width="20"></td>
-                      <td colSpan="3" height="16" align="left" valign="top">
-                        <font
-                          face="Microsoft Himalaya"
-                          size={4}
-                          color="#000000"></font>
-                      </td>
-                      <td width="20"></td>
-                    </tr>
-                  </table>`;
-      //try {
-      //let file = await RNHTMLtoPDF.convert({
-      //html: sMyHTML,
-      // fileName: 'Test',
-      // directory: 'Download',
-      //fonts: ['../../code/assets/fonts/Microsoft Himalaya.ttf'],
-      //});
-      //alert(file.filePath);
-      //} catch (err) {
-      //console.error(err);
-      //}
-    }
-  };
+  //                   <tr>
+  //                     <td width="20"></td>
+  //                     <td colSpan="3" height="7" align="left" valign="top">
+  //                       <font
+  //                         face="Microsoft Himalaya"
+  //                         size={4}
+  //                         color="#000000"></font>
+  //                     </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td
+  //                       width="20"
+  //                       height="26"
+  //                       style={{ borderBottom: '1px solid #000000' }}></td>
+  //                     <td
+  //                       colspan="2"
+  //                       style={{ borderBottom: '1px solid #000000' }}
+  //                       align="left"
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           ༡། དཔྱ་དངུལ།
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td
+  //                       style={{ borderBottom: '2px solid #000000' }}
+  //                       align="left"
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           སྒོར།{' '}
+  //                           {receiptData.receipt.nChatrelAmount.toFixed(2)}
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td
+  //                       width="20"
+  //                       style={{ borderBottom: '2px solid #000000' }}></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td
+  //                       width="20"
+  //                       style={{ borderBottom: '1px solid #000000' }}
+  //                       height="26"></td>
+  //                     <td
+  //                       colspan="2"
+  //                       style={{ borderBottom: '1px solid #000000' }}
+  //                       align="left"
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           ༢། ཟས་བཅད་དོད།
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td
+  //                       style={{ borderBottom: '2px solid #000000' }}
+  //                       align="left"
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           སྒོར། {receiptData.receipt.nChatrelMeal.toFixed(2)}
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td
+  //                       width="20"
+  //                       style={{ borderBottom: '2px solid #000000' }}></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td
+  //                       width="20"
+  //                       style={{ borderBottom: '1px solid #000000' }}
+  //                       height="26"></td>
+  //                     <td
+  //                       colspan="2"
+  //                       style={{ borderBottom: '1px solid #000000' }}
+  //                       align="left"
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           ༣། ཕོགས་འབབ།
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td
+  //                       style={{ borderBottom: '2px solid #000000' }}
+  //                       align="left"
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           སྒོར།{' '}
+  //                           {receiptData.receipt.nCurrentChatrelSalaryAmt.toFixed(
+  //                             2
+  //                           )}
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td
+  //                       width="20"
+  //                       style={{ borderBottom: '2px solid #000000' }}></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td
+  //                       width="20"
+  //                       style={{ borderBottom: '1px solid #000000' }}
+  //                       height="26"></td>
+  //                     <td
+  //                       colspan="2"
+  //                       style={{ borderBottom: '1px solid #000000' }}
+  //                       align="left"
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           ༤། ཚོང་ཁེའི་བློས་བཅད་ཞལ་འདེབས།
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td
+  //                       style={{ borderBottom: '2px solid #000000' }}
+  //                       align="left"
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           སྒོར།{' '}
+  //                           {receiptData.receipt.nChatrelBusinessDonationAmt
+  //                             ? receiptData.receipt.nChatrelBusinessDonationAmt.toFixed(
+  //                                 2
+  //                               )
+  //                             : 0}
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td
+  //                       width="20"
+  //                       style={{ borderBottom: '2px solid #000000' }}></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td
+  //                       width="20"
+  //                       style={{ borderBottom: '1px solid #000000' }}
+  //                       height="26"></td>
+  //                     <td
+  //                       colspan="2"
+  //                       style={{ borderBottom: '1px solid #000000' }}
+  //                       align="left"
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           ༥། དཔྱ་དངུལ་འབུལ་ཆད་འབབ།
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td
+  //                       style={{ borderBottom: '2px solid #000000' }}
+  //                       align="left"
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           སྒོར།{' '}
+  //                           {(
+  //                             receiptData.receipt.nArrears +
+  //                             receiptData.receipt.nLateFees
+  //                           ).toFixed(2)}{' '}
+  //                           ({receiptData.receipt.dtArrearsFrom.split('-')[0]}-
+  //                           {receiptData.receipt.dtArrearsTo.split('-')[0]})
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td
+  //                       width="20"
+  //                       style={{ borderBottom: '2px solid #000000' }}></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td
+  //                       width="20"
+  //                       style={{ borderBottom: '1px solid #000000' }}
+  //                       height="26"></td>
+  //                     <td
+  //                       colspan="2"
+  //                       style={{ borderBottom: '1px solid #000000' }}
+  //                       align="left"
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           ༦། འཕར་འབུལ་ཞལ་འདེབས།
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td
+  //                       style={{ borderBottom: '2px solid #000000' }}
+  //                       align="left"
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           སྒོར།{' '}
+  //                           {receiptData.receipt.nChatrelAddtionalDonationAmt
+  //                             ? receiptData.receipt.nChatrelAddtionalDonationAmt.toFixed(
+  //                                 2
+  //                               )
+  //                             : 0}
+  //                         </font>
+  //                       </b>
+  //                     </td>
+  //                     <td
+  //                       width="20"
+  //                       style={{ borderBottom: '2px solid #000000' }}></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td width="20"></td>
+  //                     <td colSpan="3" height="10" align="left" valign="top">
+  //                       <font
+  //                         face="Microsoft Himalaya"
+  //                         size={4}
+  //                         color="#000000"></font>
+  //                     </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td width="20" height="34"></td>
+  //                     <td colspan="2" align="left" valign="bottom">
+  //                       <font
+  //                         face="Microsoft Himalaya"
+  //                         size={4}
+  //                         color="#000000">
+  //                         <b>བཅས་བསྡོམས་</b>{' '}
+  //                         US$/CA$/AU$/NT$/CHF/EURO/GBP/YEN/RR/
+  //                       </font>
+  //                     </td>
+  //                     <td
+  //                       align="left"
+  //                       style={{ paddingLeft: '30px' }}
+  //                       valign="bottom">
+  //                       <b>
+  //                         <font
+  //                           face="Microsoft Himalaya"
+  //                           size={4}
+  //                           color="#000000">
+  //                           སྒོར{' '}
+  //                         </font>
+  //                         <font size={4} color="#000000">
+  //                           {(
+  //                             receiptData.receipt.nChatrelAmount +
+  //                             receiptData.receipt.nChatrelMeal +
+  //                             receiptData.receipt.nCurrentChatrelSalaryAmt +
+  //                             receiptData.receipt.nArrears +
+  //                             receiptData.receipt.nLateFees +
+  //                             receiptData.receipt.nChatrelAddtionalDonationAmt +
+  //                             receiptData.receipt.nChatrelBusinessDonationAmt
+  //                           ).toFixed(2)}
+  //                         </font>{' '}
+  //                       </b>
+  //                     </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td width="20" height="31"></td>
+  //                     <td colspan="3" align="left" valign="middle">
+  //                       <font
+  //                         face="Microsoft Himalaya"
+  //                         size={4}
+  //                         color="#000000">
+  //                         <b>
+  //                           ཕྱི་ལོ་༌་་་་་་་་་་་་་་༌༌༌༌༌་་་་་་་་་་་་༌༌༌༌༌༌༌༌༌༌༌ལོའི་དཔྱ་དངུལ་འབུལ་འབབ་རྩིས་འབུལ་བྱུང་བའི་འཛིན་དུ།{' '}
+  //                         </b>
+  //                       </font>
+  //                     </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td width="20"></td>
+  //                     <td colSpan="3" height="32" align="left" valign="top">
+  //                       <font
+  //                         face="Microsoft Himalaya"
+  //                         size={4}
+  //                         color="#000000"></font>
+  //                     </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td width="20" height="33"></td>
+  //                     <td colspan="3" align="left" valign="middle">
+  //                       <font
+  //                         face="Microsoft Himalaya"
+  //                         size={4}
+  //                         color="#000000">
+  //                         <b>
+  //                           བོད་རིགས་སྤྱི་མཐུན་ཚོགས་པའམ་བོད་རིགས་ཚོགས་པའི་ལས་དམ་དང་མཚན་རྟགས།
+  //                           &nbsp;&nbsp;&nbsp; ཕྱི་ལོ༌
+  //                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ཟླ་
+  //                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ཚེས་
+  //                           &nbsp;&nbsp;&nbsp; ལ།
+  //                         </b>
+  //                       </font>
+  //                     </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td width="20"></td>
+  //                     <td colSpan="3" height="16" align="left" valign="top">
+  //                       <font size={2} color="#000000">
+  //                         This is computer generated Chatrel receipt, no
+  //                         signature required.
+  //                       </font>
+  //                     </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td width="20"></td>
+  //                     <td colSpan="3" height="16" align="left" valign="top">
+  //                       <font size={2} color="#000000">
+  //                         You are advised to update chatrel contribution on your
+  //                         Greenbook from Office of Tibet or
+  //                       </font>
+  //                     </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td width="20"></td>
+  //                     <td colSpan="3" height="16" align="left" valign="top">
+  //                       <font size={2} color="#000000">
+  //                         concerned Tibetan Association/Tibetan Community.
+  //                       </font>
+  //                     </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                   <tr>
+  //                     <td width="20"></td>
+  //                     <td colSpan="3" height="16" align="left" valign="top">
+  //                       <font
+  //                         face="Microsoft Himalaya"
+  //                         size={4}
+  //                         color="#000000"></font>
+  //                     </td>
+  //                     <td width="20"></td>
+  //                   </tr>
+  //                 </table>`;
+  //     //try {
+  //     //let file = await RNHTMLtoPDF.convert({
+  //     //html: sMyHTML,
+  //     // fileName: 'Test',
+  //     // directory: 'Download',
+  //     //fonts: ['../../code/assets/fonts/Microsoft Himalaya.ttf'],
+  //     //});
+  //     //alert(file.filePath);
+  //     //} catch (err) {
+  //     //console.error(err);
+  //     //}
+  //   }
+  // };
 
   const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
 
@@ -971,56 +970,53 @@ export const MyProfileScreenOptions = (navData) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    // marginHorizontal:
-    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
   },
   headerContainer: {
-    width: wp(32),
     height: hp(4),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 18 : 30,
+    width: wp(32),
   },
   headerComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
+    color: Colors.blue,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blue,
     fontFamily: sFontName,
+    fontSize:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
+    height: '100%',
+    textAlign: 'left',
+    width: '100%',
   },
   badgeContainerStyle: {
     position: 'absolute',
     //for large
-    top: 67.5,
     right: 145,
+    top: 67.5,
 
     ////for xlarge
-    // top: 130,
     // right: 120,
+    // top: 130,
   },
   badgeStyle: {
     alignSelf: 'flex-start',
-    textAlignVertical: 'center',
-    width: wp(29.5),
-    height: hp(4),
     backgroundColor: Colors.websiteLightBlueColor,
+    height: hp(4),
+    width: wp(29.5),
+    textAlignVertical: 'center',
   },
-  labelContainer: {
-    // marginBottom: hp(1),
-  },
+  labelContainer: {},
   labelComponent: {
+    color: Colors.labelColorLight,
     fontSize: wp(3.5),
-    textAlign: 'center',
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.labelColorLight,
     fontFamily: sFontName,
-    // marginBottom: hp(1),
+    textAlign: 'center',
   },
   headerFullNameContainer: {
     // width: wp(32),
@@ -1029,14 +1025,13 @@ const styles = StyleSheet.create({
     //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 18 : 30,
   },
   headerFullNameComponent: {
-    textAlign: 'center',
+    color: Colors.blackTextAPI,
     fontSize: wp(7.5),
     fontStyle: 'normal',
-    marginVertical: hp(1),
-    color: Colors.blackTextAPI,
-    // marginBottom: wp(5),
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    marginVertical: hp(1),
+    textAlign: 'center',
   },
   valueContainer: {
     // width: wp(75),
@@ -1047,17 +1042,13 @@ const styles = StyleSheet.create({
     // flexDirection:'row'
   },
   valueComponent: {
-    textAlign: 'center',
+    color: Colors.blackTextAPI,
     fontSize: wp(5),
     fontStyle: 'normal',
-    color: Colors.blackTextAPI,
-    fontFamily: sFontName,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
     marginBottom: wp(2.5),
-    // flex:1
-    // flexWrap: 'wrap',
-    // flexShrink: 1,
+    textAlign: 'center',
   },
 
   cardContainerStyle: {
@@ -1109,16 +1100,16 @@ const styles = StyleSheet.create({
     // overflow: 'visible',
   },
   cardDividerStyle: {
-    height: 1,
     backgroundColor: Colors.buttonYellow,
+    height: 1,
     marginBottom: hp(3),
   },
   coverViewStyles: {
+    alignContent: 'center',
+    alignSelf: 'center',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignContent: 'center',
-    alignSelf: 'center',
     marginBottom: hp(3.5),
   },
   iconStyle: {

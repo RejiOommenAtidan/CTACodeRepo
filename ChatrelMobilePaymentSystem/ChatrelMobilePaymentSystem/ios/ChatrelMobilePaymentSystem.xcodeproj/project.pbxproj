@@ -18,12 +18,14 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* ChatrelMobilePaymentSystemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChatrelMobilePaymentSystemTests.m */; };
+		438526DFFB4D43B99B444299 /* MicrosoftHimalaya.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 80A7BFCE3348450DBD4AB42D /* MicrosoftHimalaya.ttf */; };
 		6B19BC3444A649188F235864 /* libPods-ChatrelMobilePaymentSystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6102C9CCC66779CB2063F33D /* libPods-ChatrelMobilePaymentSystem.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		94B8BFB33B7C4CB2A8CF5F40 /* Mircosoft Himalaya.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9904C504E99043CF96852DAB /* Mircosoft Himalaya.ttf */; };
 		9CF562CA878D4EC3A0F7FDD1 /* Cairo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 983C7858A7184A669CA72AF7 /* Cairo-Regular.ttf */; };
 		C39CBD2316000E2B744A5E5C /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9769228F034D7DC46BCFA25F /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */; };
 		D9420E2925ADD99C00B379B4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D9420E2825ADD99C00B379B4 /* GoogleService-Info.plist */; };
+		D96B5F6025E53A5A0067E877 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D96B5F5F25E53A5A0067E877 /* UserNotifications.framework */; };
+		D96B5F6225E53A940067E877 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D96B5F6125E53A940067E877 /* libRNFirebase.a */; };
 		D99CBFF425A43C9800D92A65 /* Kanit-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC7E5F4676924E4C8F87C39C /* Kanit-Regular.ttf */; };
 		DA277F5029BB23994C476D77 /* libPods-ChatrelMobilePaymentSystem-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29F4C0E188EDDF3B779A3E2B /* libPods-ChatrelMobilePaymentSystem-tvOS.a */; };
 		DFF6347A81334CDDA2DED5D2 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62328917392B4500AF908815 /* Poppins-Regular.ttf */; };
@@ -84,6 +86,7 @@
 		66971CFE27344491BDA5900B /* Kanit-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Medium.ttf"; path = "../code/assets/fonts/Kanit-Medium.ttf"; sourceTree = "<group>"; };
 		767F527E26E84E28B3B3EDB2 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		7F6B43791D13423395F24702 /* Kanit-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-SemiBold.ttf"; path = "../code/assets/fonts/Kanit-SemiBold.ttf"; sourceTree = "<group>"; };
+		80A7BFCE3348450DBD4AB42D /* MicrosoftHimalaya.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MicrosoftHimalaya.ttf; path = ../code/assets/fonts/MicrosoftHimalaya.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ChatrelMobilePaymentSystem/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8861C61AE0154521B9A36E96 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		8EBF4792830E4AC1849511CB /* Kanit-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-ThinItalic.ttf"; path = "../code/assets/fonts/Kanit-ThinItalic.ttf"; sourceTree = "<group>"; };
@@ -91,7 +94,6 @@
 		946E7D738566C3553C66E797 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9769228F034D7DC46BCFA25F /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		983C7858A7184A669CA72AF7 /* Cairo-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Cairo-Regular.ttf"; path = "../code/assets/fonts/Cairo-Regular.ttf"; sourceTree = "<group>"; };
-		9904C504E99043CF96852DAB /* Mircosoft Himalaya.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Mircosoft Himalaya.ttf"; path = "../code/assets/fonts/Mircosoft Himalaya.ttf"; sourceTree = "<group>"; };
 		9B8BF06C112C4667850CD04C /* Kanit-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Thin.ttf"; path = "../code/assets/fonts/Kanit-Thin.ttf"; sourceTree = "<group>"; };
 		9C601274195747F99288E405 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		9F36FC5276B84302A9939492 /* Kanit-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Bold.ttf"; path = "../code/assets/fonts/Kanit-Bold.ttf"; sourceTree = "<group>"; };
@@ -107,6 +109,9 @@
 		D701B750E5D34B1D872CFE9F /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		D75BF48495144774979759C4 /* SF Pro.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF Pro.ttf"; path = "../code/assets/fonts/SF Pro.ttf"; sourceTree = "<group>"; };
 		D9420E2825ADD99C00B379B4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D96B5F5F25E53A5A0067E877 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		D96B5F6125E53A940067E877 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNFirebase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9DCFC0E25DC00C900099CD2 /* ChatrelMobilePaymentSystem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ChatrelMobilePaymentSystem.entitlements; path = ChatrelMobilePaymentSystem/ChatrelMobilePaymentSystem.entitlements; sourceTree = "<group>"; };
 		DE02E00EA54B4A55A05C6EF1 /* Kanit-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-ExtraBoldItalic.ttf"; path = "../code/assets/fonts/Kanit-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		DED8F91AE1B3491AAA07FD30 /* Kanit-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-SemiBoldItalic.ttf"; path = "../code/assets/fonts/Kanit-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		E51F2A68B153454BBCEB34EA /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
@@ -131,6 +136,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D96B5F6225E53A940067E877 /* libRNFirebase.a in Frameworks */,
+				D96B5F6025E53A5A0067E877 /* UserNotifications.framework in Frameworks */,
 				6B19BC3444A649188F235864 /* libPods-ChatrelMobilePaymentSystem.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -174,6 +181,7 @@
 		13B07FAE1A68108700A75B9A /* ChatrelMobilePaymentSystem */ = {
 			isa = PBXGroup;
 			children = (
+				D9DCFC0E25DC00C900099CD2 /* ChatrelMobilePaymentSystem.entitlements */,
 				D9420E2825ADD99C00B379B4 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -189,6 +197,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D96B5F6125E53A940067E877 /* libRNFirebase.a */,
+				D96B5F5F25E53A5A0067E877 /* UserNotifications.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				6102C9CCC66779CB2063F33D /* libPods-ChatrelMobilePaymentSystem.a */,
@@ -289,7 +299,7 @@
 				D75BF48495144774979759C4 /* SF Pro.ttf */,
 				47BC2B204C75499ABE9DE727 /* JosefinSans-Bold.ttf */,
 				167CEB9EA7E149B3944E3CC1 /* JosefinSans-Regular.ttf */,
-				9904C504E99043CF96852DAB /* Mircosoft Himalaya.ttf */,
+				80A7BFCE3348450DBD4AB42D /* MicrosoftHimalaya.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -392,7 +402,7 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = X4T7928XHG;
 						LastSwiftMigration = 1120;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -448,7 +458,7 @@
 				0FABE4B5667446278E11CA8C /* SF Pro.ttf in Resources */,
 				E1D300F5FED845E684113D06 /* JosefinSans-Bold.ttf in Resources */,
 				FC358B10EFB340A1A230308C /* JosefinSans-Regular.ttf in Resources */,
-				94B8BFB33B7C4CB2A8CF5F40 /* Mircosoft Himalaya.ttf in Resources */,
+				438526DFFB4D43B99B444299 /* MicrosoftHimalaya.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -830,11 +840,68 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = ChatrelMobilePaymentSystem/ChatrelMobilePaymentSystem.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X4T7928XHG;
 				ENABLE_BITCODE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AppAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/BVLinearGradient\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/FBReactNativeSpec\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCoreDiagnostics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstallations\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GTMAppAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/GTMSessionFetcher\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleDataTransport\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/PromisesObjC\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCAsyncStorage\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCMaskedView\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCPicker\"",
+					"\"${PODS_ROOT}/Headers/Public/RNFS\"",
+					"\"${PODS_ROOT}/Headers/Public/RNFirebase\"",
+					"\"${PODS_ROOT}/Headers/Public/RNGestureHandler\"",
+					"\"${PODS_ROOT}/Headers/Public/RNGoogleSignin\"",
+					"\"${PODS_ROOT}/Headers/Public/RNReanimated\"",
+					"\"${PODS_ROOT}/Headers/Public/RNSVG\"",
+					"\"${PODS_ROOT}/Headers/Public/RNScreens\"",
+					"\"${PODS_ROOT}/Headers/Public/RNVectorIcons\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCommon\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/nanopb\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-camera\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-document-picker\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-fetch-blob\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-html-to-pdf\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-safe-area-context\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-splash-screen\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-webview\"",
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/CoreOnly/Sources",
+					"\"${PODS_TARGET_SRCROOT}/Sources/FBLPromises/include\"",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+				);
 				INFOPLIST_FILE = ChatrelMobilePaymentSystem/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -844,9 +911,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.CTA.eChatrel;
 				PRODUCT_NAME = ChatrelMobilePaymentSystem;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = eChatrelAppleDistributionPP22022021;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -857,8 +925,68 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ChatrelMobilePaymentSystem/ChatrelMobilePaymentSystem.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X4T7928XHG;
+				ENABLE_BITCODE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AppAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/BVLinearGradient\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/FBReactNativeSpec\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCoreDiagnostics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstallations\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GTMAppAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/GTMSessionFetcher\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleDataTransport\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/PromisesObjC\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCAsyncStorage\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCMaskedView\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCPicker\"",
+					"\"${PODS_ROOT}/Headers/Public/RNFS\"",
+					"\"${PODS_ROOT}/Headers/Public/RNFirebase\"",
+					"\"${PODS_ROOT}/Headers/Public/RNGestureHandler\"",
+					"\"${PODS_ROOT}/Headers/Public/RNGoogleSignin\"",
+					"\"${PODS_ROOT}/Headers/Public/RNReanimated\"",
+					"\"${PODS_ROOT}/Headers/Public/RNSVG\"",
+					"\"${PODS_ROOT}/Headers/Public/RNScreens\"",
+					"\"${PODS_ROOT}/Headers/Public/RNVectorIcons\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCommon\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/nanopb\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-camera\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-document-picker\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-fetch-blob\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-html-to-pdf\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-safe-area-context\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-splash-screen\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-webview\"",
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/CoreOnly/Sources",
+					"\"${PODS_TARGET_SRCROOT}/Sources/FBLPromises/include\"",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+				);
 				INFOPLIST_FILE = ChatrelMobilePaymentSystem/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -868,7 +996,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.CTA.eChatrel;
 				PRODUCT_NAME = ChatrelMobilePaymentSystem;
+				PROVISIONING_PROFILE_SPECIFIER = eChatrelAppleDistributionPP22022021;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

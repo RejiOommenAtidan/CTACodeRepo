@@ -118,7 +118,7 @@ export default function EnhancedTable() {
   const [currId, setCurrId] = useState('');
   //let ele = null;
   const [searching, setSearching] = useState(false);
-  //console.log("myarray: ", myarray);
+  console.log("myarray: ", myarray);
 
   const buildArray = () => {
     let tmp = []
@@ -154,7 +154,7 @@ export default function EnhancedTable() {
   };
 
   const viewGb = (GBID) => {
-    //console.log(GBID)
+    console.log(GBID)
     setGbId(GBID);
     setViewModal(true);
   };
@@ -193,7 +193,7 @@ export default function EnhancedTable() {
   };
 
   // Filter functions
-  //const searchColumn = () => //console.log("Hello from searchColumn function.");
+  //const searchColumn = () => console.log("Hello from searchColumn function.");
 
 
   const columns = [
@@ -207,7 +207,8 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
         padding: '5px'
       }
@@ -222,10 +223,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -249,10 +250,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
         padding: '5px',
-        borderRight: '1px solid grey',
     
       },
       customSort: (a, b) => {
@@ -288,10 +289,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -313,10 +314,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -340,10 +341,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '3px',
-        borderRight: '1px solid grey'
+        padding: '3px'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -366,10 +367,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -391,10 +392,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -416,10 +417,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
     },
     {
@@ -431,10 +432,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
     },
     {
@@ -446,10 +447,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -463,31 +464,7 @@ export default function EnhancedTable() {
       //   />
     },
 
-    {
-      width: "10%",
-      field: "madeb.sMadebStatusRemark",
-      title: "STATUS REMARK",
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
-      },
-      // filterComponent: () =>
-      //   <MyComp
-      //     field="madeb.sMadebStatusRemark"
-      //     name="STATUS REMARK"
-      //     changeHandler={changeHandler}
-      //     myarray={myarray}
-      //     updateArray={updateArray}
-      //     currId={currId}
-      //     key={"madeb.sMadebStatusRemark"}
-      //   />
-    },
+   
 
 
     {
@@ -501,10 +478,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
         padding: '5px',
-        borderRight: '1px solid grey',
       },
       customSort: (a, b) => {
         
@@ -541,13 +518,13 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       customSort: (a, b) => {
-        ////console.log(a, b);
+        //console.log(a, b);
         if(!a.madeb.dtFormattedReject){
           return -1;
         }
@@ -579,10 +556,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -608,13 +585,13 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       customSort: (a, b) => {
-        ////console.log(a, b);
+        //console.log(a, b);
         if(!a.madeb.dtFormattedReturnEmail){
           return -1;
         }
@@ -654,10 +631,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "center",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -678,10 +655,36 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "center",
         padding: '5px'
       }
+    },
+    {
+      width: "10%",
+      field: "madeb.sMadebStatusRemark",
+      title: "STATUS REMARK",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+       cellStyle: {
+	border: '1px solid black',
+        textAlign: "left",
+        padding: '5px'
+      },
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.sMadebStatusRemark"
+      //     name="STATUS REMARK"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.sMadebStatusRemark"}
+      //   />
     },
     {
       width: "2%",
@@ -696,7 +699,8 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
         padding: '5px'
       }
@@ -714,7 +718,8 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
         padding: '5px'
       }
@@ -722,7 +727,7 @@ export default function EnhancedTable() {
   ];
 
   useEffect(() => {
-    //console.log("Searching useEffect. Searching is", searching);
+    console.log("Searching useEffect. Searching is", searching);
 
     if (searching) {
       let searchObj = {};
@@ -736,7 +741,7 @@ export default function EnhancedTable() {
         };
         // date items
         if (item.id.startsWith('madeb.dt')) {
-          ////console.log("Value in ", item.id, " is", item.val);
+          //console.log("Value in ", item.id, " is", item.val);
           if (item.val) {
             const date = Moment(item.val, 'D-M-YYYY', true);
             if (!date._isValid) {
@@ -746,7 +751,7 @@ export default function EnhancedTable() {
             else {
 
               value = Moment(item.val, 'D-M-YYYY').format('YYYY-MM-DD');
-              ////console.log("date is valid?", date._isValid, value);
+              //console.log("date is valid?", date._isValid, value);
             }
           }
         }
@@ -765,15 +770,15 @@ export default function EnhancedTable() {
         }
         searchObj = { ...searchObj, [id]: value };
       });
-      //console.log("Should search:", shouldSearch);
-      //console.log("Search Object: Inside useEffect", searchObj);
+      console.log("Should search:", shouldSearch);
+      console.log("Search Object: Inside useEffect", searchObj);
       if (shouldSearch) {
         setisLoading(true);
         axios.post(`/MadebAuthRegionVM/ColumnSearchMadeb/madebType=5`, searchObj)
           .then(resp => {
             if (resp.status === 200) {
               //debugger
-              //console.log("Got filter Data");
+              console.log("Got filter Data");
               setdataAPI([...resp.data]);
               setSearching(false);
               setisLoading(false);
@@ -781,7 +786,7 @@ export default function EnhancedTable() {
 
             }
             if (resp.status === 204) {
-              //console.log("Got  Empty data set");
+              console.log("Got  Empty data set");
               setisLoading(false);
               setdataAPI([...resp.data]);
               setSearching(false);
@@ -789,7 +794,7 @@ export default function EnhancedTable() {
           })
           .catch(error => {
             setisLoading(false);
-            //console.log(error.message);
+            console.log(error.message);
             //handleError(error, history);
           })
       }
@@ -849,7 +854,7 @@ export default function EnhancedTable() {
       nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
       sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });
-    ////console.log(tableRowArray);
+    //console.log(tableRowArray);
     setEditModal(true);
   };
 
@@ -881,14 +886,14 @@ export default function EnhancedTable() {
             })
             .catch(error => {
               setBackdrop(false);
-              //console.log(error.config);
-              //console.log(error.message);
+              console.log(error.config);
+              console.log(error.message);
             })
         }
       })
       .catch(error => {
-        //console.log(error.config);
-        //console.log(error.message);
+        console.log(error.config);
+        console.log(error.message);
         setAlertMessage(`Record updation failed. \nError:${error.message}.`);
         setAlertType('error');
         snackbarOpen();
@@ -916,10 +921,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }
   const addAPICall = (madeb) => {
@@ -946,14 +951,14 @@ export default function EnhancedTable() {
             })
             .catch(error => {
               setBackdrop(false);
-              //console.log(error.message);
-              //console.log(error.config);
+              console.log(error.message);
+              console.log(error.config);
             })
         }
       })
       .catch(error => {
-        //console.log(error.message);
-        //console.log(error.config);
+        console.log(error.message);
+        console.log(error.config);
         setAlertMessage(`Record creation failed. \nError:${error.message}.`);
         setAlertType('error');
         snackbarOpen();
@@ -995,11 +1000,11 @@ export default function EnhancedTable() {
           console.error('Error', error.message);
 
         }
-        //console.log(error.config);
+        console.log(error.config);
         setisLoading(false);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
 
@@ -1007,7 +1012,7 @@ export default function EnhancedTable() {
     <>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px', fontSize:'0.9rem' }}
+          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px',fontSize:'1rem',color:'#000000',fontWeight:'bold' }}
             isLoading={isLoading}
             icons={oTableIcons}
             title="Book Full Madeb"
@@ -1019,16 +1024,16 @@ export default function EnhancedTable() {
               exportFileName: 'madeb',
               //search: false
              }}
-             components={{
-              Toolbar: props => (<MTableToolbar
-                          {...props}
-                          onSearchChanged={searchText => {
-                              //console.log(searchText);
-                              //props.onSearchChanged(searchText);
-                          }}
-                      />)
-          }}
-             //onSearchChange = {(e) => {//console.log(e); return false;}}
+          //    components={{
+          //     Toolbar: props => (<MTableToolbar
+          //                 {...props}
+          //                 onSearchChanged={searchText => {
+          //                     console.log(searchText);
+          //                     //props.onSearchChanged(searchText);
+          //                 }}
+          //             />)
+          // }}
+             //onSearchChange = {(e) => {console.log(e); return false;}}
             actions={[
               {
                 icon: oTableIcons.Add,

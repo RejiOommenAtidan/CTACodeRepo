@@ -99,6 +99,14 @@ namespace CTAWebAPI.Controllers.Masters
             return GetAuthRegionsCommon();
         }
 
+        [AuthorizeRole(FeatureID = 23)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetAuthRegionsForCountry()
+        {
+            return GetAuthRegionsCommon();
+        }
+
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetAuthRegionById(string Id)

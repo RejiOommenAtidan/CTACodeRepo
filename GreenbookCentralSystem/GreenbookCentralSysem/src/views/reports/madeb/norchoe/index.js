@@ -285,7 +285,7 @@ export default function Report() {
               })
               resp.data.push(total);
               SetNorchoeData(resp.data);
-              //console.log(resp.data);
+              console.log(resp.data);
             }
           }
         })
@@ -302,10 +302,10 @@ export default function Report() {
             setAlertType('error');
             snackbarOpen();
           }
-          //console.log(error.config);
+          console.log(error.config);
         })
         .then(release => {
-          ////console.log(release); => udefined
+          //console.log(release); => udefined
         });
     }
   }

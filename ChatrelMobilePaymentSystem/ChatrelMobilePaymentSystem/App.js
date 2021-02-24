@@ -1,36 +1,41 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, ScrollView, Platform, Alert} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import SplashScreen from 'react-native-splash-screen';
-import axios from 'axios';
 import {MainNavigator} from './code/navigation/MainNavigator';
 import {store} from './code/store/configureStore';
-import {sAPIBASEURL} from './code/constants/CommonConfig';
 import {NavigationContainer} from '@react-navigation/native';
 import {RootSiblingParent} from 'react-native-root-siblings';
 import {Provider, useSelector, useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
-import {GoogleSignin} from '@react-native-community/google-signin';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {removeGoogleCreds} from './code/store/actions/GLoginAction';
-import {removeCurrentGBDetails} from './code/store/actions/CurrentGBDetailsAction';
-import {
-  removeGBDetails,
-  removeJWTToken,
-  storeJWTToken,
-} from './code/store/actions/GBDetailsAction';
+import HandleNotifications from './code/components/HandleNotifications';
+// import axios from 'axios';
+// import {sAPIBASEURL} from './code/constants/CommonConfig';
+// import {useNavigation} from '@react-navigation/native';
+// import {GoogleSignin} from '@react-native-community/google-signin';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import {removeGoogleCreds} from './code/store/actions/GLoginAction';
+// import {removeCurrentGBDetails} from './code/store/actions/CurrentGBDetailsAction';
+// import {
+//   removeGBDetails,
+//   removeJWTToken,
+//   storeJWTToken,
+// } from './code/store/actions/GBDetailsAction';
+// import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const AppWrapper = () => {
+  // useEffect(()=>{
+  //   Alert.alert("Test","Test String");
+  // });
   return (
     <Provider store={store}>
       <RootSiblingParent>
-        <App></App>
+        <App />
+        <HandleNotifications />
       </RootSiblingParent>
     </Provider>
   );
 };
 
-const App: () => React$Node = () => {
+const App = () => {
   // const dispatch = useDispatch();
   // let keysToRemove = ['oUserInfo', 'oGBInfo'];
   // let navigation = useNavigation();
@@ -161,6 +166,7 @@ const App: () => React$Node = () => {
   // );
 
   useEffect(() => {
+    //Alert.alert("T","TS")
     SplashScreen.hide();
   }, []);
   return (

@@ -228,7 +228,7 @@ export default function Report() {
                 x = x + 1;
               })
               SetNewEntryFromDayData(resp.data);
-              //console.log(resp.data);
+              console.log(resp.data);
             }
           }
         })
@@ -247,10 +247,10 @@ export default function Report() {
             console.error('Error', error.message);
             
           }
-          //console.log(error.config);
+          console.log(error.config);
         })
         .then(release => {
-          ////console.log(release); => udefined
+          //console.log(release); => udefined
         });
     }
   }

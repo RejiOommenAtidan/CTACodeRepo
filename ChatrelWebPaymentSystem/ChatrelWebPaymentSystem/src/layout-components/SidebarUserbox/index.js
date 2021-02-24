@@ -28,7 +28,7 @@ let history = useHistory();
 
 
 const userObj = useSelector(state => state.GLoginReducer.oGoogle);
-//console.log(userObj);
+console.log(userObj);
 if(userObj===null){
  history.push("/login");
 }

@@ -79,11 +79,11 @@ const Routes = () => {
     {
    
       let oldToken=axios.defaults.headers.common['Authorization'];
-      //console.log('old',oldToken);
-      //console.log('new','Bearer ' + oSession.sJwtToken);
+      console.log('old',oldToken);
+      console.log('new','Bearer ' + oSession.sJwtToken);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + oSession.sJwtToken;
       if(oldToken !== 'Bearer ' + oSession.sJwtToken){
-        //console.log('Timer Reset',timerId);
+        console.log('Timer Reset',timerId);
         
           var base64Url = oSession.sJwtToken.split('.')[1];
           var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -91,16 +91,16 @@ const Routes = () => {
               return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
           }).join(''));
           const jwtObject=JSON.parse(jsonPayload);
-          ////console.log('JWT Token:',JSON.parse(jsonPayload));
+          //console.log('JWT Token:',JSON.parse(jsonPayload));
   
 
        if(timerId){
         clearTimeout(timerId);
        }
 
-      // ////console.log(jwtObject.exp-Date.now()); 
-      // //console.log(Math.floor(Date.now() / 1000)-jwtObject.exp); 
-      // //console.log(Date.now() -(jwtObject.exp * 1000));
+      // //console.log(jwtObject.exp-Date.now()); 
+      // console.log(Math.floor(Date.now() / 1000)-jwtObject.exp); 
+      // console.log(Date.now() -(jwtObject.exp * 1000));
       const timer = () => setTimeout(()=>{setSessionTimeout(true);},((jwtObject.exp * 1000)-Date.now()));
       setTimerId(timer());
        
@@ -110,7 +110,7 @@ const Routes = () => {
       
 
 
-      //console.log("Token changed:",oSession.sJwtToken);
+      console.log("Token changed:",oSession.sJwtToken);
    
     }
     // if(sessionTimeout)
@@ -122,13 +122,13 @@ const Routes = () => {
     axios.interceptors.response.use((response) => {
       // Any status code that lie within the range of 2xx cause this function to trigger
       // Do something with response data
-      //console.log("Interceptor valid response", response);
+      console.log("Interceptor valid response", response);
       return response;
     },  (error) => {
       // Any status codes that falls outside the range of 2xx cause this function to trigger
       // Do something with response error
       if(error.response.status === 401){
-        //console.log("we hit 401");
+        console.log("we hit 401");
         //history.go(0);
         //history.push('/Login');
         
@@ -166,27 +166,27 @@ const Routes = () => {
     }, []);
 
     // const bSession = useSelector(state => state.SessionReducer.bSession);
-   // //console.log("session",bSession);
+   // console.log("session",bSession);
     /*if(bSession){
       
-      //console.log(new Date());
+      console.log(new Date());
       //alert('timeout');
     }*/
    // const a = new Date();
 //    const b = new Date(a.getTime() + 1000*30);
     // const checkSession=()=>{
     //   let x = new Date();
-    //   //console.log('old',bSession);
-    //   //console.log('new',x);
+    //   console.log('old',bSession);
+    //   console.log('new',x);
     //   if(bSession.getTime()<= x.getTime()){
     //     alert('hi');
     //   }
     // }
    /* while (bSession){
-      setTimeout(() => //console.log('hi'), 1000*60);
+      setTimeout(() => console.log('hi'), 1000*60);
     }*/
    
-  //   //console.log("Location:",window.location.pathname);
+  //   console.log("Location:",window.location.pathname);
   //   const[timer,setTimer]=useState(false);
   //  /* setTimer(window.location.pathname !=="/Login");*/
   //   useEffect(() => {
@@ -205,7 +205,7 @@ const Routes = () => {
   //   else{
   //    // alert('no');
   //   }
-  //   //console.log(timeout);
+  //   console.log(timeout);
     
 
     return (

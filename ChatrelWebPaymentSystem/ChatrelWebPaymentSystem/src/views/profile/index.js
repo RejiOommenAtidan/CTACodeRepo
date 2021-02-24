@@ -54,8 +54,8 @@ export default function Friends () {
   
 const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
-//console.log("UserObj",userObj);
-//console.log("UserGBObj",userGBObj);
+console.log("UserObj",userObj);
+console.log("UserGBObj",userGBObj);
   return (
     <>
      <Card className="w-50 mx-auto shadow-lg " style={{paddingTop:'100px'}}>

@@ -123,7 +123,7 @@ export default function Country() {
   const [currId, setCurrId] = useState('');
   //let ele = null;
   const [searching, setSearching] = useState(false);
-  ////console.log("myarray: ", myarray);
+  //console.log("myarray: ", myarray);
 
   const buildArray = () => {
     let tmp = []
@@ -315,7 +315,7 @@ export default function Country() {
               handleError(error, history);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
 
         }
@@ -323,7 +323,7 @@ export default function Country() {
       .catch(error => {
         if(error.response){
           if(error.response.status === 403){
-            //console.log(error);
+            console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
             snackbarOpen();
@@ -335,7 +335,7 @@ export default function Country() {
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
   const addAPICall = (countryObj) => {
@@ -359,14 +359,14 @@ export default function Country() {
               setBackdrop(false);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
         }
       })
       .catch(error => {
         if(error.response){
           if(error.response.status === 403){
-            //console.log(error);
+            console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
             snackbarOpen();
@@ -378,7 +378,7 @@ export default function Country() {
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -401,7 +401,7 @@ export default function Country() {
     };
     axios.post(`/Country/DeleteCountry/`, countryToDelete)
       .then(resp => {
-        //console.log(countryToDelete);
+        console.log(countryToDelete);
         if (resp.status === 200) {
           setDeleteModal(false);
           axios.get(`/Country/GetCountries`)
@@ -414,7 +414,7 @@ export default function Country() {
               handleError(error, history);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
           //window.location = window.location;
           // setdataAPI(dataAPI.filter((data) => {
@@ -426,7 +426,7 @@ export default function Country() {
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -472,8 +472,8 @@ export default function Country() {
   };
 
   const searchID = ((e) => {
-    //console.log("Search ID: ", e.target.value);
-    //console.log("Search ID is : ", e.target.value);
+    console.log("Search ID: ", e.target.value);
+    console.log("Search ID is : ", e.target.value);
     if (e.target.value != '') {
       axios.get(`/Country/SearchCountries/?sCountry=` + e.target.value)
         .then(resp => {
@@ -487,7 +487,7 @@ export default function Country() {
         })
     }
     else {
-      //console.log("Resetting current data");
+      console.log("Resetting current data");
       axios.get(`/Country/GetCountries`)
         .then(resp => {
           if (resp.status === 200) {
@@ -501,54 +501,54 @@ export default function Country() {
         })
 
     }
-    //console.log("at the end...");
+    console.log("at the end...");
     return;
   });
 
   useEffect(() => {
-    ////console.log("Searching useEffect. Searching is", searching);
+    //console.log("Searching useEffect. Searching is", searching);
     if (searching) {
       let searchObj = {};
       myarray.map(item => {
         if (item.id === "id") {
           item.val = 0;
-          ////console.log("Changed id to", item.val);
+          //console.log("Changed id to", item.val);
         };
         searchObj = { ...searchObj, [item.id]: item.val };
       });
-      ////console.log("Search Object: Inside useEffect" , searchObj);
+      //console.log("Search Object: Inside useEffect" , searchObj);
       axios.post(`/Country/SearchCountries/`, searchObj)
         .then(resp => {
           if (resp.status === 200) {
             //debugger
-            //    //console.log("Got filter Data");
+            //    console.log("Got filter Data");
             setdataAPI([...resp.data]);
             setSearching(false);
             //setTimeout(() => ele.focus(), 2000);
 
           }
           if (resp.status === 204) {
-            //  //console.log("Got  Empty data set");
+            //  console.log("Got  Empty data set");
             setdataAPI([...resp.data]);
             setSearching(false);
           }
         })
         .catch(error => {
-          //console.log(error.message);
+          console.log(error.message);
           handleError(error, history);
         })
     }
   }, [myarray]);
 
   const searchColumn = (value, element) => {
-    //console.log("Search Name: ", value);
-    //console.log("Element is ", element);
-    //console.log("Array has values: ", myarray);
+    console.log("Search Name: ", value);
+    console.log("Element is ", element);
+    console.log("Array has values: ", myarray);
     let searchObj = {};
     myarray.map(item => {
       searchObj = { ...searchObj, [item.id]: item.val };
     });
-    //console.log("Search Object:", searchObj);
+    console.log("Search Object:", searchObj);
     //ele = element;
     //setisLoading(true);
     if (value != '') {
@@ -556,7 +556,7 @@ export default function Country() {
         .then(resp => {
           if (resp.status === 200) {
             debugger
-            //console.log("Got filter Data");
+            console.log("Got filter Data");
             setdataAPI([...resp.data]);
             //setTimeout(() => ele.focus(), 2000);
           }
@@ -566,7 +566,7 @@ export default function Country() {
         })
     }
     else {
-      //console.log("Resetting current data");
+      console.log("Resetting current data");
       axios.get(`/Country/GetCountries`)
         .then(resp => {
           if (resp.status === 200) {
@@ -580,7 +580,7 @@ export default function Country() {
     }
   };
 
-  //console.log("DataAPI", dataAPI);
+  console.log("DataAPI", dataAPI);
 
   useEffect(() => {
     buildArray();
@@ -588,7 +588,7 @@ export default function Country() {
       .then(resp => {
         if (resp.status === 200) {
           setdataAPI([...resp.data]);
-          axios.get(`/AuthRegion/GetAuthRegions`)
+          axios.get(`/AuthRegion/GetAuthRegionsForCountry`)
             .then(resp => {
               if (resp.status === 200) {
                 setAuthRegions(resp.data);
@@ -597,16 +597,16 @@ export default function Country() {
               }
             })
             .catch(error => {
-              //console.log(error.message);
+              console.log(error.message);
             });
         }
       })
       .catch(error => {
-        //console.log(error.message);
+        console.log(error.message);
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
 
@@ -635,7 +635,7 @@ export default function Country() {
             //     let url = 'http://localhost:52013/api/Country/SearchCountries/?sCountry='  
             //     fetch(url)  
             //       .then(response => response.json())
-            //       .then(json => {//console.log(json);
+            //       .then(json => {console.log(json);
             //         resolve({
             //         data: json,
             //         page: 0,

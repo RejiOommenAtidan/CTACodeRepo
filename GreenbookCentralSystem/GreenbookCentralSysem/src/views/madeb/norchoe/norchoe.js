@@ -113,7 +113,7 @@ export default function EnhancedTable() {
   };
 
   const viewGb = (GBID) => {
-    //console.log(GBID)
+    console.log(GBID)
     setGbId(GBID);
     setViewModal(true);
   }
@@ -130,7 +130,7 @@ export default function EnhancedTable() {
   }
   const [snackbar, setSnackbar] = React.useState(false);
   const snackbarOpen = () => {
-    //console.log('alert');
+    console.log('alert');
     setSnackbar(true);
   }
   const snackbarClose = () => {
@@ -169,7 +169,8 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
         padding: '5px'
       }
@@ -184,10 +185,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -200,10 +201,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       customSort: (a, b) => {
         //console(a, b);
@@ -227,10 +228,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -243,10 +244,10 @@ export default function EnhancedTable() {
         verticalAlign: "middle",
         paddingLeft:"10px"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -259,10 +260,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -276,10 +277,10 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
 
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -291,10 +292,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -306,10 +307,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -321,10 +322,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
     },
     {
@@ -336,10 +337,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
     },
     {
@@ -351,27 +352,13 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
-    {
-      field: "madeb.sMadebStatusRemark",
-      width: "8%",
-      title: "REMARK",
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
-      }
-    },
+   
     {
       field: "madeb.dtFormattedIssueAction",
       width: "8%",
@@ -383,10 +370,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       customSort: (a, b) => {
         
@@ -410,10 +397,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -427,13 +414,13 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       customSort: (a, b) => {
-        ////console.log(a, b);
+        //console.log(a, b);
         if(!a.madeb.dtFormattedReturnEmail){
           return -1;
         }
@@ -455,13 +442,13 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       customSort: (a, b) => {
-        ////console.log(a, b);
+        //console.log(a, b);
         if(!a.madeb.dtFormattedReject){
           return -1;
         }
@@ -490,10 +477,10 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "center",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -513,8 +500,24 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "madeb.sMadebStatusRemark",
+      width: "8%",
+      title: "REMARK",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+       cellStyle: {
+	border: '1px solid black',
+        textAlign: "left",
         padding: '5px'
       }
     },
@@ -530,7 +533,8 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "center",
         padding: '5px'
       }
@@ -547,7 +551,8 @@ export default function EnhancedTable() {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "center",
         padding: '5px'
       }
@@ -595,13 +600,15 @@ export default function EnhancedTable() {
       sDocumentAttached: tableRowArray['madeb']['sDocumentAttached'],
       dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
+      nCurrentGBSno: tableRowArray['madeb']['nCurrentGBSno'],
+      nPreviousGBSno: tableRowArray['madeb']['nPreviousGBSno'],
       dtReturnEmail: tableRowArray['madeb']['dtReturnEmail'],
       dtReject: tableRowArray['madeb']['dtReject'],
       nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
       sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });
 
-    //console.log(norchoeObj);
+    console.log(norchoeObj);
     setEditModal(true);
   }
   const editAPICall = (madeb) => {
@@ -611,12 +618,12 @@ export default function EnhancedTable() {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    //console.log(madeb);
+    console.log(madeb);
     setBackdrop(true);
     axios.post(`/Madeb/EditMadeb/ID=` + id, madeb/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          ////console.log(resp.data);
+          //console.log(resp.data);
           setEditModal(false);
           setAlertMessage('Record Successfully Edited');
           setAlertType('success');
@@ -645,23 +652,23 @@ export default function EnhancedTable() {
               } else {
                 console.error('Error', error.message);
               }
-              //console.log(error.config);
+              console.log(error.config);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
           //window.location = window.location;
           // setdataAPI(dataAPI.map((data) => {
-          //   //console.log(data);
+          //   console.log(data);
           //   if(data.id === countryObj.id){
-          //     //console.log(data);
+          //     console.log(data);
           //     return {
           //       ...data,
           //       ...countryObj
           //     };
           //   }
           //   else{
-          //     //console.log(data)
+          //     console.log(data)
           //     return data;
           //   }
           // }))
@@ -681,10 +688,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -709,10 +716,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }
   const addAPICall = (madeb) => {
@@ -751,10 +758,10 @@ export default function EnhancedTable() {
               } else {
                 console.error('Error', error.message);
               }
-              //console.log(error.config);
+              console.log(error.config);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
           //window.location = window.location;
         }
@@ -773,10 +780,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -788,7 +795,7 @@ export default function EnhancedTable() {
     axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=2`)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          console.log(resp.data);
           resp.data.forEach((element) => {
             element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
             element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
@@ -812,10 +819,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
 
@@ -823,7 +830,7 @@ export default function EnhancedTable() {
     <>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px', fontSize:'0.9rem' }}
+          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px', fontSize:'1rem',color:'#000000',fontWeight:'bold' }}
             isLoading={isLoading}
             icons={oTableIcons}
             title="Norchoe Madeb"

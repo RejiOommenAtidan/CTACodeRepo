@@ -200,7 +200,7 @@ export default function ChatrelListWithSearch() {
   // };
 
   // const viewGb = (GBID) => {
-  //   //console.log(GBID)
+  //   console.log(GBID)
   //   setsGBID(GBID);
   //   setViewModal(true);
   // }
@@ -401,7 +401,7 @@ export default function ChatrelListWithSearch() {
   ];
 
   const viewGb = (GBID) => {
-    //console.log(GBID)
+    console.log(GBID)
     setProfileGBID(GBID);
     setViewModal(true);
   }
@@ -416,7 +416,7 @@ export default function ChatrelListWithSearch() {
 
   const handleSimpleSearch = (e) => {
 
-    //setSearchField(e.target.value,//console.log(searchField))
+    //setSearchField(e.target.value,console.log(searchField))
     if (e.target.value.length > 0) {
       const simpleObj = {
         sSearchField: searchFilter,
@@ -427,7 +427,7 @@ export default function ChatrelListWithSearch() {
         .then(resp => {
           if (resp.status === 200) {
             let i = 1;
-            //console.log(resp.data);
+            console.log(resp.data);
             resp.data.forEach((element) => {
               element.nSerialNo = i;
               element.sGBIDCombo = element.sCountryID + element.sGBID;
@@ -449,10 +449,10 @@ export default function ChatrelListWithSearch() {
           } else {
             console.error('Error', error.message);
           }
-          //console.log(error.config);
+          console.log(error.config);
         })
         .then(release => {
-          ////console.log(release); => udefined
+          //console.log(release); => udefined
         });
     }
     else {
@@ -463,16 +463,16 @@ export default function ChatrelListWithSearch() {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   
   const handleComplexSearch = () => {
-    //   //setSearchField(e.target.value,//console.log(searchField))
+    //   //setSearchField(e.target.value,console.log(searchField))
     //alert(JSON.stringify(complexObj))
-    //console.log("Search Object", complexObj);
+    console.log("Search Object", complexObj);
     //setBackdrop(true);
     axios.post(`ChatrelPayment/GetQuickChatrelList`, complexObj)
       .then(resp => {
         if (resp.status === 200) {
 
           let i = 1;
-          //console.log(resp.data);
+          console.log(resp.data);
           if(resp.data == 'No Data'){
             setdataFromAPI([]);
             setAlertMessage(`No Data for specified search parameters.`);
@@ -504,10 +504,10 @@ export default function ChatrelListWithSearch() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }
  
@@ -546,10 +546,10 @@ export default function ChatrelListWithSearch() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
   const currencies = [
@@ -572,11 +572,11 @@ export default function ChatrelListWithSearch() {
     const [dtTo, setDtTo] = useState(null);
 
   useEffect(() => {
-    ////console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
+    //console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
 
     if (firstName?.length > 2 || lastName?.length > 2 ||
       sGBID?.length > 2 || sReceiptNo?.length > 0 || Moment(dtPaymentFrom).format('YYYY-MM-DD') != 'Invalid date' || Moment(dtPaymentTo).format('YYYY-MM-DD') != 'Invalid date' || sCountry || sAuthRegion || sPaymentMode ||  sCurrency) {
-      //console.log(complexObj);
+      console.log(complexObj);
       handleComplexSearch();
     }
     else{
@@ -718,7 +718,7 @@ export default function ChatrelListWithSearch() {
                         onChange={(e) => {
                           setCurrency(e.target.value);
                           //setSymbol(e.target.options[e.target.options.selectedIndex].label);
-                          ////console.log("target: ", e.target);
+                          //console.log("target: ", e.target);
                         }}
                         SelectProps={{
                           native: true,
@@ -742,7 +742,7 @@ export default function ChatrelListWithSearch() {
                         onChange={(e) => {
                           setPaymentMode(e.target.value);
                           //setSymbol(e.target.options[e.target.options.selectedIndex].label);
-                          ////console.log("target: ", e.target);
+                          //console.log("target: ", e.target);
                         }}
                         SelectProps={{
                           native: true,
@@ -833,7 +833,7 @@ export default function ChatrelListWithSearch() {
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            //console.log(value.sAuthRegion);
+                            console.log(value.sAuthRegion);
                             setAuthRegion(value.sAuthRegion);
                           }
                           else {
@@ -877,7 +877,7 @@ export default function ChatrelListWithSearch() {
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            //console.log(value.sCountry);
+                            console.log(value.sCountry);
                             setCountry(value.sCountry);
                           }
                           else {

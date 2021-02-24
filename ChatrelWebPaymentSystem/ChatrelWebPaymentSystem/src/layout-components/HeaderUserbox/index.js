@@ -67,7 +67,7 @@ const HeaderUserbox = () => {
   let dispatch = useDispatch();
 const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
-//console.log(userObj);
+console.log(userObj);
 if(userObj===null){
  history.push("/login");
 } 

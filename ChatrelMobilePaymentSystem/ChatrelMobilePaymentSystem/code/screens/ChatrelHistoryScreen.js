@@ -5,11 +5,11 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
-  ActivityIndicator,
   PermissionsAndroid,
   ToastAndroid,
   Alert,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import {Card, Button} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -19,7 +19,6 @@ import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
 import {Loader} from '../components/Loader';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -29,15 +28,16 @@ import {
   sDateFormat,
   sFontName,
   sFontNameBold,
-  oActivityIndicatorStyle,
-  sAPIBASEURL,
   sFolderName,
-  sReceiptDownloadMessage,
+  sReceiptDownloadMessageAndroid,
+  sReceiptDownloadMessageIOS,
+  oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import RNFetchBlob from 'react-native-fetch-blob';
 import {storeJWTToken} from '../store/actions/GBDetailsAction';
-// import { DownloadDirectoryPath } from 'react-native-fs';
+import Toast from 'react-native-root-toast';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 
 export const ChatrelHistoryScreen = (props) => {
   const dispatch = useDispatch();
@@ -54,11 +54,9 @@ export const ChatrelHistoryScreen = (props) => {
 
   const downloadFile = async (singleHistory) => {
     try {
-      //debugger;
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
       );
-      //alert(granted)
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         await handleDownloadReceiptOnPress(singleHistory);
       } else {
@@ -73,7 +71,7 @@ export const ChatrelHistoryScreen = (props) => {
   };
 
   const handleDownloadReceiptOnPress = async (singleHistory) => {
-    console.log(singleHistory.sChatrelReceiptNumber);
+    //console.log(singleHistory.sChatrelReceiptNumber);
     setbLoader(true);
 
     // const {dirs} = RNFetchBlob.config({
@@ -124,16 +122,19 @@ export const ChatrelHistoryScreen = (props) => {
             android: dirs.DownloadDir,
           });
 
-          debugger;
-
           fPath = fPath + '/' + sFolderName;
+
+          if (Platform.OS === 'ios') {
+            RNFetchBlob.fs.mkdir(fPath).catch((err) => {
+              console.log(err);
+            });
+          }
 
           fPath =
             `${fPath}/ChatrelReceipt-` +
             singleHistory.sChatrelReceiptNumber +
             `.pdf`;
 
-          //alert("File Save Before reached")
           if (Platform.OS === 'ios') {
             RNFetchBlob.fs.createFile(fPath, resp.data.receipt, 'base64');
           } else {
@@ -158,11 +159,30 @@ export const ChatrelHistoryScreen = (props) => {
           //alert("File ALert");
           Platform.OS === 'android'
             ? ToastAndroid.show(
-                sReceiptDownloadMessage,
+                sReceiptDownloadMessageAndroid,
                 ToastAndroid.SHORT,
                 ToastAndroid.CENTER,
               )
-            : null;
+            : Toast.show(sReceiptDownloadMessageIOS, {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+                delay: 0,
+                // onShow: () => {
+                //     // calls on toast\`s appear animation start
+                // },
+                // onShown: () => {
+                //     // calls on toast\`s appear animation end.
+                // },
+                // onHide: () => {
+                //     // calls on toast\`s hide animation start.
+                // },
+                // onHidden: () => {
+                //     // calls on toast\`s hide animation end.
+                // }
+              });
         }
       })
       .catch((error) => {
@@ -179,55 +199,15 @@ export const ChatrelHistoryScreen = (props) => {
       .then((release) => {
         //console.log(release); => udefined
       });
-
-    // RNFetchBlob.config({
-    //   fileCache: true,
-    //   addAndroidDownloads: {
-    //     useDownloadManager: true,
-    //     notification: true,
-    //     mediaScannable: true,
-    //     title: `Chatrel Receipt.pdf`,
-    //     path: `${dirs.DownloadDir}/Chatrel Receipt.pdf`,
-    //   },
-    // })
-    //   .fetch(
-    //     'GET',
-    //     sAPIBASEURL +
-    //       '/ChatrelPayment/GetReceipt/?sReceiptNumber=' +
-    //       singleHistory.sChatrelReceiptNumber,
-    //     {
-    //       Authorization: 'Bearer ' + sJwtToken,
-    //     },
-    //   )
-    //   .then((resp) => {
-    //     debugger;
-    //     console.log(resp.json());
-    //     //if (resp.status === 200) {
-    //     //TODO: iOS
-    //     Platform.OS === 'android'
-    //       ? ToastAndroid.show(
-    //           'Receipt Downloaded Successfully',
-    //           ToastAndroid.SHORT,
-    //           ToastAndroid.CENTER,
-    //         )
-    //       : null;
-    //     //}
-    //   })
-    //   .catch((error) => {
-    //     console.log('Error ', error.response);
-    //     if (error.response) {
-    //       console.error(error.response);
-    //       console.error(error.response.data);
-    //       console.error(error.response.status);
-    //       console.error(error.response.headers);
-    //     } else if (error.request) {
-    //       console.warn(error.request);
-    //     } else {
-    //       console.error('Error', error.message);
-    //     }
-    //     console.log(error.config);
-    //   });
   };
+
+  useEffect(() => {
+    if (isFocused) {
+      setbLoader(true);
+      //console.log('Chatrel History Called');
+      getChatrelHistoryDetails();
+    }
+  }, [isFocused]);
 
   const getChatrelHistoryDetails = () => {
     axios
@@ -243,13 +223,10 @@ export const ChatrelHistoryScreen = (props) => {
           dispatch(storeJWTToken(oSession));
           if (resp.data.message === 'Payment History Found') {
             setPaymentHistory(resp.data.paymentHistory);
-            console.log('Chatrel History Screen Called:');
-            console.log(resp.data.paymentHistory);
-            setbLoader(false);
           } else {
             setPaymentHistory([]);
-            setbLoader(false);
           }
+          setbLoader(false);
         }
       })
       .catch((error) => {
@@ -266,14 +243,6 @@ export const ChatrelHistoryScreen = (props) => {
       });
   };
 
-  useEffect(() => {
-    if (isFocused) {
-      setbLoader(true);
-      //console.log('Chatrel History Called');
-      getChatrelHistoryDetails();
-    }
-  }, [isFocused]);
-
   return (
     <View style={styles.mainContainer}>
       <Loader loading={bLoader} />
@@ -287,7 +256,7 @@ export const ChatrelHistoryScreen = (props) => {
           <View style={styles.zeroRecordContainer}>
             <Text style={styles.zeroRecordComponent}>
               There is no chatrel contribution record in the database. You are
-              requested to upload your two year chatrel reciept copy{' '}
+              requested to upload your two year chatrel receipt copy{' '}
               <Text
                 style={styles.navigateToFileDisputeComponent}
                 onPress={() => {
@@ -480,11 +449,11 @@ export const ChatrelHistoryScreen = (props) => {
                       fontSize: wp(4),
                     }}
                     buttonStyle={{
-                      // height: hp(5),
                       backgroundColor: Colors.buttonYellow,
                       borderRadius: 20,
                       borderWidth: 1,
                       borderColor: Colors.buttonYellow,
+                      // height: hp(5),
                       // marginBottom:
                       //   Dimensions.get('window').height <
                       //   Resolution.nHeightBreakpoint
@@ -527,45 +496,44 @@ export const ChatrelHistoryScreenOptions = (navData) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    marginVertical:
+      Dimensions.get('window').height * Resolution.nHeightScreenMargin,
     //flexDirection: "column",
     // marginHorizontal:
     //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
-    marginVertical:
-      Dimensions.get('window').height * Resolution.nHeightScreenMargin,
     //alignItems: "flex-start"
   },
   headingContainer: {
-    width: wp(55),
     height: hp(4),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
+    width: wp(55),
   },
   headingComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
+    color: Colors.primary,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 13.2 : 22,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.primary,
+    fontFamily: sFontName,
+    height: '100%',
+    textAlign: 'left',
+    width: '100%',
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
   zeroRecordContainer: {
-    // width: hp(92.5),
-    width: wp(92.5),
     marginHorizontal:
       Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    width: wp(92.5),
   },
   zeroRecordComponent: {
-    textAlign: 'left',
+    color: Colors.blackText,
     fontSize: wp(5),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
     fontFamily: sFontName,
+    textAlign: 'left',
   },
   cardComponent: {
     width: wp(92.5),
@@ -590,69 +558,68 @@ const styles = StyleSheet.create({
     marginBottom: hp(2),
   },
   cardHeaderComponent: {
-    textAlign: 'left',
+    color: Colors.ChatrelInfoBlue,
     fontSize: wp(6),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.ChatrelInfoBlue,
     fontFamily: sFontName,
+    textAlign: 'left',
   },
   cardDividerComponent: {
-    height: 0.75,
     backgroundColor: Colors.greenBG,
+    height: 0.75,
   },
-
   labelContainer: {
     marginBottom: hp(1.25),
   },
   labelComponent: {
-    textAlign: 'left',
+    color: Colors.labelColorLight,
     fontSize: wp(3.25),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.labelColorLight,
     fontFamily: sFontName,
+    textAlign: 'left',
     marginBottom: hp(1),
   },
   valueComponent: {
-    textAlign: 'left',
+    color: Colors.blackTextAPI,
     fontSize: wp(5.25),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackTextAPI,
+    fontFamily: sFontName,
+    textAlign: 'left',
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
   receiptNumberLabelContainer: {
     // marginBottom:
     //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
   },
   receiptNumberLabelComponent: {
-    textAlign: 'left',
+    color: Colors.blackText,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
+    fontFamily: sFontName,
+    textAlign: 'left',
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
   receiptNumberValueContainer: {
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
   receiptNumberValueComponent: {
-    textAlign: 'left',
+    color: Colors.blackTextAPI,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackTextAPI,
+    fontFamily: sFontName,
+    textAlign: 'left',
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
 
   dateLabelContainer: {
@@ -660,60 +627,60 @@ const styles = StyleSheet.create({
     //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
   },
   dateLabelComponent: {
-    textAlign: 'right',
+    color: Colors.blackText,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
+    fontFamily: sFontName,
+    textAlign: 'right',
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
   dateValueContainer: {
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
   dateValueComponent: {
-    textAlign: 'left',
+    color: Colors.blackTextAPI,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackTextAPI,
+    fontFamily: sFontName,
+    textAlign: 'left',
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
   totalChatrelLabelContainer: {
     // marginBottom:
     //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
   },
   totalChatrelLabelComponent: {
-    textAlign: 'left',
+    color: Colors.blackText,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
+    fontFamily: sFontName,
+    textAlign: 'left',
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
   totalChatrelValueContainer: {
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
   },
   totalChatrelValueComponent: {
-    textAlign: 'left',
+    color: Colors.blackTextAPI,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackTextAPI,
+    fontFamily: sFontName,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
+    textAlign: 'left',
   },
 
   chatrelModeLabelContainer: {
@@ -721,30 +688,30 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
   },
   chatrelModeLabelComponent: {
-    textAlign: 'left',
+    color: Colors.blackText,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
+    fontFamily: sFontName,
+    textAlign: 'left',
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
   chatrelModeValueContainer: {
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
   },
   chatrelModeValueComponent: {
-    textAlign: 'right',
+    color: Colors.blackTextAPI,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackTextAPI,
+    fontFamily: sFontName,
+    textAlign: 'right',
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
 
   chatrelStatusLabelContainer: {
@@ -752,30 +719,30 @@ const styles = StyleSheet.create({
     //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
   },
   chatrelStatusLabelComponent: {
-    textAlign: 'left',
+    color: Colors.blackText,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
+    fontFamily: sFontName,
+    textAlign: 'left',
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
   chatrelStatusValueContainer: {
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
   },
   chatrelStatusValueComponent: {
-    textAlign: 'right',
+    color: Colors.blackTextAPI,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackTextAPI,
+    fontFamily: sFontName,
+    textAlign: 'right',
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
   relationContainer: {
     //flexGrow: 1,
@@ -783,24 +750,24 @@ const styles = StyleSheet.create({
     //Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
   relationComponent: {
-    textAlign: 'right',
+    color: Colors.buttonYellow,
     fontSize: wp(5.5),
     fontStyle: 'normal',
-    color: Colors.buttonYellow,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    textAlign: 'right',
   },
   downloadReceiptContainer: {
     marginTop: hp(0.25),
   },
   navigateToFileDisputeComponent: {
-    textAlign: 'left',
+    color: Colors.ChatrelInfoBlue,
     fontSize: wp(5),
     fontStyle: 'normal',
-    textDecorationLine: 'underline',
-    color: Colors.ChatrelInfoBlue,
-    textDecorationColor: Colors.ChatrelInfoBlue,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    textDecorationLine: 'underline',
+    textDecorationColor: Colors.ChatrelInfoBlue,
+    textAlign: 'left',
   },
 });

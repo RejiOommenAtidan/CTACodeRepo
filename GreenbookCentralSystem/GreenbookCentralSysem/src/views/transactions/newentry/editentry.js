@@ -242,7 +242,7 @@ export default function EditEntry(props) {
         handleError(error, history);
       })
       .then((release) => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -269,7 +269,7 @@ export default function EditEntry(props) {
         handleError(error, history);
       })
       .then((release) => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -311,7 +311,7 @@ export default function EditEntry(props) {
         handleError(error, history);
       })
       .then((release) => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -346,7 +346,7 @@ export default function EditEntry(props) {
         handleError(error, history);
       })
       .then((release) => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -383,7 +383,7 @@ export default function EditEntry(props) {
         handleError(error, history);
       })
       .then((release) => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -392,12 +392,19 @@ export default function EditEntry(props) {
   };
 
   const addDocumentAPICall = (documentObject) => {
-    ////console.log(documentObject);
+    //console.log(documentObject);
     setdialogBackdrop(true);
     axios
       .post(`/Greenbook/AddDocumentForEdit`, documentObject)
       .then((resp) => {
         if (resp.status === 200) {
+          if(resp.data === 'Invalid File'){
+            setdialogBackdrop(false);
+            setAlertMessage("Invalid File format. Please upload a valid file.");
+            setAlertType('error');
+            snackbarOpen();
+            return;
+          }
           setlGBDocument(resp.data);
           setaddDocumentModal(false);
           setAlertMessage(sSnackbarAddMessage);
@@ -411,7 +418,7 @@ export default function EditEntry(props) {
         handleError(error, history);
       })
       .then((release) => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -425,6 +432,13 @@ export default function EditEntry(props) {
       .post(`/Greenbook/EditDocument/Id=` + documentObject.id, documentObject)
       .then((resp) => {
         if (resp.status === 200) {
+          if(resp.data === 'Invalid File'){
+            setdialogBackdrop(false);
+            setAlertMessage("Invalid File format. Please upload a valid file.");
+            setAlertType('error');
+            snackbarOpen();
+            return;
+          }
           setlGBDocument(resp.data);
           seteditDocumentModal(false);
           setAlertMessage(sSnackbarUpdateMessage);
@@ -438,7 +452,7 @@ export default function EditEntry(props) {
         handleError(error, history);
       })
       .then((release) => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -518,7 +532,7 @@ export default function EditEntry(props) {
       .get(`/Greenbook/GetGBDataEditEntry/`)
       .then((resp) => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          console.log(resp.data);
           //Masters
           setlAuthRegion(resp.data.lAuthRegion);
           setlCountry(resp.data.lCountry);
@@ -533,7 +547,7 @@ export default function EditEntry(props) {
           axios.get(`/Greenbook/GetGreenbook/Id=` + props.location.state.Id.toString())
             .then((resp) => {
               if (resp.status === 200) {
-                //console.log("Resp.data object ", resp.data);
+                console.log("Resp.data object ", resp.data);
                 setnId(resp.data.id);
                 setsGBID(resp.data.sGBID);
                 setnAuthRegionID(resp.data.nAuthRegionID);
@@ -597,7 +611,7 @@ export default function EditEntry(props) {
                   )
                   .then((resp) => {
                     if (resp.status === 200) {
-                      //console.log(resp.data)
+                      console.log(resp.data)
                       setlGBChildren(resp.data.lGBChildren);
                       setlGBDocument(resp.data.lGBDocument);
                       if (resp.data.lGBDocument) {
@@ -618,16 +632,16 @@ export default function EditEntry(props) {
                     handleError(error, history);
                   })
                   .then((release) => {
-                    ////console.log(release); => udefined
+                    //console.log(release); => udefined
                   });
               }
             })
             .catch((error) => {
-              //console.log(error.message);
+              console.log(error.message);
               handleError(error, history);
             })
             .then((release) => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
         }
       })
@@ -635,7 +649,7 @@ export default function EditEntry(props) {
         handleError(error, history);
       })
       .then((release) => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
 
@@ -644,12 +658,12 @@ export default function EditEntry(props) {
       axios.get(`/User/GetUserForEditGB/?Id=${enterUserId}`)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log("User fetched:", resp.data);
+          console.log("User fetched:", resp.data);
           setEnterUserName(resp.data);
         }
       })
       .catch(error => {
-        //console.log(error.message);
+        console.log(error.message);
       })
     }
 
@@ -699,8 +713,8 @@ export default function EditEntry(props) {
         nUpdatedBy: userId
       }
     ]
-    //console.log(nChildrenF);
-    //console.log(nChildrenM);
+    console.log(nChildrenF);
+    console.log(nChildrenM);
     debugger;
     let greenbook = {
       Id,
@@ -763,7 +777,7 @@ export default function EditEntry(props) {
       TBUSpouseName,
       nUpdatedBy: userId,
     };
-    //console.log(greenbook);
+    console.log(greenbook);
     debugger;
     axios
       .post(
@@ -786,7 +800,7 @@ export default function EditEntry(props) {
               handleError(error, history);
             })
             .then((release) => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
         }
       })
@@ -794,7 +808,7 @@ export default function EditEntry(props) {
         handleError(error, history);
       })
       .then((release) => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -1154,10 +1168,10 @@ export default function EditEntry(props) {
                             format={sDateFormatMUIDatepicker}
                             returnMoment={true}
                             onChange={date => {
-                              ////console.log(date.toISOString().split("T")[0]);
-                              ////console.log(date.toDateString());
-                              // //console.log(date.toLocaleDateString());
-                              ////console.log(date);
+                              //console.log(date.toISOString().split("T")[0]);
+                              //console.log(date.toDateString());
+                              // console.log(date.toLocaleDateString());
+                              //console.log(date);
                               if (date) {
                                 setdtDOB(date);
                                 setValue('name_dtDOB', date, { shouldValidate: true });
@@ -2565,7 +2579,7 @@ export default function EditEntry(props) {
                           Children of - {sGBID}
                         </Typography>
                         <Table className="table table-hover table-striped table-bordered ">
-                          <thead className="thead-light" style={{ padding: 0 }}>
+                          <thead className="thead-dark" style={{ padding: 0 }}>
                             <tr>
                               <th scope="col">Name</th>
                               <th scope="col">DOB</th>
@@ -2677,7 +2691,7 @@ export default function EditEntry(props) {
                 color="primary"
                 >Notes of - {sGBID}</Typography>*/}
                       <Table className="table table-hover table-striped table-bordered">
-                        <thead className="thead-light" style={{ padding: 0 }}>
+                        <thead className="thead-dark" style={{ padding: 0 }}>
                           <tr>
                             <th scope="col" style={{ width: "70%" }}>
                               Notes
@@ -2761,7 +2775,7 @@ export default function EditEntry(props) {
                 color="primary"
                 >Notes of - {sGBID}</Typography>*/}
                       <Table className="table table-hover table-striped table-bordered ">
-                        <thead className="thead-light" style={{ padding: 0 }}>
+                        <thead className="thead-dark" style={{ padding: 0 }}>
                           <tr>
                             <th scope="col" style={{ width: "70%" }}>
                               Title

@@ -471,6 +471,8 @@ namespace CTAWebAPI.Controllers.Transactions
                         if (changePasswordVM.sNewPassword.Equals(changePasswordVM.sConfirmNewPassword))
                         {
                             //changePasswordVM.sNewPassword = PasswordEncryption.EncryptString(changePasswordVM.sNewPassword);
+                            string salt = PasswordHash.CreateSalt();
+                            fetchedFromDB.sSalt = salt;
                             fetchedFromDB.sPassword = PasswordHash.GenerateHash(changePasswordVM.sNewPassword, fetchedFromDB.sSalt);
                             fetchedFromDB.nUpdatedBy = changePasswordVM.nUserId;
                             fetchedFromDB.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));

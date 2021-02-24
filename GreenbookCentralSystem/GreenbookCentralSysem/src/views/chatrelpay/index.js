@@ -31,7 +31,7 @@ const Dashboard = ()  => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //console.log("form submitted", sGBID);
+    console.log("form submitted", sGBID);
     
     axios.get(`GreenBook/GetPersonalDetailsFromGBID/?sGBID=`+sGBID)
     .then(resp => {
@@ -42,7 +42,7 @@ const Dashboard = ()  => {
           from:'Chatrel for Self',
           sName: `${resp.data.sFirstName} ${resp.data.sLastName}`
         }
-        //console.log("Got data", resp.data);
+        console.log("Got data", resp.data);
         dispatch(storeCurrentGBDetails(obj));
         dispatch(storeGBDetails(obj));
         history.push('/ChatrelPay/MainPage')
@@ -50,8 +50,8 @@ const Dashboard = ()  => {
       }
     })
     .catch(error => {
-      //console.log(error.config);
-      //console.log(error.message);
+      console.log(error.config);
+      console.log(error.message);
       
     })
     

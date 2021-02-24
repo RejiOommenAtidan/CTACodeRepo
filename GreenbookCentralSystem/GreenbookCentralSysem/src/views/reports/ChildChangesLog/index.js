@@ -251,7 +251,7 @@ export default function Report() {
                
                 JSON.parse(element1.sFieldValuesOld).forEach((element2) => {
                   let row={};
-                  //console.log(element2);
+                  console.log(element2);
                   row.no = x;
                   
 
@@ -269,9 +269,9 @@ export default function Report() {
                 
                 
               })
-             //console.log("New",arr);
+             console.log("New",arr);
               SetChangesLogData(arr);
-              //console.log(resp.data);
+              console.log(resp.data);
             }
           }
         })
@@ -286,10 +286,10 @@ export default function Report() {
           } else {
             console.error('Error', error.message);
           }
-          //console.log(error.config);
+          console.log(error.config);
         })
         .then(release => {
-          ////console.log(release); => udefined
+          //console.log(release); => udefined
         });
     }
   }

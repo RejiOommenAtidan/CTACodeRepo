@@ -24,19 +24,19 @@ export const AddDocumentDialog = (props) => {
     const { register, handleSubmit, errors, formState } = useForm();
     const handleSubmitAddDocumentRecord = () => {
         let resultNameTemp = lGBDocument.find(document => document.sTitle === sTitle);
-        //console.log(resultNameTemp);
+        console.log(resultNameTemp);
         //setResultName(resultNameTemp);
         
         if (resultNameTemp){
             setResultName('File name already exists');
-            //console.log("No");
+            console.log("No");
             setsTitle("");
             setsFileExtension("");
             setbinFileDoc("")
             return false
         }
         else if(binFileDoc){
-            //console.log("Yes");
+            console.log("Yes");
             
             props.addDocumentAPICall({
                 sGBID: props.sGBID,
@@ -51,7 +51,7 @@ export const AddDocumentDialog = (props) => {
         }
         else{
             setResultName('Please select a file');
-            //console.log("No");
+            console.log("No");
             setsTitle("");
             setsFileExtension("");
             setbinFileDoc("")
@@ -63,6 +63,7 @@ export const AddDocumentDialog = (props) => {
 
     const [sAccept, setsAccept] = useState("application/msword, application/pdf");
     const [sTitle, setsTitle] = useState("");
+    const [fileName, setFileName] = useState(null);
     const [sDocType, setsDocType] = useState("Support Document");
     const [binFileDoc, setbinFileDoc] = useState("");
     const [sFileExtension, setsFileExtension] = useState("");
@@ -82,9 +83,12 @@ export const AddDocumentDialog = (props) => {
                 var Dot = file.name.lastIndexOf('.');
                 var Name = file.name.slice(0, Dot);
                 var Extension = file.type.split("/").pop()
-                setsTitle(Name);
-                setsFileExtension(Extension);
-                setResultName();
+                setFileName(Name);
+                setsTitle(null);
+             setsFileExtension(Extension);
+             setResultName();
+             document.getElementById("id_sTitle").value='';
+                document.getElementById("id_sTitle").focus();
             }
         }
     };
@@ -93,14 +97,14 @@ export const AddDocumentDialog = (props) => {
 
     reader.addEventListener("load", function () {
         setbinFileDoc(reader.result);
-        //console.log(reader.result);
+        console.log(reader.result);
     }, false);
 
     const handleSelectChange = (event) => {
         setsDocType(event.target.value);
         setsTitle("");
         setsFileExtension("");
-        setbinFileDoc("")
+        setbinFileDoc(null)
         if (event.target.value === "Photo Identity") {
             setsAccept("image/*");
         }
@@ -156,12 +160,12 @@ export const AddDocumentDialog = (props) => {
                                     </label>
                                 </FormControl>
                             </Grid>
-                            {sTitle !== "" && <Grid item xs={12}>
+                            {binFileDoc && <Grid item xs={12}>
                                 <FormControl className={props.classes.formControl}>
                                     <Typography
                                         variant="p"
                                         color="primary"
-                                    >File Added for Upload, File Name: {sTitle}</Typography>
+                                    >File Selected: {fileName}</Typography><Typography variant="p" color="primary">Title: {sTitle}</Typography> 
                                 </FormControl>
                             </Grid>}
                             {resultName && <Grid item xs={12}>

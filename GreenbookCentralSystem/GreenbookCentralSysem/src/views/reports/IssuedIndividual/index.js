@@ -249,11 +249,11 @@ const { register, handleSubmit, watch, errors, clearErrors, control, setValue, f
             console.error('Error', error.message);
             
           }
-          //console.log(error.config);
-          //console.log(error.message);
+          console.log(error.config);
+          console.log(error.message);
         })
         .then(release => {
-          ////console.log(release); => udefined
+          //console.log(release); => udefined
         });
     }
   }
@@ -261,7 +261,7 @@ const { register, handleSubmit, watch, errors, clearErrors, control, setValue, f
     axios.get(`/MadebType/GetMadebTypes`)
       .then(resp => {
         if (resp.status === 200) {
-          ////console.log(resp.data);
+          //console.log(resp.data);
           SetMadebTypeData(resp.data)
         }
       })
@@ -278,10 +278,10 @@ const { register, handleSubmit, watch, errors, clearErrors, control, setValue, f
           setAlertType('error');
           snackbarOpen();
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
   useEffect(() => {

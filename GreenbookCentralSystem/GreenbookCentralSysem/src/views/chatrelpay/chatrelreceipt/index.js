@@ -77,12 +77,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChatrelReceipt(props){
   const location = useLocation();
-  //console.log("Props contains:", props);
-  ////console.log("location contains:", location.state);
-  //console.log("location object", location);
+  console.log("Props contains:", props);
+  //console.log("location contains:", location.state);
+  console.log("location object", location);
   const search = location.search;
   const sReceiptNumber = search.substr(search.indexOf('=')+1);
-  //console.log("Receipt Number", sReceiptNumber);
+  console.log("Receipt Number", sReceiptNumber);
   const classes = useStyles();
   const history = useHistory();
   
@@ -317,7 +317,7 @@ export default function ChatrelReceipt(props){
     .then(resp => {
       setisLoading(false);
       if (resp.status === 200) {
-        //console.log("Payment Breakup", resp.data);
+        console.log("Payment Breakup", resp.data);
         resp.data.forEach((element) => {
         element.dtArrearsFrom = element.dtArrearsFrom ? Moment(element.dtArrearsFrom).format(sDateFormat) : null;
           element.dtArrearsTo = element.dtArrearsTo ? Moment(element.dtArrearsTo).format(sDateFormat) : null;
@@ -332,7 +332,7 @@ export default function ChatrelReceipt(props){
       }
     })
     .catch(error => {
-      //console.log(error.message);
+      console.log(error.message);
       setisLoading(false);
     });
     

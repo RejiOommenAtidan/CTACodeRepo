@@ -123,7 +123,7 @@ export default function ChatrelList(){
   };
 
   const viewReceipt = (sReceiptNumber) => {
-    //console.log("Passing receipt number:", sReceiptNumber);
+    console.log("Passing receipt number:", sReceiptNumber);
     //history.push('/ChatrelPay/ChatrelReceipt', {sReceiptNumber: sReceiptNumber});
     history.push({
       pathname: '/Chatrel/ChatrelReceipt',
@@ -133,12 +133,15 @@ export default function ChatrelList(){
     });
   };
   const viewGb = (GBID) => {
-    //console.log(GBID)
+    console.log(GBID)
     setProfileGBID(GBID);
     setViewModal(true);
   }
-  const handleViewClickClose = () => {
+  const handleViewClickClose = (shouldReload) => {
     setViewModal(false);
+    if(shouldReload){
+      setReload(shouldReload);
+    }
   };
   
 
@@ -541,7 +544,7 @@ export default function ChatrelList(){
     .then(resp => {
       setisLoading(false);
       if (resp.status === 200) {
-        //console.log("Chatrel List", resp.data);
+        console.log("Chatrel List", resp.data);
         var i = 1;
         resp.data.forEach((element) => {
           element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sDateFormat) : null;
@@ -557,13 +560,13 @@ export default function ChatrelList(){
       }
     })
     .catch(error => {
-      //console.log(error.message);
+      console.log(error.message);
       setisLoading(false);
     });
     
   },[reload]);
   
-  const actions = userRightsId === 7 ? [
+  const actions = (userRightsId === 7 || userRightsId === 5) ? [
     {
       icon: oTableIcons.Add,
       tooltip: 'Add a Chatrel',

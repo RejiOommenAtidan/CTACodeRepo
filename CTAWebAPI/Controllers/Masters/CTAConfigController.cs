@@ -15,7 +15,7 @@ using TimeZoneConverter;
 
 namespace CTAWebAPI.Controllers.Masters
 {
-    [AuthorizeRole(FeatureID = 32)]
+    
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]
@@ -37,6 +37,7 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Get Calls
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetAllCTAConfig()
@@ -64,6 +65,7 @@ namespace CTAWebAPI.Controllers.Masters
             #endregion
         }
 
+        [Authorize]
         [HttpGet("GetCTAConfigById/ID={ID}")]
         [Route("[action]")]
         public IActionResult GetCTAConfigById(string ID)
@@ -90,6 +92,7 @@ namespace CTAWebAPI.Controllers.Masters
             #endregion
         }
 
+        [Authorize]
         [HttpGet("GetCTAConfigByKey/Key={Key}")]
         [Route("[action]")]
         public IActionResult GetCTAConfigByKey(string Key)
@@ -120,6 +123,7 @@ namespace CTAWebAPI.Controllers.Masters
         #region Add Call
         //TODO: Tell
         //[AllowAnonymous]
+        [AuthorizeRole(FeatureID = 32)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddCTAConfig(CTAConfig ctaConfig)
@@ -167,6 +171,7 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Edit Call
+        [AuthorizeRole(FeatureID = 32)]
         [HttpPost("EditCTAConfig/ID={ID}")]
         [Route("[action]")]
         public IActionResult EditCTAConfig(string ID, [FromBody] CTAConfig ctaConfig)
@@ -226,6 +231,7 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Delete Call
+        [AuthorizeRole(FeatureID = 32)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult DeleteCTAConfig(CTAConfig ctaConfig)

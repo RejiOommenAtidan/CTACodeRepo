@@ -77,10 +77,10 @@ export default function Family () {
   
   const getReceipt = (sChatrelReceiptNumber) => {
     setBackdrop(true);
-    //console.log("Receipt Number", sChatrelReceiptNumber);
+    console.log("Receipt Number", sChatrelReceiptNumber);
     axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=`+sChatrelReceiptNumber/*,  { responseType: 'blob' }*/)
     .then(resp => {
-      //console.log("Response", resp.data);
+      console.log("Response", resp.data);
       
       if (resp.status === 200) {
         const oSession={
@@ -96,7 +96,7 @@ export default function Family () {
         link.setAttribute("download", "ChatrelReceipt-"+sChatrelReceiptNumber+".pdf");
         document.body.appendChild(link);
         link.click();
-      //  //console.log(resp.data);
+      //  console.log(resp.data);
       //   resp.data.receipt.sGBID ='0'.repeat(7 - resp.data.receipt.sGBID.length) +
       //       resp.data.receipt.sGBID;
       //  setReceiptData(resp.data);
@@ -107,7 +107,7 @@ export default function Family () {
       }
     })
     .catch(error => {
-      //console.log("Error ", error.response);
+      console.log("Error ", error.response);
       if (error.response) {
         console.error(error.response);
         console.error(error.response.data);
@@ -118,10 +118,10 @@ export default function Family () {
       } else {
         console.error('Error', error.message);
       }
-      //console.log(error.config);
+      console.log(error.config);
     })
     .then(release => {
-      ////console.log(release); => udefined
+      //console.log(release); => udefined
     });
 
   }
@@ -140,7 +140,7 @@ export default function Family () {
   //    }*/
   //   }).then(canvas => {
   //     const imgData = canvas.toDataURL("image/png");
-  //     //console.log(imgData);
+  //     console.log(imgData);
   //     //imgData.save();
   //     const pdf = new jsPdf();
   //     pdf.addImage(imgData, "PNG",10,10);
@@ -157,7 +157,7 @@ export default function Family () {
           const oSession={ sJwtToken:resp.data.token,bSession:true }
           dispatch(storeSession(oSession));
          setPaymentHistory(resp.data.paymentHistory);
-         //console.log(resp.data);
+         console.log(resp.data);
          setBackdrop(false);
          
         }
@@ -173,10 +173,10 @@ export default function Family () {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
      }, []);
   return (

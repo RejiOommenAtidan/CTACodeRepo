@@ -360,6 +360,7 @@ export const MainNavigator = () => {
           //labelStyle:{fontfamily:sFontName},
           gestureEnabled: true,
           swipeEnabled: true,
+          unmountOnBlur: true,
         }}></MainDrawerNavigator.Screen>
       {/*SelfChatrel*/}
       <MainDrawerNavigator.Screen
@@ -380,6 +381,7 @@ export const MainNavigator = () => {
           drawerLabel: 'SELF CHATREL',
           gestureEnabled: true,
           swipeEnabled: true,
+          unmountOnBlur: true,
         }}></MainDrawerNavigator.Screen>
       {/*FamilyChatrelIntermediate*/}
       {/* <MainDrawerNavigator.Screen
@@ -421,6 +423,7 @@ export const MainNavigator = () => {
           drawerLabel: 'FRIENDS & FAMILY',
           gestureEnabled: true,
           swipeEnabled: true,
+          unmountOnBlur: true,
         }}></MainDrawerNavigator.Screen>
 
       {/*ChatrelHistory*/}
@@ -442,6 +445,7 @@ export const MainNavigator = () => {
           drawerLabel: 'CHATREL HISTORY',
           gestureEnabled: true,
           swipeEnabled: true,
+          unmountOnBlur: true,
         }}></MainDrawerNavigator.Screen>
       {/*FileDispute*/}
       <MainDrawerNavigator.Screen
@@ -462,6 +466,7 @@ export const MainNavigator = () => {
           drawerLabel: 'FILE DISPUTE',
           gestureEnabled: true,
           swipeEnabled: true,
+          unmountOnBlur: true,
         }}></MainDrawerNavigator.Screen>
       {/*MyProfile*/}
       <MainDrawerNavigator.Screen
@@ -482,6 +487,7 @@ export const MainNavigator = () => {
           drawerLabel: 'MY PROFILE',
           gestureEnabled: true,
           swipeEnabled: true,
+          unmountOnBlur: true,
         }}></MainDrawerNavigator.Screen>
       {/*ContactUs*/}
       <MainDrawerNavigator.Screen
@@ -502,6 +508,7 @@ export const MainNavigator = () => {
           drawerLabel: 'CONTACT US',
           gestureEnabled: true,
           swipeEnabled: true,
+          unmountOnBlur: true,
         }}></MainDrawerNavigator.Screen>
       {/*non screen*/}
       {/*Login*/}
@@ -512,6 +519,7 @@ export const MainNavigator = () => {
           //Make it false after dev ends
           gestureEnabled: false,
           swipeEnabled: false,
+          unmountOnBlur: true,
         }}></MainDrawerNavigator.Screen>
       {/*GBDetails*/}
       <MainDrawerNavigator.Screen
@@ -520,6 +528,7 @@ export const MainNavigator = () => {
         options={{
           gestureEnabled: false,
           swipeEnabled: false,
+          unmountOnBlur: false,
         }}></MainDrawerNavigator.Screen>
       {/*FamilyChatrel*/}
       {/* <MainDrawerNavigator.Screen
@@ -528,7 +537,12 @@ export const MainNavigator = () => {
       {/*FriendChatrel*/}
       <MainDrawerNavigator.Screen
         name={'FriendChatrel'}
-        component={FriendChatrelNavigator}></MainDrawerNavigator.Screen>
+        component={FriendChatrelNavigator}
+        options={{
+          gestureEnabled: false,
+          swipeEnabled: false,
+          unmountOnBlur: true,
+        }}></MainDrawerNavigator.Screen>
       {/*Web View */}
       {/*<MainDrawerNavigator.Screen
         initialParams={{

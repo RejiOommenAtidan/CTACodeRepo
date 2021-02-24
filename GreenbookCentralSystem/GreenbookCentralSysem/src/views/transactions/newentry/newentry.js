@@ -252,12 +252,12 @@ const addChildAPICall = (childObj) => {
       handleError(error, history);
     })
     .then((release) => {
-      ////console.log(release); => udefined
+      //console.log(release); => udefined
     });
 };
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
-    ////console.log(isExpanded ? panel : false);
+    //console.log(isExpanded ? panel : false);
   };
 
   const { register, handleSubmit, errors, setValue,formState, clearErrors, control } = useForm();
@@ -344,7 +344,7 @@ const addChildAPICall = (childObj) => {
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
   useEffect(() => {
@@ -357,7 +357,7 @@ const addChildAPICall = (childObj) => {
       .then(resp => {
         if (resp.status === 200) {
           setBackdrop(false);
-          //console.log(resp.data);
+          console.log(resp.data);
           //Masters
           setlAuthRegion(resp.data.lAuthRegion);
           setlCountry(resp.data.lCountry);
@@ -399,13 +399,13 @@ const addChildAPICall = (childObj) => {
         setTimeout(() => {
           history.push('/SarsoNewGBEntry');
         }, 1500);
-        ////console.log(error.message);
-        ////console.log(error.response);
+        //console.log(error.message);
+        //console.log(error.response);
         
         //handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
 

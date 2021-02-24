@@ -138,15 +138,15 @@ const Routes = () => {
   axios.interceptors.response.use((response) => {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    //console.log("Interceptor valid response", response);
+    console.log("Interceptor valid response", response);
     return response;
   },  (error) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    //console.log("path",window.location.pathname);
+    console.log("path",window.location.pathname);
 
     if(error.response.status === 401 && window.location.pathname!=='/Login' && window.location.pathname!=='/login'){
-      //console.log("we hit 401");
+      console.log("we hit 401");
       //history.go(0);
       //history.push('/Login');
       

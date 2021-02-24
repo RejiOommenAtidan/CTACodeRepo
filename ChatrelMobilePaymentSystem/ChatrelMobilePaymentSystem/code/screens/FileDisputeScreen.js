@@ -4,9 +4,9 @@ import {
   View,
   StyleSheet,
   Dimensions,
-  ActivityIndicator,
   Alert,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {storeJWTToken} from '../store/actions/GBDetailsAction';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -28,15 +28,17 @@ import {
   errorContainer,
   sFontName,
   sFontNameBold,
-  oActivityIndicatorStyle,
   oRequiredStyles,
+  oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Loader} from '../components/Loader';
 import axios from 'axios';
 import {RNCamera} from 'react-native-camera';
+import Toast from 'react-native-root-toast';
 import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+import {DocumentPickerUtil} from 'react-native-document-picker';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const FileDisputeScreen = (props) => {
@@ -76,7 +78,7 @@ export const FileDisputeScreen = (props) => {
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const [sName, setName] = React.useState(oGoogle?.user?.name);
 
-  const nNumberOfLines = 8;
+  const nNumberOfLines = 5;
 
   const ref = React.createRef();
 
@@ -92,7 +94,7 @@ export const FileDisputeScreen = (props) => {
       var sizeInBytes =
         4 * Math.ceil(data.base64.length / 3) * 0.5624896334383812;
       var sizeInKb = sizeInBytes / 1024;
-      var sizeInMb = sizeInMb / 1024;
+      var sizeInMb = sizeInKb / 1024;
       singleImageObject.sFileExtension = sImageFileExtension;
       singleImageObject.binFileDoc = data.base64;
       singleImageObject.sTitle = sImageName;
@@ -105,8 +107,29 @@ export const FileDisputeScreen = (props) => {
 
   const handleDispute = () => {
     ////Check for File Length zero or empty condition
-    //debugger;
-    debugger;
+    if (
+      sDisputeMessage.length === 0 ||
+      sDisputeMessage === '' ||
+      sDisputeMessage === '' ||
+      sDisputeMessage === null
+    ) {
+      Alert.alert(
+        'Attention Required',
+        'Please enter a Description.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {
+              true;
+            },
+            style: 'cancel',
+          },
+        ],
+        {cancelable: false},
+      );
+      return;
+    }
+
     if (aFileResults.length === 0 || aFileResults === []) {
       Alert.alert(
         'Attention Required',
@@ -118,7 +141,7 @@ export const FileDisputeScreen = (props) => {
             style: 'default',
           },
         ],
-        {cancelable: true},
+        {cancelable: false},
       );
       return;
     }
@@ -190,7 +213,6 @@ export const FileDisputeScreen = (props) => {
 
     if (bContinueLoop) {
       setbLoader(true);
-      debugger;
       const submit = {
         sGBID: sGBID,
         sName: sName,
@@ -214,13 +236,10 @@ export const FileDisputeScreen = (props) => {
       //   {cancelable: false},
       // );
 
-      debugger;
-
       axios
         .post(`/ChatrelPayment/SubmitDispute`, submit)
         .then((resp) => {
           if (resp.status === 200) {
-            debugger;
             setsDisputeMessage('');
             setaFileResults([]);
             setbCameraVisible(false);
@@ -243,6 +262,31 @@ export const FileDisputeScreen = (props) => {
               ],
               {cancelable: false},
             );
+            Platform.OS === 'ios'
+              ? Toast.show(
+                  'Thanks for uploading. Your details are sent to the CTA Team & they shall get in touch with you soon.',
+                  {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.BOTTOM,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                    delay: 0,
+                    // onShow: () => {
+                    //     // calls on toast\`s appear animation start
+                    // },
+                    // onShown: () => {
+                    //     // calls on toast\`s appear animation end.
+                    // },
+                    // onHide: () => {
+                    //     // calls on toast\`s hide animation start.
+                    // },
+                    // onHidden: () => {
+                    //     // calls on toast\`s hide animation end.
+                    // }
+                  },
+                )
+              : null;
           } else {
             setbLoader(false);
             alert('Something went wrong, please try again later.');
@@ -269,6 +313,7 @@ export const FileDisputeScreen = (props) => {
     setbCameraVisible(false);
     bContinueLoop = true;
     try {
+      debugger;
       const aResults = await DocumentPicker.pickMultiple({
         type: [
           DocumentPicker.types.doc,
@@ -279,7 +324,7 @@ export const FileDisputeScreen = (props) => {
       });
       ////debugger;
       for (const singleResult of aResults) {
-        console.log('Single result: ' + singleResult);
+        //console.log('Single result: ' + singleResult);
         //Printing the log related to the file
         //console.log('res : ' + JSON.stringify(singleResult));
         //// console.log('OG URI : ' + singleResult.uri);
@@ -292,7 +337,6 @@ export const FileDisputeScreen = (props) => {
         });
         //console.log('URI Platform Wise: ' + uri);
         RNFS.readFile(uri, 'base64').then((singleFileBase64Result) => {
-          ////debugger;
           //console.log('Base 64 String File Wise: ' + singleFileBase64Result);
           singleResult.binFileDoc = singleFileBase64Result;
           singleResult.sFileExtension = singleResult.name.split('.').pop();
@@ -301,7 +345,6 @@ export const FileDisputeScreen = (props) => {
       }
 
       if (aResults.length > nNoOfFilesAllowed) {
-        //debugger;
         bContinueLoop = false;
         Alert.alert(
           'Attention Required',
@@ -321,7 +364,6 @@ export const FileDisputeScreen = (props) => {
       }
 
       aResults.every((singleFile, index) => {
-        //debugger;
         if (singleFile.size > nFileSizeLimitInMB * 1024 * 1024) {
           bContinueLoop = false;
           Alert.alert(
@@ -342,8 +384,6 @@ export const FileDisputeScreen = (props) => {
         }
       });
       if (bContinueLoop) setaFileResults(aResults);
-
-      //console.log(aResults);
     } catch (err) {
       //Handling any exception (If any)
       if (DocumentPicker.isCancel(err)) {
@@ -404,12 +444,12 @@ export const FileDisputeScreen = (props) => {
 
   useEffect(() => {
     if (isFocused) {
+      console.log('File Dispute Called');
       setbLoader(false);
       setsDisputeMessage('');
       setaFileResults([]);
       setbShowPreview(false);
       setbCameraVisible(false);
-      console.log('File Dispute Called');
     }
   }, [isFocused]);
 
@@ -585,9 +625,9 @@ export const FileDisputeScreen = (props) => {
               <Button
                 iconRight
                 icon={{
-                  type: 'feather',
-                  name: 'camera',
                   color: Colors.ChatrelInfoBlue,
+                  name: 'camera',
+                  type: 'feather',
                 }}
                 title="TAKE PHOTO"
                 type="outline"
@@ -608,20 +648,21 @@ export const FileDisputeScreen = (props) => {
             {bCameraVisible && (
               <View
                 style={{
-                  marginVertical: hp(7.5),
                   flex: 1,
                   height: hp(50),
+                  marginVertical: hp(7.5),
                 }}>
                 <RNCamera
                   style={{
-                    flex: 1,
                     alignItems: 'center',
+                    flex: 1,
                     // height: hp(50),
                     // width:200
                     // marginHorizontal:
                     //   Dimensions.get('window').width *
                     //   Resolution.nWidthScreenMargin,
                   }}
+                  captureAudio={false}
                   useNativeZoom
                   ref={ref}
                   type={RNCamera.Constants.Type.back}
@@ -673,8 +714,8 @@ export const FileDisputeScreen = (props) => {
             {bShowPreview && (
               <View
                 style={{
-                  marginVertical: hp(2.5),
                   flex: 1,
+                  marginVertical: hp(2.5),
                 }}>
                 <View style={styles.selectedFileContainer}>
                   <Text style={styles.selectedFileComponent}>
@@ -729,8 +770,8 @@ export const FileDisputeScreen = (props) => {
               type="outline"
               onPress={handleSubmit(handleDispute)}
               titleStyle={{
-                fontStyle: 'normal',
                 color: Colors.white,
+                fontStyle: 'normal',
                 fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
                 fontFamily:
                   Platform.OS === 'android' ? sFontNameBold : sFontName,
@@ -774,10 +815,10 @@ export const FileDisputeScreenOptions = (navData) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    // marginHorizontal:
-    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
   },
   headingContainer: {
     marginTop:
@@ -788,24 +829,24 @@ const styles = StyleSheet.create({
         : 28,
   },
   headingComponent: {
-    textAlign: 'left',
+    color: Colors.blue,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blue,
     fontFamily: sFontName,
+    textAlign: 'left',
   },
   enterSubjectContainer: {
     marginBottom: hp(2),
   },
   enterSubjectComponent: {
-    textAlign: 'left',
+    color: Colors.blackText,
     fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
     fontFamily: sFontName,
+    textAlign: 'left',
   },
   enterMessageLabelContainer: {
     marginBottom: hp(2),
@@ -814,12 +855,12 @@ const styles = StyleSheet.create({
     // minHeight: hp(5),
     // height: 'auto',
     // textAlignVertical: 'top',
-    textAlign: 'auto',
+    color: Colors.blackText,
     fontSize: wp(3.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
     fontFamily: sFontName,
+    textAlign: 'auto',
   },
   messageContainer: {
     // marginBottom:0
@@ -830,47 +871,45 @@ const styles = StyleSheet.create({
     marginBottom: hp(1),
   },
   attachImageLabelComponent: {
-    textAlign: 'left',
+    color: Colors.blackText,
     fontSize: wp(3.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
     fontFamily: sFontName,
+    textAlign: 'left',
   },
   selectedFileContainer: {
     marginBottom: hp(2),
   },
   selectedFileComponent: {
-    textAlign: 'left',
+    color: Colors.blackText,
     fontSize: wp(3.5),
     fontStyle: 'normal',
-    color: Colors.blackText,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
-    // lineHeight:
+    textAlign: 'left',
   },
   noteContainer: {
     marginBottom: hp(2),
   },
   noteComponent: {
     color: Colors.shadowColor,
-    textAlign: 'left',
     fontSize: wp(4),
     fontStyle: 'italic',
     fontWeight: 'normal',
-
     fontFamily: sFontName,
+    textAlign: 'left',
   },
   infoContainer: {
     marginBottom: hp(2),
   },
   infoComponent: {
-    textAlign: 'center',
+    color: Colors.blackText,
     fontSize: wp(3.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
     fontFamily: sFontName,
+    textAlign: 'center',
   },
   fileUploadContainer: {
     marginBottom: hp(2),
@@ -900,12 +939,12 @@ const styles = StyleSheet.create({
     overflow: 'visible',
   },
   enterMessageInputComponent: {
-    textAlignVertical: 'top',
+    color: Colors.blackText,
     fontSize: wp(5),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
     fontFamily: sFontName,
+    textAlignVertical: 'top',
   },
   titleStyleView: {
     marginBottom: hp(5.5),
@@ -921,11 +960,12 @@ const styles = StyleSheet.create({
   iconContainerStyles: {
     // backgroundColor:Colors.white,
     alignSelf: 'flex-start',
+    borderRadius: 10,
+    elevation: 15,
     position: 'absolute',
     top: -55,
     // left:20,
     //Border Stuff
-    borderRadius: 10,
     // borderColor: Colors.black,
     // borderStyle: 'solid',
     // borderWidth: 0.25,
@@ -933,7 +973,6 @@ const styles = StyleSheet.create({
     //For iOS
 
     //For Android
-    elevation: 15,
     // overflow: 'visible',
   },
 });

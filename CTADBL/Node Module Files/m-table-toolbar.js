@@ -127,13 +127,13 @@ var MTableToolbar = /*#__PURE__*/function (_React$Component) {
         var bodyStyle;
         var headStyle;
         if (page === 'madeb') {
-          bodyStyle = { cellPadding: 1, fontSize: 8, overflow: 'linebreak', minCellHeight: 36 };
+          bodyStyle = { cellPadding: 1, fontSize: 11, overflow: 'linebreak', minCellHeight: 36 };
           headStyle = { fillColor: [0, 128, 255], fontSize: 8, };
           //page = undefined;
         }
         else {
           headStyle = { fontSize: 12, fillColor: [0, 128, 255] };
-          bodyStyle = {fontSize: 11, textColor: "#000000"}
+          bodyStyle = {fontSize: 12, textColor: "#000000"}
         }
         //var height = page === 'madeb' ? 35 : 20;
         //var size = page === 'madeb' ? 8 : 10;
@@ -145,7 +145,7 @@ var MTableToolbar = /*#__PURE__*/function (_React$Component) {
           })],
           body: data,
           theme: 'grid',
-          margin: { top: 24, left: 30, right: 10, bottom: 24 },
+          margin: { top: 24, left: 30, right: 10, bottom: 32 },
           styles: { lineColor: [0, 0, 0] },
         };
         jsPDF.autoTableSetDefaults({
@@ -157,12 +157,12 @@ var MTableToolbar = /*#__PURE__*/function (_React$Component) {
         var orientation = "landscape";
         var doc = new jsPDF(orientation, unit, size);
         var text = _this.props.exportFileName || _this.props.title;
-        doc.setFontSize(15);
-        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(19);
+        doc.setFont('times', 'bold');
         //var xOffset = (doc.internal.pageSize.width / 2) - (doc.getStringUnitWidth(text) * doc.internal.getFontSize() / doc.internal.scaleFactor);
         doc.text(_this.props.title, 412, 65, { align: 'center' });
         if (page !== undefined && page !== 'madeb') {
-          doc.setFontSize(11);
+          doc.setFontSize(12);
           doc.text(page, 40, 80);
         }
 

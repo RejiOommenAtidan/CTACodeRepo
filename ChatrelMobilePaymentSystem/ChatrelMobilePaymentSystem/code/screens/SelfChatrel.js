@@ -11,14 +11,14 @@ import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Chatrel} from '../components/Chatrel';
 import Colors from '../constants/Colors';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import Resolution from '../constants/ResolutionBreakpoint';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {sFontName, sFontNameBold} from '../constants/CommonConfig';
-import {useCollapsibleHeader} from 'react-navigation-collapsible';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+// import {useCollapsibleHeader} from 'react-navigation-collapsible';
 
 export const SelfChatrelScreen = (props) => {
   return (
@@ -62,21 +62,21 @@ const styles = StyleSheet.create({
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
-  headerContainer: {
-    width: wp(50),
-    height: hp(4),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
-  },
-  headerComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blue,
-    fontFamily: sFontName,
-  },
+  // headerContainer: {
+  //   width: wp(50),
+  //   height: hp(4),
+  //   marginBottom:
+  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
+  // },
+  // headerComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize:
+  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blue,
+  //   fontFamily: sFontName,
+  // },
 });

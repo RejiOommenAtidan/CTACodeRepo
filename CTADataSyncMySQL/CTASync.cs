@@ -44,7 +44,7 @@ namespace CTADataSyncMySQL
             connetionStringDB2 = textBoxDB2.Text;
             // Set cursor as hourglass
             Cursor.Current = Cursors.WaitCursor;
-
+            DateTime dtMigrationDate = Convert.ToDateTime("10-02-2021 00:00:00");
             
             progressBarProcess.Value = 0;
             progressBarProcess.Refresh();
@@ -118,14 +118,16 @@ namespace CTADataSyncMySQL
                 //ProgressBarOneStep();
                 ProgressBarOneStep();
                 ProgressBarOneStep();
+
+                labelSyncReport.Text = "tblGreenbook - Syncing Process....";
+                //5. Sync Datatable - tblGreenbook
+                strQuery = Sync_tblGreenbook_Table(cnnDB1, cnnDB2, DB1Name, DB2Name);
+                ProgressBarOneStep();
+                if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
+                strQuery = string.Empty;
                 ProgressBarOneStep();
 
-                //labelSyncReport.Text = "tblGreenbook - Syncing Process....";
-                ////5. Sync Datatable - tblGreenbook
-                //strQuery = Sync_tblGreenbook_Table(cnnDB1, cnnDB2, DB1Name, DB2Name);
-                //ProgressBarOneStep();
-                //if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
-                //strQuery = string.Empty;
+               
 
                 labelSyncReport.Text = "lnkGBChatrel - Syncing Process....";
                 //8. Sync Datatable - lnkGBChatrel

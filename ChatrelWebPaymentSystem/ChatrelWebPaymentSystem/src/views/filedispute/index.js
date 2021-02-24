@@ -28,7 +28,7 @@ import { Alerts } from '../alerts';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-
+import BackGroundImage from '../../assets/images/lake-file-dispute.jpg';
 import {storeSession} from '../../actions/transactions/SessionAction';
 
 const useStyles = makeStyles((theme) => ({
@@ -88,15 +88,15 @@ const [sGBID,setGBID]=React.useState(userGBObj.sGBID);
 const [dtDob,setDOB]=React.useState("");
 const [fileName,setFileName]=React.useState("");
 const handleUploadClick =(e) =>{
-  //console.log(e)
+  console.log(e)
   //filename = this.files[0].name
 }
 /*const reader = new FileReader();
 
     reader.addEventListener("load", function () {
-      //console.log(reader.result.split('base64,')[1]);
+      console.log(reader.result.split('base64,')[1]);
         setbinFileDoc(reader.result.split('base64,')[1]);
-       // //console.log(reader.result);
+       // console.log(reader.result);
     }, false);
   */
 
@@ -104,9 +104,9 @@ const handleSingleFile = (file) => {
   const reader = new FileReader();
     let fileObj={}
     reader.addEventListener("load", function () {
-     // //console.log(reader.result.split('base64,')[1]);
+     // console.log(reader.result.split('base64,')[1]);
         //setbinFileDoc(reader.result.split('base64,')[1]);
-       // //console.log(reader.result);
+       // console.log(reader.result);
         fileObj.binFileDoc=reader.result.split('base64,')[1];
     }, false);
     reader.readAsDataURL(file);
@@ -115,13 +115,13 @@ const handleSingleFile = (file) => {
     var Extension = file.type.split("/").pop()
     fileObj.sTitle=Name;
     fileObj.sFileExtension=Extension;
-    //console.log(sTitle);
+    console.log(sTitle);
 
    // setsTitle(Name);
     //  setsFileExtension(Extension);
-    // //console.log(file.name);
-    // //console.log(Name);
-    // //console.log(Extension);
+    // console.log(file.name);
+    // console.log(Name);
+    // console.log(Extension);
   return fileObj
 }
 const MaxFileSize=5;
@@ -133,13 +133,13 @@ const handleUploadChange = (event) => {
     let file;
     let FileName="";
     let fileArray=[];
-//console.log(files );
+console.log(files );
     if (files) {
       
       if(files.length<(MaxFileCount+1)){
         for (var i = 0; i < files.length; i++) {
             //file = files[i];
-            //console.log("file ",i);
+            console.log("file ",i);
             if(files[i].size > (MaxFileSize*1024*1024)){
               setAlertMessage('Maximum file size limit: 5 MB.');
               setAlertType('error');
@@ -148,7 +148,7 @@ const handleUploadChange = (event) => {
             }
             else{
               var fileObj =  handleSingleFile(files[i]);
-              //console.log(fileObj);
+              console.log(fileObj);
               fileArray.push(fileObj);
                FileName=FileName+" "+files[i].name; 
             }
@@ -160,12 +160,12 @@ const handleUploadChange = (event) => {
             // var Extension = file.type.split("/").pop()
             // setsTitle(Name);
             // setsFileExtension(Extension);
-            // //console.log(file.name);
-            // //console.log(Name);
-            // //console.log(Extension);
+            // console.log(file.name);
+            // console.log(Name);
+            // console.log(Extension);
         }
-        //console.log("File Obj",FileDisputeObj);
-        //console.log('FileName:',FileName);
+        console.log("File Obj",FileDisputeObj);
+        console.log('FileName:',FileName);
         setFileName(FileName);
         setFileDisputeObj(fileArray);
       }
@@ -201,10 +201,10 @@ const handleDisputeFileSubmit = (e) => {
   }
 else if (FileDisputeObj.length !== 0 && disputeDescription !== "")
 {
-  ////console.log(backdrop);
-  // //console.log ("File upload:", binFileDoc)
+  //console.log(backdrop);
+  // console.log ("File upload:", binFileDoc)
    const submit = {sGBID: sGBID, sName: sName, description: disputeDescription,aFileResults: FileDisputeObj }
-   //console.log(submit);
+   console.log(submit);
    axios.post(`/ChatrelPayment/SubmitDispute`, submit)
    .then((resp) => {
     if (resp.status === 200) {
@@ -230,13 +230,14 @@ dispatch(storeSession(oSession));
       setAlertMessage('error on submission.');
       setAlertType('error');
       snackbarOpen();
-      //console.log(error.message);
+      console.log(error.message);
       
   });
 }
  };
   return (
-    <>
+    <> 
+    <div style={{background:`url("${BackGroundImage}")`}}>
      <Grid container spacing={1}>
       <Grid item xs={12} sm={4} ></Grid>
       <Grid item xs={12} sm={4}>
@@ -316,6 +317,7 @@ dispatch(storeSession(oSession));
          <Backdrop className={classes.backdrop} open={backdrop} >
         <CircularProgress color="inherit" />
       </Backdrop>
+      </div>
     </>
   );
 }

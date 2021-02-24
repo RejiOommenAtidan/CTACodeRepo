@@ -72,7 +72,7 @@ export const EditDialog = (props) => {
 }
 
 export const DeleteDialog = (props) => {
-  //console.log("Delete Dialog");
+  console.log("Delete Dialog");
   return (
     <Dialog
       open={props.deleteModal}
@@ -99,7 +99,7 @@ export const DeleteDialog = (props) => {
 }
 
 export const AddDialog = (props) => {
-  //console.log("Add Dialog");
+  console.log("Add Dialog");
   const [countryId, setCountryId] = useState('');
   const [countryName, setCountryName] = useState('');
   return (

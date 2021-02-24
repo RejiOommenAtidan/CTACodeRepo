@@ -66,6 +66,14 @@ INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserR
 
 INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
 	VALUES ('search', 'Search User', 'TCRC Office', 'search123', '1', '1',now(),1,now(),1);
+	
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('chatreladmin', 'Chatrel Admin', 'TCRC Office', 'cta@123', '7', '1',now(),1,now(),1);
+	
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('chatrelguest', 'Chatrel Guest', 'TCRC Office', 'cta@123', '6', '1',now(),1,now(),1);
+	
+	
 
 -- all Password changed to : cta@123 to force user to change the password`
 ALTER TABLE tbluser ADD sSalt varchar(255) NULL AFTER sPassword;
@@ -163,7 +171,7 @@ SELECT `ident`.`id`,
     `ident`.`alias`,
     `ident`.`OldGreenBKNo`,
     `ident`.`FstGreenBkNo`,
-    if(`ident`.`FormDate` REGEXP '\^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$',`ident`.`FormDate`,"2001-01-01") AS 'dtFormDate',
+    date(`ident`.`FormDate`),
     `ident`.`FathersName`,
     `ident`.`FathersID`,
     `ident`.`FathersIdentityID`,
@@ -326,9 +334,10 @@ SELECT
 IF(`madebchange`.`ApprovedReject` IS null or `madebchange`.`ApprovedReject` = '', null, 
 		IF(`madebchange`.`ApprovedReject` = 'Approved', 2,
 			IF(`madebchange`.`ApprovedReject` like 'Reject%', 3, 
-				IF(`madebchange`.`ApprovedReject` like 'Cancel%', 4, 
-					IF(`madebchange`.`ApprovedReject` like 'Close%', 5, 
-						null))))) as nMadebStatusID,
+				IF(`madebchange`.`ApprovedReject` like '%Double%', 4, 
+				IF(`madebchange`.`ApprovedReject` like 'Cancel%', 5, 
+					IF(`madebchange`.`ApprovedReject` like 'Close%', 6, 
+						null)))))) as nMadebStatusID,
 IF(`madebchange`.`ApprovedReject` IS null or `madebchange`.`ApprovedReject` = '', null, 
 		IF(`madebchange`.`ApprovedReject` = 'Approved', null,
 			IF(`madebchange`.`ApprovedReject` like 'Reject%', `madebchange`.`ApprovedReject`,`madebchange`.`ApprovedReject`))) as nMadebStatusRemark,
@@ -397,12 +406,7 @@ SELECT
 	`madeblost`.`Email`,
 	null,
 	`madeblost`.`ApprovedReject`,
-	IF(`madeblost`.`ApprovedReject` IS null or `madeblost`.`ApprovedReject` = '', null, 
-		IF(`madeblost`.`ApprovedReject` = 'Approved', 2,
-			IF(`madeblost`.`ApprovedReject` like 'Reject%', 3, 
-				IF(`madeblost`.`ApprovedReject` like 'Cancel%', 4, 
-					IF(`madeblost`.`ApprovedReject` like 'Close%', 5, 
-						null))))) as nMadebStatusID,
+	`madeblost`.`IssuedOrNot`,
 	IF(`madeblost`.`ApprovedReject` IS null or `madeblost`.`ApprovedReject` = '', null, 
 		IF(`madeblost`.`ApprovedReject` = 'Approved', null,
 			IF(`madeblost`.`ApprovedReject` like 'Reject%', `madeblost`.`ApprovedReject`,`madeblost`.`ApprovedReject`))) as nMadebStatusRemark,
@@ -470,7 +474,7 @@ SELECT
 	`abroad`.`Email`,
 	`abroad`.`Alias`,
 	null,
-	null,
+	`abroad`.`IssuedOrNot`,
 	null,
 	`abroad`.`RejectDate`,
 	`abroad`.`ReturnDate`,
@@ -536,7 +540,7 @@ SELECT
 	`bookfull`.`Email`,
 	null,
 	null,
-	null,
+	`bookfull`.`IssuedOrNot`,
 	null,
 	`bookfull`.`RejectDate`,
 	`bookfull`.`ReturnDate`,
@@ -602,7 +606,7 @@ SELECT
     `briefgb`.`Email`,
 	null,
 	null,
-	null,
+	`briefgb`.`IssuedOrNot`,
 	null,
     `briefgb`.`RejectDate`,
     `briefgb`.`ReturnDate`,
@@ -730,6 +734,8 @@ SELECT
 	1
 FROM `greenbookprime`.`gbnogiven`;
 
+
+
 INSERT INTO `tblgreenbookissued`
 (`Id`,
 `nGBId`,
@@ -783,14 +789,14 @@ UPDATE `tblgreenbook`
 SET
 `dtEntered` = STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y %H:%i:%s')
 WHERE (sEnteredDateTime like '%AM' OR sEnteredDateTime like '%PM' )
-    and   STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y %H:%i:%s') < CURDATE();
+    and STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y %H:%i:%s') < CURDATE();
 
 
 UPDATE `tblgreenbook`
 SET
 `dtEntered` = STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y %H:%i:%s')
 WHERE (sEnteredDateTime like '%AM' OR sEnteredDateTime like '%PM' )
-    and    STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y %H:%i:%s') < CURDATE();
+    and STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y %H:%i:%s') < CURDATE();
 
 UPDATE `tblgreenbook`
 SET
@@ -1184,19 +1190,6 @@ VALUES (1,'4489430',48.00,10.00,2011,10,5.80,63.80,'2011-04-01','2012-03-31',0.0
 INSERT INTO lnkgbchatreldonation (chatrelpaymentID,sGBId,nChatrelAdditionalDonationAmt,nChatrelBusinessDonationAmt,sChatrelReceiptNumber,nAuthRegionID,sCountryID,sPaymentCurrency,sAuthRegionCurrency,nConversionRate,sPaidByGBId,dtPayment,dtEntered,nEnteredBy,dtUpdated,nUpdatedBy) VALUES (1,'4489430',60.00,18.00,'1',135,'NP','USD','INR',1.00,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',1,'2020-12-01 16:54:44.0',1);
 
 
-UPDATE `tbluser` SET `sPassword` = 'rNRslRcw3VtGAlI9/P2DXl89kQRENm787gpHDCOhj7I=' WHERE (`Id` = '97');
-UPDATE `tbluser` SET `sPassword` = 'w00KWE96zgdxYUbvWWhuODwFXh3MkNzcxJnSgxp5ZEs=' WHERE (`Id` = '96');
-UPDATE `tbluser` SET `sPassword` = 'u+nkQSwxxhOIvGpsT3E9Cg40qBwv0LcaKadCXWLznwE=' WHERE (`Id` = '95');
-UPDATE `tbluser` SET `sPassword` = 'vnxE3Co+esIjB4ywUzH3oQ==' WHERE (`Id` = '94');
-UPDATE `tbluser` SET `sPassword` = 'Rtf2QAxGBZlOg3ZfYNc6VzQMf9+6FThup2s0kfGQ8k0=' WHERE (`Id` = '93');
-UPDATE `tbluser` SET `sPassword` = '+Fsi0J/gQ5MoqmKfxlJ0/tjdQAeQ8qQT/T3Znndwz/c=' WHERE (`Id` = '92');
-UPDATE `tbluser` SET `sPassword` = 'BbuONBeo0lvc9q5FWucOnLfZDKG5n89WjmXnxX0i7vs=' WHERE (`Id` = '87');
-UPDATE `tbluser` SET `sPassword` = 'CL43n1r5NW1t9paeMm8X0Q==' WHERE (`Id` = '88');
-UPDATE `tbluser` SET `sPassword` = 'y7ZbHv2DOrG4LEblFZ95ociFEuhhDtHcwfE+4Y3BMf8=' WHERE (`Id` = '89');
-UPDATE `tbluser` SET `sPassword` = 'PT3kBpoVuX0pCt8+1rzfifjwsVTPMRNd4wI5C/7tErg=' WHERE (`Id` = '90');
-UPDATE `tbluser` SET `sPassword` = 'NEx9ClImMEaX+AokbdePF+TWIxLEOgkeKdE1Kf24us4=' WHERE (`Id` = '91');
-
-
 UPDATE `lstctaconfig` SET `sValue` = 'chatrelcta@gmail.com' WHERE (`Id` = '4');
 UPDATE `lstctaconfig` SET `sValue` = 'hjmzfrcillpuvsxv' WHERE (`Id` = '5');
 UPDATE `lstctaconfig` SET `sValue` = 'smtp.gmail.com' WHERE (`Id` = '6');
@@ -1245,30 +1238,50 @@ set spaiduntil = '2015'
 where sGBId='11909';
 
 
+-- 
+-- updating tblmadeb gbid if the madeb is Sarso and the status is Given
+UPDATE tblmadeb a
+INNER JOIN tblgivengbid b ON a.nFormNumber = b.nFormNo
+SET a.sGBID = b.nGBId
+WHERE a.nMadebTypeID = 1 AND b.bGivenOrNot=1;
 
-INSERT INTO `tblchatrelbulkdata` (`Id`, `sBatchNumber`, `bValidate`, `SNo`, `GBID`, `Name`, `PaidByGBId`, `Currency`, `Chatrel`, `Meal`, `Salary`, `ChatrelFrom`, `ChatrelTo`, `FinancialYear`, `ArrearsPlusLateFees`, `ArrearsFrom`, `ArrearsTo`, `BusinessDonation`, `AdditionalDonation`, `TotalAmount`, `ReceiptNo`, `PaymentDate`, `Region`, `Country`, `PaymentMode`, `sStatus`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-Values
-('1', 	'1234567', '0', '1', 	'US3850114', 'Kalsang Tsewang', 'IN3718041', 'USD', '36.00', '10.00', '50.00', '01/04/14', '31/03/15', '2014', '101.20', '01/04/12', '31/03/14', '0.00', '0.00', '197.20', '8278', '24/10/2014', 'Boston', 'United States of America', 'Offline', 'New', '12/01/21', '1', '12/01/21', '1'),
-('2',	'1234567',	'0','2',	'US8816019','Phurbu Dhondup ',	'US5519516',	'USD','36.00','10.00','50.00','01/04/14','31/03/15',	'2014','0.00',	null			,null,	'0.00','16.00','112.00','8279','24/10/2014','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('3','1234567','0','3','IN4914644','Sherab Choegyal ','US4508482','USD','36.00','10.00','0.00',null,null,'2015','46.00','01/04/14','31/03/15','0.00','0.00','92.00','8280','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('4','1234567','0','4','US8660875','Tenpa Tsering ','US3712054','USD','36.00','10.00','50.00','01/04/15','31/03/16','2015','96.00','01/04/14','31/03/15','0.00','0.00','192.00','8325','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('5','1234567','0','5','US2609547','Lobsang Chodon ','US6522843','USD','36.00','10.00','0.00',null,null,'2015','46.00','01/04/14','31/03/15','0.00','0.00','92.00','8326','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('6','1234567','0','6','US0752074','Jangchuk Chodon ','IN8644758','USD','36.00','10.00','50.00','01/04/15','31/03/16','2015','0.00',null,null,'0.00','0.00','96.00','8327','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('7','1234567','0','7','US3415429','Dickyi Sangmo ','IN7414403','USD','36.00','10.00','50.00','01/04/15','31/03/16','2015','96.00','01/04/14','31/03/15','0.00','0.00','192.00','8328','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('8','1234567','0','8','US0926676','Tsering Palkyi ','IN1763876','USD','36.00','10.00','0.00',null,null,'2015','184.00','01/04/11','31/03/14','0.00','0.00','230.00','8329','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('9','1234567','0','9','US7605099','Tenzin Nordon','US1879607','USD','36.00','10.00','0.00',null,null,'2015','134.00','01/04/12','31/03/15','0.00','0.00','180.00','8330','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('10','1234567','0','10','US4181050','Tenzin Phuntsok ','IN8336109','USD','36.00','10.00','0.00',null,null,'2015','46.00','01/03/14','31/03/15','0.00','0.00','92.00','8331','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('11','1234567','0','11','US0622985','Tashi Phuntsok ','IN3718041','USD','36.00','10.00','0.00',null,null,'2015','184.00','01/04/11','31/03/14','0.00','0.00','230.00','8332','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('12','1234567','0','12','IN4724622','Rinchen Tsering ','US5519516','USD','36.00','10.00','50.00','01/04/15','31/03/16','2015','96.00','01/04/14','31/03/15','0.00','0.00','192.00','8333','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('13','1234567','0','13','IN4496772','Tenzin Paljor','US4508482','USD','36.00','10.00','0.00',null,null,'2015','46.00','01/04/14','31/03/15','0.00','0.00','92.00','8334','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('14','1234567','0','14','IN6482322','Tenzin Gaden','US3712054','USD','36.00','10.00','0.00',null,null,'2015','46.00','01/04/14','31/03/15','0.00','0.00','92.00','8335','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('15','1234567','0','15','IN2052195','Tenzin Kyizom ','US6522843','USD','36.00','10.00','50.00','01/04/15','31/03/16','2015','96.00','01/04/14','31/03/15','0.00','0.00','192.00','8336','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('16','1234567','0','16','IN1071318','Kunga Dechen ','IN8644758','USD','36.00','10.00','0.00',null,null,'2015','0.00',null,null,'0.00','0.00','46.00','8337','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('17','1234567','0','17','IN3733290','Karma Dhondup ','IN7414403','USD','36.00','10.00','0.00',null,null,'2015','92.00','01/04/13','31/03/15','0.00','0.00','138.00','8340','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('18','1234567','0','18','NP5445151','Nyima Tsering ','IN1763876','USD','36.00','10.00','50.00','01/04/15','31/03/16','2015','0.00',null,null,'0.00','0.00','96.00','8341','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('19','1234567','0','19','US8995036','Sonam Tsetso','US1879607','USD','36.00','10.00','50.00','01/04/15','31/03/16','2015','0.00',null,null,'0.00','0.00','96.00','8342','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('20','1234567','0','20','NP1630474','Tenzin Topgyal ','IN8336109','USD','36.00','10.00','0.00',null,null,'2015','0.00',null,null,'0.00','0.00','46.00','8345','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('21','1234567','0','21','IN3718041','Metok Dolma ','IN3718041','USD','36.00','10.00','0.00',null,null,'2015','46.00','01/04/14','31/03/15','0.00','0.00','92.00','8343','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('22','1234567','0','22','US5519516','Tenzin Sherab ','US5519516','USD','36.00','10.00','0.00',null,null,'2015','46.00','01/04/14','31/03/15','0.00','0.00','92.00','8344','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('23','1234567','0','23','US4508482','Phurbu Tsomo ','US4508482','USD','36.00','10.00','50.00','01/04/15','31/03/16','2015','0.00',null,null,'0.00','4.00','100.00','8346','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1'),
-('24','1234567','0','24','US3712054','Lobsang Dhargyal ','US3712054','USD','36.00','10.00','50.00','01/04/15','31/03/16','2015','0.00',null,null,'0.00','4.00','100.00','8347','24/10/2015','Boston ','United States of America','Offline','New','12/01/21','1','12/01/21','1');
+UPDATE tblmadeb a
+INNER JOIN tblgreenbookserial b ON a.nFormNumber = b.nFormNumber
+SET a.nCurrentGBSno = b.nBookNo
+where a.nMadebTypeID = 1;
+
+UPDATE tblmadeb 
+SET nMadebStatusID = 3,
+	nIssuedOrNotID = null,
+    dtIssueAction = null
+where nIssuedOrNotID=3;
+
+UPDATE tblmadeb 
+SET nMadebStatusID = 2
+where nIssuedOrNotID=2;
+
+UPDATE tblmadeb 
+SET nMadebStatusID = 1,
+	nIssuedOrNotID = null,
+    dtIssueAction = null
+where nIssuedOrNotID is null or nIssuedOrNotID = 0;
+
+SET sql_mode = 'NO_ZERO_DATE';
+update tblgreenbook
+set dtEntered = STR_TO_DATE(sEnteredDateTime, '%Y-%m-%d %H:%i:%s')
+where STR_TO_DATE(sEnteredDateTime, '%Y-%m-%d %H:%i:%s') is not null and date(dtEntered) = date(dtUpdated) and sEnteredDateTime like '%-%-%';
+
+
+update tblgreenbook
+set dtEntered = STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y')
+where STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y') is not null and date(dtEntered) = date(dtUpdated) and sEnteredDateTime like '%/%/%';
+
+update tblgreenbook
+set dtEntered = STR_TO_DATE(sEnteredDateTime, '%d-%m-%Y')
+where STR_TO_DATE(sEnteredDateTime, '%d-%m-%Y') is not null and date(dtEntered) = date(dtUpdated) and sEnteredDateTime like '%-%-%';
+
+UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Double' WHERE (`Id` = '4');
+UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Cancelled' WHERE (`Id` = '5');
+UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Closed' WHERE (`Id` = '6');
+
+

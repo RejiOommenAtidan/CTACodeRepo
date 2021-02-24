@@ -177,7 +177,8 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
         padding: '5px'
       }
@@ -192,10 +193,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -209,10 +210,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       customSort: (a, b) => {
         //console(a, b);
@@ -237,10 +238,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -252,10 +253,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -268,10 +269,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "center",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -283,10 +284,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -298,10 +299,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -313,10 +314,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -328,10 +329,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -343,10 +344,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     // {
@@ -358,7 +359,8 @@ export default () => {
     //     width: '10%',
     //     textAlign: 'left'
     //   },
-    //   cellStyle: {
+    //    cellStyle: {
+//	border: '1px solid black',
     //     padding: '0px',
     //     paddingLeft: '10px',
     //     width: '10%',
@@ -380,7 +382,8 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
         padding: '5px'
       }
@@ -398,7 +401,8 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
         padding: '5px'
       }
@@ -414,10 +418,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       customSort: (a, b) => {
         
@@ -444,13 +448,13 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       customSort: (a, b) => {
-        ////console.log(a, b);
+        //console.log(a, b);
         if(!a.madeb.dtFormattedReject){
           return -1;
         }
@@ -472,10 +476,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     
@@ -490,14 +494,14 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
       
       customSort: (a, b) => {
-        ////console.log(a, b);
+        //console.log(a, b);
         if(!a.madeb.dtFormattedReturnEmail){
           return -1;
         }
@@ -519,27 +523,13 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       },
     },
-    {
-      width: "8%",
-      field: "madeb.sMadebStatusRemark",
-      title: "STATUS REMARK",
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
-      },
-    },
+  
     {
       width: "6%",
       field: "email",
@@ -557,10 +547,10 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "center",
-        padding: '5px',
-        borderRight: '1px solid grey'
+        padding: '5px'
       }
     },
     {
@@ -582,10 +572,26 @@ export default () => {
         textAlignLast: "center",
         verticalAlign: "middle"
       },
-      cellStyle: {
+       cellStyle: {
+	border: '1px solid black',
         textAlign: "center",
         padding: '5px'
       }
+    },
+    {
+      width: "8%",
+      field: "madeb.sMadebStatusRemark",
+      title: "STATUS REMARK",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+       cellStyle: {
+	border: '1px solid black',
+        textAlign: "left",
+        padding: '5px'
+      },
     }
   ];
 
@@ -628,7 +634,7 @@ export default () => {
   };
 
   const editAPICall = (madeb) => {
-    //console.log(madeb);
+    console.log(madeb);
     madeb.dtReject = madeb.dtReject === "" ? null : madeb.dtReject;
     madeb.dtReceived = madeb.dtReceived === "" ? null : madeb.dtReceived;
     madeb.dtIssueAction = madeb.dtIssueAction === "" ? null : madeb.dtIssueAction;
@@ -655,13 +661,13 @@ export default () => {
                 selectDatafunction();
               }
               else {
-                //console.log("Response received:\n", resp);
+                console.log("Response received:\n", resp);
               }
             })
             .catch(error => {
               setBackdrop(false);
-              //console.log(error.config);
-              //console.log(error.message);
+              console.log(error.config);
+              console.log(error.message);
             })
         }
       })
@@ -686,13 +692,13 @@ export default () => {
       })
       .catch(error => {
         setBackdrop(false);
-        //console.log(error.config);
-        //console.log(error.message);
+        console.log(error.config);
+        console.log(error.message);
       })
   };
 
   const addAPICall = (madeb) => {
-    //console.log(madeb);
+    console.log(madeb);
     setBackdrop(true);
     axios.post(`/Madeb/AddMadeb/`, madeb)
       .then(resp => {
@@ -716,8 +722,8 @@ export default () => {
             })
             .catch(error => {
               setBackdrop(false);
-              //console.log(error.message);
-              //console.log(error.config);
+              console.log(error.message);
+              console.log(error.config);
             })
         }
       })
@@ -747,8 +753,8 @@ export default () => {
         }
       })
       .catch(error => {
-        //console.log(error.config);
-        //console.log(error.message);
+        console.log(error.config);
+        console.log(error.message);
         setisLoading(false);
       })
   }, []);
@@ -762,7 +768,7 @@ export default () => {
               padding: '10px', 
               width: '100%', 
               border: '2px solid black', 
-              borderRadius: '10px', fontSize:'0.9rem' 
+              borderRadius: '10px',fontSize:'1rem',color:'#000000',fontWeight:'bold' 
              }}
             isLoading={loading}
             icons={oTableIcons}

@@ -63,7 +63,7 @@ export default function Home() {
   axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
   .then(resp => {
     if (resp.status === 200) {
-      //console.log("Self Chatrel Payment data:", resp.data);
+      console.log("Self Chatrel Payment data:", resp.data);
       
       
       //Store New Token
@@ -75,7 +75,7 @@ export default function Home() {
      //const x =               
       //oGBDetails.sAuthRegion=resp.data.chatrel.authRegionProfile;
       //dispatch(storeGBDetails({...oGBDetails,sAuthRegion:resp.data.chatrel.authRegionProfile}));
-     ////console.log('x',x,oGBDetails);
+     //console.log('x',x,oGBDetails);
       if(resp.data.message!=="Paid Until Missing")
       {
       if(resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0){
@@ -97,7 +97,7 @@ export default function Home() {
         setOutstanding(true);
       }
       setPaymentData(resp.data.chatrel);
-      //console.log(resp.data.chatrel);
+      console.log(resp.data.chatrel);
       
       
       if(resp.data.chatrel.gbChatrels[0].sAuthRegionCurrency === 'USD'){
@@ -111,13 +111,13 @@ export default function Home() {
       setEmpty(true);
     }
   }
-      //console.log("Data fetched...", resp.data);
+      console.log("Data fetched...", resp.data);
       
    
   })
   .catch(error => {
-    //console.log(error.message);
-    //console.log(error.response.status);
+    console.log(error.message);
+    console.log(error.response.status);
 
   });
 

@@ -145,11 +145,11 @@ export default function FeatureUserrights() {
 
   const editAPICall = () => {
     // let myElement = mapping.map(element=>element.sFeature===tableRow["sFeature"]);
-    // //console.log(myElement);
-    ////console.log(tableRow)
+    // console.log(myElement);
+    //console.log(tableRow)
     //Id
     //nUserrightsId
-    // //console.log(roleID);
+    // console.log(roleID);
     //bRights
     setOpenDialog(false);
     setBackdrop(true);
@@ -176,7 +176,7 @@ export default function FeatureUserrights() {
               handleError(error, history);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
         }
       })
@@ -184,7 +184,7 @@ export default function FeatureUserrights() {
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -194,7 +194,7 @@ export default function FeatureUserrights() {
       .then(resp => {
         if (resp.status === 200) {
           const roles = resp.data.lUserRights;
-          //console.log(resp.data);
+          console.log(resp.data);
           const generatedColumns = [];
           //Add feature to cols array & then all roles 1 by 1
           generatedColumns.push(
@@ -257,7 +257,7 @@ export default function FeatureUserrights() {
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
     //#endregion
   };
@@ -344,7 +344,7 @@ export default function FeatureUserrights() {
     axios.post(`/FeatureUserrights/EditFeatureUserright/Id=` + Id, lnkObj)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          console.log(resp.data);
           setEditModal(false);
           axios.get(`/FeatureUserrights/GetFeatureUserrightsMapping`)
             .then(resp => {
@@ -362,10 +362,10 @@ export default function FeatureUserrights() {
               } else {
                 console.error('Error', error.message);
               }
-              //console.log(error.config);
+              console.log(error.config);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
         }
       })
@@ -379,15 +379,15 @@ export default function FeatureUserrights() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };*/}
 
 {/*const editClick = (tableRowArray) => {
-    ////console.log(tableRowArray)
+    //console.log(tableRowArray)
     setId(tableRowArray["oFeatureUserrights"]["id"]);
     setnFeatureID(tableRowArray["oFeatureUserrights"]["nFeatureID"]);
     setnUserRightsID(tableRowArray["oFeatureUserrights"]["nUserRightsID"]);

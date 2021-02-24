@@ -26,7 +26,7 @@ const Footer = (props) => {
   const paidByName= useSelector(state => state.GBDetailsReducer.oGBDetails.sName);
 
   const makePayment = (obj)=> {
-    // //console.log("Inside Make payment method for " , obj, data)
+    // console.log("Inside Make payment method for " , obj, data)
      dispatch(storeCurrentGBDetails(obj));
      history.push('/Chatrel');
    }

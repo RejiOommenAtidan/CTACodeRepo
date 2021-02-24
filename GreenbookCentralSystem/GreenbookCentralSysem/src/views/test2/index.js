@@ -32,7 +32,7 @@ const Dashboard = () => {
   }
   const [snackbar,setSnackbar]=React.useState(false);
   const snackbarOpen = () => {
-    //console.log('alert');
+    console.log('alert');
     setSnackbar(true);
   }
   const snackbarClose = () => {

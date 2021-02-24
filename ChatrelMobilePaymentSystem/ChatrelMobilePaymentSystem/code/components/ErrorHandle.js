@@ -1,4 +1,4 @@
-import {ToastAndroid, Platform, AlertIOS} from 'react-native';
+// import {ToastAndroid, Platform, AlertIOS} from 'react-native';
 
 // export const notifyMessage = (sMessage) => {
 //   if (Platform.OS === 'android') {

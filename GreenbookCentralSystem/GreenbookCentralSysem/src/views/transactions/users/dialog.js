@@ -374,7 +374,7 @@ export const EditDialog = (props) => {
 }
 
 {/*export const DeleteDialog = (props) => {
-  //console.log("Delete Dialog");
+  console.log("Delete Dialog");
   return (
     <Dialog
       open={props.deleteModal}

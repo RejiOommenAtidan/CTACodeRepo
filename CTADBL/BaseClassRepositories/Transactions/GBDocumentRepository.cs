@@ -120,9 +120,38 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Add Call
-        public void Add(GBDocument gbdocument)
+        public bool Add(GBDocument gbdocument)
         {
+            int end = gbdocument.binFileDoc.IndexOf("base64,")+6;
+            string mime = gbdocument.binFileDoc.Substring(0, end);
             gbdocument.binFileDoc = gbdocument.binFileDoc.Substring(gbdocument.binFileDoc.IndexOf("base64,") + 7);
+            
+            if(gbdocument.sDocType == "Photo Identity")
+            {
+                string extension;
+                switch (mime)
+                {
+                    //check image's extension
+                    case "data:image/jpeg;base64":
+                        extension = "img";
+                        break;
+                    case "data:image/png;base64":
+                        extension = "img";
+                        break;
+                    case "data:image/jpg;base64":
+                        extension = "img";
+                        break;
+                    
+                    default://not jpg or png
+                        extension = "none";
+                        break;
+                }
+                if (extension == "none")
+                {
+                    return false;
+                }
+            }
+            
             byte[] newbytes = Convert.FromBase64String(gbdocument.binFileDoc);
             gbdocument.binFileDoc = string.Empty;
             var builder = new SqlQueryBuilder<GBDocument>(gbdocument);
@@ -147,18 +176,48 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 command.Transaction = transaction;
                 command.ExecuteNonQuery();
                 transaction.Commit();
+                return true;
             }
             catch (MySqlException ex)
             {
                 transaction.Rollback();
+                throw;
+
             }
         }
         #endregion
 
         #region Update Call
-        public void Update(GBDocument gbdocument)
+        public bool Update(GBDocument gbdocument)
         {
             if (gbdocument.binFileDoc.IndexOf("base64,") > 0) {
+                int end = gbdocument.binFileDoc.IndexOf("base64,") + 6;
+                string mime = gbdocument.binFileDoc.Substring(0, end);
+                if (gbdocument.sDocType == "Photo Identity")
+                {
+                    string extension;
+                    switch (mime)
+                    {
+                        //check image's extension
+                        case "data:image/jpeg;base64":
+                            extension = "img";
+                            break;
+                        case "data:image/png;base64":
+                            extension = "img";
+                            break;
+                        case "data:image/jpg;base64":
+                            extension = "img";
+                            break;
+
+                        default://not jpg or png
+                            extension = "none";
+                            break;
+                    }
+                    if (extension == "none")
+                    {
+                        return false;
+                    }
+                }
                 gbdocument.binFileDoc = gbdocument.binFileDoc.Substring(gbdocument.binFileDoc.IndexOf("base64,") + 7);
             }      
             byte[] newbytes = Convert.FromBase64String(gbdocument.binFileDoc);
@@ -185,10 +244,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 command.Transaction = transaction;
                 command.ExecuteNonQuery();
                 transaction.Commit();
+                return true;
             }
             catch (MySqlException ex)
             {
                 transaction.Rollback();
+                throw;
             }
         }
         #endregion

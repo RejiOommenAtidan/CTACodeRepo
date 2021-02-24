@@ -57,7 +57,7 @@ export default function Chatrel  (props) {
 
   
 
-  ////console.log(paidByGBID);
+  //console.log(paidByGBID);
   //const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 
   const [dataAPI, setDataAPI] = React.useState();
@@ -76,9 +76,9 @@ export default function Chatrel  (props) {
 
   const [shouldRun, setShouldRun] = React.useState(true);
 
-  //console.log("AuthRegions set in 'authRegions'", authRegions);
-  //console.log("Current Region set in 'authRegion'", authRegion);
-  //console.log("Current paymentData is ", paymentData);
+  console.log("AuthRegions set in 'authRegions'", authRegions);
+  console.log("Current Region set in 'authRegion'", authRegion);
+  console.log("Current paymentData is ", paymentData);
   
 
   const autoComplete = (<Autocomplete
@@ -99,7 +99,7 @@ export default function Chatrel  (props) {
     onChange={
       (e, value) => {
         if (value !== null) {
-          //console.log(value.id);
+          console.log(value.id);
           //setMadebStatusID(value.id);
         }
         else {
@@ -129,7 +129,7 @@ export default function Chatrel  (props) {
   };
 
   const updateAuthRegion = (e, value) => {
-    //console.log(value.id, e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_')));
+    console.log(value.id, e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_')));
     const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
     let chartelObj = [...paymentData];
     chartelObj[index].nAuthRegionID = value.id;
@@ -200,12 +200,12 @@ const submit =() =>{
     "gbChatrels": paymentData
   }
 
-  //console.log("Final Obj:" , finalObj)
+  console.log("Final Obj:" , finalObj)
   // axios.post(`http://localhost:52013/api/ChatrelPayment/AddNewChatrelPayment`,finalObj)
   // .then(resp => {
   //   if (resp.status === 200) {
       
-  //     //console.log("Added"); 
+  //     console.log("Added"); 
       
   //   }
   // })
@@ -219,10 +219,10 @@ const submit =() =>{
   //   } else {
   //     console.error('Error', error.message);
   //   }
-  //   //console.log(error.config);
+  //   console.log(error.config);
   // })
   // .then(release => {
-  //   ////console.log(release); => udefined
+  //   //console.log(release); => udefined
   // });
 
 
@@ -246,12 +246,12 @@ const runOnce = () => {
     axios.get(`/AuthRegion/GetAuthRegions`)
       .then(resp => {
         if(resp.status === 200){
-          //console.log("AuthRegions fetched:", resp.data);
+          console.log("AuthRegions fetched:", resp.data);
           setAuthRegions(resp.data);
           axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sGBID)
             .then(resp => {
               if (resp.status === 200) {
-                //console.log("resp.data is:", resp.data);
+                console.log("resp.data is:", resp.data);
                 setDataAPI(resp.data);
                 setSummaryData(resp.data.chatrelPayment);
                 setPaymentData(resp.data.gbChatrels);
@@ -260,7 +260,7 @@ const runOnce = () => {
                 fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
                 .then(response => response.json())
                 .then(data => {
-                    //console.log("currency", data.rates.USD);
+                    console.log("currency", data.rates.USD);
                     setDollarToRupees(data.rates.USD);
                 });
               
@@ -269,16 +269,16 @@ const runOnce = () => {
               }
             })
             .catch(error => {
-              //console.log(error.message);
-              //console.log(error.config);
-              ////console.log(error.response.data);
+              console.log(error.message);
+              console.log(error.config);
+              //console.log(error.response.data);
             });
         }
           
       })
       .catch(error => {
-        //console.log(error.message);
-        //console.log(error.config);
+        console.log(error.message);
+        console.log(error.config);
       });
     //setPaymentData(payObj);
     

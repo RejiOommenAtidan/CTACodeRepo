@@ -258,7 +258,7 @@ export default () => {
   ];
 
   const viewGb = (GBID) => {
-    //console.log(GBID)
+    console.log(GBID)
     setProfileGBID(GBID);
     setViewModal(true);
   }
@@ -277,7 +277,7 @@ export default () => {
     setLoading(true);
     setNoRecords(false);
     setdataAPI([]);
-    //console.log("Form submission called.");
+    console.log("Form submission called.");
     
     if(!sGBID || sGBID.length < 3){
       setError(true);
@@ -295,13 +295,13 @@ export default () => {
       sFathersName,
       sMothersName
     }
-    //console.log("Search parameters\n", searchObj);
+    console.log("Search parameters\n", searchObj);
     axios.get(`/ChatrelPayment/SearchUsers`, {params: searchObj})
     .then(resp => {
       setLoading(false);
       if(resp.status === 200){
         var i = 1;
-        //console.log("Received Search Result", resp.data);
+        console.log("Received Search Result", resp.data);
         resp.data.forEach((element) => {
           element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sDateFormat) : null;
           element.nSerialNo = i++;
@@ -312,7 +312,7 @@ export default () => {
     })
     .catch(error =>{
       setLoading(false);
-      //console.log("Error...", error.response);
+      console.log("Error...", error.response);
     })
     
   }

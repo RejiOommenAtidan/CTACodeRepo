@@ -1,10 +1,11 @@
-import {Dimensions, Platform} from 'react-native';
 import Colors from './Colors';
-import Resolution from './ResolutionBreakpoint';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {Dimensions, Platform} from 'react-native';
+import Resolution from './ResolutionBreakpoint';
+
 ////Local Windows
 // export const sAPIBASEURL = "http://10.0.2.2:49700/api";
 
@@ -20,8 +21,11 @@ export const sAPIBASEURL = 'https://chatrel-webapi.azurewebsites.net/api';
 ////Dev Azure
 // export const sAPIBASEURL = 'https://chatrel-webapi-dev.azurewebsites.net/api';
 
-export const sFolderName = "Chatrel Receipts";
-export const sReceiptDownloadMessage = "Chatrel Receipt Downloaded Successfully in Downloads Folder";
+export const sFolderName = 'Chatrel Receipts';
+export const sReceiptDownloadMessageAndroid =
+  'Chatrel receipts downloaded successfully in Download>Chatrel Receipts folder';
+export const sReceiptDownloadMessageIOS =
+  'Chatrel receipts downloaded successfully in Document>Chatrel Receipts folder';
 
 export const sAdminEmail = 'admin@CTA.com';
 export const sSnackbarAddMessage = 'Record Added successfully';
@@ -39,45 +43,49 @@ export const sPayPalClientID =
 export const sClientSecret =
   'ECrAFFlN_jB_Z62_rc9Ukt2Mv7Yeov2saaDbNCT3Ef_bP9JS2ke9y_G-8VGqQiTB7o3sGJRGFeBF-QKD';
 
+//Add "-uat" after webapp
 export const sSuccessPayPalWebPageURL =
   'https://chatrel-webapp.azurewebsites.net/Success';
+//Add "-uat" after webapp
 export const sFailurePayPalWebPageURL =
   'https://chatrel-webapp.azurewebsites.net/Failure';
 export const sFontName = 'JosefinSans-Regular';
 export const sFontNameBold = 'JosefinSans-Bold';
-export const sHimalayaFontName = 'Microsoft Himalaya';
+export const sHimalayaFontName = 'MicrosoftHimalaya';
 export const errorContainer = {
   marginBottom: hp(1),
 };
 export const errorComponent = {
-  textAlign: 'left',
-  fontSize:
-    Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 15,
+  color: Colors.red,
+  fontSize: wp(4.25),
   fontStyle: 'normal',
   fontWeight: 'normal',
-  color: Colors.red,
   fontFamily: sFontName,
+  textAlign: 'left',
 };
 
 export const oActivityIndicatorStyle = {
-  position: 'absolute',
+  alignItems: 'center',
+  bottom: 0,
+  color: Colors.black,
+  justifyContent: 'center',
   left: 0,
+  opacity: 0.5,
+  position: 'absolute',
   right: 0,
   top: 0,
-  bottom: 0,
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: Colors.black,
-  // backsgroundColor: Colors.black,
   zIndex: 3,
+  // backsgroundColor: Colors.black,
   // elevation: 3,
-  opacity: 0.5,
 };
 
 export const oRequiredStyles = {
   color: 'red',
-  textAlignVertical: 'top',
   fontSize: hp(2.5),
   textAlign: 'center',
+  textAlignVertical: 'top',
   // lineHeight:hp(5)
 };
+
+export const sMappingURL =
+  'https://docs.google.com/forms/d/e/1FAIpQLSdEfQ4CZU16qOMtYSfRnlFiHMXJ4AuG0i4q7JHWsWJVyMFdzQ/viewform';

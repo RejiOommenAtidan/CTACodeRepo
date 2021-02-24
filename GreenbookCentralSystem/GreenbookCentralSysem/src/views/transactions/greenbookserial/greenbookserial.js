@@ -326,7 +326,7 @@ export default () => {
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
-          //console.log("New Record Data\n", resp.data);
+          console.log("New Record Data\n", resp.data);
           // setdataAPI(resp.data)
         }
       })
@@ -338,8 +338,8 @@ export default () => {
             snackbarOpen();
           }
         }
-        //console.log(error.config);
-        //console.log(error.message);
+        console.log(error.config);
+        console.log(error.message);
       })
   };
 
@@ -353,29 +353,29 @@ export default () => {
 
   // const addAPICall = (gbSerialObj) => {
   //   debugger
-  //   //console.log(gbSerialObj);
+  //   console.log(gbSerialObj);
   //   axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, gbSerialObj)
   //     .then(resp => {
   //       if (resp.status === 200) {
-  //         //console.log(resp.data);
+  //         console.log(resp.data);
   //         setAddModal(false);
   //         selectDatafunction();
   //         axios.get(`GreenBookSerialNumber/GetgreenBookSerialNumbers/`)
   //           .then(resp => {
   //             if (resp.status === 200) {
-  //               //console.log(resp.data);
+  //               console.log(resp.data);
   //               setdataAPI(resp.data)
   //             }
   //           })
   //           .catch(error => {
-  //             //console.log(error.message);
-  //             //console.log(error.config);
+  //             console.log(error.message);
+  //             console.log(error.config);
   //           })
   //       }
   //     })
   //     .catch(error => {
-  //       //console.log(error.message);
-  //       //console.log(error.config);
+  //       console.log(error.message);
+  //       console.log(error.config);
   //     })
   // };
 
@@ -393,8 +393,8 @@ export default () => {
       nFormNumber: tableRowArray['greenBookSerialNumber']['nFormNumber'],
       nAuthRegionId: tableRowArray['greenBookSerialNumber']['nAuthRegionId'],
     });
-    //console.log("Table Array: ", tableRowArray);
-    //console.log("gbSerialObj: ", gbSerialObj);
+    console.log("Table Array: ", tableRowArray);
+    console.log("gbSerialObj: ", gbSerialObj);
     setEditModal(true);
   };
 
@@ -433,8 +433,8 @@ export default () => {
         setAlertMessage(`Record Updation Failed. \nError:${error.message}.`);
         setAlertType('error');
         snackbarOpen();
-        //console.log(error.config);
-        //console.log(error.message);
+        console.log(error.config);
+        console.log(error.message);
       })
   };
 
@@ -459,14 +459,14 @@ export default () => {
         else {
           //setBackdrop(false);
           setLoading(false);
-          //console.log("Response received:\n", resp);
+          console.log("Response received:\n", resp);
         }
       })
       .catch(error => {
         //setBackdrop(false);
         setLoading(false);
-        //console.log(error.config);
-        //console.log(error.message);
+        console.log(error.config);
+        console.log(error.message);
       })
 
   };
@@ -475,8 +475,8 @@ export default () => {
     clearErrors2(['serialBookNo']);
     let dateFrom = Moment(startDate).isValid() ? Moment(startDate).format("YYYY-MM-DD") : null;
     let dateUpto = Moment(endDate).isValid() ? Moment(endDate).format("YYYY-MM-DD") : null;
-    //console.log("Start Date:", dateFrom);
-    //console.log("Upto Date:", dateUpto);
+    console.log("Start Date:", dateFrom);
+    console.log("Upto Date:", dateUpto);
 
     if (dateFrom && dateUpto) {
       setIsDateSearch(true);
@@ -494,7 +494,7 @@ export default () => {
 
   const searchByBookNo = () => {
     clearErrors(['startDate', 'endDate']);
-    //console.log("book no. to search", searchBook);
+    console.log("book no. to search", searchBook);
     setIsBookSearch(true);
     //setBackdrop(true);
     setLoading(true);
@@ -529,8 +529,8 @@ export default () => {
             snackbarOpen();
           }
         }
-        //console.log(error.config);
-        //console.log(error.message);
+        console.log(error.config);
+        console.log(error.message);
         setLoading(false);
       })
   }

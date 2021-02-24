@@ -100,7 +100,7 @@ export default function LogingPage(props) {
   //const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 
   const responseGoogle = (response) => {
-    //console.log(response);
+    console.log(response);
 
   }
 
@@ -171,14 +171,14 @@ const test =(e)=>{
       sEmail:sEmail
      
     }
-    //console.log(Obj);
+    console.log(Obj);
     //dispatch(storeGBDetails(oGBDetails));
     //dispatch(storeCurrentGBDetails(oGBDetails));
     //history.push('/Home');
     axios.post(`User/AuthenticateGBID/`,Obj)
     .then(resp => {
       if (resp.status === 200) {
-        //console.log("Authentication resp", resp.data);
+        console.log("Authentication resp", resp.data);
         //setPaymentHistory(resp.data);
         if(resp.data.result ==="Verified"){
           const token = resp.data.sJwtToken
@@ -193,7 +193,7 @@ const test =(e)=>{
           dispatch(storeCurrentGBDetails(oGBDetails));
           oGBDetails.sCountryID=resp.data.sCountryID;
           oGBDetails.sAuthRegion=resp.data.sAuthRegion;
-          //console.log('test countryid',oGBDetails);
+          console.log('test countryid',oGBDetails);
           
           dispatch(storeGBDetails(oGBDetails));
           
@@ -206,7 +206,7 @@ const test =(e)=>{
           setTimeout(() => history.push('/Home'), 3000);
         }
         else{
-          //console.log(resp.data);
+          console.log(resp.data);
           setBackdrop(false);
           setAlertMessage('Your details could not be verified, please try again.');
           setAlertType('info');
@@ -230,10 +230,10 @@ const test =(e)=>{
       } else {
         console.error('Error', error.message);
       }
-      //console.log(error.config);
+      console.log(error.config);
     })
     .then(release => {
-      ////console.log(release); => udefined
+      //console.log(release); => udefined
     });
   }
 
@@ -241,12 +241,12 @@ const test =(e)=>{
   const cookie= async () =>{
     //const { supported, timedOut } = await cookieCheck();
 
-   // //console.log("3rd party cookie's:",supported,timedOut);
+   // console.log("3rd party cookie's:",supported,timedOut);
   }
  useEffect(()=>{
   /*document.cookie = "username=test";
   var testCookie=document.cookie;
-  //console.log("Test Cookie",testCookie);*/
+  console.log("Test Cookie",testCookie);*/
 //  cookie();
 
  },[]);
@@ -264,16 +264,16 @@ const test =(e)=>{
    .then(response => response.json())
   .then(data => {
 
-    //console.log(data);
+    console.log(data);
     //alert(data.country_code);
       if(data.country_code!="IN"){
          // history.push('/AccessDenied')
 
         }
-        //console.log(data);
+        console.log(data);
   })
   .catch(error => {
-//console.log(error);
+console.log(error);
 
   });
 

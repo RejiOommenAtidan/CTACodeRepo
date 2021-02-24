@@ -193,11 +193,11 @@ export default function Report() {
             setAlertType('error');
             snackbarOpen();
           }
-          //console.log(error.config);
-          //console.log(error.message);
+          console.log(error.config);
+          console.log(error.message);
         })
         .then(release => {
-          ////console.log(release); => udefined
+          //console.log(release); => udefined
         });
     }
   }
@@ -205,7 +205,7 @@ export default function Report() {
     axios.get(`/MadebType/GetMadebTypes`)
       .then(resp => {
         if (resp.status === 200) {
-          ////console.log(resp.data);
+          //console.log(resp.data);
           SetMadebTypeData(resp.data)
         }
       })
@@ -222,10 +222,10 @@ export default function Report() {
           setAlertType('error');
           snackbarOpen();
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
   useEffect(() => {

@@ -4,13 +4,14 @@ import {
   Alert,
   View,
   StyleSheet,
-  Dimensions,
   Platform,
   BackHandler,
+  Modal,
+  ActivityIndicator,
+  Linking,
 } from 'react-native';
 import {GLogin} from '../components/GLogin';
 import Colors from '../constants/Colors';
-import Resolution from '../constants/ResolutionBreakpoint';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -20,26 +21,44 @@ import {
   sFontName,
   sFontNameBold,
   sHimalayaFontName,
+  sMappingURL,
+  oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
-import {ActivityIndicator} from 'react-native';
 import axios from 'axios';
 import {useDispatch} from 'react-redux';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {removeGoogleCreds} from '../store/actions/GLoginAction';
 import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   removeGBDetails,
   removeJWTToken,
-  storeJWTToken,
 } from '../store/actions/GBDetailsAction';
-import {useFocusEffect} from '@react-navigation/native';
-// import {useNavigation} from '@react-navigation/native';
+import Resolution from '../constants/ResolutionBreakpoint';
+import {WebView} from 'react-native-webview';
 
 export const LoginScreen = (props) => {
+  const [bShowWebView, setbShowWebView] = useState(false);
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
+        Alert.alert(
+          'Exit App',
+          'Do you want to exit?',
+          [
+            {
+              text: 'No',
+              onPress: () => true,
+              style: 'cancel',
+            },
+            {
+              text: 'Yes',
+              onPress: () => BackHandler.exitApp(),
+            },
+          ],
+          {cancelable: true},
+        );
         return true;
       };
 
@@ -49,13 +68,12 @@ export const LoginScreen = (props) => {
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
     }, []),
   );
+
   // const [bLogoLoaded, setbLogoLoaded] = useState(false);
   const dispatch = useDispatch();
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
 
-  // let navigation = useNavigation();
   const removeCompleteDetails = async () => {
-    debugger;
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
@@ -67,7 +85,6 @@ export const LoginScreen = (props) => {
         props.navigation.navigate('Login');
       });
     } catch (error) {
-      console.error(error);
       props.navigation.navigate('Login');
     }
   };
@@ -76,19 +93,12 @@ export const LoginScreen = (props) => {
     (response) => {
       // Any status code that lie within the range of 2xx cause this function to trigger
       // Do something with response data
-      //console.log('Interceptor valid response', response);
       return response;
     },
     (error) => {
       // Any status codes that falls outside the range of 2xx cause this function to trigger
       // Do something with response error
       if (error.response.status === 401) {
-        //console.log("we hit 401");
-        //history.go(0);
-        //history.push('/Login');
-
-        //Alert("Your session has expired. Please login again.");
-
         Alert.alert(
           'Session Timeout',
           'Your session has expired. Please login again.',
@@ -101,7 +111,7 @@ export const LoginScreen = (props) => {
           ],
           {cancelable: false},
         );
-        return;
+        //return;
       }
       return Promise.reject(error);
     },
@@ -109,27 +119,46 @@ export const LoginScreen = (props) => {
 
   return (
     <View style={styles.mainContainer}>
+      <Modal
+        visible={bShowWebView}
+        onRequestClose={() => setbShowWebView(false)}>
+        <WebView
+          cacheEnabled={false}
+          pullToRefreshEnabled={true}
+          source={{uri: sMappingURL}}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          startInLoadingState={false}
+          style={{marginTop: hp(3.5)}}
+          renderLoading={() => (
+            <ActivityIndicator
+              size={Platform.OS === 'ios' ? 0 : 'large'}
+              color={Colors.spinnerColor}
+              animating={true}
+              //hidesWhenStopped={true}
+              style={oActivityIndicatorStyle}
+            />
+          )}
+        />
+      </Modal>
       <View style={styles.imgContainer}>
         {/*Values Coded*/}
         <ResponsiveImage
-          initWidth="330"
-          initHeight="320"
+          initWidth="340"
+          initHeight="330"
           source={require('../assets/CTALogo.png')}
           // PlaceholderContent={
-          //   <ActivityIndicator
-          //     //animating={true}
-          //     size={Platform.OS === 'ios' ? 0 : 'large'}
-          //   />
+          //   <ActivityIndicator style={oActivityIndicatorStyle} />
           // }
         />
       </View>
       <View style={styles.tibetanTextContainer}>
         <Text style={styles.tibetanTextComponent}>
-          དྭང་བླངས་དཔྱ་དངུལ་དྲ་ངོར་འབུལ་བར་དགའ་བསུ་ཞུ།
+          དྭང་བླངས་དཔྱ་དངུལ་གྱི་དྲྭ་ཐོག་ཏུ་ཕེབས་པར་དགའ་བསུ་ཞུ།
         </Text>
       </View>
       <View style={styles.headerContainer}>
-        <Text style={styles.headerComponent}>Welcome to eChatrel</Text>
+        <Text style={styles.headerComponent}>Welcome to Chatrel Online</Text>
       </View>
       {/* <View style={styles.textContainer}>
         <Text style={styles.textComponent}>
@@ -137,13 +166,54 @@ export const LoginScreen = (props) => {
         </Text>
       </View> */}
       <GLogin props={props}></GLogin>
+      <View style={styles.textContainer}>
+        {/* <Text
+          style={{
+            ...styles.textComponent,
+            fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+            fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+            fontSize: wp(4.75),
+            marginBottom: hp(1.25),
+          }}>
+          Map Google Account with Green Book
+        </Text> */}
+        <Text
+          style={{
+            textAlign: 'center',
+          }}>
+          <Text
+            style={{
+              ...styles.textComponent,
+              fontSize: wp(4.25),
+            }}>
+            Update your Google Account by filling{' '}
+          </Text>
+          <Text
+            style={{
+              ...styles.textComponent,
+              color: Colors.darkYellowFamilyPage,
+              fontSize: wp(4.25),
+              fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+              fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+              textDecorationLine: 'underline',
+              textDecorationColor: Colors.darkYellowFamilyPage,
+            }}
+            onPress={() => {
+              setbShowWebView(true);
+              //Linking.openURL(sMappingURL);
+            }}>
+            this form
+          </Text>
+        </Text>
+      </View>
       <View
         style={{
           ...styles.tibetanTextContainer,
           flex: 1,
+          marginBottom: hp(1.75),
           justifyContent: 'flex-end',
         }}>
-        <Text style={{...styles.tibetanTextComponent, marginBottom: 0}}>
+        <Text style={styles.tibetanTextComponent}>
           བོད་མིའི་སྒྲིག་འཛུགས་དཔལ་འབྱོར་ལས་ཁུངས་ནས།
         </Text>
       </View>
@@ -164,54 +234,53 @@ export const LoginScreenOptions = (navData) => {
 const styles = StyleSheet.create({
   mainContainer: {
     //flex: 1,
+    // justifyContent: 'center',
+    // alignSelf: 'center',
     flexGrow: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center',
-    marginHorizontal:
-      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
-    marginBottom: hp(7.5),
+    marginHorizontal: wp(Resolution.nWidthMarginValueScreen),
+    marginVertical: hp(Resolution.nHeightMarginValueScreen),
   },
   imgContainer: {
-    marginTop: hp(5),
-    marginBottom: hp(2.5),
+    marginVertical: hp(1.25),
   },
-  headerContainer: {},
-  headerComponent: {
+  tibetanTextContainer: {
+    marginVertical: hp(1.25),
+  },
+  tibetanTextComponent: {
+    alignSelf: 'center',
+    color: Colors.white,
+    fontSize: wp(7),
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    fontFamily: sHimalayaFontName,
     textAlign: 'center',
-    fontSize: wp(8.25),
+    textAlignVertical: 'center',
+  },
+  headerContainer: {
+    marginVertical: hp(1.25),
+  },
+  headerComponent: {
+    alignSelf: 'center',
+    color: Colors.white,
+    fontSize: wp(6.75),
     fontStyle: 'normal',
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
-    color: Colors.white,
-    marginBottom: hp(12.5),
-    alignSelf: 'center',
+    textAlign: 'center',
     textAlignVertical: 'center',
   },
-  textContainer: {},
+  textContainer: {
+    marginVertical: hp(1.25),
+  },
   textComponent: {
-    textAlign: 'center',
+    alignSelf: 'center',
+    color: Colors.white,
     fontSize: wp(4.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontFamily: sFontName,
-    color: Colors.white,
-    marginBottom: hp(7.75),
-    lineHeight: hp(3.5),
-    paddingHorizontal: wp(5),
-    alignSelf: 'center',
-    textAlignVertical: 'center',
-  },
-  tibetanTextContainer: {},
-  tibetanTextComponent: {
     textAlign: 'center',
-    fontSize: Platform.OS === 'android' ? wp(5) : wp(7.5),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    fontFamily: sHimalayaFontName,
-    color: Colors.white,
-    marginBottom: hp(3),
-    alignSelf: 'center',
     textAlignVertical: 'center',
   },
   ////FONT BOLD EG

@@ -44,12 +44,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnImageMigration = new System.Windows.Forms.Button();
             this.txtImagePath = new System.Windows.Forms.TextBox();
-            this.tabPageCTAChartel = new System.Windows.Forms.TabPage();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.labelChatrelResult = new System.Windows.Forms.Label();
-            this.buttonGetChartelNow = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tabPageDBUploadDocument = new System.Windows.Forms.TabPage();
+            this.labelResult = new System.Windows.Forms.Label();
+            this.buttonUploadDocument = new System.Windows.Forms.Button();
+            this.textBoxDocumentPath = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPageDummyData = new System.Windows.Forms.TabPage();
             this.checkBoxMadebsAlias = new System.Windows.Forms.CheckBox();
@@ -101,7 +99,7 @@
             this.tabControlCTA.SuspendLayout();
             this.tabPageRelationDataClincing.SuspendLayout();
             this.tabPageImageMigration.SuspendLayout();
-            this.tabPageCTAChartel.SuspendLayout();
+            this.tabPageDBUploadDocument.SuspendLayout();
             this.tabPageDummyData.SuspendLayout();
             this.tabPageDummyProfilePicture.SuspendLayout();
             this.tabPageBulkInsert.SuspendLayout();
@@ -114,8 +112,8 @@
             this.txtConnectionString.Name = "txtConnectionString";
             this.txtConnectionString.Size = new System.Drawing.Size(639, 23);
             this.txtConnectionString.TabIndex = 9;
-            this.txtConnectionString.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=ctadb08022021; " +
-    "Uid=ctamysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;";
+            this.txtConnectionString.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=ctadb; Uid=ctam" +
+    "ysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;";
             // 
             // label1
             // 
@@ -131,7 +129,7 @@
             // 
             this.tabControlCTA.Controls.Add(this.tabPageRelationDataClincing);
             this.tabControlCTA.Controls.Add(this.tabPageImageMigration);
-            this.tabControlCTA.Controls.Add(this.tabPageCTAChartel);
+            this.tabControlCTA.Controls.Add(this.tabPageDBUploadDocument);
             this.tabControlCTA.Controls.Add(this.tabPageDummyData);
             this.tabControlCTA.Controls.Add(this.tabPageDummyProfilePicture);
             this.tabControlCTA.Controls.Add(this.tabPageBulkInsert);
@@ -275,75 +273,54 @@
             this.txtImagePath.TabIndex = 19;
             this.txtImagePath.Text = "C:\\xampp\\htdocs\\GreenBook\\gb\\images\\";
             // 
-            // tabPageCTAChartel
+            // tabPageDBUploadDocument
             // 
-            this.tabPageCTAChartel.Controls.Add(this.label7);
-            this.tabPageCTAChartel.Controls.Add(this.label6);
-            this.tabPageCTAChartel.Controls.Add(this.labelChatrelResult);
-            this.tabPageCTAChartel.Controls.Add(this.buttonGetChartelNow);
-            this.tabPageCTAChartel.Controls.Add(this.textBox1);
-            this.tabPageCTAChartel.Controls.Add(this.label5);
-            this.tabPageCTAChartel.Location = new System.Drawing.Point(4, 24);
-            this.tabPageCTAChartel.Name = "tabPageCTAChartel";
-            this.tabPageCTAChartel.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCTAChartel.Size = new System.Drawing.Size(759, 435);
-            this.tabPageCTAChartel.TabIndex = 2;
-            this.tabPageCTAChartel.Text = "CTA Chartel";
-            this.tabPageCTAChartel.UseVisualStyleBackColor = true;
+            this.tabPageDBUploadDocument.Controls.Add(this.labelResult);
+            this.tabPageDBUploadDocument.Controls.Add(this.buttonUploadDocument);
+            this.tabPageDBUploadDocument.Controls.Add(this.textBoxDocumentPath);
+            this.tabPageDBUploadDocument.Controls.Add(this.label5);
+            this.tabPageDBUploadDocument.Location = new System.Drawing.Point(4, 24);
+            this.tabPageDBUploadDocument.Name = "tabPageDBUploadDocument";
+            this.tabPageDBUploadDocument.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDBUploadDocument.Size = new System.Drawing.Size(759, 435);
+            this.tabPageDBUploadDocument.TabIndex = 2;
+            this.tabPageDBUploadDocument.Text = "DB Document Upload ";
+            this.tabPageDBUploadDocument.UseVisualStyleBackColor = true;
             // 
-            // label7
+            // labelResult
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(83, 147);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(73, 15);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "Calculation :";
+            this.labelResult.AutoSize = true;
+            this.labelResult.Location = new System.Drawing.Point(123, 98);
+            this.labelResult.Name = "labelResult";
+            this.labelResult.Size = new System.Drawing.Size(0, 15);
+            this.labelResult.TabIndex = 22;
             // 
-            // label6
+            // buttonUploadDocument
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(83, 113);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(520, 15);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "Calculation : ((nChartelAmount + nChartelMeal)* (nChartelPendingYears + 1)) + nLa" +
-    "teFeeCharge;";
+            this.buttonUploadDocument.Location = new System.Drawing.Point(123, 49);
+            this.buttonUploadDocument.Name = "buttonUploadDocument";
+            this.buttonUploadDocument.Size = new System.Drawing.Size(167, 23);
+            this.buttonUploadDocument.TabIndex = 2;
+            this.buttonUploadDocument.Text = "CTADB Upload Document";
+            this.buttonUploadDocument.UseVisualStyleBackColor = true;
+            this.buttonUploadDocument.Click += new System.EventHandler(this.buttonUploadDocument_Click);
             // 
-            // labelChatrelResult
+            // textBoxDocumentPath
             // 
-            this.labelChatrelResult.AutoSize = true;
-            this.labelChatrelResult.Location = new System.Drawing.Point(83, 69);
-            this.labelChatrelResult.Name = "labelChatrelResult";
-            this.labelChatrelResult.Size = new System.Drawing.Size(38, 15);
-            this.labelChatrelResult.TabIndex = 3;
-            this.labelChatrelResult.Text = "label6";
-            // 
-            // buttonGetChartelNow
-            // 
-            this.buttonGetChartelNow.Location = new System.Drawing.Point(243, 20);
-            this.buttonGetChartelNow.Name = "buttonGetChartelNow";
-            this.buttonGetChartelNow.Size = new System.Drawing.Size(75, 23);
-            this.buttonGetChartelNow.TabIndex = 2;
-            this.buttonGetChartelNow.Text = "Chatrel Data";
-            this.buttonGetChartelNow.UseVisualStyleBackColor = true;
-            this.buttonGetChartelNow.Click += new System.EventHandler(this.buttonGetChartelNow_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(83, 20);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(153, 23);
-            this.textBox1.TabIndex = 1;
+            this.textBoxDocumentPath.Location = new System.Drawing.Point(123, 20);
+            this.textBoxDocumentPath.Name = "textBoxDocumentPath";
+            this.textBoxDocumentPath.Size = new System.Drawing.Size(614, 23);
+            this.textBoxDocumentPath.TabIndex = 1;
+            this.textBoxDocumentPath.Text = "D:\\Reji\\Chatrel\\upload\\";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(42, 28);
+            this.label5.Location = new System.Drawing.Point(27, 28);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(35, 15);
+            this.label5.Size = new System.Drawing.Size(90, 15);
             this.label5.TabIndex = 0;
-            this.label5.Text = "GBId:";
+            this.label5.Text = "Document Path";
             // 
             // tabPageDummyData
             // 
@@ -897,8 +874,8 @@
             this.tabPageRelationDataClincing.PerformLayout();
             this.tabPageImageMigration.ResumeLayout(false);
             this.tabPageImageMigration.PerformLayout();
-            this.tabPageCTAChartel.ResumeLayout(false);
-            this.tabPageCTAChartel.PerformLayout();
+            this.tabPageDBUploadDocument.ResumeLayout(false);
+            this.tabPageDBUploadDocument.PerformLayout();
             this.tabPageDummyData.ResumeLayout(false);
             this.tabPageDummyData.PerformLayout();
             this.tabPageDummyProfilePicture.ResumeLayout(false);
@@ -930,13 +907,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ProgressBar progressBarProcess;
         private System.Windows.Forms.Label labelRecordCount;
-        private System.Windows.Forms.TabPage tabPageCTAChartel;
-        private System.Windows.Forms.Button buttonGetChartelNow;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TabPage tabPageDBUploadDocument;
+        private System.Windows.Forms.Button buttonUploadDocument;
+        private System.Windows.Forms.TextBox textBoxDocumentPath;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label labelChatrelResult;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TabPage tabPageDummyData;
         private System.Windows.Forms.CheckBox checkBoxTBUSpouseName;
         private System.Windows.Forms.CheckBox checkBoxTBUMothersName;
@@ -983,6 +957,7 @@
         private System.Windows.Forms.Label labelDB1;
         private System.Windows.Forms.TextBox textBoxDB1;
         private System.Windows.Forms.Label labelSyncReport;
+        private System.Windows.Forms.Label labelResult;
     }
 }
 

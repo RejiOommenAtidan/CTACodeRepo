@@ -506,7 +506,7 @@ export default function Report() {
     sPaymentMode
   };
 
-  ////console.log("Parameters", reportParams);
+  //console.log("Parameters", reportParams);
 
   const getReport = () => {
     setdataAPI([]);
@@ -520,7 +520,7 @@ export default function Report() {
       .then(resp => {
         setBackdrop(false);
         if (resp.status === 200) {
-          //console.log("Chatrel List", resp.data);
+          console.log("Chatrel List", resp.data);
           var i = 1;
           resp.data.forEach((element) => {
             element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sDateFormat) : null;
@@ -538,7 +538,7 @@ export default function Report() {
         }
       })
       .catch(error => {
-        //console.log(error.message);
+        console.log(error.message);
         setNoRecords(true);
         setAlertMessage("Server Error fetching report data.\n");
         setAlertType('error');
@@ -556,12 +556,12 @@ export default function Report() {
     axios.get(`/AuthRegion/GetAuthRegionsForChatrelReport`)
       .then(resp => {
         if (resp.status === 200) {
-          ////console.log("AuthRegions fetched:", resp.data);
+          //console.log("AuthRegions fetched:", resp.data);
           setAuthRegions(resp.data);
           axios.get(`/Country/GetCountriesForChatrelReport`)
             .then(resp => {
               if (resp.status === 200) {
-                ////console.log("Countries: ", resp.data);
+                //console.log("Countries: ", resp.data);
                 setCountries(resp.data);
               }
             })
@@ -570,7 +570,7 @@ export default function Report() {
               setAlertType('error');
               snackbarOpen();
               setBackdrop(false);
-              //console.log(error.message);
+              console.log(error.message);
             });
         }
       })
@@ -579,7 +579,7 @@ export default function Report() {
         setAlertType('error');
         snackbarOpen();
         setBackdrop(false);
-        //console.log(error.message);
+        console.log(error.message);
       });
 
 
@@ -719,7 +719,7 @@ export default function Report() {
             onChange={
               (e, value) => {
                 if(value !== null){
-                  //console.log("OnChange region...", value);
+                  console.log("OnChange region...", value);
                   setAuthRegionId(value);
                 }
                 
@@ -757,7 +757,7 @@ export default function Report() {
             getOptionLabel={(option) => option.sCountry}
             onChange={
               (e, value) => {
-                //console.log("OnChange country...", value);
+                console.log("OnChange country...", value);
                 setCountryID(value);
               }
             }

@@ -46,7 +46,7 @@ export const InputParams = (props) => {
       valueAuthRegion = element;
     }
   });
-  ////console.log(nMadebTypeId);
+  //console.log(nMadebTypeId);
   madebTypes && madebTypes.forEach(element => {
     if (element.id === nMadebTypeId) {
       valueMadebTypes = element;
@@ -66,8 +66,8 @@ export const InputParams = (props) => {
   };
 
   function handleFormSubmit() {
-    //console.log("Form submission called.");
-    //console.log("MakeList parameters\n", makeListParams);
+    console.log("Form submission called.");
+    console.log("MakeList parameters\n", makeListParams);
     
     props.makeList(makeListParams, sAuthRegion, sMadebType );
   }
@@ -178,7 +178,7 @@ export const InputParams = (props) => {
                       (e, value) => {
                         props.onChange(value);
                         if (value !== null) {
-                          //console.log("Madeb id changed to:", value.id);
+                          console.log("Madeb id changed to:", value.id);
                           setMadebTypeId(value.id);
                           setMadebType(value.sMadebDisplayName);
                         }
@@ -236,7 +236,7 @@ export const InputParams = (props) => {
                       (e, value) => {
                         props.onChange(value);
                         if (value !== null) {
-                          //console.log("AuthRegion id changed to:", value.id);
+                          console.log("AuthRegion id changed to:", value.id);
                           setAuthRegionId(value.id);
                           setAuthRegion(value.sAuthRegion);
                         }

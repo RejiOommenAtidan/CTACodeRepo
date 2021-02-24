@@ -6,12 +6,12 @@ import {
   ScrollView,
   StyleSheet,
   Platform,
-  ActivityIndicator,
-  Linking,
   Modal,
   PermissionsAndroid,
   ToastAndroid,
   Alert,
+  ActivityIndicator,
+  Linking,
 } from 'react-native';
 
 import {Picker, PickerIOS} from '@react-native-picker/picker';
@@ -23,7 +23,8 @@ import {
   sPayPalBASEURL,
   sSuccessPayPalWebPageURL,
   sFolderName,
-  sReceiptDownloadMessage,
+  sReceiptDownloadMessageAndroid,
+  sReceiptDownloadMessageIOS,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import {Loader} from '../components/Loader';
@@ -50,17 +51,17 @@ import axios from 'axios';
 import Moment from 'moment';
 import Colors from '../constants/Colors';
 import {
+  storeJWTToken,
   removeGBDetails,
   removeJWTToken,
-  storeJWTToken,
 } from '../store/actions/GBDetailsAction';
 // import RNPaypal from 'react-native-paypal-lib';
 import {
   sPayPalClientID,
   sClientSecret,
+  sHimalayaFontName,
   sAPIBASEURL,
   oActivityIndicatorStyle,
-  sHimalayaFontName,
 } from '../constants/CommonConfig';
 import {
   widthPercentageToDP as wp,
@@ -68,6 +69,7 @@ import {
 } from 'react-native-responsive-screen';
 import base64 from 'react-native-base64';
 import RNFetchBlob from 'react-native-fetch-blob';
+import Toast from 'react-native-root-toast';
 
 export const Chatrel = (props) => {
   // let approvalUrl = null;
@@ -110,6 +112,8 @@ export const Chatrel = (props) => {
   const [nSelectedAuthRegion, setnSelectedAuthregion] = React.useState();
   const [donationNull, setDonationNull] = React.useState(false);
   const [gbChatrelsNull, setGBChatrelsNull] = React.useState(false);
+  const [displayFileDispute, setDisplayFileDispute] = React.useState(false);
+  const [basicResponse, setBasicResponse] = useState(0);
 
   ////PAID BY
   const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
@@ -222,57 +226,59 @@ export const Chatrel = (props) => {
     }
   };
 
-  const updateAuthRegionIOS = (e, value) => {
-    let index = e;
+  const updateAuthRegionIOS = (index, value) => {
+    debugger;
+    //let index = e;
     let chatrelObj = [...aGBChatrels];
-    let value1 = lAuthRegions.find((x) => x.id === parseInt(value));
-    chatrelObj[index].nAuthRegionID = value1.id;
-    chatrelObj[index].sCountryID = value1.sCountryID;
-    chatrelObj[index].sAuthRegionCurrency = value1.sCurrencyCode;
-    chatrelObj[index].nChatrelAmount =
-      value1.sCurrencyCode === 'INR'
-        ? chatrelObj[index].nChatrelINR
-        : chatrelObj[index].nChatrelUSD;
-    chatrelObj[index].nChatrelMeal =
-      value1.sCurrencyCode === 'INR'
-        ? chatrelObj[index].nChatrelMealINR
-        : chatrelObj[index].nChatrelMealUSD;
+    let value1 = lAuthRegions.find((x) => x.sAuthRegion === value);
 
-    chatrelObj[index].nCurrentChatrelSalaryAmt = 0;
-    setaGBChatrels(chatrelObj);
-    calculateMethod(index);
+    for (var forIndex = index; forIndex < chatrelObj.length; forIndex++) {
+      chatrelObj[forIndex].nAuthRegionID = value1.id;
+      chatrelObj[forIndex].sCountryID = value1.sCountryID;
+      chatrelObj[forIndex].sAuthRegionCurrency = value1.sCurrencyCode;
+      chatrelObj[forIndex].nChatrelAmount =
+        value1.sCurrencyCode === 'INR'
+          ? chatrelObj[forIndex].nChatrelINR
+          : chatrelObj[forIndex].nChatrelUSD;
+      chatrelObj[forIndex].nChatrelMeal =
+        value1.sCurrencyCode === 'INR'
+          ? chatrelObj[forIndex].nChatrelMealINR
+          : chatrelObj[forIndex].nChatrelMealUSD;
+
+      chatrelObj[forIndex].nCurrentChatrelSalaryAmt = 0;
+      setaGBChatrels(chatrelObj);
+      calculateMethod(forIndex);
+    }
   };
 
-  const updateAuthRegion = (e, value) => {
-    console.log(e);
-    console.log(value);
-    const index = e;
+  const updateAuthRegion = (index, value) => {
+    debugger;
+
+    //const index = e;
     let chatrelObj = [...aGBChatrels];
-
+    //let forIndex = index;
     // let value1  = lAuthRegions.find((x) => x.id === value)
-
     //var a  = document.getElementById(e);
     //console.info(pickerRef);
-
     // pickerRef.current.props.selectedValue = value;
 
-    chatrelObj[index].nAuthRegionID = value.id;
-    chatrelObj[index].sCountryID = value.sCountryID;
-    chatrelObj[index].sAuthRegionCurrency = value.sCurrencyCode;
-    chatrelObj[index].nChatrelAmount =
-      value.sCurrencyCode === 'INR'
-        ? chatrelObj[index].nChatrelINR
-        : chatrelObj[index].nChatrelUSD;
-    chatrelObj[index].nChatrelMeal =
-      value.sCurrencyCode === 'INR'
-        ? chatrelObj[index].nChatrelMealINR
-        : chatrelObj[index].nChatrelMealUSD;
+    for (var forIndex = index; forIndex < chatrelObj.length; forIndex++) {
+      chatrelObj[forIndex].nAuthRegionID = value.id;
+      chatrelObj[forIndex].sCountryID = value.sCountryID;
+      chatrelObj[forIndex].sAuthRegionCurrency = value.sCurrencyCode;
+      chatrelObj[forIndex].nChatrelAmount =
+        value.sCurrencyCode === 'INR'
+          ? chatrelObj[forIndex].nChatrelINR
+          : chatrelObj[forIndex].nChatrelUSD;
+      chatrelObj[forIndex].nChatrelMeal =
+        value.sCurrencyCode === 'INR'
+          ? chatrelObj[forIndex].nChatrelMealINR
+          : chatrelObj[forIndex].nChatrelMealUSD;
 
-    chatrelObj[index].nCurrentChatrelSalaryAmt = 0;
-    //for setting extra in mobile app
-    //setnSelectedAuthregion(value);
-    setaGBChatrels(chatrelObj);
-    calculateMethod(index);
+      chatrelObj[forIndex].nCurrentChatrelSalaryAmt = 0;
+      setaGBChatrels(chatrelObj);
+      calculateMethod(forIndex);
+    }
   };
 
   const calculateMethod = (index) => {
@@ -508,17 +514,21 @@ export const Chatrel = (props) => {
 
   useEffect(() => {
     if (isFocused) {
+      getChatrelDetails();
       console.log('Chatrel Common Component Called');
-      setbRender(false);
-      setbLoader(true);
+      setDisplayFileDispute(false);
       setshowData(true);
       setSuccessDiv(false);
       //AD & BD Making Zero
       setnAdditionalDonation(0);
       setnBusinessDonation(0);
       setnGrandTotal(0);
+      setaGBChatrels([]);
+      setOutstanding(true);
+      setBasicResponse(0);
+      setbRender(false);
+      setbLoader(true);
       //setShouldRun(true);
-      getChatrelDetails();
     }
   }, [isFocused]);
 
@@ -537,46 +547,64 @@ export const Chatrel = (props) => {
             .get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=` + myURL)
             .then((resp) => {
               if (resp.status === 200) {
-                console.log(resp.data);
-                setsCountryID(resp.data?.chatrel?.sCountryID);
-                if (
-                  resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0
-                ) {
-                  setOutstanding(false);
-                }
-                setnChatrelLateFeesPercentage(
-                  resp.data.chatrel.chatrelPayment.nChatrelLateFeesPercentage,
-                );
-                setaGBChatrels(resp.data.chatrel.gbChatrels);
-                setsName(resp.data.chatrel.sName);
-                setnPaidUntil(resp.data.chatrel.nPaidUntil);
-                setsGBID(resp.data.chatrel.chatrelPayment.sGBId);
-                setDataAPI(resp.data.chatrel);
-                setSummaryData(resp.data.chatrel.chatrelPayment);
-                setDonationData(resp.data.chatrel.gbChatrelDonation);
-                setnSelectedAuthregion(
-                  lAuthRegions.find(
-                    (x) => x.id === resp.data.chatrel.nAuthRegionID,
-                  ),
-                );
-                calcTotal(
-                  resp.data.chatrel.gbChatrels,
-                  nAdditionalDonation,
-                  nBusinessDonation,
-                );
+                //console.log(resp.data);
                 const oSession = {
                   sJwtToken: resp.data.token,
                   bSession: true,
                 };
                 dispatch(storeJWTToken(oSession));
-                setbLoader(false);
-                setbRender(true);
-                fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
-                  .then((response) => response.json())
-                  .then((data) => {
-                    console.log('currency', data.rates.USD);
-                    setDollarToRupees(data.rates.USD);
-                  });
+                if (resp.data.message === 'Paid Until Missing') {
+                  //console.log("Inside File Dispute Condition");
+                  setbLoader(false);
+                  setbRender(true);
+                  setDisplayFileDispute(true);
+                  // setbRender(true);
+                  // setbRender(true);
+                } else {
+                  setsCountryID(resp.data?.chatrel?.sCountryID);
+                  if (
+                    resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0
+                  ) {
+                    setOutstanding(false);
+                    debugger;
+                    console.log(
+                      resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt,
+                    );
+                    setBasicResponse(
+                      resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt,
+                    );
+                  }
+                  setnChatrelLateFeesPercentage(
+                    resp.data.chatrel.chatrelPayment.nChatrelLateFeesPercentage,
+                  );
+                  setaGBChatrels(resp.data.chatrel.gbChatrels);
+                  setsName(resp.data.chatrel.sName);
+                  setnPaidUntil(resp.data.chatrel.nPaidUntil);
+                  setsGBID(resp.data.chatrel.chatrelPayment.sGBId);
+                  setDataAPI(resp.data.chatrel);
+                  setSummaryData(resp.data.chatrel.chatrelPayment);
+                  setDonationData(resp.data.chatrel.gbChatrelDonation);
+                  setnSelectedAuthregion(
+                    lAuthRegions.find(
+                      (x) => x.id === resp.data.chatrel.nAuthRegionID,
+                    ),
+                  );
+                  calcTotal(
+                    resp.data.chatrel.gbChatrels,
+                    nAdditionalDonation,
+                    nBusinessDonation,
+                  );
+                  setbLoader(false);
+                  setbRender(true);
+                  fetch(
+                    'https://api.ratesapi.io/api/latest?base=INR&symbols=USD',
+                  )
+                    .then((response) => response.json())
+                    .then((data) => {
+                      console.log('currency', data.rates.USD);
+                      setDollarToRupees(data.rates.USD);
+                    });
+                }
               }
             })
             .catch((error) => {
@@ -587,6 +615,8 @@ export const Chatrel = (props) => {
                 //   bSession: false,
                 // };
                 // dispatch(storeJWTToken(oSession));
+              } else {
+                alert('Something went wrong, please try again later');
               }
             });
         }
@@ -599,6 +629,8 @@ export const Chatrel = (props) => {
           //   bSession: false,
           // };
           // dispatch(storeJWTToken(oSession));
+        } else {
+          alert('Something went wrong, please try again later');
         }
       });
   };
@@ -675,10 +707,12 @@ export const Chatrel = (props) => {
               handleSubmitAfterPayPal(response.data);
             })
             .catch(function (error) {
+              //TODO: Ask Team
               console.log(error);
             });
         })
         .catch(function (error) {
+          //TODO: Ask Team
           console.log(error);
         });
     }
@@ -736,11 +770,30 @@ export const Chatrel = (props) => {
 
           Platform.OS === 'android'
             ? ToastAndroid.show(
-                sReceiptDownloadMessage,
+                sReceiptDownloadMessageAndroid,
                 ToastAndroid.SHORT,
                 ToastAndroid.CENTER,
               )
-            : null;
+            : Toast.show(sReceiptDownloadMessageIOS, {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+                delay: 0,
+                // onShow: () => {
+                //     // calls on toast\`s appear animation start
+                // },
+                // onShown: () => {
+                //     // calls on toast\`s appear animation end.
+                // },
+                // onHide: () => {
+                //     // calls on toast\`s hide animation start.
+                // },
+                // onHidden: () => {
+                //     // calls on toast\`s hide animation end.
+                // }
+              });
         }
       })
       .catch((error) => {
@@ -763,6 +816,97 @@ export const Chatrel = (props) => {
     return (
       <>
         <Loader loading={bLoader} />
+      </>
+    );
+  }
+
+  if (displayFileDispute) {
+    //debugger;
+    return (
+      <>
+        <Card
+          title={
+            <View style={styles.titleStyleView}>
+              <Icon
+                color={Colors.white}
+                iconStyle={styles.iconStyles}
+                iconProps={{}}
+                //underlayColor={Colors.websiteLightBlueColor}
+                backgroundColor={Colors.websiteLightBlueColor}
+                size={40}
+                type="font-awesome-5"
+                name="briefcase"
+                containerStyle={styles.iconContainerStyles}
+              />
+            </View>
+          }
+          titleStyle={{}}
+          containerStyle={{
+            marginBottom: hp(2),
+            marginHorizontal: 0,
+            width: wp(87.5),
+            backgroundColor: Colors.white,
+
+            //Border Stuff
+            borderRadius: 15,
+            // borderColor: Colors.black,
+            // borderStyle: 'solid',
+            // borderWidth: 0.25,
+
+            //For iOS
+            shadowRadius: 15,
+            shadowColor: Colors.lightBlueChatrelWebsite,
+            shadowOffset: {width: 5, height: 5},
+            shadowOpacity: 1,
+
+            //For Android
+            elevation: 15,
+            overflow: 'visible',
+            marginTop: hp(5),
+          }}>
+          <View style={styles.viewMarginComponent}>
+            <Text style={styles.boldTextComponent}>
+              Last paid chatrel date not available.
+            </Text>
+          </View>
+          <View style={styles.viewMarginComponent}>
+            <Text style={styles.greyTextComponent}>
+              Please Contact CTA or file a dispute.
+            </Text>
+          </View>
+          <Button
+            title="FILE A DISPUTE"
+            titleStyle={{
+              color: Colors.white,
+              textAlign: 'center',
+              fontStyle: 'normal',
+              fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+              fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+            }}
+            buttonStyle={{
+              backgroundColor: Colors.websiteLightBlueColor,
+              borderRadius: 15,
+            }}
+            onPress={() => {
+              navigation.navigate('FileDispute');
+            }}
+          />
+        </Card>
+        {/* {Alert.alert(
+          'Attention Required',
+          'Last paid chatrel date not available. Please Contact CTA or file a dispute.',
+          [
+            {
+              text: 'File a Dispute',
+              onPress: () => {
+                setDisplayFileDispute(false);
+                navigation.navigate('FileDispute');
+              },
+              style: 'cancel',
+            },
+          ],
+          {cancelable: false},
+        )} */}
       </>
     );
   }
@@ -813,28 +957,33 @@ export const Chatrel = (props) => {
                   overflow: 'visible',
                 }}
                 title={
-                  <Text style={styles.headerComponent}>
-                    Thank You for your contribution!!
+                  <Text
+                    style={{
+                      ...styles.valueComponent,
+                      fontFamily: sHimalayaFontName,
+                      fontSize: wp(7),
+                      marginBottom: 0,
+                    }}>
+                    དཔྱ་དངུལ་དྲྭ་ཐོག་གནང་བར་ཐུགས་རྗེ་ཆེ་ཞུ།
                   </Text>
                 }
                 titleStyle={{}}>
                 <View>
                   <Text
                     style={{
-                      ...styles.valueComponent,
-                      fontFamily: sHimalayaFontName,
-                      fontSize: wp(5),
+                      ...styles.headerComponent,
+                      marginBottom: hp(2),
                     }}>
-                    དྭང་བླངས་དཔྱ་དངུལ་དྲ་རྒྱའི་བརྒྱུད་གནང་བར་ཐུགས་རྗེ་ཆེ་ཞུ།
+                    Thank you for your chatrel contribution.
                   </Text>
-                  <Text
+                  {/* <Text
                     style={{
                       ...styles.valueComponent,
                       fontFamily: sHimalayaFontName,
-                      fontSize: wp(5.75),
+                      fontSize: Platform.OS === 'android' ? wp(4.75) : wp(5),
                     }}>
                     བོད་མིའི་སྒྲིག་འཛུགས་དཔལ་འབྱོར་ལས་ཁུངས་ནས།
-                  </Text>
+                  </Text> */}
                   <Button
                     //disabled={true}
                     title="DOWNLOAD RECEIPT"
@@ -1009,6 +1158,7 @@ export const Chatrel = (props) => {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             marginBottom: hp(1),
+                            // paddingTop:10
                           }}>
                           <Text style={styles.chatrelYearComponent}>
                             {year.nChatrelYear}
@@ -1108,44 +1258,49 @@ export const Chatrel = (props) => {
                             )}
 
                             {Platform.OS === 'ios' && (
-                              <IOSPicker
-                                //data={lAuthRegions}
-                                mode={'modal'} //collapse
-                                //key={index}
-                                // itemStyle={{
-                                //   height: 50,
-                                //   width: 50,
-                                //   fontFamily: sFontName,
-                                // }}
-                                selectedValue={
-                                  lAuthRegions.find(
-                                    (x) =>
-                                      x.id === aGBChatrels[index].nAuthRegionID,
-                                  ).sAuthRegion
-                                }
-                                itemStyle={{
-                                  borderColor: Colors.black,
-                                  borderWidth: 1,
-                                  borderRadius: 15,
-                                  borderStyle: 'solid',
-                                }}
-                                style={styles.pickerComponentIOS}
-                                onValueChange={(itemValue, itemIndex) => {
-                                  //itemValue is data
-                                  //itemindex is index
-                                  console.log('Inchatrel');
-                                  updateAuthRegionIOS(index, itemValue);
-                                }}>
-                                {lAuthRegions.map(
-                                  (singleAuthregionIOS, authRegionIndex) => (
-                                    <Picker.Item
-                                      label={singleAuthregionIOS.sAuthRegion}
-                                      value={singleAuthregionIOS.sAuthRegion}
-                                      key={authRegionIndex}
-                                    />
-                                  ),
-                                )}
-                              </IOSPicker>
+                              <View
+                                pointerEvents={outstanding ? 'auto' : 'none'}>
+                                <IOSPicker
+                                  //data={lAuthRegions}
+                                  mode={'modal'} //collapse
+                                  //key={index}
+                                  // itemStyle={{
+                                  //   height: 50,
+                                  //   width: 50,
+                                  //   fontFamily: sFontName,
+                                  // }}
+                                  //enabled={!outstanding}
+                                  selectedValue={
+                                    lAuthRegions.find(
+                                      (x) =>
+                                        x.id ===
+                                        aGBChatrels[index].nAuthRegionID,
+                                    ).sAuthRegion
+                                  }
+                                  itemStyle={{
+                                    borderColor: Colors.black,
+                                    borderWidth: 1,
+                                    borderRadius: 15,
+                                    borderStyle: 'solid',
+                                  }}
+                                  style={styles.pickerComponentIOS}
+                                  onValueChange={(itemValue, itemIndex) => {
+                                    //itemValue is data
+                                    //itemindex is index
+                                    console.log('Inchatrel');
+                                    updateAuthRegionIOS(index, itemValue);
+                                  }}>
+                                  {lAuthRegions.map(
+                                    (singleAuthregionIOS, authRegionIndex) => (
+                                      <Picker.Item
+                                        label={singleAuthregionIOS.sAuthRegion}
+                                        value={singleAuthregionIOS.sAuthRegion}
+                                        key={authRegionIndex}
+                                      />
+                                    ),
+                                  )}
+                                </IOSPicker>
+                              </View>
                             )}
                           </View>
                           <View>
@@ -1191,6 +1346,11 @@ export const Chatrel = (props) => {
                                     //marginBottom: hp(2),
                                   }}>
                                   <Input
+                                    disabled={
+                                      basicResponse > 0
+                                        ? true
+                                        : false || year.isChild
+                                    }
                                     // label="Business Donation"
                                     //placeholder="Business Donation"
                                     inputContainerStyle={{
@@ -1227,7 +1387,7 @@ export const Chatrel = (props) => {
                                     //placeholder={''}
                                     //placeholderTextColor={Colors.grey}
                                     autoCorrect={false}
-                                    clearButtonMode={'while-editing'}
+                                    clearButtonMode={'never'}
                                     keyboardType={'number-pad'}
                                     keyboardAppearance={'default'}
                                     disableFullscreenUI={false}
@@ -1283,8 +1443,12 @@ export const Chatrel = (props) => {
                                     onValueChange={(value) => {
                                       modify(value, index);
                                     }}
-                                    value={year.nCurrentChatrelSalaryAmt !== 0}
-                                    disabled={year.isChild}
+                                    value={year.nCurrentChatrelSalaryAmt > 0}
+                                    disabled={
+                                      basicResponse > 0
+                                        ? true
+                                        : false || year.isChild
+                                    }
                                   />
                                 </View>
                               </View>
@@ -1296,95 +1460,97 @@ export const Chatrel = (props) => {
                       height: 0.75,
                       backgroundColor: Colors.greenBG,
                     }} />*/}
-                        <View
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: hp(1.25),
-                          }}>
-                          <View>
-                            <Text
-                              style={{
-                                ...styles.textComponent,
-                                textAlign: 'left',
-                              }}>
-                              CHATREL
-                            </Text>
-                            <Text
-                              style={{
-                                ...styles.textComponentAPI,
-                                textAlign: 'left',
-                              }}>
-                              {year.sAuthRegionCurrency === 'INR'
-                                ? '\u20B9'
-                                : '\u0024'}
-                              {year.nChatrelAmount.toFixed(2)}
-                            </Text>
-                          </View>
-                          <View>
-                            <Text
-                              style={{
-                                ...styles.textComponent,
-                                textAlign: 'center',
-                              }}>
-                              MEAL
-                            </Text>
-                            <Text
-                              style={{
-                                ...styles.textComponentAPI,
-                                textAlign: 'center',
-                              }}>
-                              {year.sAuthRegionCurrency === 'INR'
-                                ? '\u20B9'
-                                : '\u0024'}
-                              {year.nChatrelMeal.toFixed(2)}
-                            </Text>
-                          </View>
-                          <View>
-                            <Text
-                              style={{
-                                ...styles.textComponent,
-                                textAlign: 'center',
-                              }}>
-                              SALARY
-                            </Text>
-                            <Text
-                              style={{
-                                ...styles.textComponentAPI,
-                                textAlign: 'center',
-                              }}>
-                              {year.sAuthRegionCurrency === 'INR'
-                                ? '\u20B9'
-                                : '\u0024'}
-                              {year.nCurrentChatrelSalaryAmt.toFixed(2)}
-                            </Text>
-                          </View>
-                          <View>
-                            {year.lateFees !== 0 && (
-                              <>
-                                <Text
-                                  style={{
-                                    ...styles.textComponent,
-                                    textAlign: 'right',
-                                  }}>
-                                  PENALTY
-                                </Text>
-                                <Text
-                                  style={{
-                                    ...styles.textComponentAPI,
-                                    textAlign: 'right',
-                                  }}>
-                                  {year.sAuthRegionCurrency === 'INR'
-                                    ? '\u20B9'
-                                    : '\u0024'}
-                                  {year.nChatrelLateFeesValue.toFixed(2)}
-                                </Text>
-                              </>
-                            )}
-                          </View>
-                        </View>
+                        {outstanding && (
+                          <View
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              marginBottom: hp(1.25),
+                            }}>
+                            <View>
+                              <Text
+                                style={{
+                                  ...styles.textComponent,
+                                  textAlign: 'left',
+                                }}>
+                                CHATREL
+                              </Text>
+                              <Text
+                                style={{
+                                  ...styles.textComponentAPI,
+                                  textAlign: 'left',
+                                }}>
+                                {year.sAuthRegionCurrency === 'INR'
+                                  ? '\u20B9'
+                                  : '\u0024'}
+                                {year.nChatrelAmount.toFixed(2)}
+                              </Text>
+                            </View>
+                            <View>
+                              <Text
+                                style={{
+                                  ...styles.textComponent,
+                                  textAlign: 'center',
+                                }}>
+                                MEAL
+                              </Text>
 
+                              <Text
+                                style={{
+                                  ...styles.textComponentAPI,
+                                  textAlign: 'center',
+                                }}>
+                                {year.sAuthRegionCurrency === 'INR'
+                                  ? '\u20B9'
+                                  : '\u0024'}
+                                {year.nChatrelMeal.toFixed(2)}
+                              </Text>
+                            </View>
+                            <View>
+                              <Text
+                                style={{
+                                  ...styles.textComponent,
+                                  textAlign: 'center',
+                                }}>
+                                SALARY
+                              </Text>
+                              <Text
+                                style={{
+                                  ...styles.textComponentAPI,
+                                  textAlign: 'center',
+                                }}>
+                                {year.sAuthRegionCurrency === 'INR'
+                                  ? '\u20B9'
+                                  : '\u0024'}
+                                {year.nCurrentChatrelSalaryAmt.toFixed(2)}
+                              </Text>
+                            </View>
+                            <View>
+                              {year.lateFees !== 0 && (
+                                <>
+                                  <Text
+                                    style={{
+                                      ...styles.textComponent,
+                                      textAlign: 'right',
+                                    }}>
+                                    PENALTY
+                                  </Text>
+                                  <Text
+                                    style={{
+                                      ...styles.textComponentAPI,
+                                      textAlign: 'right',
+                                    }}>
+                                    {year.sAuthRegionCurrency === 'INR'
+                                      ? '\u20B9'
+                                      : '\u0024'}
+                                    {year.nChatrelLateFeesValue.toFixed(2)}
+                                  </Text>
+                                </>
+                              )}
+                            </View>
+                          </View>
+                        )}
                         <Card.Divider
                           style={{
                             height: 1,
@@ -1522,7 +1688,7 @@ export const Chatrel = (props) => {
                     placeholderTextColor={Colors.grey}
                     autoCorrect={false}
                     clearButtonMode={'while-editing'}
-                    keyboardType={'number-pad'}
+                    keyboardType={'decimal-pad'}
                     keyboardAppearance={'default'}
                     disableFullscreenUI={true}
                     onChangeText={(value) => {
@@ -1571,7 +1737,7 @@ export const Chatrel = (props) => {
                     placeholderTextColor={Colors.grey}
                     autoCorrect={false}
                     clearButtonMode={'while-editing'}
-                    keyboardType={'number-pad'}
+                    keyboardType={'decimal-pad'}
                     keyboardAppearance={'default'}
                     disableFullscreenUI={true}
                     onChangeText={(value) => {
@@ -1865,10 +2031,37 @@ export const Chatrel = (props) => {
                               setbPaymentModal(true);
                             })
                             .catch(function (error) {
+                              setbLoader(false);
+                              setbRender(true);
+                              Alert.alert(
+                                'Attention Required',
+                                'Cannot Connect to PayPal, Please try again later.',
+                                [
+                                  {
+                                    text: 'Ok',
+                                    onPress: () => true,
+                                    style: 'cancel',
+                                  },
+                                ],
+                              );
                               console.log(error);
                             });
                         })
                         .catch(function (error) {
+                          setbLoader(false);
+                          setbRender(true);
+                          Alert.alert(
+                            'Attention Required',
+                            'Cannot Connect to PayPal, Please try again later.',
+                            [
+                              {
+                                text: 'Ok',
+                                onPress: () => true,
+                                style: 'cancel',
+                              },
+                            ],
+                            {cancelable: false},
+                          );
                           console.log(error);
                         });
                       // // Linking.openURL('https://5f99d5ac2fc8.ngrok.io/PaypalTest');
@@ -1951,7 +2144,7 @@ const styles = StyleSheet.create({
     //margin: 15
   },
   headerComponent: {
-    fontSize: wp(5),
+    fontSize: wp(4),
     fontStyle: 'normal',
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
@@ -1977,16 +2170,16 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     fontFamily: sFontName,
   },
-  chatrelTextComponent: {
-    marginTop: 15,
-    textAlign: 'left',
-    fontSize: 24,
-    fontStyle: 'normal',
-    color: Colors.ChatrelInfoBlue,
-    marginBottom: 10,
-    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
-  },
+  // chatrelTextComponent: {
+  //   marginTop: 15,
+  //   textAlign: 'left',
+  //   fontSize: 24,
+  //   fontStyle: 'normal',
+  //   color: Colors.ChatrelInfoBlue,
+  //   marginBottom: 10,
+  //   fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+  //   fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+  // },
   chatrelYearComponent: {
     // marginBottom: 15,
     fontSize: wp(7),
@@ -2067,7 +2260,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlignVertical: 'center',
     backgroundColor: Colors.websiteLightBlueColor,
-    padding: Platform.OS === 'android' ? hp(2) : hp(0),
+    padding: hp(2),
     // width: wp(29),
     // height: hp(3.5),
   },
@@ -2084,6 +2277,9 @@ const styles = StyleSheet.create({
     // flexDirection:'row'
   },
   labelComponent: {
+    textAlignVertical: 'center',
+    alignContent: 'center',
+    justifyContent: 'center',
     alignSelf: 'center',
     textAlign: 'center',
     fontSize: wp(3),
@@ -2091,7 +2287,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
-    padding: Platform.OS==="ios"?hp(2):hp(0),
+    paddingBottom: Platform.OS === 'ios' ? 10 : 0,
   },
   valueComponent: {
     // width: '100%',
@@ -2116,9 +2312,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlignVertical: 'center',
     backgroundColor: Colors.ChatrelYearGreen,
+    padding: hp(2),
     // width: wp(20),
     // height: hp(2.75),
-    padding: hp(2),
   },
   labelComponentChip: {
     alignSelf: 'center',
@@ -2128,5 +2324,58 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+  },
+  titleStyleView: {
+    marginBottom: hp(5.5),
+    shadowRadius: 15,
+    shadowColor: Colors.lightBlueChatrelWebsite,
+    shadowOffset: {width: 5, height: 5},
+    shadowOpacity: 1,
+  },
+  iconStyles: {
+    backgroundColor: Colors.websiteLightBlueColor,
+    margin: hp(2),
+  },
+  iconContainerStyles: {
+    // backgroundColor:Colors.white,
+    alignSelf: 'center',
+    position: 'absolute',
+    top: -55,
+    // left:20,
+    //Border Stuff
+    borderRadius: 10,
+    // borderColor: Colors.black,
+    // borderStyle: 'solid',
+    // borderWidth: 0.25,
+
+    //For iOS
+
+    //For Android
+    elevation: 15,
+    // overflow: 'visible',
+  },
+  boldTextComponent: {
+    fontSize: wp(6),
+    fontStyle: 'normal',
+    textAlign: 'center',
+    color: Colors.blackText,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+  },
+  greyTextComponent: {
+    fontSize: wp(5.25),
+    fontFamily: sFontName,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    textAlign: 'center',
+    color: Colors.labelColorLight,
+    //lessen from 5 to 3.5
+    lineHeight: hp(3.5),
+  },
+  viewMarginComponent: {
+    //width: wp(70),
+    //height: hp(33),
+    marginBottom: hp(2.5),
   },
 });

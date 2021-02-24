@@ -89,7 +89,7 @@ return (
     
 
     <div  style={{     
-    marginLeft:'60px' , marginTop:'60px' , fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
+    marginLeft:'80px' , marginTop:'45px' , fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
 
    { printObj.map((row, index) => (
             
@@ -107,7 +107,7 @@ return (
     //()
    
     }
-  
+      
   </div>
   
    </>

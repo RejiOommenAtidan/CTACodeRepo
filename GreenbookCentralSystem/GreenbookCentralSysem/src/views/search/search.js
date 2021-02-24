@@ -188,7 +188,7 @@ export default function SearchPage() {
   };
 
   const viewGb = (GBID) => {
-    //console.log(GBID)
+    console.log(GBID)
     setsGBID(GBID);
     setViewModal(true);
   }
@@ -488,7 +488,7 @@ export default function SearchPage() {
 
   const handleSimpleSearch = (e) => {
 
-    //setSearchField(e.target.value,//console.log(searchField))
+    //setSearchField(e.target.value,console.log(searchField))
     if (e.target.value.length > 0) {
       const simpleObj = {
         sSearchField: searchFilter,
@@ -499,7 +499,7 @@ export default function SearchPage() {
         .then(resp => {
           if (resp.status === 200) {
             let i = 1;
-            //console.log(resp.data);
+            console.log(resp.data);
             resp.data.forEach((element) => {
               element.nSerialNo = i;
               element.sGBIDCombo = element.sCountryID + element.sGBID;
@@ -521,10 +521,10 @@ export default function SearchPage() {
           } else {
             console.error('Error', error.message);
           }
-          //console.log(error.config);
+          console.log(error.config);
         })
         .then(release => {
-          ////console.log(release); => udefined
+          //console.log(release); => udefined
         });
     }
     else {
@@ -549,11 +549,11 @@ export default function SearchPage() {
   }
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const getRecentGB = () => {
-    //console.log('recent');
+    console.log('recent');
     axios.get(`RecentlySearchedGB/GetRecentlySearchedGBs?records=20&nUserId=` + userId)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          console.log(resp.data);
           setRecentGBData(resp.data);
         }
       })
@@ -567,21 +567,21 @@ export default function SearchPage() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }
   const handleComplexSearch = () => {
-    //   //setSearchField(e.target.value,//console.log(searchField))
+    //   //setSearchField(e.target.value,console.log(searchField))
     //alert(JSON.stringify(complexObj))
     axios.post(`GreenBook/GetQuickResultComplex`, complexObj)
       .then(resp => {
         if (resp.status === 200) {
 
           let i = 1;
-          //console.log(resp.data);
+          console.log(resp.data);
           resp.data.forEach((element) => {
             element.nSerialNo = i;
             element.sGBIDCombo = element.sCountryID + element.sGBID;
@@ -603,10 +603,10 @@ export default function SearchPage() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }
   /*const isValidDate=(d)=> {
@@ -642,21 +642,21 @@ export default function SearchPage() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
 
   useEffect(() => {
-    ////console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
+    //console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
     if (firstName.length > 2 || lastName.length > 2 ||
       familyName.length > 2 || spouseName.length > 2 ||
       fatherName.length > 2 || motherName.length > 2 ||
       city.length > 2 || state.length > 2 || gender.length == 1 ||
       Moment(dob).format('YYYY-MM-DD') != 'Invalid date' || country || minAge > 0 || maxAge > 0) {
-      //console.log(complexObj);
+      console.log(complexObj);
       handleComplexSearch();
     }
   }, [firstName, lastName, familyName, spouseName, fatherName, motherName, city, state, dob, country, gender, minAge, maxAge]);
@@ -861,7 +861,7 @@ export default function SearchPage() {
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            //console.log(value.sCountryID);
+                            console.log(value.sCountryID);
                             setCountry(value.sCountryID);
                           }
                           else {

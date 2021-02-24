@@ -17,13 +17,14 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
 //Local
-//export const sAPIBASEURL = "http://localhost:52013/api";
+export const sAPIBASEURL = "http://localhost:52013/api";
+//export const sAPIBASEURL = "http://172.28.21.2:9001/api";
 
 //QA
 // export const sAPIBASEURL = "https://cta-portal-webapi.azurewebsites.net/api";
 
 //UAT
-export const sAPIBASEURL = "https://cta-portal-webapi-uat.azurewebsites.net/api";
+// export const sAPIBASEURL = "https://cta-portal-webapi-uat.azurewebsites.net/api";
 
 export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record added successfully";
@@ -38,7 +39,7 @@ This field is required
 </span>
 export const asterisk=<span style={{ color: 'red' }}> *</span>;
 export const aPageSizeArray = [5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 100];
-export const nPageSize = 10;
+export const nPageSize = 15;
 export const oOptions = {
   // loadingType:"linear",
   // searchFieldAlignment:"left",
@@ -47,7 +48,7 @@ export const oOptions = {
   //padding: "dense",
   //emptyRowsWhenPaging: false,
   draggable: true,
-  maxBodyHeight: 575,
+  maxBodyHeight: 750,
   columnsButton: true,
   filtering: true,
   exportButton: {
@@ -64,6 +65,12 @@ export const oOptions = {
     border: '1.25px solid lightgrey',
     height: '30px',
     fontWeight: 'bold'
+  },
+  cellStyle: {
+    textAlign: "left",
+    padding: '5px',
+    border: '1px solid black'
+    
   },
   pageSize: nPageSize,
   pageSizeOptions: aPageSizeArray,

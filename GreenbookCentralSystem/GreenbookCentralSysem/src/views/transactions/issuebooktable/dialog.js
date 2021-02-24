@@ -55,7 +55,7 @@ export const EditDialog = (props) => {
 
 	let typeIssuedData = []
 	typeIssuedDataAll.forEach(i => {
-		////console.log(i);
+		//console.log(i);
 		if (i.id === 2 || i.id === 3 || i.id === 4) {
 			typeIssuedData.push(i);
 		}
@@ -153,7 +153,7 @@ placeholder="DD-MM-YYYY"
 													onChange={
 														(e, value) => {
 															if (value !== null) {
-																//console.log(value.id);
+																console.log(value.id);
 																setMadebType(value.id);
 															}
 															else {
@@ -196,7 +196,7 @@ placeholder="DD-MM-YYYY"
 													onChange={
 														(e, value) => {
 															if (value !== null) {
-																//console.log(value.id);
+																console.log(value.id);
 																setAuthorityId(value.id);
 															}
 															else {
@@ -254,7 +254,7 @@ placeholder="DD-MM-YYYY"
 													onChange={
 														(e, value) => {
 															if (value !== null) {
-																//console.log(value.id);
+																console.log(value.id);
 																setIssuedOrNotId(value.id);
 															}
 															else {
@@ -333,8 +333,8 @@ placeholder="DD-MM-YYYY"
 
 export const SaveDialog = (props) => {
 	const { register, handleSubmit, errors, setValue, formState } = useForm();
-	//console.log(props.selectData);
-	//console.log(props.saveObj);
+	console.log(props.selectData);
+	console.log(props.saveObj);
 	const [authorityData, setAuthoritData] = React.useState(props.selectData['authRegions']);
 	const [madebData, setMadebData] = React.useState(props.selectData['madebTypes']);
 	// const [typeIssuedData,setTypeIssuedData]= React.useState(props.selectData['typeIssued']);
@@ -371,7 +371,7 @@ export const SaveDialog = (props) => {
 	}
 	let typeIssuedData = []
 	typeIssuedDataAll.forEach(i => {
-		////console.log(i);
+		//console.log(i);
 		if (i.id === 2 || i.id === 3 || i.id === 4) {
 			typeIssuedData.push(i);
 		}
@@ -401,7 +401,7 @@ export const SaveDialog = (props) => {
 		}
 	});
 	useEffect(() => {
-		//  //console.log(typeIssuedDataAll);
+		//  console.log(typeIssuedDataAll);
 	}, []);
 
 	const onSaveHandleSubmit = () => {
@@ -483,7 +483,7 @@ placeholder="DD-MM-YYYY"
 											onChange={
 												(e, value) => {
 													if (value !== null) {
-														//console.log(value.id);
+														console.log(value.id);
 														setMadebType(value.id);
 													}
 													else {
@@ -526,7 +526,7 @@ placeholder="DD-MM-YYYY"
 											onChange={
 												(e, value) => {
 													if (value !== null) {
-														//console.log(value.id);
+														console.log(value.id);
 														setAuthorityId(value.id);
 													}
 													else {
@@ -581,7 +581,7 @@ placeholder="DD-MM-YYYY"
 											onChange={
 												(e, value) => {
 													if (value !== null) {
-														//console.log(value.id);
+														console.log(value.id);
 														setIssuedOrNotId(value.id);
 													}
 													else {

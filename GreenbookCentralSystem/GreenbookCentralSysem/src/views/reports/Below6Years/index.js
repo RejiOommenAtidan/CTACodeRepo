@@ -205,7 +205,7 @@ export default function Report() {
                 element.dtFormattedDOB = element.dtDOB ? Moment(element.dtDOB).format(sDateFormat) : null;
               })
               SetBelow6yearsData(resp.data);
-              //console.log(resp.data);
+              console.log(resp.data);
             }
           }
         })
@@ -219,10 +219,10 @@ export default function Report() {
           } else {
             console.error('Error', error.message);
           }
-          //console.log(error.config);
+          console.log(error.config);
         })
         .then(release => {
-          ////console.log(release); => udefined
+          //console.log(release); => udefined
         });
     }
   };

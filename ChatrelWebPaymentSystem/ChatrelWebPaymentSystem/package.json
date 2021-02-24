@@ -28,7 +28,7 @@
     "chart.js": "2.9.3",
     "clsx": "1.1.0",
     "date-fns": "^2.9.0",
-    "draft-js": "0.11.5",
+    "draft-js": "^0.11.7",
     "draftjs-to-html": "0.9.1",
     "formik": "2.1.4",
     "framer-motion": "1.10.3",
@@ -65,7 +65,7 @@
     "react-flagkit": "^2.0.4",
     "react-gauge-chart": "0.2.5",
     "react-google-login": "^5.1.22",
-    "react-ionicons": "3.1.4",
+    "react-ionicons": "^1.4.6",
     "react-joyride": "2.2.1",
     "react-leaflet": "2.6.1",
     "react-paypal-button-v2": "^2.6.2",
@@ -75,7 +75,7 @@
     "react-responsive": "^8.2.0",
     "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.4",
     "react-slick": "0.26.0",
     "react-sparklines": "1.7.0",
     "react-spinners": "0.8.3",
@@ -115,9 +115,9 @@
     "eslint-plugin-prettier": "3.1.3",
     "eslint-plugin-react": "7.19.0",
     "eslint-plugin-unused-imports": "0.1.3",
+    "node-sass": "4.14.1",
     "prettier": "2.0.5",
     "prettier-eslint": "9.0.1",
-    "prettier-eslint-cli": "5.0.0",
-    "node-sass": "4.14.1"
+    "prettier-eslint-cli": "5.0.0"
   }
 }

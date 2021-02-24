@@ -7,10 +7,10 @@ export default function PageLoginBasic(props) {
  /* let message="";
   useEffect(() => {
     
-    //console.log('location',props.location);
+    console.log('location',props.location);
     if(props.location.state){
       message=props.location.state.changepassword;  
-      //console.log(props.location.state.changepassword);  
+      console.log(props.location.state.changepassword);  
     }
  }, []);*/
   return (

@@ -81,7 +81,7 @@ export default function ChangePassword() {
   const [sConfirmNewPassword, setsConfirmNewPassword] = useState('');
   // const password = useRef({});
   // password.current = watch("name_sNewPassword", "");
-  // //console.log(password);
+  // console.log(password);
 
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
@@ -147,7 +147,7 @@ export default function ChangePassword() {
             handleError(error, history);
         })
         .then(release => {
-          ////console.log(release); => udefined
+          //console.log(release); => udefined
         });
     }
     else {

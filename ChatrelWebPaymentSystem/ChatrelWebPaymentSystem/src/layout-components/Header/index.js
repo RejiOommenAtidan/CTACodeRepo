@@ -27,7 +27,7 @@ const Header = (props) => {
   
 
   const responsive = useMediaQuery({query: '(max-width: 1100px)'})
-  //console.log(responsive);
+  console.log(responsive);
 
   const {
     headerShadow,
@@ -48,14 +48,14 @@ const Header = (props) => {
   const toggleSidebarMobile = () => {
     setSidebarToggleMobile(!sidebarToggleMobile);
   };
- // //console.log(window.location.pathname);
+ // console.log(window.location.pathname);
     const[location,setLocation]=React.useState("");
    // const userObj = useSelector(state => state.GLoginReducer.oGoogle);
-    //console.log(useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails));
+    console.log(useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails));
 const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
 
 
-//console.log(userObj);
+console.log(userObj);
 if(userObj===null){
  history.push("/Login");
 } 
@@ -69,7 +69,7 @@ const [paymentData, setPaymentData] = React.useState();
 const [outstanding, setOutstanding] = useState(true);
  
 const makePayment = (obj)=> {
- // //console.log("Inside Make payment method for " , obj, data)
+ // console.log("Inside Make payment method for " , obj, data)
   dispatch(storeCurrentGBDetails(obj));
   history.push('/Chatrel');
 }

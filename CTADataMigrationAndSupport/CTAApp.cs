@@ -551,279 +551,6 @@ namespace CTADataMigrationAndSupport
         }
 
 
-        #region Chatrel
-
-        private void buttonGetChartelNow_Click(object sender, EventArgs e)
-        {
-            string connetionString = null;
-            MySqlConnection cnn;
-            connetionString = txtConnectionString.Text;
-            string sLogFolderPath = txtLogFolderPath.Text;
-            string sPathPrifix = txtImagePath.Text;
-            string sGBId = textBox1.Text;
-            int nPaidUntil = 0;
-            string sName = string.Empty;
-            int nAuthRegionID = 0;
-            string sCountryID = string.Empty;
-            string sCurrencyCode = string.Empty;
-            string sDOB = string.Empty;
-            int nAge = 0;
-            string isChild = string.Empty;
-            cnn = new MySqlConnection(connetionString);
-            progressBarProcess.Value = 0;
-            progressBarProcess.Refresh();
-
-
-            try
-            {
-                cnn.Open();
-
-                //string query = "SELECT sGBID FROM tblGreenBook";
-                string query = "SELECT tblgreenbook.sGBId, SUBSTRING(tblgreenbook.sPaidUntil,1,4) as sPaidUntil , concat(COALESCE(`sFirstName`,'') , ' ' , COALESCE(`sLastName`,'')) as sName , tblgreenbook.nAuthRegionID , lstauthregion.sCountryID  , lstauthregion.sCurrencyCode,  lstauthregion.sAuthRegion , tblgreenbook.dtdob ,  DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),tblgreenbook.dtdob)),'%Y')+0 AS age,   DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),tblgreenbook.dtdob)),'%Y')+0 >=6 and DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),tblgreenbook.dtdob)),'%Y')+0 <18 AS IsChild FROM tblgreenbook  Left Outer Join lstauthregion on lstauthregion.ID = tblgreenbook.nAuthRegionID WHERE sGBId = '" + sGBId + "'";
-                //string query = "select sGBID from tblgreenbook where sGBID = 0000000";
-                MySqlCommand cmd = new MySqlCommand(query, cnn);
-                MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
-                DataTable dt = new DataTable("tblgreenbook");
-                returnVal.Fill(dt);
-
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    //Calculate the chartel pending amount from dt.Rows[0]["sPaidUntil"]
-                    nPaidUntil = dt.Rows[0]["sPaidUntil"] != "" ? Convert.ToInt32(dt.Rows[0]["sPaidUntil"]) : 2011;
-                    sName = dt.Rows[0]["sName"].ToString();
-                    nAuthRegionID = Convert.ToInt32(dt.Rows[0]["nAuthRegionID"]);
-                    sCountryID = dt.Rows[0]["sCountryID"].ToString();
-                    sCurrencyCode = dt.Rows[0]["sCurrencyCode"].ToString();
-                    sDOB = dt.Rows[0]["dtDOB"].ToString();
-                    nAge = Convert.ToInt32(dt.Rows[0]["age"]);
-                    isChild = dt.Rows[0]["IsChild"].ToString();
-                    labelChatrelResult.Text = nPaidUntil.ToString();
-                    labelChatrelResult.Text = "Total Chatrel Balance: $" + getChatrelAmount(nPaidUntil, sCurrencyCode, isChild == "0" ? false : true) + " from the year " + nPaidUntil.ToString();
-                    DataTable dtChatrelPending = getChatrelDataTable(nPaidUntil, sName, nAuthRegionID, sCountryID, sCurrencyCode, sDOB, isChild == "0" ? false : true);
-
-                }
-                else
-                {
-                    nPaidUntil = 2011;
-                    labelChatrelResult.Text = "Invalid GB Id";
-                }
-
-                cnn.Close();
-
-            }
-            catch (Exception ex)
-            {
-                labelChatrelResult.Text += Environment.NewLine + ex.ToString();
-            }
-
-
-        }
-
-        private string getChatrelAmount(int nChatrelYear, string sCurrencyCode, bool isChild)
-        {
-
-            double nChatrelAmount = sCurrencyCode == "USD" ? 36 : 48;
-            double nChatrelMeal = sCurrencyCode == "USD" ? 10 : 10;
-            double nChatrelSalaryAmt = sCurrencyCode == "USD" ? 50 : 0;
-            double nChatrelLateFeesPercentage = sCurrencyCode == "USD" ? 10 : 10;
-            double nChatrelStartYear = 2011;
-            int nGracePeriodInMonths = 1;
-            double nChatrelCurrentYear = DateTime.Today.Year;
-            double nChatrelPendingYears = 0;
-            decimal nLateFeeCharge = 0;
-            //Calculate
-            if (isChild)
-            {
-                nChatrelAmount = sCurrencyCode == "USD" ? 12 : 12;
-            }
-
-            if (nChatrelYear < nChatrelStartYear)
-            {
-                nChatrelYear = 2011;
-            }
-
-            nChatrelPendingYears = nChatrelCurrentYear - nChatrelYear;
-
-            if (nChatrelPendingYears > 1)
-            {
-                nLateFeeCharge = (((Convert.ToDecimal(nChatrelAmount) + Convert.ToDecimal(nChatrelMeal)) * Convert.ToDecimal(nChatrelPendingYears)) * 10) / 100;
-            }
-
-            //Int64 nTotalChatrelAmount = ((nChatrelAmount + nChatrelMeal) * nChatrelPendingYears) + nLateFeeCharge;
-            decimal nTotalChatrelAmount = Math.Round((Convert.ToDecimal(nChatrelAmount + nChatrelMeal) * Convert.ToDecimal(nChatrelPendingYears + 1)) + nLateFeeCharge, 2);
-
-            label7.Text = "Calculation : (" + nChatrelAmount.ToString() + " + " + nChatrelMeal.ToString() + ") * (" + nChatrelPendingYears.ToString() + " + 1) + "
-                + Math.Round(nLateFeeCharge, 2).ToString() + " = " + nTotalChatrelAmount.ToString("0.00");
-
-
-
-            return nTotalChatrelAmount.ToString("0.00");
-        }
-
-        private DataTable getChatrelDataTable(int nChatrelYear, string sName, int nAuthRegionID, string sCountryID, string sCurrencyCode, string sDOB, bool isChild)
-        {
-            double nChatrelAmount = sCurrencyCode == "USD" ? 36 : 48;
-            double nChatrelMeal = sCurrencyCode == "USD" ? 10 : 10;
-            double nChatrelSalaryAmt = sCurrencyCode == "USD" ? 50 : 0;
-            double nChatrelLateFeesPercentage = sCurrencyCode == "USD" ? 10 : 10;
-            double nChatrelStartYear = 2011;
-            int nGracePeriodInMonths = 1;
-            double nChatrelCurrentYear = DateTime.Today.Year;
-            double nChatrelPendingYears = 0;
-            decimal nLateFeeCharge = 0;
-            DateTime dtDOB = Convert.ToDateTime(sDOB);
-            double dLateFee = 0;
-            //Calculate
-            if (isChild)
-            {
-                nChatrelAmount = 12;
-            }
-
-
-            if (nChatrelYear < nChatrelStartYear)
-            {
-                nChatrelYear = 2011;
-            }
-
-            nChatrelPendingYears = nChatrelCurrentYear - nChatrelYear;
-
-            if (nChatrelPendingYears > 1)
-            {
-                nLateFeeCharge = (((Convert.ToDecimal(nChatrelAmount) + Convert.ToDecimal(nChatrelMeal)) * Convert.ToDecimal(nChatrelPendingYears)) * 10) / 100;
-            }
-
-            //Int64 nTotalChatrelAmount = ((nChatrelAmount + nChatrelMeal) * nChatrelPendingYears) + nLateFeeCharge;
-            decimal nTotalChatrelAmount = Math.Round((Convert.ToDecimal(nChatrelAmount + nChatrelMeal) * Convert.ToDecimal(nChatrelPendingYears + 1)) + nLateFeeCharge, 2);
-
-            label7.Text = "Calculation : (" + nChatrelAmount.ToString() + " + " + nChatrelMeal.ToString() + ") * (" + nChatrelPendingYears.ToString() + " + 1) + "
-                + Math.Round(nLateFeeCharge, 2).ToString() + " = " + nTotalChatrelAmount.ToString("0.00");
-
-            DataTable lnkGBChatrelPending = GetTable();
-            int countRow = 0;
-            for (int i = 0; i < nChatrelPendingYears; i++)
-            {
-
-
-                nChatrelAmount = getChartelAmountForChildYear(dtDOB, nChatrelYear, 1, Convert.ToInt32(sCurrencyCode == "USD" ? 36 : 48 / 12));
-                if (nChatrelAmount == 0)
-                {
-                    nChatrelYear++;
-                    continue;
-                }
-                if (i + 1 == nChatrelPendingYears && nGracePeriodInMonths > 0)
-                {
-                    dLateFee = DateTime.Now >= Convert.ToDateTime(nChatrelYear.ToString() + "-03-31").AddMonths(nGracePeriodInMonths) ? (((nChatrelAmount + nChatrelMeal) * nChatrelLateFeesPercentage) / 100d) : 0;
-                }
-                else
-                {
-                    dLateFee = (((nChatrelAmount + nChatrelMeal) * nChatrelLateFeesPercentage) / 100d);
-                }
-                //double dLateFee = (((nChatrelAmount + nChatrelMeal) * nChatrelLateFeesPercentage) / 100d);
-                lnkGBChatrelPending.Rows.Add(
-                    i + 1,
-                    sName,
-                    nChatrelAmount,
-                    nChatrelMeal,
-                    nChatrelYear,
-                    dLateFee,
-                    0,
-                    0,
-                    0,
-                    (nChatrelAmount + nChatrelMeal + dLateFee),
-                    DateTime.Now,
-                    nAuthRegionID,
-                    sCountryID,
-                    sCurrencyCode);
-                countRow++;
-                nChatrelYear++;
-            }
-            nChatrelAmount = getChartelAmountForChildYear(dtDOB, nChatrelYear, 1, Convert.ToInt32(sCurrencyCode == "USD" ? 36 : 48 / 12));
-
-            countRow++;
-
-            lnkGBChatrelPending.Rows.Add(
-                    countRow,
-                    sName,
-                    nChatrelAmount,
-                    nChatrelMeal,
-                    nChatrelYear,
-                    0,
-                    0,
-                    0,
-                    0,
-                    (nChatrelAmount + nChatrelMeal + 0),
-                    DateTime.Now,
-                    nAuthRegionID,
-                    sCountryID,
-                    sCurrencyCode);
-
-            //return nTotalChatrelAmount.ToString("0.00");
-            return lnkGBChatrelPending;
-        }
-
-        private int getChartelAmountForChildYear(DateTime dtDOB, int CurrentYear, int ChildMonthChatrelAmount, int AdultMonthChatrelAmount)
-        {
-            string str = "31 Mar " + (CurrentYear + 1);
-            DateTime endDateOfCurrentYear;
-
-            if (DateTime.TryParse(str, out endDateOfCurrentYear))
-            {
-                TimeSpan ts = endDateOfCurrentYear - dtDOB;
-                DateTime Age = DateTime.MinValue.AddDays(ts.Days);
-                //MessageBox.Show(string.Format(" {0} Years {1} Month {2} Days", Age.Year - 1, Age.Month - 1, Age.Day - 1));
-
-                if (Age.Year - 1 == 6)
-                {
-                    return Age.Month * ChildMonthChatrelAmount;
-                }
-                else if (Age.Year - 1 >= 7 && Age.Year - 1 <= 17)
-                {
-                    return 12 * ChildMonthChatrelAmount;
-                }
-                else if (Age.Year - 1 == 18)
-                {
-                    return ((12 - Age.Month) * ChildMonthChatrelAmount) + (Age.Month * AdultMonthChatrelAmount);
-                }
-                else if (Age.Year - 1 > 18)
-                {
-                    return 12 * AdultMonthChatrelAmount;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        static DataTable GetTable()
-        {
-            //we create a DataTable.
-            //columns, each with a Type.
-            DataTable table = new DataTable();
-            table.Columns.Add("Id", typeof(int));
-            table.Columns.Add("sName", typeof(string));
-            table.Columns.Add("nChatrel", typeof(int));
-            table.Columns.Add("nMeal", typeof(int));
-            table.Columns.Add("nYear", typeof(int));
-            table.Columns.Add("nLateFees", typeof(decimal));
-            table.Columns.Add("nChatrelSalaryAmt", typeof(int));
-            table.Columns.Add("nBusinessDonation", typeof(int));
-            table.Columns.Add("nAdditionalDonation", typeof(int));
-            table.Columns.Add("nTotalAmount", typeof(decimal));
-            table.Columns.Add("dtPayment", typeof(DateTime));
-            table.Columns.Add("nAuthRegionId", typeof(int));
-            table.Columns.Add("sCountryId", typeof(string));
-            table.Columns.Add("sCurrencyCode", typeof(string));
-
-            return table;
-        }
-
-        #endregion
-
         #region Dummy Data
         private void buttonGenerateDummyData_Click(object sender, EventArgs e)
         {
@@ -886,29 +613,23 @@ namespace CTADataMigrationAndSupport
                 try
                 {
                     cnn.Open();
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook Limit 1000";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2012%'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2011%'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2010%'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2009%'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2008%'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2007%'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2006%'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and  sCountryID !='IN'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'N' and  sGender = 'M'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'N' and  sGender = 'F'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'M' ";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'Y'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'D'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF in (1,2,3,4,5)";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF > 5";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM in (1,2,3,4,5)";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM > 5";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2004%'";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2003%'";
-                    string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued is null";
+                    string query = "select sGBID," + sDummyColumn + " from tblgreenbook";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 10000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 20000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 30000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 40000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 50000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 60000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 70000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 80000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 90000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 100000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 110000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 120000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 130000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 140000,10000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 150000,10000";
 
                     //select * from tblgreenbook  where sBookIssued is null;
 
@@ -1057,7 +778,7 @@ namespace CTADataMigrationAndSupport
                             if (sPCodeData.Length > 0)
                             {
                                 cmd.Parameters.Add("@sPCode", MySqlDbType.VarChar, 255);
-                                cmd.Parameters["@sPCode"].Value = RandomDummyData(sPCodeData.Length, sPCodeData, false);
+                                cmd.Parameters["@sPCode"].Value = RandomDummyData(sPCodeData.Length, sPCodeData, true);
                             }
 
                             if (TibetanNameData.Length > 0)
@@ -1580,7 +1301,8 @@ namespace CTADataMigrationAndSupport
                     cnn.Open();
                     //string query = "select ID as sGBID,nMadebTypeID," + sDummyColumn + " from tblmadeb";
                     //string query = "select ID as sGBID,nMadebTypeID," + sDummyColumn + " from tblmadeb where sAlias is not null Limit 5000";
-                    string query = "select ID as sGBID,nMadebTypeID," + sDummyColumn + " from tblmadeb where sAlias is not null and nMadebTypeID = 4";
+                    //string query = "select ID as sGBID,nMadebTypeID," + sDummyColumn + " from tblmadeb nMadebTypeID = 4";
+                    string query = "select ID as sGBID,nMadebTypeID," + sDummyColumn + " from tblmadeb where nMadebTypeID != 2";
                     //string query = "select ID as sGBId," + sDummyColumn + " from tblmadeb";
                     //string query = "select ID as sGBId," + sDummyColumn + " from tblmadeb where id >= 38067";
                     MySqlCommand cmd = new MySqlCommand(query, cnn);
@@ -2508,5 +2230,159 @@ namespace CTADataMigrationAndSupport
             }
             return Ids;
         }
+
+        #region UploadDocument
+        private void buttonUploadDocument_Click(object sender, EventArgs e)
+        {
+            string connetionString = null;
+            MySqlConnection cnn;
+            //connetionString = "Server=127.0.0.1;Port=3306;Database=ctadb;Uid=root;allow zero datetime=no";
+            //string sLogFolderPath = @"D:\Reji\Chatrel\CTAImageFile-DataMigration\CTAImageUploadFromFolder\CTAImageUploadFromFolder\";
+            //string sPathPrifix = @"C:\xampp\htdocs\GreenBook\gb\images\";
+            string sLogFolderPath = txtLogFolderPath.Text;
+
+            connetionString = txtConnectionString.Text;
+            string sPathPrifix = textBoxDocumentPath.Text;
+
+            progressBarProcess.Value = 0;
+            progressBarProcess.Refresh();
+
+
+            cnn = new MySqlConnection(connetionString);
+            try
+            {
+                cnn.Open();
+
+                string query = "SELECT * FROM tmpgbdocument limit 10";
+               
+
+
+                MySqlCommand cmd = new MySqlCommand(query, cnn);
+                MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
+                DataTable dt = new DataTable("tmpgbdocument");
+                returnVal.Fill(dt);
+                string sStartProcess = DateTime.Now.ToString();
+                Int64 nInsertedFileCount = 0;
+                Int64 nNotFoundFileCount = 0;
+                StringBuilder sbLogging = new StringBuilder();
+
+                if (dt != null || dt.Rows.Count > 0)
+                {
+                    progressBarProcess.Minimum = 0;
+                    progressBarProcess.Maximum = dt.Rows.Count;
+                    progressBarProcess.Step = 1;
+                }
+                else
+                {
+                    progressBarProcess.Minimum = 0;
+                    progressBarProcess.Maximum = 1;
+                    progressBarProcess.Step = 1;
+                    progressBarProcess.PerformStep();
+                }
+
+                //Iterate through Items 
+                foreach (DataRow row in dt.Rows)
+                {
+                    progressBarProcess.PerformStep();
+
+                    if (row["sGBID"] == DBNull.Value)
+                    {
+                        continue;
+                    }
+
+                    // GB number
+                    string sGBNum = row["sGBID"].ToString().Trim();
+                    // GB number
+                    string sFileName = row["imageFileName"].ToString().Trim();
+                    FileStream fs;
+                    BinaryReader br;
+
+                    string sFullPath = sPathPrifix + sFileName;
+                    if (File.Exists(sFullPath))
+                    {
+
+                        byte[] ImageData;
+                        fs = new FileStream(sFullPath, FileMode.Open, FileAccess.Read);
+                        br = new BinaryReader(fs);
+                        ImageData = br.ReadBytes((int)fs.Length);
+                        br.Close();
+                        fs.Close();
+
+                        string cmdString = "INSERT INTO lnkgbdocument(nRegisterDate, sGBId, sTitle, sDocType, binFileDoc, sFileExtension, dtEntered, nEnteredBy,dtUpdated,nUpdatedBy) " +
+                                            "VALUES(@nRegisterDate,@sGBId,@sTitle,@sDocType,@binFileDoc,@sFileExtension,@dtEntered,@nEnteredBy,@dtEntered,@nEnteredBy)";
+
+                        cmd = new MySqlCommand(cmdString, cnn);
+
+                        cmd.Parameters.Add("@nRegisterDate", MySqlDbType.Int64);
+                        cmd.Parameters.Add("@sGBId", MySqlDbType.VarChar, 255);
+                        cmd.Parameters.Add("@sTitle", MySqlDbType.VarChar, 255);
+                        cmd.Parameters.Add("@sDocType", MySqlDbType.VarChar, 255);
+                        cmd.Parameters.Add("@binFileDoc", MySqlDbType.Blob);
+                        cmd.Parameters.Add("@sFileExtension", MySqlDbType.VarChar, 255);
+                        cmd.Parameters.Add("@dtEntered", MySqlDbType.DateTime);
+                        cmd.Parameters.Add("@nEnteredBy", MySqlDbType.Int32);
+
+                        cmd.Parameters["@nRegisterDate"].Value = DBNull.Value;
+                        cmd.Parameters["@sGBId"].Value = row["sGBID"].ToString();
+                        cmd.Parameters["@sTitle"].Value = row["sTitle"].ToString(); 
+                        cmd.Parameters["@sDocType"].Value = "Document";
+                        cmd.Parameters["@binFileDoc"].Value = ImageData;
+                        cmd.Parameters["@sFileExtension"].Value = "pdf";
+                        cmd.Parameters["@dtEntered"].Value = DateTime.Now;
+                        cmd.Parameters["@nEnteredBy"].Value = 1;
+                        int RowsAffected = cmd.ExecuteNonQuery();
+                        nInsertedFileCount++;
+                        labelResult.Text = @"GB Id: " + sGBNum;
+                        sbLogging.AppendLine("Green Book Id: " + sGBNum);
+                    }
+                    else
+                    {
+                        labelResult.Text = @"File NOT Exists: " + row["sGBID"].ToString().Trim();
+                        sbLogging.AppendLine("Document: "+ sFileName + " Not Exist for Green Book Id: " + sGBNum);
+                        nNotFoundFileCount++;
+
+                    }
+                    this.Refresh();
+                    labelResult.Text += " - " + nInsertedFileCount.ToString() + "/" + dt.Rows.Count.ToString();
+                    //labelResult.Refresh();
+                    this.Refresh();
+                    Application.DoEvents();
+
+                }
+
+                //this.CloseConnection();
+                //DataTable dt = new DataTable("CharacterInfo");
+                //return dt;
+
+                string sEndProcess = DateTime.Now.ToString();
+
+                cnn.Close();
+                labelResult.Text = "============================";
+                labelResult.Text += Environment.NewLine + "                Summary";
+                labelResult.Text += Environment.NewLine + "============================";
+                labelResult.Text += Environment.NewLine + "Start Process: " + sStartProcess;
+                labelResult.Text += Environment.NewLine + "End Process: " + sEndProcess;
+                labelResult.Text += Environment.NewLine + "Number of Images Inserted: " + nInsertedFileCount.ToString();
+                labelResult.Text += Environment.NewLine + "Number of Images Not found: " + nNotFoundFileCount.ToString();
+                labelResult.Text += Environment.NewLine + "============================";
+
+                sbLogging.AppendLine("===================================");
+                sbLogging.AppendLine("             Summary");
+                sbLogging.AppendLine("===================================");
+                sbLogging.AppendLine("Start Process: " + sStartProcess);
+                sbLogging.AppendLine("End Process: " + sEndProcess);
+                sbLogging.AppendLine("Number of Images Inserted: " + nInsertedFileCount.ToString());
+                sbLogging.AppendLine("Number of Images Not found: " + nNotFoundFileCount.ToString());
+                sbLogging.AppendLine("===================================");
+
+                File.AppendAllText(sLogFolderPath + "log-" + Guid.NewGuid().ToString() + ".txt", sbLogging.ToString());
+                sbLogging.Clear();
+            }
+            catch (Exception ex)
+            {
+                labelResult.Text += Environment.NewLine + ex.ToString();
+            }
+        }
+        #endregion
     }
 }

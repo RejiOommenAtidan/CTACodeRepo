@@ -101,7 +101,7 @@ export default function Chatrel(props) {
   const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   const fontName = 'Poppins';
 
-  //console.log('Props contains:', props);
+  console.log('Props contains:', props);
   // Who is paying
   const paidByGBID = useSelector(
     (state) => state.GBDetailsReducer.oGBDetails.sGBID
@@ -144,7 +144,7 @@ export default function Chatrel(props) {
 
   const [displayFileDispute, setDisplayFileDispute] = React.useState(false);
 
-  ////console.log(paidByGBID);
+  //console.log(paidByGBID);
   //const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 
   const [paymentDiv, setPaymentDiv] = React.useState(true);
@@ -171,9 +171,9 @@ export default function Chatrel(props) {
   const [donationNull, setDonationNull] = React.useState(false);
   const [gbChatrelsNull, setGBChatrelsNull] = React.useState(false);
 
-  //console.log("AuthRegions set in 'authRegions'", authRegions);
-  //console.log("Current Region set in 'authRegion'", authRegion);
-  //console.log('Current paymentData is ', paymentData);
+  console.log("AuthRegions set in 'authRegions'", authRegions);
+  console.log("Current Region set in 'authRegion'", authRegion);
+  console.log('Current paymentData is ', paymentData);
 
   const autoComplete = (
     <Autocomplete
@@ -193,7 +193,7 @@ export default function Chatrel(props) {
       )}
       onChange={(e, value) => {
         if (value !== null) {
-          //console.log(value.id);
+          console.log(value.id);
           //setMadebStatusID(value.id);
         } else {
           //setMadebStatusID(0);
@@ -222,7 +222,7 @@ export default function Chatrel(props) {
   };
 
   const updateAuthRegion = (e, value) => {
-    //console.log('Auth region changed to ', value.id, 'at row ', e.target.id);
+    console.log('Auth region changed to ', value.id, 'at row ', e.target.id);
     //const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
     //const index = e.target.id.substring(0, e.target.id.indexOf('_'));
     const index = parseInt(e.target.id);
@@ -245,7 +245,7 @@ export default function Chatrel(props) {
   };
 
   const modify = (target) => {
-    //console.log(target);
+    console.log(target);
     let payObj = [...paymentData];
     let index;
     if (target.type === 'text') {
@@ -254,10 +254,10 @@ export default function Chatrel(props) {
         ? parseFloat(target.value)
         : 0;
     } else {
-      //console.log(target.value);
+      console.log(target.value);
       index = parseInt(target.value);
       if (payObj[index].nCurrentChatrelSalaryAmt === 0) {
-        //console.log( payObj[index]);
+        console.log( payObj[index]);
        
     
         // payObj[index].nCurrentChatrelSalaryAmt = payObj[index].nSalaryUSD;
@@ -280,7 +280,7 @@ export default function Chatrel(props) {
 
   const calculate = (index) => {
     let payObj = [...paymentData];
-    //console.log(payObj);
+    console.log(payObj);
     let len = paymentData.length;
 
     if (index < len - 2) {
@@ -338,7 +338,7 @@ export default function Chatrel(props) {
     obj.forEach((row) => {
       //temptotal+= row.nChatrelTotalAmount;
       temptotal += parseFloat(row.nChatrelTotalAmount.toFixed(2));
-      //console.log(row.nChatrelTotalAmount);
+      console.log(row.nChatrelTotalAmount);
     });
     setTotal(temptotal);
   };
@@ -347,7 +347,7 @@ let textFieldDisabled=false;
     if (paymentData && dollarToRupees && shouldRun) {
       if (!outstanding) {
         if (paymentData[0].nCurrentChatrelSalaryAmt > 0) {
-          //console.log('we have no outstanding');
+          console.log('we have no outstanding');
           const checkBox = document.getElementById('employed');
           const inputText = document.getElementById('0');
         //  const rateField = document.getElementById('rate');
@@ -374,7 +374,7 @@ let textFieldDisabled=false;
           }
         }
       } else {
-        //console.log('we have outstanding');
+        console.log('we have outstanding');
         const len = paymentData.length;
         for (var i = 0; i < len; i++) {
           calculate(i);
@@ -389,7 +389,7 @@ let textFieldDisabled=false;
     html2canvas(domElement,{scrollX: 0,
       scrollY: -window.scrollY}).then(canvas => {
       const imgData = canvas.toDataURL("image/png");
-      //console.log(imgData);
+      console.log(imgData);
       //imgData.save();
       const pdf = new jsPdf();
       pdf.addImage(imgData, "PNG",10,10);
@@ -412,7 +412,7 @@ let textFieldDisabled=false;
       scrollY: -window.scrollY
     }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
-      //console.log(imgData);
+      console.log(imgData);
       //imgData.save();
       const pdf = new jsPdf();
       pdf.addImage(imgData, 'PNG', 10, 10);
@@ -494,13 +494,13 @@ let textFieldDisabled=false;
      // sOrderId:paypalObj.id
     };
 
-    //console.log('Final Obj:', finalObj);
+    console.log('Final Obj:', finalObj);
     axios
       .post(`/ChatrelPayment/AddNewChatrelPayment`, finalObj)
       .then((resp) => {
         if (resp.status === 200) {
           //alert(resp.data);
-          //console.log(resp.data);
+          console.log(resp.data);
          
           const oSession={
             sJwtToken:resp.data.token,
@@ -516,20 +516,20 @@ let textFieldDisabled=false;
           setPaymentDiv(false);
           setSuccessDiv(true);
           /* history.goBack();
-      //console.log(resp.data); */
+      console.log(resp.data); */
         }
       })
       .catch((error) => {
-        //console.log(error.config);
-        //console.log(error.message);
-        //console.log(error.response);
+        console.log(error.config);
+        console.log(error.message);
+        console.log(error.response);
       });
   };
   const pingPong =() =>{
     axios.get(`/ChatrelPayment/Ping`)
     .then(resp => {
       if (resp.status === 200) {
-        //console.log(resp.data);
+        console.log(resp.data);
         const oSession={
           sJwtToken:resp.data.token,
           bSession:true
@@ -538,7 +538,7 @@ let textFieldDisabled=false;
       }
     })
     .catch(error => {
-      //console.log("Error ", error.response);
+      console.log("Error ", error.response);
       if (error.response) {
         console.error(error.response);
       
@@ -547,20 +547,20 @@ let textFieldDisabled=false;
       } else {
         console.error('Error', error.message);
       }
-      //console.log(error.config);
+      console.log(error.config);
     })
     .then(release => {
-      ////console.log(release); => udefined
+      //console.log(release); => udefined
     });
 
 
   }
   const getReceipt = (sChatrelReceiptNumber) => {
     setBackdrop(true);
-    //console.log("Receipt Number", sChatrelReceiptNumber);
+    console.log("Receipt Number", sChatrelReceiptNumber);
     axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=`+sChatrelReceiptNumber)
     .then(resp => {
-      //console.log("Response", resp);
+      console.log("Response", resp);
       
       if (resp.status === 200) {
         const oSession={
@@ -576,7 +576,7 @@ let textFieldDisabled=false;
         link.setAttribute("download", "ChatrelReceipt-"+sChatrelReceiptNumber+".pdf");
         document.body.appendChild(link);
         link.click();
-      //  //console.log(resp.data);
+      //  console.log(resp.data);
       //   resp.data.receipt.sGBID ='0'.repeat(7 - resp.data.receipt.sGBID.length) +
       //       resp.data.receipt.sGBID;
       //  setReceiptData(resp.data);
@@ -587,7 +587,7 @@ let textFieldDisabled=false;
       }
     })
     .catch(error => {
-      //console.log("Error ", error.response);
+      console.log("Error ", error.response);
       if (error.response) {
         console.error(error.response);
         console.error(error.response.data);
@@ -598,24 +598,24 @@ let textFieldDisabled=false;
       } else {
         console.error('Error', error.message);
       }
-      //console.log(error.config);
+      console.log(error.config);
     })
     .then(release => {
-      ////console.log(release); => udefined
+      //console.log(release); => udefined
     });
 
   }
   useEffect(() => {
-    //console.log("Props Console:",props.location.state);
+    console.log("Props Console:",props.location.state);
     axios
       .get(`/AuthRegion/GetAuthRegions`)
       .then((resp) => {
         if (resp.status === 200) {
           
-          //console.log('AuthRegions fetched:', resp.data);
+          console.log('AuthRegions fetched:', resp.data);
           setAuthRegions(resp.data);
       /*    if (props.location.state.pymtData) {
-            //console.log('Status is ', props.location.state.outstanding);
+            console.log('Status is ', props.location.state.outstanding);
             if (!props.location.state.outstanding) {
               setOutstanding(false);
               if (
@@ -640,10 +640,10 @@ let textFieldDisabled=false;
             fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
               .then((response) => response.json())
               .then((data) => {
-                //console.log('currency', data.rates.USD);
+                console.log('currency', data.rates.USD);
                 setDollarToRupees(data.rates.USD);
               });
-            //console.log('Got data from props');
+            console.log('Got data from props');
 
             return;
           }*/
@@ -655,9 +655,9 @@ let textFieldDisabled=false;
                   bSession:true
                 }
                 dispatch(storeSession(oSession));
-                //console.log("test resp",resp.data);
+                console.log("test resp",resp.data);
                 if(resp.data.message==="Paid Until Missing"){
-                  //console.log("Inside File Dispute Condition");
+                  console.log("Inside File Dispute Condition");
                   setDisplayFileDispute(true);
                 }
                 else{
@@ -666,7 +666,7 @@ let textFieldDisabled=false;
                   if (resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0) {
                     setOutstanding(false);
                     setBasicResponse(resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt);
-                    //console.log('Salary amount',resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt);
+                    console.log('Salary amount',resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt);
                   }
                   setDataAPI(resp.data.chatrel);
                   setSummaryData(resp.data.chatrel.chatrelPayment);
@@ -681,25 +681,25 @@ let textFieldDisabled=false;
                   fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
                     .then((response) => response.json())
                     .then((data) => {
-                      //console.log('currency', data.rates.USD);
+                      console.log('currency', data.rates.USD);
                       setDollarToRupees(data.rates.USD);
                       setBackdrop(false);
                     });
-                  //console.log('Got data from props');
+                  console.log('Got data from props');
       
                   }
               }
             })
             .catch((error) => {
-              //console.log(error.message);
-              //console.log(error.config);
-              ////console.log(error.response.data);
+              console.log(error.message);
+              console.log(error.config);
+              //console.log(error.response.data);
             });
         }
       })
       .catch((error) => {
-        //console.log(error.message);
-        //console.log(error.config);
+        console.log(error.message);
+        console.log(error.config);
       });
     //setPaymentData(payObj);
   }, []);
@@ -717,7 +717,7 @@ let textFieldDisabled=false;
 
   useEffect(() => {
     runOnce();
-    //console.log('dollar rate is ', dollarToRupees);
+    console.log('dollar rate is ', dollarToRupees);
   }, [dollarToRupees]);
 
   useEffect(() => {
@@ -987,8 +987,7 @@ let textFieldDisabled=false;
                   disabled={row.isChild}
                 />*/}
               <div className="m-2">
-                            <Switch id="employed" onChange={(e) => {//console.log('test',e);
-                            modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                            <Switch id="employed" onChange={(e) => {console.log('test',e);modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
                         </div>
             </Td>
             )}
@@ -1038,8 +1037,7 @@ let textFieldDisabled=false;
                 //   type="checkbox"
                 //   disabled={row.isChild}
                 // />  
-                 <Switch id="employed" onChange={(e) => {//console.log('test',e);
-                 modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                 <Switch id="employed" onChange={(e) => {console.log('test',e);modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
               }
               
             </Td>
@@ -1254,8 +1252,7 @@ let textFieldDisabled=false;
                   disabled={row.isChild}
                 />*/}
               <div className="m-2">
-                            <Switch id="employed" onChange={(e) => {//console.log('test',e);
-                            modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                            <Switch id="employed" onChange={(e) => {console.log('test',e);modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
                         </div>
             </Td>
             )}
@@ -1305,8 +1302,7 @@ let textFieldDisabled=false;
                 //   type="checkbox"
                 //   disabled={row.isChild}
                 // />  
-                 <Switch id="employed" onChange={(e) => {//console.log('test',e);
-                 modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                 <Switch id="employed" onChange={(e) => {console.log('test',e);modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
               }
             </Td>
             )}
@@ -1721,12 +1717,12 @@ let textFieldDisabled=false;
                         onSuccess={(details, data) => {
                           //setBackdrop(true);
                           //alert("Transaction completed by " + details.payer.name.given_name);
-                          //console.log('Details:', details);
-                          //console.log('Data', data);
+                          console.log('Details:', details);
+                          console.log('Data', data);
                           submit(details);
                         }}
                         onError={(err) => {
-                          //console.log(err);
+                          console.log(err);
                           setAlertMessage('Chatrel donation failed.');
                           setAlertType('error');
                           snackbarOpen();
@@ -1740,7 +1736,7 @@ let textFieldDisabled=false;
                           return actions.order.create({ purchase_units: [ { amount: { value: total.toFixed(2), }, }, ], }); 
                         
                         }}
-                        // onError={(details, data)=>{//console.log(details);}}
+                        // onError={(details, data)=>{console.log(details);}}
                       />
                     </div>
                   )}

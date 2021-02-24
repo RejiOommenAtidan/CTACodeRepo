@@ -35,7 +35,7 @@ export default function GBList(props) {
   const [currId, setCurrId] = useState('');
   //let ele = null;
   const [searching, setSearching] = useState(false);
-  //console.log("myarray: ", myarray);
+  console.log("myarray: ", myarray);
 
   const buildArray = () => {
     let tmp = []
@@ -206,14 +206,14 @@ export default function GBList(props) {
 
 
   useEffect(() => {
-    //console.log("Searching useEffect. Searching is", searching);
+    console.log("Searching useEffect. Searching is", searching);
 
     if (searching) {
       let searchObj = {};
       myarray.map(item => {
         if (item.id === "madeb.id" || item.id === 'Re-Verified By' || item.id === 'Verified By' || item.id === 'edit' || item.id === 'email') {
           return;
-          //console.log("Changed id to", item.val);
+          console.log("Changed id to", item.val);
         };
 
         if (item.id === 'madeb.nCurrentGBSno' || item.id === 'madeb.nFormNumber' || item.id === 'madeb.nPreviousGBSno' || item.id === 'madeb.nSaneyFormNo') {
@@ -225,12 +225,12 @@ export default function GBList(props) {
         }
         searchObj = { ...searchObj, [id]: item.val };
       });
-      //console.log("Search Object: Inside useEffect", searchObj);
+      console.log("Search Object: Inside useEffect", searchObj);
 
       axios.post(`/Greenbook/GetGreenbooksForEdit`, searchObj)
         .then(resp => {
           if (resp.status === 200) {
-            //console.log("Got filter Data");
+            console.log("Got filter Data");
             resp.data.forEach((element) => {
               element.dtDOB = element.dtDOB ? Moment().diff(element.dtDOB, 'years') : null;
             });
@@ -240,13 +240,13 @@ export default function GBList(props) {
 
           }
           if (resp.status === 204) {
-            //console.log("Got  Empty data set");
+            console.log("Got  Empty data set");
             setdataAPI([...resp.data]);
             setSearching(false);
           }
         })
         .catch(error => {
-          //console.log(error.message);
+          console.log(error.message);
           //handleError(error, history);
         })
     }
@@ -266,7 +266,7 @@ export default function GBList(props) {
           resp.data.forEach((element) => {
             element.dtDOB = element.dtDOB ? Moment().diff(element.dtDOB, 'years') : null;
           });
-          //console.log(resp.data);
+          console.log(resp.data);
           setdataAPI(resp.data);
           setisLoading(false);
           modifyHeaders();
@@ -276,7 +276,7 @@ export default function GBList(props) {
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
 

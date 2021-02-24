@@ -31,15 +31,15 @@ export const EditDialog = (props) => {
     }
     setSnackbarOpen(false);
   };
-  ////console.log("nDefaultAuthRegionID is ", nDefaultAuthRegionID);
+  //console.log("nDefaultAuthRegionID is ", nDefaultAuthRegionID);
 
   const regions = authRegions && authRegions.filter((a) => {
     return a.sCountryID === props.countryObj.countryId;
   })
-  ////console.log ("Regions are", regions);
+  //console.log ("Regions are", regions);
 
   const valueAuthRegion = authRegions && nDefaultAuthRegionID && authRegions.find((element) => element.id === nDefaultAuthRegionID);
-  //console.log("valueauthregion is", valueAuthRegion);
+  console.log("valueauthregion is", valueAuthRegion);
 
   const handleSubmitEditRecord = () => {
   
@@ -104,7 +104,7 @@ export const EditDialog = (props) => {
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            //console.log("AuthRegion id changed to:", value.id);
+                            console.log("AuthRegion id changed to:", value.id);
                             setDefaultAuthRegionID(value.id);
                           }
                           else {

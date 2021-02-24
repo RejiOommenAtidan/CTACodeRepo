@@ -38,7 +38,7 @@ export default function PaymentPage  (props) {
 
   let nGBID=9675;
   let paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.nGBID);
-  //console.log(paidByGBID);
+  console.log(paidByGBID);
   const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 
   const [dataAPI, setDataAPI] = React.useState();
@@ -117,7 +117,7 @@ const submit =() =>{
     "gbChatrels": paymentData
   }
 
-  //console.log("Final Obj:" , finalObj)
+  console.log("Final Obj:" , finalObj)
 }
 
 
@@ -131,7 +131,7 @@ const submit =() =>{
         if (resp.status === 200) {
           setDataAPI(resp.data);
           setSummaryData(resp.data.chatrelPayment);
-          //console.log(resp.data.chatrelPayment.sGBId); 
+          console.log(resp.data.chatrelPayment.sGBId); 
           setPaymentData(resp.data.gbChatrels);
           calcTotal(resp.data.gbChatrels ,adonation,bdonation);
         }
@@ -146,10 +146,10 @@ const submit =() =>{
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
      }, []);
   return (

@@ -184,7 +184,7 @@ export default function SarsoNewGBEntry() {
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
 

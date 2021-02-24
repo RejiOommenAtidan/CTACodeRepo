@@ -56,7 +56,7 @@ export default function Friends () {
   const dispatch = useDispatch();
   
   const submit =() =>{
-  //console.log(FriendObj);
+  console.log(FriendObj);
   const obj={
       sGBID:sGBID,
       title:'Chatrel for Friend',
@@ -82,10 +82,10 @@ export default function Friends () {
     } else {
       console.error('Error', error.message);
     }
-    //console.log(error.config);
+    console.log(error.config);
   })
   .then(release => {
-    ////console.log(release); => udefined
+    //console.log(release); => udefined
   });
     
  

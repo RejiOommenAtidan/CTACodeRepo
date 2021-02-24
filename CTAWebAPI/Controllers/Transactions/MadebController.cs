@@ -591,7 +591,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         string sEmailFrom = CTAConfigRepository.GetValueByKey("CTAAdminEmail");
 
                         MimeMessage message = new MimeMessage();
-                        MailboxAddress from = new MailboxAddress("CTA Team", sEmailFrom);
+                        MailboxAddress from = new MailboxAddress("Paljor Dataunit", sEmailFrom);
                         MailboxAddress to = new MailboxAddress(email.sName, email.sReceiver);
                         if (!String.IsNullOrEmpty(sEmailCC))
                         {
@@ -605,6 +605,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         //Regex.IsMatch(email.sBody, @"[\u0F00-\u0FFF]");
                         var result = Regex.Matches(email.sBody, @"[\u0F00-\u0FFF]");
                         var final = result.Distinct();
+                        email.sBody = email.sBody.Replace("\n", "<br />");
                         foreach(var item in final)
                         {
                             email.sBody = email.sBody.Replace(item.Value, @$"<span style='font-size:1.7rem; font-weight:600;'>{item}</span>");

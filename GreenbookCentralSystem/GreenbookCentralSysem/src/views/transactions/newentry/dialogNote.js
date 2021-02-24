@@ -43,6 +43,9 @@ export const AddNoteDialog = (props) => {
                     inputRef={register({
                       required: true
                     })}
+                    InputProps={{
+                      style: {fontSize: '1.4rem'}
+                    }}
                     multiline={true}
                     rows={5}
                     rowsMax={10}
@@ -111,6 +114,9 @@ export const EditNoteDialog = (props) => {
                     inputRef={register({
                       required: true
                     })}
+                    InputProps={{
+                      style: {fontSize: '1.4rem'}
+                    }}
                     multiline={true}
                     rows={5}
                     rowsMax={10}

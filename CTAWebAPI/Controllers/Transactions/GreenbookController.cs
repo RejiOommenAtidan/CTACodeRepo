@@ -1139,7 +1139,11 @@ namespace CTAWebAPI.Controllers.Transactions
                 {
                     gBDocument.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     gBDocument.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                    _gbDocumentRepository.Add(gBDocument);
+                    if(!_gbDocumentRepository.Add(gBDocument)) 
+                    {
+                        return Ok("Invalid File");
+                    }
+                        
 
                     #region Information Logging 
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBDocument.nEnteredBy);
@@ -1214,7 +1218,11 @@ namespace CTAWebAPI.Controllers.Transactions
                         gBDocument.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                         gBDocument.nEnteredBy = fetchedGBDocument.nEnteredBy;
                         Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(fetchedGBDocument.sGBID);
-                        _gbDocumentRepository.Update(gBDocument);
+                        if (!_gbDocumentRepository.Update(gBDocument))
+                        {
+                            return Ok("Invalid File");
+                        }
+                        
 
                         #region Audit Log
                         CTALogger.LogAuditRecord(fetchedGBDocument, gBDocument, fetchedGBDocument.sGBID, fetchedGB.nAuthRegionID, 16, fetchedGBDocument.Id, gBDocument.nEnteredBy);

@@ -37,15 +37,15 @@ export const CustomSidebarMenu = (props) => {
     state,
     descriptors,
     navigation,
-    activeTintColor,
     inactiveTintColor,
-    itemStyle,
     labelStyle,
+    activeTintColor,
+    itemStyle,
   } = props;
   let lastGroupName = '';
-  let newGroup = true;
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
   const dispatch = useDispatch();
+  let newGroup = true;
   // const navigation = useNavigation();
   const handleLogoutButtonPress = () => {
     navigation.closeDrawer();
@@ -93,8 +93,6 @@ export const CustomSidebarMenu = (props) => {
       'Authorization'
     ] = `Bearer ${sJwtToken.sJwtToken}`;
 
-    // if (oSession !== null)
-    // {
     if (!sJwtToken.bSession) {
       console.log('bSession');
       setSessionTimeout(true);
@@ -104,7 +102,7 @@ export const CustomSidebarMenu = (props) => {
     console.log('new', 'Bearer ' + sJwtToken.sJwtToken);
     axios.defaults.headers.common['Authorization'] =
       'Bearer ' + sJwtToken.sJwtToken;
-    // debugger;
+
     if (oldToken !== 'Bearer ' + sJwtToken.sJwtToken) {
       console.log('Timer Reset', timerId);
 
@@ -119,20 +117,20 @@ export const CustomSidebarMenu = (props) => {
           .join(''),
       );
       const jwtObject = JSON.parse(jsonPayload);
+
       console.log('JWT Token:', JSON.parse(jsonPayload));
+
       if (timerId) {
         clearTimeout(timerId);
       }
 
       console.log(timerId);
 
-      //console.log(jwtObject.exp-Date.now());
       console.log(Math.floor(Date.now() / 1000) - jwtObject.exp);
       console.log(Date.now() - jwtObject.exp * 1000);
       const timer = () =>
         setTimeout(() => {
           setSessionTimeout(true);
-          // console.log('Logged Out After 15 Minutes');
           Alert.alert(
             'Session Timeout',
             'Your session has expired. Please login again.',
@@ -151,7 +149,6 @@ export const CustomSidebarMenu = (props) => {
                       navigation.navigate('Login');
                     });
                   } catch (error) {
-                    console.error(error);
                     navigation.navigate('Login');
                   }
                 },
@@ -161,7 +158,6 @@ export const CustomSidebarMenu = (props) => {
             {cancelable: false},
           );
         }, jwtObject.exp * 1000 - Date.now());
-      // }, 1000 * 60 * 15);
       setTimerId(timer());
     }
     console.log('Token changed:', sJwtToken.sJwtToken);
@@ -171,11 +167,11 @@ export const CustomSidebarMenu = (props) => {
       {/*Avatar*/}
       <View
         style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
           marginLeft: hp(1),
           marginTop: hp(2.5),
           marginBottom: hp(1.5),
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
         }}>
         <Avatar
           rounded
@@ -194,34 +190,34 @@ export const CustomSidebarMenu = (props) => {
         />
         <View
           style={{
+            alignContent: 'space-between',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
             minWidth: wp(25),
             maxWidth: wp(45),
             marginHorizontal: hp(1.5),
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            alignContent: 'space-between',
             //alignItems:"center",
             //alignSelf:"center"
           }}>
           <Text
             style={{
-              textAlign: 'left',
+              color: Colors.blackTextAPI,
               fontSize: wp(5),
               fontStyle: 'normal',
               fontWeight: 'normal',
-              color: Colors.blackTextAPI,
               fontFamily: sFontName,
+              textAlign: 'left',
             }}>
             {oGoogle?.user.givenName + ' ' + oGoogle?.user.familyName}
           </Text>
           <Text
             style={{
-              textAlign: 'left',
+              color: Colors.blackTextAPI,
               fontSize: wp(3.75),
               fontStyle: 'normal',
               fontWeight: 'normal',
-              color: Colors.blackTextAPI,
               fontFamily: sFontName,
+              textAlign: 'left',
             }}>
             {oGoogle?.user.email}
           </Text>
@@ -243,11 +239,11 @@ export const CustomSidebarMenu = (props) => {
       </View> */}
       <View
         style={{
-          width: '100%',
-          height: 1,
           backgroundColor: Colors.separatorColor,
+          height: 1,
           marginTop: hp(1.25),
           marginBottom: hp(1.25),
+          width: '100%',
         }}
       />
       <DrawerContentScrollView {...props}>
@@ -288,6 +284,7 @@ export const CustomSidebarMenu = (props) => {
                 </Text>
               )}
               focused={
+                // Old Now
                 // state.routes.findIndex((e) => e.key === route.key)
                 // === state.index
                 //0 LS (NA)
@@ -313,10 +310,10 @@ export const CustomSidebarMenu = (props) => {
         })}
         <View
           style={{
-            width: '100%',
-            height: 1,
             backgroundColor: Colors.separatorColor,
+            height: 1,
             marginTop: hp(1),
+            width: '100%',
           }}
         />
         <DrawerItem
@@ -329,7 +326,6 @@ export const CustomSidebarMenu = (props) => {
           label="LOGOUT"
           style={{
             ...styles.drawerItemStyles,
-            // margin:0
           }}
           onPress={handleLogoutButtonPress}
           icon={(focused, size, color) => (
@@ -374,7 +370,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    // marginTop: 10,
   },
   sectionLine: {
     backgroundColor: Colors.grey,
@@ -384,19 +379,19 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   logoutLabelStyles: {
+    alignSelf: 'flex-start',
+    color: Colors.black,
     fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    alignSelf: 'flex-start',
     fontSize: wp(3.75),
-    color: Colors.black,
   },
   drawerItemStyles: {
     justifyContent: 'flex-start',
     marginBottom: hp(1),
+    marginHorizontal: 0,
     //backgroundColor: Colors.white,
     //borderBottomColor:Colors.black,
     //borderBottomWidth:1,
-    marginHorizontal: 0,
   },
 });

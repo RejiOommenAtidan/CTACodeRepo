@@ -19,8 +19,8 @@ export const ContactUsScreen = () => {
 
   useEffect(() => {
     if (isFocused) {
-      setbLoader(false);
       console.log('Contact Us Called');
+      setbLoader(false);
     }
   }, [isFocused]);
 
@@ -86,12 +86,12 @@ const styles = StyleSheet.create({
     marginBottom: hp(2),
   },
   contactUsTextComponent: {
-    textAlign: 'auto',
+    color: Colors.blackText,
     fontSize: wp(3.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
     fontFamily: sFontName,
+    textAlign: 'auto',
   },
   cardContainerStyle: {
     width: wp(92.5),

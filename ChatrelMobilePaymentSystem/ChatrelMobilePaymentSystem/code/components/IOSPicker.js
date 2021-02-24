@@ -59,8 +59,8 @@ class IOSPicker extends Component {
   };
 
   valueChange = (data, index) => {
-    console.log('In Component: data: ' + data);
-    console.log('In Component: value: ' + index);
+    // console.log('In Component: data: ' + data);
+    // console.log('In Component: value: ' + index);
     this.setState({modalVisible: false, selectedValue: data, selected: data});
     this.props.onValueChange(data, index);
   };
@@ -74,6 +74,7 @@ class IOSPicker extends Component {
   };
 
   renderCollapseView = () => {
+    debugger;
     return (
       <View style={this.props.collapseViewStyle}>
         <PickerIOS
@@ -121,12 +122,12 @@ class IOSPicker extends Component {
     const {
       children,
       data,
+      pickerItemStyle,
+      mode,
       style,
       textStyle,
       pickerStyle,
-      pickerItemStyle,
       disabled,
-      mode,
     } = this.props;
     return (
       <View>

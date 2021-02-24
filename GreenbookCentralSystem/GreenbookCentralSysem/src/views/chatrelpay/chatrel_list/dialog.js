@@ -27,11 +27,15 @@ import { BackdropComponent as BackdropDialogComponent } from "../../backdrop/ind
 import { Alerts } from '../../alerts';
 import handleError from "../../../auth/_helpers/handleError";
 import DeleteIcon from "@material-ui/icons/Delete";
-
+import AddSingleChatrel from 'views/chatrelhome/addchatrel';
+import { NavigateBeforeSharp } from '@material-ui/icons';
 
 
 export const ViewDialog = (props) => {
   let history = useHistory();
+  const userRightsId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.nUserRightsId);
+
+  const [addModal, setAddModal] = useState(false);
   const [addDocumentModal, setaddDocumentModal] = useState(false);
   const [dialogBackdrop, setdialogBackdrop] = useState(false);
   const handleAddDocumentClickClose = () => {
@@ -42,7 +46,7 @@ export const ViewDialog = (props) => {
   const [backdrop, setBackdrop] = React.useState(true);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
-
+  const [reload, setReload] = useState(false);
   const alertObj = {
     alertMessage: alertMessage,
     alertType: alertType
@@ -69,7 +73,7 @@ export const ViewDialog = (props) => {
   const [progress, setProgress] = useState(0);
   
   const viewReceipt = (sReceiptNumber) => {
-    //console.log("Passing receipt number:", sReceiptNumber);
+    console.log("Passing receipt number:", sReceiptNumber);
     //history.push('/ChatrelPay/ChatrelReceipt', {sReceiptNumber: sReceiptNumber});
     history.push({
       pathname: '/Chatrel/ChatrelReceipt',
@@ -79,15 +83,24 @@ export const ViewDialog = (props) => {
     });
   };
 
-  useEffect(() => {
-    let count=1;
+  const handleAddClickClose = (load) => {
+    setAddModal(false);
+    if(load === true){
+      loadData();
+      setReload(true);
+    }
+    
+  }
+
+
+  const loadData = () => {
     axios.get(`ChatrelPayment/GetUserProfileFromGBID?sGBID=` + props.sGBID)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          console.log(resp.data);
           setData(resp.data);
        
-          // //console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
+          // console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
 
         }
       })
@@ -101,10 +114,10 @@ export const ViewDialog = (props) => {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
     function tick() {
       // reset when reaching 100%
@@ -113,6 +126,11 @@ export const ViewDialog = (props) => {
     return () => {
       clearInterval(timer);
     };
+  }
+
+  useEffect(() => {
+    let count=1;
+    loadData();
 
   }, []);
 
@@ -276,13 +294,28 @@ export const ViewDialog = (props) => {
               {/* </Card> */}
             </DialogContentText>
           </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={props.handleViewClickClose}
+          <DialogActions style={{justifyContent:'center'}}>
+          <Grid container spacing={1}>
+        <Grid item xs={4} style={{ textAlign: "left" }}>
+          {/* <Button>left</Button> */}
+        </Grid>
+        <Grid item xs={4} style={{ textAlign: "center" }}>
+        {(userRightsId === 7 || userRightsId === 5) && <Button
+              onClick={() => setAddModal(true)}
+              color="primary"
+              variant={"contained"}
+              size={"small"}
+            >Add Single Chatrel</Button>}
+        </Grid>
+        <Grid item xs={4} style={{ textAlign: "right" }}>
+        <Button
+              onClick={() => props.handleViewClickClose(reload)}
               color="primary"
               variant={"contained"}
               size={"small"}
             >Close</Button>
+        </Grid>
+      </Grid>
           </DialogActions>
         </Dialog>}
 
@@ -297,6 +330,12 @@ export const ViewDialog = (props) => {
       {dialogBackdrop && <BackdropDialogComponent
         backdrop={dialogBackdrop}
       />}
+      {addModal && <AddSingleChatrel
+                      sGBID = {props.sGBID}
+                      //sName = {data.profile.sFirstName + ' ' + (data.profile.sLastName ? data.profile.sLastName : "")}
+                      addModal={addModal}
+                      handleAddClickClose = {handleAddClickClose}
+                      ></AddSingleChatrel>}
     </>
   );
 }

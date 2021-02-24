@@ -266,14 +266,14 @@ export default function Users() {
               handleError(error, history);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
         }
       })
       .catch(error => {
         if (error.response) {
           if (error.response.status === 403) {
-            //console.log(error);
+            console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
             snackbarOpen();
@@ -285,7 +285,7 @@ export default function Users() {
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -312,14 +312,14 @@ export default function Users() {
               handleError(error, history);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
         }
       })
       .catch(error => {
         if (error.response) {
           if (error.response.status === 403) {
-            //console.log(error);
+            console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
             snackbarOpen();
@@ -331,7 +331,7 @@ export default function Users() {
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -381,7 +381,7 @@ export default function Users() {
           axios.get(`/User/GetAllUsers`)
             .then(resp => {
               if (resp.status === 200) {
-                //console.log(resp.data);
+                console.log(resp.data);
                 resp.data.forEach((element) => {
                   element.sActiveFormatted = element.oUser.bActive ? "Active" : "disabled"
                 });
@@ -395,7 +395,7 @@ export default function Users() {
               handleError(error, history);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
         }
       })
@@ -403,7 +403,7 @@ export default function Users() {
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 

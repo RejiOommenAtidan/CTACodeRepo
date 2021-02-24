@@ -737,6 +737,12 @@ INSERT INTO `lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdate
 INSERT INTO `lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Closed',now(),1,now(),1);
 INSERT INTO `lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Double',now(),1,now(),1);
 
+UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Double' WHERE (`Id` = '4');
+UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Cancelled' WHERE (`Id` = '5');
+UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Closed' WHERE (`Id` = '6');
+
+
+
 DROP TABLE IF EXISTS `lstMadebType`;
 CREATE TABLE `lstMadebType` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3062,6 +3068,8 @@ CREATE INDEX GB_DOC_GBID ON lnkgbdocument (sGBID);
 CREATE INDEX FORM_INDEX_MADEB ON tblmadeb(nFormNumber);
 CREATE INDEX FORM_INDEX_GBSERIAL ON tblgreenbookserial(nFormNumber);
 CREATE INDEX BOOK_NUMBER ON tblgreenbookserial(nBookNo);
+CREATE INDEX GBID_INDEX_GBDOCUMENT ON lnkgbdocument(sGBId);
+CREATE INDEX DOCTYPE_INDEX_GBDOCUMENT ON lnkgbdocument(sDocType);
 
 -- ALTER TABLE `tblgreenbook`
 -- DROP COLUMN `dtLastSuccessfullLogin`,

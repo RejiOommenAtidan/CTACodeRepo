@@ -81,7 +81,7 @@ const HeaderUserbox = () => {
     axios.get(`/User/Logout`)
     .then(resp => {
       if(resp.status === 200){
-        //console.log("Api logout success")
+        console.log("Api logout success")
        // window.location.reload('/Login');
     dispatch(removeAuthDetails());
         //dispatch(removeAuthDetails());

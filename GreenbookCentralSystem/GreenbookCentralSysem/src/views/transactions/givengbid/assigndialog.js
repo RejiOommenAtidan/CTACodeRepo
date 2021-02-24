@@ -13,10 +13,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
 
 export const AssignDialog = (props) => {
-  //console.log("Props object: \n", props);
+  console.log("Props object: \n", props);
   const handleSubmit = (e) => {
     e.preventDefault();
-    //console.log("Handle submit called");
+    console.log("Handle submit called");
     props.handleAssignGBID();
   }
   return(

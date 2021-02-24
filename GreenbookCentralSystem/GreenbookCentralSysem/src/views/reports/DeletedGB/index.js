@@ -226,11 +226,11 @@ export default function Report() {
             console.error('Error', error.message);
             
           }
-          //console.log(error.config);
-          //console.log(error.message);
+          console.log(error.config);
+          console.log(error.message);
         })
         .then(release => {
-          ////console.log(release); => udefined
+          //console.log(release); => udefined
         });
     }
   }

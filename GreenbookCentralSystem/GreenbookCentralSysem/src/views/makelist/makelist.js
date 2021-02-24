@@ -240,11 +240,11 @@ export default () => {
   ];
 
   function setPrinted() {
-    //console.log("Set Printed called.");
+    console.log("Set Printed called.");
     axios.post(`MakeList/SetPrinted`, makeListParams)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log("Printed marked. ", resp.data);
+          console.log("Printed marked. ", resp.data);
           setAlertMessage('Marked Records Printed.');
           setAlertType('success');
           snackbarOpen();
@@ -255,8 +255,8 @@ export default () => {
         setAlertMessage(`Failed to Mark Printed. \nError:${error.message && error.message}.`);
         setAlertType('error');
         snackbarOpen();
-        //console.log(error.config);
-        //console.log(error.message);
+        console.log(error.config);
+        console.log(error.message);
       });
   }
 
@@ -264,8 +264,8 @@ export default () => {
     setLoading(true);
     setNoRecords(false);
     setdataAPI([]);
-    //console.log("Make List Params recd. \n", makeListParams);
-    //console.log("Authregion & madebtype", sAuthRegion, sMadebType);
+    console.log("Make List Params recd. \n", makeListParams);
+    console.log("Authregion & madebtype", sAuthRegion, sMadebType);
     setAuthRegion(sAuthRegion);
     setMadebType(sMadebType);
     setAddToTitle(`Authority Region: ${sAuthRegion}, Madeb Type: ${sMadebType}`);
@@ -279,7 +279,7 @@ export default () => {
 
             return;
           }
-          ////console.log(resp.data);
+          //console.log(resp.data);
           setNoRecords(false);
           let i = 1;
           resp.data.forEach((element) => {
@@ -296,12 +296,12 @@ export default () => {
           }
           setLoading(false);
           setMakeListParams(makeListParams);
-          //console.log("After adding serial number", dataAPI);
+          console.log("After adding serial number", dataAPI);
         }
       })
       .catch(error => {
-        //console.log(error.config);
-        //console.log(error.message);
+        console.log(error.config);
+        console.log(error.message);
         setLoading(false);
       });
   };
@@ -311,15 +311,15 @@ export default () => {
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
-          //console.log("Got List of AuthRegions & MadebTypes\n", resp.data);
+          console.log("Got List of AuthRegions & MadebTypes\n", resp.data);
           setDataReady(true);
           // setdataAPI(resp.data)
           modifyHeaders();
         }
       })
       .catch(error => {
-        //console.log(error.config);
-        //console.log(error.message);
+        console.log(error.config);
+        console.log(error.message);
       })
   }, []);
   useEffect(() => {

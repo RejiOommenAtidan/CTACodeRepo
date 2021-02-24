@@ -122,7 +122,7 @@ export default function EnhancedTable() {
   };
   const [snackbar, setSnackbar] = React.useState(false);
   const snackbarOpen = () => {
-    //console.log('alert');
+    console.log('alert');
     setSnackbar(true);
   };
   const snackbarClose = () => {
@@ -130,7 +130,7 @@ export default function EnhancedTable() {
   };
   const [backdrop, setBackdrop] = React.useState(false);
   const searchGbId = () => {
-    //console.log(gbId);
+    console.log(gbId);
     axios.get(`IssueBook/GetIssueBookJoin/GBId=` + gbId)
       .then(resp => {
         if (resp.status === 200) {
@@ -149,20 +149,20 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
   const show = () => {
-    //console.log(bookIssueData);
+    console.log(bookIssueData);
   };
   const handleSubmit = ((e) => {
-    ////console.log(gbId);
+    //console.log(gbId);
     //setGbId(tempGbId.toString());
     // alert ("form submitted");
-    // //console.log("event ", e);
+    // console.log("event ", e);
     e.preventDefault();
     if (gbId == "") {
       setAlertMessage("Enter Green Book ID");
@@ -184,7 +184,7 @@ export default function EnhancedTable() {
     axios.get(`IssueBook/GetLatestIssueBookJoin`)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          console.log(resp.data);
           setBackdrop(false);
           setLatestData(resp.data);
           setLatestDataTable(true);
@@ -200,10 +200,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }
   useEffect(() => {
@@ -259,7 +259,7 @@ export default function EnhancedTable() {
                 {latestDataTable &&
                   <>
                     <Table className="table table-hover table-striped table-bordered">
-                      <thead className="thead-light">
+                      <thead className="thead-dark">
                         <tr>
                           <th > Madeb Date </th>
                           <th > GB ID </th>

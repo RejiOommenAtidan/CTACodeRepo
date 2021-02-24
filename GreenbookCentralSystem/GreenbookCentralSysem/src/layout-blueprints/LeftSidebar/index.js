@@ -22,7 +22,7 @@ const LeftSidebar = (props) => {
 
   const sidebarDisplay = useMediaPredicate("(max-width: 1099px)");
 
-  //console.log(sidebarDisplay);
+  console.log(sidebarDisplay);
 /* useEffect(() => {
   if(window.innerWidth < 768 ){
     setDisplayStyle("block");
@@ -52,7 +52,7 @@ const LeftSidebar = (props) => {
             <div className="app-content--inner" style={{padding:10 }}>
               <div className="app-content--inner__wrapper">{children}</div>
             </div>
-            <Footer />
+            {/* <Footer /> */}
           </div>
         </div>
       </div>

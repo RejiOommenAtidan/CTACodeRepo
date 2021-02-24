@@ -202,13 +202,13 @@ export default function EnhancedTable() {
     rowsPerPageOptions: [5, 10, 20, 30],
     onChangePage: (number) => {
       setCurrentPage(number + 1);
-      //console.log('Current Page No.', number + 1)
+      console.log('Current Page No.', number + 1)
     },
     onChangeRowsPerPage: (rows) => {
-      //console.log("Rows per page:", rows)
+      console.log("Rows per page:", rows)
     },
     onTableChange: (action, tableState) => {
-      //console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
+      console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
       
     }
   };*/
@@ -301,12 +301,12 @@ export default function EnhancedTable() {
     axios.post(`/Country/EditCountry/CountryID=` + countryPK, countryObj/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          ////console.log(resp.data);
+          //console.log(resp.data);
           setEditModal(false);
           axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
-                //console.log(resp.data);
+                console.log(resp.data);
                 setdataAPI(resp.data);
                 setDataChanged(true);
               }
@@ -321,23 +321,23 @@ export default function EnhancedTable() {
               } else {
                 console.error('Error', error.message);
               }
-              //console.log(error.config);
+              console.log(error.config);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
           //window.location = window.location;
           // setdataAPI(dataAPI.map((data) => {
-          //   //console.log(data);
+          //   console.log(data);
           //   if(data.id === countryObj.id){
-          //     //console.log(data);
+          //     console.log(data);
           //     return {
           //       ...data,
           //       ...countryObj
           //     };
           //   }
           //   else{
-          //     //console.log(data)
+          //     console.log(data)
           //     return data;
           //   }
           // }))
@@ -353,10 +353,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
   const addAPICall = (countryObj) => {
@@ -368,12 +368,12 @@ export default function EnhancedTable() {
     axios.post(`/Country/AddCountry/`, countryObj)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          console.log(resp.data);
           setAddModal(false);
           axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
-                //console.log(resp.data);
+                console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
@@ -387,10 +387,10 @@ export default function EnhancedTable() {
               } else {
                 console.error('Error', error.message);
               }
-              //console.log(error.config);
+              console.log(error.config);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
           //window.location = window.location;
         }
@@ -405,10 +405,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -426,7 +426,7 @@ export default function EnhancedTable() {
   };
 
   const deleteAPICall = () => {
-    // //console.log(this.state.selectedUser);
+    // console.log(this.state.selectedUser);
     // let CountryID = countryPK;
     const countryToDelete = {
       ID: countryPK,
@@ -435,14 +435,14 @@ export default function EnhancedTable() {
     };
     axios.post(`/Country/DeleteCountry/`, countryToDelete)
       .then(resp => {
-        //console.log(countryToDelete);
+        console.log(countryToDelete);
         if (resp.status === 200) {
-          //console.log(resp.data);
+          console.log(resp.data);
           setDeleteModal(false);
           axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
-                //console.log(resp.data);
+                console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
@@ -456,10 +456,10 @@ export default function EnhancedTable() {
               } else {
                 console.error('Error', error.message);
               }
-              //console.log(error.config);
+              console.log(error.config);
             })
             .then(release => {
-              ////console.log(release); => udefined
+              //console.log(release); => udefined
             });
           //window.location = window.location;
           // setdataAPI(dataAPI.filter((data) => {
@@ -477,10 +477,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   };
 
@@ -488,7 +488,7 @@ export default function EnhancedTable() {
     axios.get(`/Country/GetCountries`)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          console.log(resp.data);
           setdataAPI(resp.data)
         }
       })
@@ -502,10 +502,10 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        //console.log(error.config);
+        console.log(error.config);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
 

@@ -7,10 +7,10 @@ import {
   BackHandler,
   Alert,
   Dimensions,
+  TouchableWithoutFeedback,
   ActivityIndicator,
   TouchableOpacity,
   Image,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import {Card, Button, Avatar, Badge} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -41,16 +41,17 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
 import {Icon} from 'react-native-elements';
-import Accordion from 'react-native-collapsible/Accordion';
 import {Loader} from '../components/Loader';
 import {useFocusEffect} from '@react-navigation/native';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {useCollapsibleHeader} from 'react-navigation-collapsible';
 
+// import Ionicons from 'react-native-vector-icons/Ionicons';
+// import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 // import { withNavigationFocus } from 'react-navigation';
-//import CustomHeaderButton from '../components/HeaderButton';
+
+// import Accordion from 'react-native-collapsible/Accordion';
+// import {useCollapsibleHeader} from 'react-navigation-collapsible';
+// import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+// import CustomHeaderButton from '../components/HeaderButton';
 
 const HomeScreen = (props) => {
   useFocusEffect(
@@ -87,6 +88,7 @@ const HomeScreen = (props) => {
   // const [nChatrelTotalAmount, setnChatrelTotalAmount] = useState(0);
   // const [nCurrentChatrelSalaryAmt, setnCurrentChatrelSalaryAmt] = useState(0);
   // const [sCurrencySign, setsCurrencySign] = useState('USD');
+
   const [bLoader, setbLoader] = useState(true);
   const [dollarToRupees, setDollarToRupees] = React.useState(0.0);
   const [activeSections, setactiveSections] = useState([]);
@@ -148,7 +150,7 @@ const HomeScreen = (props) => {
 
   const dispatch = useDispatch();
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
-  const navigation = useNavigation();
+  let navigation = useNavigation();
 
   const removeCompleteDetailsAndNavigateToLogin = async () => {
     try {
@@ -211,7 +213,7 @@ const HomeScreen = (props) => {
 
         if (resp.status === 200) {
           console.log('Self Chatrel Payment data:', resp.data);
-
+          setbLoader(false);
           const oSession = {
             sJwtToken: resp.data.token,
             bSession: true,
@@ -248,11 +250,10 @@ const HomeScreen = (props) => {
               setCurrencySymbol('₹');
             }
           } else {
-            debugger;
+            //debugger;
             setEmpty(true);
           }
         }
-        setbLoader(false);
         //console.log('Data fetched...', resp.data);
       })
       .catch((error) => {
@@ -311,9 +312,10 @@ const HomeScreen = (props) => {
     /* </View> */
   }
 
-  const renderContent = (section) => {
+  const renderContent = (section, index) => {
     return (
       <View
+        key={index}
         style={{
           // alignContent: 'center',
           // alignItems: 'center',
@@ -338,11 +340,10 @@ const HomeScreen = (props) => {
             /> */}
         <Button
           TouchableComponent={TouchableWithoutFeedback}
-          title={
-            <Text style={styles.accodrionContextText}>{section.sContent}</Text>
-          }
+          title={section.sContent}
+          titleStyle={styles.accodrionContextText}
           onPress={() => {
-            props.navigation.navigate(section.sRouteName);
+            navigation.navigate(section.sRouteName);
           }}
           iconLeft
           icon={{
@@ -406,15 +407,15 @@ const HomeScreen = (props) => {
 
   useEffect(() => {
     if (isFocused) {
+      console.log('Home Screen Called');
       setbLoader(true);
+      setEmpty(false);
       setChatrelPending(null);
       setCurrencySymbol();
       setPaymentData();
       setOutstanding(false);
       setDonationDiv(false);
       setThankYouMsg(false);
-      setEmpty(false);
-      console.log('Home Screen Called');
       setactiveSections([0, 1]);
       getChatrelDetails();
     }
@@ -439,27 +440,35 @@ const HomeScreen = (props) => {
   //   opacity /* 1.0 ~ 0.0 */,
   // } = useCollapsibleHeader(HomeScreenOptions);
 
+  // if (empty) {
+  //   //debugger;
+  //   return (
+  //     <>
+  //       {Alert.alert(
+  //         'Attention Required',
+  //         'Last paid chatrel date not available. Please Contact CTA or file a dispute.',
+  //         [
+  //           {
+  //             text: 'File a Dispute',
+  //             onPress: () => {
+  //               setEmpty(false);
+  //               props.navigation.navigate('FileDispute');
+  //             },
+  //             style: 'cancel',
+  //           },
+  //         ],
+  //         {cancelable: false},
+  //       )}
+  //     </>
+  //   );
+  // }
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}>
       <View style={styles.mainContainer}>
         <Loader loading={bLoader} />
-        {/*Paid Until Missing*/}
-        {empty &&
-          !bLoader &&
-          Alert.alert(
-            'Attention Required',
-            'Last paid chatrel date not available. Please Contact CTA or file a dispute.',
-            [
-              {
-                text: 'File a Dispute',
-                onPress: () => props.navigation.navigate('FileDispute'),
-                style: 'cancel',
-              },
-            ],
-            {cancelable: false},
-          )}
         {/* <Animated.FlatList
        onScroll={onScroll}
          contentContainerStyle={{ paddingTop: containerPaddingTop }}
@@ -587,10 +596,10 @@ const HomeScreen = (props) => {
                       ...styles.greyTextComponent,
                       color: Colors.greenBG,
                       textAlign: 'left',
+                      fontSize: wp(4),
                       // fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
                       // fontFamily:
                       //   Platform.OS === 'android' ? sFontNameBold : sFontName,
-                      fontSize: wp(4),
                     }}>
                     This year's Chatrel has been Contributed!
                   </Text>
@@ -612,16 +621,13 @@ const HomeScreen = (props) => {
               //   padding:0,
               //   margin:0,
               // }}
-
               //   icon={()=>{
               //     return(           <Badge
               //     status="success"
               //     containerStyle={{position: 'absolute', top: 0, right: 0}}
               //   />)
               //   }}
-
               //icon={{name: 'user', type: 'font-awesome'}}
-
               rounded
               size="large"
               containerStyle={styles.avatarContainerStyle}
@@ -645,6 +651,77 @@ const HomeScreen = (props) => {
             </View>
           </View>
         </Card>
+        {/*Paid Until Missing*/}
+        {/* {empty &&
+          !bLoader &&
+          Alert.alert(
+            'Attention Required',
+            'Last paid chatrel date not available. Please Contact CTA or file a dispute.',
+            [
+              {
+                text: 'File a Dispute',
+                onPress: () => {
+                  setEmpty(false);
+                  props.navigation.navigate('FileDispute');
+                },
+                style: 'cancel',
+              },
+            ],
+            {cancelable: false},
+          )} */}
+        {empty && !bLoader && (
+          <Card
+            title={
+              <View style={styles.titleStyleView}>
+                <Icon
+                  color={Colors.white}
+                  iconStyle={styles.iconStyles}
+                  iconProps={{}}
+                  //underlayColor={Colors.websiteLightBlueColor}
+                  backgroundColor={Colors.websiteLightBlueColor}
+                  size={40}
+                  type="font-awesome-5"
+                  name="briefcase"
+                  containerStyle={styles.iconContainerStyles}
+                />
+              </View>
+            }
+            titleStyle={{}}
+            containerStyle={{
+              ...styles.newJobContribCardContainer,
+              marginTop: hp(10),
+            }}>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.boldTextComponent}>
+                Last paid chatrel date not available.
+              </Text>
+            </View>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.greyTextComponent}>
+                Please Contact CTA or file a dispute.
+              </Text>
+            </View>
+            <Button
+              title="FILE A DISPUTE"
+              titleStyle={{
+                color: Colors.white,
+                textAlign: 'center',
+                fontStyle: 'normal',
+                fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                fontFamily:
+                  Platform.OS === 'android' ? sFontNameBold : sFontName,
+              }}
+              buttonStyle={{
+                backgroundColor: Colors.websiteLightBlueColor,
+                borderRadius: 15,
+              }}
+              onPress={() => {
+                //setbLoader(true);
+                navigation.navigate('FileDispute');
+              }}
+            />
+          </Card>
+        )}
         {/*Accordions*/}
         <View
           style={{
@@ -653,7 +730,7 @@ const HomeScreen = (props) => {
             //marginBottom: hp(5),
           }}>
           {aCard.map((card, index) => {
-            return renderContent(card);
+            return renderContent(card, index);
           })}
           {/* <Accordion
             align={'center'}
@@ -671,7 +748,6 @@ const HomeScreen = (props) => {
             onChange={updateSections}
           /> */}
         </View>
-        {/*Thank You Card*/}
 
         {/*First Condition*/}
         {outstanding && !bLoader && (
@@ -695,7 +771,6 @@ const HomeScreen = (props) => {
                   {chatrelPending}
                 </Text>
               </View>
-
               <Button
                 titleStyle={{
                   color: Colors.white,
@@ -706,19 +781,19 @@ const HomeScreen = (props) => {
                   fontSize: wp(4),
                 }}
                 buttonStyle={{
-                  marginTop: hp(2),
-                  width: wp(75),
+                  alignSelf: 'center',
                   backgroundColor: Colors.greenBG,
+                  marginTop: hp(2),
                   borderRadius:
                     Dimensions.get('window').width < Resolution.nWidthBreakpoint
                       ? 10.2
                       : 17,
-                  alignSelf: 'center',
+                  width: wp(75),
                 }}
                 title="CONTRIBUTE NOW"
                 onPress={() => {
                   //setbLoader(true);
-                  props.navigation.navigate('SelfChatrel');
+                  navigation.navigate('SelfChatrel');
                 }}
               />
             </Card>
@@ -759,11 +834,11 @@ const HomeScreen = (props) => {
               title="UPDATE EMPLOYMENT STATUS"
               titleStyle={{
                 color: Colors.white,
-                textAlign: 'center',
                 fontStyle: 'normal',
                 fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
                 fontFamily:
                   Platform.OS === 'android' ? sFontNameBold : sFontName,
+                textAlign: 'center',
               }}
               buttonStyle={{
                 backgroundColor: Colors.websiteLightBlueColor,
@@ -771,7 +846,7 @@ const HomeScreen = (props) => {
               }}
               onPress={() => {
                 //setbLoader(true);
-                props.navigation.navigate('SelfChatrel');
+                navigation.navigate('SelfChatrel');
               }}
             />
           </Card>
@@ -811,11 +886,11 @@ const HomeScreen = (props) => {
               title="DONATE"
               titleStyle={{
                 color: Colors.white,
-                textAlign: 'center',
                 fontStyle: 'normal',
                 fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
                 fontFamily:
                   Platform.OS === 'android' ? sFontNameBold : sFontName,
+                textAlign: 'center',
               }}
               buttonStyle={{
                 backgroundColor: Colors.websiteLightBlueColor,
@@ -823,7 +898,7 @@ const HomeScreen = (props) => {
               }}
               onPress={() => {
                 //setbLoader(true);
-                props.navigation.navigate('SelfChatrel');
+                navigation.navigate('SelfChatrel');
               }}
             />
           </Card>
@@ -853,19 +928,20 @@ const HomeScreen = (props) => {
               <Button
                 title="READ FAQs"
                 titleStyle={{
-                  textAlign: 'center',
                   color: Colors.white,
                   fontFamily: sFontName,
                   fontStyle: 'normal',
                   fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
                   fontFamily:
                     Platform.OS === 'android' ? sFontNameBold : sFontName,
+                  textAlign: 'center',
                 }}
                 buttonStyle={{
                   backgroundColor: Colors.faqButtonColor,
                   borderRadius: 15,
                 }}
                 onPress={() => {
+                  //TODO: Add FAQs to Display
                   console.log('FAQs To be Added');
                 }}>
                 READ FAQs
@@ -924,15 +1000,15 @@ const styles = StyleSheet.create({
   },
   headerContainer: {},
   headerComponent: {
-    width: wp(60),
-    // height: hp(4),
-    marginBottom: hp(2),
-    textAlign: 'left',
+    color: Colors.blue,
     fontSize: wp(5),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blue,
     fontFamily: sFontName,
+    marginBottom: hp(2),
+    textAlign: 'left',
+    width: wp(60),
+    // height: hp(4),
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
   },
@@ -977,13 +1053,13 @@ const styles = StyleSheet.create({
     height: hp(33),
   },
   pendingAmountTextComponent: {
+    color: Colors.black,
     fontSize: wp(4),
     fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    textAlign: 'left',
-    color: Colors.black,
     marginBottom: hp(2),
+    textAlign: 'left',
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
   },
@@ -1012,25 +1088,25 @@ const styles = StyleSheet.create({
     marginBottom: hp(2),
   },
   newJobContribTextComponent: {
+    color: Colors.blackText,
     fontSize: wp(6),
     fontStyle: 'normal',
-    textAlign: 'center',
-    color: Colors.blackText,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    textAlign: 'center',
   },
   viewMarginComponent: {
+    marginBottom: hp(2.5),
     //width: wp(70),
     //height: hp(33),
-    marginBottom: hp(2.5),
   },
   jobContribStatusTextComponent: {
+    color: Colors.grey,
     fontSize: wp(5),
     fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',
     textAlign: 'center',
-    color: Colors.grey,
   },
   presidentCardContainerStyle: {
     width: wp(92.5),
@@ -1057,18 +1133,18 @@ const styles = StyleSheet.create({
   },
 
   avatarContainerStyle: {
-    position: 'absolute',
     alignSelf: 'center',
+    position: 'absolute',
     top: -55,
   },
   cardDividerStyle: {
-    height: 1,
     backgroundColor: Colors.buttonYellow,
+    height: 1,
     marginBottom: hp(3),
   },
   presidentCardDividerStyle: {
-    height: 1,
     backgroundColor: Colors.buttonYellow,
+    height: 1,
     marginBottom: hp(3),
     marginTop: hp(5),
   },
@@ -1086,11 +1162,12 @@ const styles = StyleSheet.create({
   iconContainerStyles: {
     // backgroundColor:Colors.white,
     alignSelf: 'center',
+    borderRadius: 10,
+    elevation: 15,
     position: 'absolute',
     top: -55,
     // left:20,
     //Border Stuff
-    borderRadius: 10,
     // borderColor: Colors.black,
     // borderStyle: 'solid',
     // borderWidth: 0.25,
@@ -1098,80 +1175,73 @@ const styles = StyleSheet.create({
     //For iOS
 
     //For Android
-    elevation: 15,
     // overflow: 'visible',
   },
 
   boldTextComponent: {
+    color: Colors.blackText,
     fontSize: wp(6),
     fontStyle: 'normal',
-    textAlign: 'center',
-    color: Colors.blackText,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    textAlign: 'center',
   },
   greyTextComponent: {
+    color: Colors.labelColorLight,
     fontSize: wp(5.25),
     fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    textAlign: 'center',
-    color: Colors.labelColorLight,
-    //lessen from 5 to 3.5
     lineHeight: hp(3.5),
+    textAlign: 'center',
   },
   title: {
-    textAlign: 'center',
     fontSize: 22,
     fontWeight: '300',
     marginBottom: 20,
+    textAlign: 'center',
   },
   accordionListHeader: {
-    // marginHorizontal:wp(100)*nSc,
-    marginLeft: wp(3.5),
-    width: wp(92.5),
+    alignItems: 'center',
     backgroundColor: Colors.websiteLightBlueColor,
     borderWidth: 1,
     borderColor: Colors.white,
-    // paddingVertical:hp(1),
-    // paddingHorizontal:5,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    marginLeft: wp(3.5),
     marginRight: wp(5),
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    width: wp(92.5),
   },
   accodrionHeaderText: {
     color: Colors.white,
     fontSize: wp(5.5),
     fontStyle: 'normal',
-    textAlign: 'left',
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    textAlign: 'left',
   },
   accordionListContent: {
-    marginLeft: wp(3.5),
-    width: wp(92.5),
+    alignItems: 'center',
     backgroundColor: Colors.white,
-    // borderWidth: 1,
-    // borderColor: Colors.black,
-    marginVertical: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    marginLeft: wp(3.5),
+    marginVertical: 5,
+    width: wp(92.5),
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    // borderWidth: 1,
+    // borderColor: Colors.black,
   },
   accodrionContextText: {
+    color: Colors.black,
     fontSize: wp(4),
     fontStyle: 'normal',
-    textAlign: 'center',
-    color: Colors.black,
-    // fontWeight: 'normal',
-    // fontFamily: sFontName,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    textAlign: 'center',
     // padding:5
   },
   badgeContainerStyle: {
@@ -1179,8 +1249,8 @@ const styles = StyleSheet.create({
   },
   badgeStyle: {
     alignSelf: 'flex-start',
-    textAlignVertical: 'center',
     backgroundColor: Colors.websiteLightBlueColor,
+    textAlignVertical: 'center',
   },
 });
 

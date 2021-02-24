@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AddSingleChatrel(props) {
-  //console.log("Props contains:", props);
+  console.log("Single Chatrel Props contains:", props);
   let history = useHistory();
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const classes = useStyles();
@@ -104,33 +104,34 @@ export default function AddSingleChatrel(props) {
   const [countryID, setCountryID] = React.useState();
   const [country, setCountry] = useState(null);
 
-  //console.log("AuthRegions set in 'authRegions'", authRegions);
-  //console.log("Region set in 'authRegion'", authRegion);
+  console.log("AuthRegions set in 'authRegions'", authRegions);
+  console.log("Region set in 'authRegion'", authRegion);
 
   useEffect(() => {
     setBackdrop(true);
     axios.get(`/AuthRegion/GetAuthRegionsForAddNewChatrel`)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log("AuthRegions fetched:", resp.data);
+          console.log("AuthRegions fetched:", resp.data);
           setAuthRegions(resp.data);
           axios.get(`Country/GetCountriesForAddNewChatrel`)
             .then(resp => {
               if (resp.status === 200) {
-                //console.log(resp.data);
+                console.log(resp.data);
                 setCountries(resp.data);
                 setBackdrop(false);
+                setAllDone(true);
               }
             })
             .catch(error => {
               setBackdrop(false);
-              //console.log(error.response.data);
+              console.log(error.response.data);
             });
         }
       })
       .catch(error => {
         setBackdrop(false);
-        //console.log(error.response.data);
+        console.log(error.response.data);
       });
   }, []);
 
@@ -138,12 +139,16 @@ export default function AddSingleChatrel(props) {
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
   const [sName, setName] = React.useState('');
   const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
-  // Who is paying
-  const [sPaidByGBID, setPaidByGBID] = useState();
+  
 
   // GBID for Chatrel
-  const [sGBID, setGBID] = useState();
-  const [sGBIDForDetails, setGBIDForDetails] = useState();
+  //const [sGBID, setGBID] = useState(props?.sGBID);
+  const [sGBID, setGBID] = useState(null);
+  //const [sGBID, setGBID] = useState(() => 
+  //props && props.sGBID && handleChangeGBID(props?.sGBID));
+  const [sGBIDForDetails, setGBIDForDetails] = useState(props?.sGBID);
+   // Who is paying
+  const [sPaidByGBID, setPaidByGBID] = useState(null);
   const [dtPaymentDate, setPaymentDate] = useState(null);
   const [sCurrency, setCurrency] = React.useState('INR');
   const [nChatrel, setChatrel] = useState(null);
@@ -161,14 +166,17 @@ export default function AddSingleChatrel(props) {
   const [nChatrelTotalAmount, setChatrelTotalAmount] = useState(0);
   const [sReceiptNumber, setReceiptNumber] = useState(null);
   const [sPaymentMode, setPaymentMode] = useState('Offline');
+  const [allDone, setAllDone] = useState(false);
+
 
   const handleChangeGBID = (value) => {
+    //alert("Setting gbid: " + value);
     var len = 7 - value.length;
     for(var i = 0; i < len ; i++){
-      //console.log("gbid value:", value);
+      console.log("gbid value:", value);
       value = '0' + value;
     }
-    //console.log("gbid value:", value);
+    console.log("gbid value:", value);
     setGBID(value);
     setAuthRegion(null);
     setRegion(null);
@@ -176,6 +184,22 @@ export default function AddSingleChatrel(props) {
     setCountry(null);
     setName(null);
     
+  }
+
+  const bindValues = (value) => {
+    //alert("Setting gbid: " + value);
+    var len = 7 - value.length;
+    for(var i = 0; i < len ; i++){
+      console.log("gbid value:", value);
+      value = '0' + value;
+    }
+    console.log("gbid value:", value);
+    //setGBID(value);
+    setAuthRegion(null);
+    setRegion(null);
+    setCountryID(null);
+    setCountry(null);
+    setName(null);
   }
   const handleChangePaidByGBID = (value) => {
     var len = 7 - value.length;
@@ -186,6 +210,7 @@ export default function AddSingleChatrel(props) {
     setPaidByGBID(value);
 
   }
+ 
   const formPopulate = (value) => {
     if (value === '') {
       setAlertMessage(`Please enter a valid number...`);
@@ -194,15 +219,12 @@ export default function AddSingleChatrel(props) {
       return;
     }
     //console.log("Value in GBID: ", value);
+    //alert ("Value in GBID: " + value);
     const gbid = value;
-    const event = new Event('change', {
-      bubbles: true
-    });
-
     axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=` + gbid)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log("Got gb record\n", resp.data);
+          console.log("Got gb record\n", resp.data);
 
           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
 
@@ -214,7 +236,7 @@ export default function AddSingleChatrel(props) {
           setRegion(region.sAuthRegion);
           setValue('AuthRegion', region, {shouldValidate: true});
           var c = countries.find(x => x.sCountryID === region.sCountryID);
-          //console.log("Country", c);
+          console.log("Country", c);
           setCountryID(region.sCountryID);
           setCountry(c);
           setValue('sCountry', c, {shouldValidate: true});
@@ -231,7 +253,7 @@ export default function AddSingleChatrel(props) {
           setName('');
           setAuthRegion({});
           setRegion(null);
-          //console.log("Not found", resp);
+          console.log("Not found", resp);
           setAlertMessage(`No record found for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -241,7 +263,7 @@ export default function AddSingleChatrel(props) {
         if (error.response.status === 404) {
           setName('');
           //setAuthRegion([]);
-          //console.log("Not found", error.response.data);
+          console.log("Not found", error.response.data);
           setAlertMessage(`${error.response.data}`);
           setAlertType('warning');
           snackbarOpen();
@@ -249,7 +271,7 @@ export default function AddSingleChatrel(props) {
         else if (error.response.status === 505) {
           setName('');
           //setAuthRegion([]);
-          //console.log(error);
+          console.log(error);
           setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.`);
           setAlertType('error');
           snackbarOpen();
@@ -257,11 +279,27 @@ export default function AddSingleChatrel(props) {
         else {
           setName('');
           //setAuthRegion([]);
-          //console.log(error);
+          console.log(error);
         }
       });
   };
- 
+  
+  useEffect(() => {
+    if(allDone){
+      if(props){
+        if(props.sGBID){
+          //setGBID(props.sGBID);
+          handleChangeGBID(props.sGBID);
+          setValue('sGBID', props.sGBID, {shouldValidate: true});
+          formPopulate(props.sGBID);
+
+          //handleChangePaidByGBID(props.sGBID);
+        }
+      }
+    }
+    
+  },[allDone]);
+
   const currencies = [
     {
       value: 'USD',
@@ -299,20 +337,20 @@ export default function AddSingleChatrel(props) {
     nUpdatedBy: userId
   }];
 
-  //console.log("Final obj", chatrel);
+  console.log("Final obj", chatrel);
 
   const handleChatrelSubmit = () => {
     setBackdrop(true);
-    //console.log("Submit called");
+    console.log("Submit called");
     axios.post(`ChatrelBulkData/VerifyBulkImport`, chatrel).then(resp => {
       if(resp.status === 200){
-        //console.log("Verification Response: ", resp.data);
+        console.log("Verification Response: ", resp.data);
         if(resp.data[0].sStatus === 'Validate Success'){
-          //console.log("Validation successful", resp.data[0].sBatchNumber);
+          console.log("Validation successful", resp.data[0].sBatchNumber);
           axios.post(`ChatrelBulkData/SubmitBulkData/?sBatchNumber=${resp.data[0].sBatchNumber}`)
           .then(resp => {
             if(resp.status === 200){
-              //console.log("Submit success result integer",resp.data);
+              console.log("Submit success result integer",resp.data);
               setBackdrop(false);
               setAlertMessage('Record added successfully.');
               setAlertType('success');
@@ -325,9 +363,9 @@ export default function AddSingleChatrel(props) {
             setAlertMessage(`Record adding failed.`);
             setAlertType('error');
             snackbarOpen();
-            //console.log("Error Status:", error.response.status);
-            //console.log("Error Message:", error.message);
-            //console.log("Error Data:", error.response.data);
+            console.log("Error Status:", error.response.status);
+            console.log("Error Message:", error.message);
+            console.log("Error Data:", error.response.data);
           });
         }
         else{
@@ -343,14 +381,15 @@ export default function AddSingleChatrel(props) {
       setAlertMessage(`${error.message}`);
       setAlertType('error');
       snackbarOpen();
-      //console.log("Error Status:", error.response.status);
-      //console.log("Error Message:", error.message);
-      //console.log("Error Data:", error.response.data);
+      console.log("Error Status:", error.response.status);
+      console.log("Error Message:", error.message);
+      console.log("Error Data:", error.response.data);
     });
   };
 
   useEffect(() => {
-    //console.log("Country changed", country);
+    console.log("Country changed", country);
+    
   }, [country])
 
   return (
@@ -374,7 +413,7 @@ export default function AddSingleChatrel(props) {
                         onChange={(e) => {
                           setCurrency(e.target.value);
                           setSymbol(e.target.options[e.target.options.selectedIndex].label);
-                          //console.log("target: ", e.target);
+                          console.log("target: ", e.target);
                         }}
                         SelectProps={{
                           native: true,
@@ -428,14 +467,14 @@ export default function AddSingleChatrel(props) {
                                 props.onChange(value);
                                 //alert ("onChangeFired")
                                 if (value !== null) {
-                                  //console.log(value.id);
+                                  console.log(value.id);
                                   //setAuthRegionId(value.id);
                                   setRegion(value.sAuthRegion);
                                   setAuthRegion(value);
                                   setCountryID(value.sCountryID);
                                   setCountry(() => {
                                     var c = countries.find(x => x.sCountryID === value.sCountryID);
-                                    //console.log("Country", c);
+                                    console.log("Country", c);
                                     return c;
                                   });
                                   setValue('sCountry', countries.find(x => x.sCountryID === value.sCountryID), {shouldValidate: true});
@@ -499,7 +538,7 @@ export default function AddSingleChatrel(props) {
                                 props.onChange(value);
                                 //alert ("onChangeFired")
                                 if (value !== null) {
-                                  //console.log("Country selected", value.sCountryID);
+                                  console.log("Country selected", value.sCountryID);
                                   setCountryID(value.sCountryID);
                                   setCountry(value);
                                 }

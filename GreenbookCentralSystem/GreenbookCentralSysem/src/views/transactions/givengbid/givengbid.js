@@ -273,7 +273,7 @@ export default function GiveGBId() {
         }
       })
       .catch((error) => {
-        //console.log(error);
+        console.log(error);
       })
   };
 
@@ -290,8 +290,8 @@ export default function GiveGBId() {
       bGivenOrNot: false,
       bActive: true
     };
-    //console.log("GBID Object:\n", gbidObj);
-    //console.log("date", dtReceived);
+    console.log("GBID Object:\n", gbidObj);
+    console.log("date", dtReceived);
     setBackdrop(true);
     axios.post(`GivenGBID/AddGivenGBID/dtReceived=` + Moment().format(sISODateFormat), gbidObj)
       .then(resp => {
@@ -317,8 +317,8 @@ export default function GiveGBId() {
               }
             })
             .catch(error => {
-              //console.log(error.config);
-              //console.log(error.message);
+              console.log(error.config);
+              console.log(error.message);
               setAlertMessage("Couldn't Assign GB ID, Something went wrong");
               setAlertType('error');
               snackbarOpen();
@@ -328,7 +328,7 @@ export default function GiveGBId() {
         }
       })
       .catch((error) => {
-        //console.log(error);
+        console.log(error);
         setAlertMessage("Couldn't Assign GB ID, Something went wrong");
         setAlertType('error');
         snackbarOpen();
@@ -338,7 +338,7 @@ export default function GiveGBId() {
   };
 
   const showReport = () =>{
-    //console.log("Date inserted", reportDate);
+    console.log("Date inserted", reportDate);
     if(!reportDate){
       setAlertMessage("Please Enter valid date...");
       setAlertType('error');
@@ -361,8 +361,8 @@ export default function GiveGBId() {
         }
       })
       .catch(error =>{
-        //console.log(error.config);
-        //console.log(error.message);
+        console.log(error.config);
+        console.log(error.message);
         setLoading(false);
       });
   };
@@ -384,8 +384,8 @@ export default function GiveGBId() {
         }
       })
       .catch(error => {
-        //console.log(error.config);
-        //console.log(error.message);
+        console.log(error.config);
+        console.log(error.message);
         setLoading(false);
       })
   }

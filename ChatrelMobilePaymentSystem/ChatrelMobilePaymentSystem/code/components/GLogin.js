@@ -9,6 +9,10 @@ import {sClientIDAndroid, sClientIDIOS} from '../constants/CommonConfig';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeGoogleCreds} from '../store/actions/GLoginAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 export const GLogin = (props) => {
   const dispatch = useDispatch();
@@ -24,6 +28,8 @@ export const GLogin = (props) => {
     });
 
     Platform.OS === 'android' ? isSignedIn() : null;
+
+    //Platform.OS === 'android' ? isSignedIn() : null;
 
     // getUserDataFromAsnycStorage().then(data => {
     //   //console.info(data);
@@ -144,13 +150,13 @@ const styles = StyleSheet.create({
     // flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
+    marginVertical: hp(5),
   },
   gSignInComponent: {
     // width: Platform.OS === 'android' ? wp(50) : wp(47.5),
     // height: Platform.OS === 'android' ? hp(5.75) : hp(4.75),
 
     //Values Coded
-
     width: 192,
     height: 48,
   },

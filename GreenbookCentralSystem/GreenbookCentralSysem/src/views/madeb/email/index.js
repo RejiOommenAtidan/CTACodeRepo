@@ -46,7 +46,7 @@ export const EmailDialog = (props) => {
   const [body, setBody] = React.useState(madebName + ' case no:' + formNumber.toString() + ' \nName: ' + name + '\nPostal Address:');
   const [backdrop, setBackdrop] = React.useState(false);
 
-  //console.log(props.emailInObj);
+  console.log(props.emailInObj);
 
 
   const SendEmail = () => {
@@ -60,11 +60,12 @@ export const EmailDialog = (props) => {
       sSubject: subject,
       sBody: body
     };
+    console.log(emailOutObj);
     setBackdrop(true);
     axios.post(`Madeb/SendEmail`, emailOutObj)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          console.log(resp.data);
           //alert("Success.\n" + resp.data);
           setAlertMessage('Email Sent Successfully');
           setAlertType('success');
@@ -86,7 +87,7 @@ export const EmailDialog = (props) => {
     axios.get(`/CTAConfig/GetCTAConfigByKey/Key=CTAAdminEmail`)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data.sValue);
+          console.log(resp.data.sValue);
           setSender(resp.data.sValue);
         }
       })
@@ -94,7 +95,7 @@ export const EmailDialog = (props) => {
         handleError(error, history);
       })
       .then(release => {
-        ////console.log(release); => udefined
+        //console.log(release); => udefined
       });
   }, []);
 
@@ -106,7 +107,7 @@ export const EmailDialog = (props) => {
           <DialogContentText>
             <div>
               <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sender"
@@ -124,7 +125,7 @@ export const EmailDialog = (props) => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="recipient"
@@ -168,12 +169,17 @@ export const EmailDialog = (props) => {
                       label={<>Message<span style={{ color: 'red' }}> *</span></>}
                       //required={true}
                       multiline
-                      rowsMax={4}
+                      rows={7}
+                      rowsMax={5}
                       value={body}
                       onChange={(e) => { setBody(e.target.value) }}
                       inputRef={register({
                         required: true
                       })}
+                      InputProps={{
+                        style: {fontSize: '1.3rem'}
+                      }}
+                      
                     />
                     {_.get("name_message.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>

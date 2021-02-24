@@ -5,7 +5,7 @@ export default function handleError(error, history) {
     //window.location.replace(replaceURL);
     // window.location = "/PageError500";
     //History.pushState(null, '', '/PageError500');
-    ////console.log(props);
+    //console.log(props);
     //props.history.push(replaceURL);
     const APIErrorURL = "/PageError500";
     const APINotFoundURL = '/PageError404';
@@ -36,5 +36,5 @@ export default function handleError(error, history) {
         //Something else Happened
         console.error('Error', error.message);
     }
-    //console.log(error.config);
+    console.log(error.config);
 }
