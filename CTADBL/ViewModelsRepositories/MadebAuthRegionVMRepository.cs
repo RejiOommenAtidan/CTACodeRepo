@@ -506,7 +506,7 @@ namespace CTADBL.ViewModelsRepositories
                         sName = row.Field<string>("sName"),
                         sFathersName = row.Field<string>("sFathersName"),
                         nAuthRegionID = row.Field<int>("nAuthRegionID"),
-                        dtReceived = row.Field<DateTime>("dtReceived"),
+                        dtReceived = row.Field<DateTime?>("dtReceived"),
                         dtIssueAction = row.Field<DateTime?>("dtIssueAction"),
                         nIssuedOrNotID = row.Field<int?>("nIssuedOrNotID"),
                         nType = row.Field<int>("nType"),
