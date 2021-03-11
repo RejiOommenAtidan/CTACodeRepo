@@ -6,7 +6,7 @@ import {
   Dimensions,
   Alert,
   ScrollView,
-  ActivityIndicator,
+  Keyboard,
 } from 'react-native';
 import {storeJWTToken} from '../store/actions/GBDetailsAction';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -29,16 +29,15 @@ import {
   sFontName,
   sFontNameBold,
   oRequiredStyles,
-  oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Loader} from '../components/Loader';
 import axios from 'axios';
 import {RNCamera} from 'react-native-camera';
-import Toast from 'react-native-root-toast';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
-import {DocumentPickerUtil} from 'react-native-document-picker';
+// import Toast from 'react-native-root-toast';
+// import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+// import {DocumentPickerUtil} from 'react-native-document-picker';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const FileDisputeScreen = (props) => {
@@ -64,9 +63,9 @@ export const FileDisputeScreen = (props) => {
     setbCameraVisible(true);
     setaFileResults([]);
   };
-  const togglebCameraVisible = () => {
-    setbCameraVisible(!bCameraVisible);
-  };
+  // const togglebCameraVisible = () => {
+  //   setbCameraVisible(!bCameraVisible);
+  // };
   let bContinueLoop = true;
   const [aFileResults, setaFileResults] = useState([]);
   const [sDisputeMessage, setsDisputeMessage] = useState('');
@@ -113,20 +112,22 @@ export const FileDisputeScreen = (props) => {
       sDisputeMessage === '' ||
       sDisputeMessage === null
     ) {
-      Alert.alert(
-        'Attention Required',
-        'Please enter a Description.',
-        [
-          {
-            text: 'Ok',
-            onPress: () => {
-              true;
+      setTimeout(() => {
+        Alert.alert(
+          'Attention Required',
+          'Please enter a Description.',
+          [
+            {
+              text: 'Ok',
+              onPress: () => {
+                true;
+              },
+              style: 'cancel',
             },
-            style: 'cancel',
-          },
-        ],
-        {cancelable: false},
-      );
+          ],
+          {cancelable: false},
+        );
+      }, 1000);
       return;
     }
 
@@ -250,46 +251,25 @@ export const FileDisputeScreen = (props) => {
               bSession: true,
             };
             dispatch(storeJWTToken(oSession));
-            Alert.alert(
-              'Success',
-              'Thanks for uploading. Your details are sent to the CTA Team & they shall get in touch with you soon.',
-              [
-                {
-                  text: 'Ok',
-                  onPress: () => true,
-                  style: 'default',
-                },
-              ],
-              {cancelable: false},
-            );
-            Platform.OS === 'ios'
-              ? Toast.show(
-                  'Thanks for uploading. Your details are sent to the CTA Team & they shall get in touch with you soon.',
+            setTimeout(() => {
+              Alert.alert(
+                'Success',
+                'Thanks for uploading. Your details are sent to the CTA Team & they shall get in touch with you soon.',
+                [
                   {
-                    duration: Toast.durations.SHORT,
-                    position: Toast.positions.BOTTOM,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                    delay: 0,
-                    // onShow: () => {
-                    //     // calls on toast\`s appear animation start
-                    // },
-                    // onShown: () => {
-                    //     // calls on toast\`s appear animation end.
-                    // },
-                    // onHide: () => {
-                    //     // calls on toast\`s hide animation start.
-                    // },
-                    // onHidden: () => {
-                    //     // calls on toast\`s hide animation end.
-                    // }
+                    text: 'Ok',
+                    onPress: () => true,
+                    style: 'default',
                   },
-                )
-              : null;
+                ],
+                {cancelable: false},
+              );
+            }, 1000);
           } else {
             setbLoader(false);
-            alert('Something went wrong, please try again later.');
+            setTimeout(() => {
+              alert('Something went wrong, please try again later.');
+            }, 1000);
           }
         })
         .catch((error) => {
@@ -561,6 +541,10 @@ export const FileDisputeScreen = (props) => {
                   keyboardAppearance={'default'}
                   disableFullscreenUI={true}
                   multiline={true}
+                  blurOnSubmit={true}
+                  onSubmitEditing={() => {
+                    Keyboard.dismiss();
+                  }}
                   numberOfLines={Platform.OS === 'ios' ? null : nNumberOfLines}
                   minHeight={
                     Platform.OS === 'ios' && nNumberOfLines

@@ -317,19 +317,15 @@ SELECT `tblgreenbook`.`Id`,
 FROM `ctadb`.`tblgreenbook`;
 
 
-INSERT INTO `lstchatrelconfig`
-(`Id`,
-`sKey`,
-`sValue`,
-`dtUpdated`,
-`nUpdatedBy`)
-SELECT 
-	`Id`,
-	`sKey`,
-	`sValue`,
-	`dtUpdated`,
-	`nUpdatedBy` 
-FROM ctadb.lstctaconfig;
+INSERT INTO `lstchatrelconfig`(`Id`,`sKey`,`sValue`,`dtUpdated`,`nUpdatedBy`) SELECT `Id`,`sKey`,`sValue`,`dtUpdated`,`nUpdatedBy` FROM ctadb.lstctaconfig;
+INSERT INTO lstchatrelconfig (sKey,sValue,dtUpdated,nUpdatedBy) 
+VALUES 
+    ('PayPalClientID','AdqxwGp5tKswa3OfXdw5dcCp5SQNtAEkDmPI9InDri3FcXnGCfWfpwhBsLRenYqMwrUrUTLLbnGTOM14','2021-03-08 00:00:00',1), 
+    ('PayPalSecret','ECrAFFlN_jB_Z62_rc9Ukt2Mv7Yeov2saaDbNCT3Ef_bP9JS2ke9y_G-8VGqQiTB7o3sGJRGFeBF-QKD','2021-03-08 00:00:00',1), 
+    ('sGoogleClientIDAndroid','805523212166-j3oa67dcgkkff0pps9qp779ecmsp1c5o.apps.googleusercontent.com','2021-03-08 00:00:00',1), 
+    ('sGoogleClientIDIOS','805523212166-osj9e06odhct70cen9n028ri06q4o2av.apps.googleusercontent.com','2021-03-08 00:00:00',1), 
+    ('sGoogleClientIDWebApp','1077718482731-r63mupcpv0b687qd9f7ooktilkemb3qk.apps.googleusercontent.com','2021-03-08 00:00:00',1);
+
 
 INSERT INTO `lstchatrel`
 (`Id`,
@@ -621,3 +617,4 @@ UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '7');
 UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '8');
 UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '9');
 UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '10');
+

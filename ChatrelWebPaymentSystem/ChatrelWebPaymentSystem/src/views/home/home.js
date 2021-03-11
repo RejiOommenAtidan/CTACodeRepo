@@ -20,11 +20,14 @@ import logo1 from '../../assets/images/stock-logos/discord-icon.svg';
 
 import logo2 from '../../assets/images/stock-logos/google-icon.svg';
 
-import people1 from '../../assets/images/avatars/avatar4.jpg';
+//import people1 from '../../assets/images/DIR_9758.JPG';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CountUp from 'react-countup';
 import HomeIcon from '@material-ui/icons/Home';
+
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -35,10 +38,16 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff'
+  }
 }));
 
 
 export default function Home() {
+  
+  const [backdrop, setBackdrop] = React.useState(true);
   const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   const sGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sGBID);
   //const pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
@@ -50,21 +59,28 @@ export default function Home() {
 
   const [currencySymbol, setCurrencySymbol] = React.useState();
   const [paymentData, setPaymentData] = React.useState();
+  const [sHomePageImage, setsHomePageImage] = React.useState(null);
+  const [sHomePageMessage, setsHomePageMessage] = React.useState(null);
+  const [sHomePageName, setsHomePageName] = React.useState(null);
+  const [sHomePageDesignation, setsHomePageDesignation] = React.useState(null);
+  const [sFAQDocument, setsFAQDocument] = React.useState(null);
+
   const [outstanding, setOutstanding] = useState(false);
   const [donationDiv, setDonationDiv] = useState(false);
   const [thankYouMsg, setThankYouMsg] = useState(false);
-
+  const [thankYouMsgFY, setThankYouMsgFY] = useState("");
   const [empty, setEmpty] = useState(false);
   let history = useHistory();
   let dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
   useEffect(() => {
-  axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
-  .then(resp => {
-    if (resp.status === 200) {
-      console.log("Self Chatrel Payment data:", resp.data);
-      
+    axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
+    .then(resp => {
+      if (resp.status === 200) {
+
+
+
       
       //Store New Token
       const oSession={
@@ -72,6 +88,29 @@ export default function Home() {
         bSession:true
       }
       dispatch(storeSession(oSession));
+      axios.get(`/ChatrelPayment/GetHomePageData`)
+      .then(resp => {
+        if (resp.status === 200) {
+          setBackdrop(false);
+          const oSession={
+            sJwtToken:resp.data.token,
+            bSession:true
+          }
+          dispatch(storeSession(oSession));
+          console.log("Home Page Data Display", resp.data);
+          setsHomePageImage(resp.data.sHomePageImage);
+          setsHomePageMessage(resp.data.sHomePageMessage);
+          setsHomePageName(resp.data.sHomePageName);
+          setsHomePageDesignation(resp.data.sHomePageDesignation);
+          setsFAQDocument(resp.data.sFAQDocument);
+               
+        }
+      })
+      .catch(error => {
+        console.log(error.message);
+        console.log(error.response.status);
+    
+      });
      //const x =               
       //oGBDetails.sAuthRegion=resp.data.chatrel.authRegionProfile;
       //dispatch(storeGBDetails({...oGBDetails,sAuthRegion:resp.data.chatrel.authRegionProfile}));
@@ -81,6 +120,7 @@ export default function Home() {
       if(resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0){
         setChatrelPending('0');
         setThankYouMsg(true);
+        setThankYouMsgFY(resp.data.chatrel.chatrelFrom+'-'+resp.data.chatrel.chatrelTo);
         if(resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt===0){
           setOutstanding(false);
         }
@@ -120,7 +160,7 @@ export default function Home() {
     console.log(error.response.status);
 
   });
-
+  
 }, []);
 
  
@@ -130,29 +170,42 @@ export default function Home() {
   dispatch(storeCurrentGBDetails(obj));
   history.push('/Chatrel');
 }
-
+const openFAQ = ()=>{
+  var byteCharacters = atob(sFAQDocument);
+var byteNumbers = new Array(byteCharacters.length);
+for (var i = 0; i < byteCharacters.length; i++) {
+  byteNumbers[i] = byteCharacters.charCodeAt(i);
+}
+var byteArray = new Uint8Array(byteNumbers);
+var file = new Blob([byteArray], { type: 'application/pdf;base64' });
+var fileURL = URL.createObjectURL(file);
+window.open(fileURL);
+}
 
 
   return (
     <>
    
-      <Card className="card-box mb-spacing-6-x2" style={{  padding: 50 }} >
+      <Card className="card-box mb-spacing-6-x2" style={{  padding: 50,margin:'30px' }} >
    {/*     <h4>QUICK ACTIONS</h4>  */}
       
       <Grid container spacing={8}>
     
       { thankYouMsg && 
       <Grid item xs={12} >
-    <Alert variant="outlined" icon={false} className="mb-1 shadow-info-sm w-50 mx-auto" severity="info">
-    <div className="d-flex align-items-center align-content-center">
+    
+    <div className="text-center text-black">
+      <strong>
         <span className="font-size-xl d-block btn-icon d-40 mr-3 text-center bg-neutral-info rounded-sm text-info">
             <FontAwesomeIcon icon={['fas', 'check']} />
         </span>
         <span>
-          <h5>  <strong className="d-block">Thank You!</strong> This year's Chatrel has been Contributed!</h5>
+          <span style={{fontSize:'40px'}} > རྩིས་ལོ་</span><span style={{fontSize:'20px'}}> {thankYouMsgFY}</span><span style={{fontSize:'40px'}}> ལོའི་དྭང་བླངས་དཔྱ་དངུལ་འབུལ་འབབ་གཙང་འབུལ་ཟིན།</span>
+          
 </span>
+</strong>
     </div>
-</Alert>
+
         </Grid>
 
    }
@@ -281,16 +334,16 @@ export default function Home() {
           <Card className="card-box card-box-alt  shadow-xxl  p-2 ">
                                 <div className="card-content-overlay text-center pb-4">
                                     <div className="d-50 mb-1 card-icon-wrapper   btn-icon mx-auto text-center">
-                                    <img src={people1} className="card-img-top rounded-circle" style={{ width: 100 }} alt="..." />
+                                    {sHomePageImage && <img src={sHomePageImage}  style={{ width: 100,borderRadius:'10px' }} alt="..." />}
                                     </div>
-                                    <FontAwesomeIcon icon={['fas', 'quote-right']} className="text-primary font-size-xxl" />
-                                    <div className="font-size-lg text-dark opacity-8 my-4">
-                                    This is a huge step for all the Tibetan people that the Chatrel collection services are now Online. Power at your fingertips.
-                                      </div>
-                                      <div className="font-size-lg font-weight-bold">
-                                          FirstName LastName <br/>
-                                          <small className="text-black-50 pl-2">President</small>
-                                      </div>
+                                    <FontAwesomeIcon icon={['fas', 'quote-right']} className="text-primary font-size-xxl"  style={{marginLeft:'15px'}}/>
+                                    {sHomePageMessage &&  <div className=" text-dark opacity-8 my-4" style={{fontSize:'14px'}}>
+                                  {sHomePageMessage}
+                                      </div>}
+                                   {sHomePageName&&   <div className="font-size-lg font-weight-bold">
+                                      {sHomePageName}<br/>
+                                          <small className="text-black-50 pl-2">{sHomePageDesignation}</small>
+                                      </div>}
                                 </div>
                             </Card>
 
@@ -379,8 +432,8 @@ export default function Home() {
                                         <FontAwesomeIcon icon={['fas', 'briefcase']} className="display-3" />
                                     </div>
                                    
-                                    <div className="font-weight-bold text-black display-4 mt-4 mb-1">
-                                    Last paid chatrel date not available.
+                                    <div className="font-weight-bold text-black display-5 mt-4 mb-1">
+                                    There is no chatrel contribution record in the database. You are requested to upload your two year chatrel receipt  
                                     </div>
                                     <div className="font-size-lg text-dark opacity-8">Please Contact CTA or file a dispute.</div>
                                     <div className="divider mx-4 my-4" />
@@ -409,7 +462,14 @@ export default function Home() {
                                         <p className="opacity-6 font-size-lg my-3">
                                          Chatrel symbolizes the Tibetan people’s recognition of CTA as their legitimate representative. Chatrel payment exhibits Tibetan people’s support for CTA’s financial needs until Tibet regains freedom. 
                                         </p>
-                                        <Button className="btn-warning text-nowrap px-4  font-size-sm font-weight-bold">
+                                        <Button onClick={()=>{
+                                          //openFAQ();
+                                          
+                                          let a = document.createElement("a");
+                                          a.href = "data:application/octet-stream;base64,"+sFAQDocument;
+                                          a.download = "Chatrel-FAQ.pdf"
+                                          a.click();
+                                                }} className="btn-warning text-nowrap px-4  font-size-sm font-weight-bold">
                                            READ FAQs
                                         </Button>
                                     </div>
@@ -418,6 +478,9 @@ export default function Home() {
         </Grid>
         {/*<Button onClick={()=>{history.push('/test')}}>Test</Button>*/}
       </Card>
+      <Backdrop className={classes.backdrop} open={backdrop}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
     </>
   );
 }

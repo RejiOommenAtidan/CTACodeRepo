@@ -118,7 +118,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     issueBook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     issueBook.sFormNumber = issueBook.nFormNumber.ToString();
                     _issueBookRepository.Add(issueBook);
-                    _madebRepository.UpdateTypeIssued(MadebId, nIssuedOrNotID , dtIssuedDate);
+                    _madebRepository.UpdateTypeIssued(MadebId, nIssuedOrNotID , dtIssuedDate, issueBook.dtEntered);
                     #region Information Logging 
                     string sActionType = Enum.GetName(typeof(Operations), 1);
                     string sModuleName = (GetType().Name).Replace("Controller", "");

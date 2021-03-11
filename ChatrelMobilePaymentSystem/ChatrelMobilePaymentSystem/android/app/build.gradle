@@ -155,7 +155,7 @@ dexOptions {
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
-            keyAlias 'androiddebugkey'
+            keyAlias 'ctachatrel'
             keyPassword 'android'
         }
         release {
@@ -199,6 +199,7 @@ dexOptions {
 }
 
 dependencies {
+    //implementation project(':react-native-firebase')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules

@@ -18,6 +18,8 @@ import 'date-fns'; import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker} from '@material-ui/pickers';
 import { dateTimePickerDefaultProps } from '@material-ui/pickers/constants/prop-types';
 import Moment from 'moment';
+import BackGroundImage from '../../assets/images/friends.jpg';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -123,10 +125,12 @@ dispatch(storeSession(oSession));
   <>
   
   
-    <Grid container spacing={1}>
+  <div style={{background:`url(${BackGroundImage}) no-repeat center`,backgroundSize:'auto'}}>
+  
+    <Grid container spacing={1} style={{padding:'30px'}}>
       <Grid item xs={12} sm={4} ></Grid>
       <Grid item xs={12} sm={4}>
-      <Card className="card-box card-box-alt  mx-auto mt-4">
+      <Card className="card-box card-box-alt  mx-auto mt-4"  style={{borderBottomLeftRadius:'0',borderBottomRightRadius:'0'}}>
       <div className="card-content-overlay text-left">
       <div className="px-4">
                                         <div className="d-50 rounded-lg border-0 mb-1 card-icon-wrapper bg-first text-white btn-icon text-center shadow-first">
@@ -138,7 +142,7 @@ dispatch(storeSession(oSession));
       <Grid container direction="column" /*alignContent="center"*/  spacing={2}  >
       
            
-            <Grid item xs={12} >
+            <Grid item xs={12}  >
              
                 <TextField
 
@@ -166,6 +170,7 @@ dispatch(storeSession(oSession));
                                             id="date-picker-dialog"
                                             label="Enter Date of Birth"
                                             format="dd-MM-yyyy"
+                                            placeholder="DD-MM-YYYY"
                                             value={dtDOB}
                                             error={(check && !dtDOB)}
                                             helperText={(check && !dtDOB) ?"This Field is required":""}
@@ -181,12 +186,13 @@ dispatch(storeSession(oSession));
       </Grid>
       </div>
           <div className="divider mt-4" />
-          <a type="submit" onClick={()=>{verify();}}  className="px-4 py-3 btn-transition-none text-white bg-first btn btn-white shadow-first d-flex justify-content-between align-items-center">
+         
+      </div>
+      <a type="submit" onClick={()=>{verify();}}  className="px-4 py-3 btn-transition-none text-white bg-first btn btn-white shadow-first d-flex justify-content-between align-items-center">
               
               <div>Verify & Contribute</div>
               <FontAwesomeIcon icon={['fas', 'chevron-right']}/>
           </a>
-      </div>
     {/*    <Button variant="outlined" color="primary" type="submit" >Verify &amp; Pay</Button>*/}
                             </Card>
 
@@ -203,6 +209,8 @@ dispatch(storeSession(oSession));
           <Backdrop className={classes.backdrop} open={backdrop}>
             <CircularProgress color="inherit" />
           </Backdrop>
+
+          </div>
     </>);
 
 }

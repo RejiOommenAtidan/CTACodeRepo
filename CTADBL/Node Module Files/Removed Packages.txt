@@ -7,5 +7,6 @@
 // "react-navigation-collapsible": "^5.8.1",
 // react-native-linear-gradient
 // react-native-shadow
+// "react-native-ios-picker": "^1.0.0",
 
 // NEW PACKAGES TO REMOVE

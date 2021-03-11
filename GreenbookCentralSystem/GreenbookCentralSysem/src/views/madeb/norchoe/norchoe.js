@@ -16,7 +16,7 @@ import { AddDialog, EditDialog } from './dialog';
 import { EmailDialog } from '../email';
 import { Alerts } from '../../alerts';
 import { ViewDialog } from '../../search/dialog';
-import MaterialTable from 'material-table';
+import MaterialTable, {MTableToolbar} from 'material-table';
 import { oOptions, oTableIcons, sDateFormat, modifyHeaders } from '../../../config/commonConfig';
 import { BackdropComponent } from '../../backdrop/index';
 
@@ -461,6 +461,34 @@ export default function EnhancedTable() {
       },
     },
     {
+      field: "madeb.dtFormattedEmailSend",
+      title: "EMAIL SENT",
+      width: "8%",
+    // render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : '',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+	border: '1px solid black',
+        textAlign: "right",
+        padding: '5px'
+      },
+      customSort: (a, b) => {
+        //console.log(a, b);
+        if(!a.madeb.dtFormattedEmailSend){
+          return -1;
+        }
+        if(!b.madeb.dtFormattedEmailSend){
+          return 1;
+        }
+        a = a.madeb.dtFormattedEmailSend.split('-').reverse().join('');
+        b = b.madeb.dtFormattedEmailSend.split('-').reverse().join('');
+        return a.localeCompare(b);
+      },
+    },
+    {
       field: "email",
       title: "EMAIL",
       width: "3%",
@@ -636,6 +664,7 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
                   element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
+                  element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
                 });
                 setdataAPI(resp.data);
                 selectDatafunction();
@@ -739,6 +768,7 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
                   element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
+                  element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
                 selectDatafunction();
@@ -801,6 +831,7 @@ export default function EnhancedTable() {
             element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
             element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
             element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
+            element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
           })
           setdataAPI(resp.data);
           setisLoading(false);
@@ -826,6 +857,13 @@ export default function EnhancedTable() {
       });
   }, []);
 
+  useEffect(() => {
+    const bar = document.getElementById("searchbar").getElementsByTagName('input');
+    if(bar){
+      bar[0].focus();
+    };
+  }, [dataAPI]);
+
   return (
     <>
       <Grid container spacing={1}>
@@ -839,7 +877,42 @@ export default function EnhancedTable() {
            // options={{...oOptions,tableLayout:"fixed"}}
            options={{
              ...oOptions,
-             exportFileName: 'madeb'
+             exportFileName: 'Norchoe Madeb'
+          }}
+          components={{
+            Toolbar: props => (<div id='searchbar'><MTableToolbar
+                        {...props}
+                        onSearchChanged={searchText => {
+                        console.log(searchText);
+                        axios.get(`/MadebAuthRegionVM/SearchMadebsAlternate?parameter=${searchText}&madebType=2`)
+                        .then(resp => {
+                          setisLoading(false);
+                          if(resp.status === 200){
+                            console.log("Search result", resp.data);
+                            resp.data.forEach((element) => {
+                              element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
+                              element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
+                              element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
+                              element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
+                              element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
+                            });
+                            setdataAPI(resp.data);
+                          }
+                          if(resp.status === 204){
+                            console.log("Got 204, Empty result");
+                            setdataAPI([]);
+                          }
+                        })
+                        .catch(error =>{
+                          setisLoading(false);
+                          setAlertMessage("Error in searching...");
+                          setAlertType('error');
+                          snackbarOpen();
+                        });
+                        //commonSearch(searchText);
+                        //props.onSearchChanged(searchText);
+                        }}
+                    /></div>)
           }}
             actions={[
               {

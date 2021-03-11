@@ -21,3 +21,15 @@ export const REMOVE_JWTTOKEN = 'REMOVE_JWTTOKEN';
 export const removeJWTToken = () => {
   return {type: REMOVE_JWTTOKEN};
 };
+
+export const STORE_PAIDUNTIL = 'STORE_PAIDUNTIL';
+
+export const storePaidUntil = (sPaidUntil) => {
+  return {type: STORE_PAIDUNTIL, sPaidUntil: sPaidUntil};
+};
+
+export const REMOVE_PAIDUNTIL = 'REMOVE_PAIDUNTIL';
+
+export const removePaidUntil = () => {
+  return {type: REMOVE_PAIDUNTIL};
+};

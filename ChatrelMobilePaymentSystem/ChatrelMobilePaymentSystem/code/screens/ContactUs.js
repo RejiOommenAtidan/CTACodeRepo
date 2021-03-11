@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, Dimensions, ScrollView} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Linking,
+} from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Card, Icon} from 'react-native-elements';
@@ -9,7 +16,11 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {sFontName} from '../constants/CommonConfig';
+import {
+  sChatrelNetURL,
+  sFontName,
+  sFontNameBold,
+} from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import {Loader} from '../components/Loader';
 
@@ -48,7 +59,71 @@ export const ContactUsScreen = () => {
           titleStyle={{}}
           containerStyle={styles.cardContainerStyle}>
           <View style={styles.contactUsPlaceholderView}>
-            <Text style={styles.contactUsTextComponent}>CONTACT US</Text>
+            {/* <Text style={{
+                ...styles.contactUsTextComponent,
+                fontSize:wp(4),
+                fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+            }}>CONTACT US</Text> */}
+            <Text style={styles.contactUsTextColonComponent}>
+              Postal Address:
+            </Text>
+
+            <Text style={{...styles.contactUsTextComponent, marginBottom: 0}}>
+              The Secretary,{' '}
+            </Text>
+            <Text style={{...styles.contactUsTextComponent, marginBottom: 0}}>
+              Department of Finance Central Tibetan Administration,{' '}
+            </Text>
+            <Text style={{...styles.contactUsTextComponent, marginBottom: 0}}>
+              Dharamshala – 176215 (H.P.)
+            </Text>
+            <Text style={styles.contactUsTextComponent}>INDIA</Text>
+
+            <Text style={styles.contactUsTextComponent}>
+              <Text style={styles.contactUsTextColonComponent}>
+                Telephone:{' '}
+              </Text>
+              <Text style={styles.contactUsTextComponent}>+91-1892-223738</Text>
+              <Text style={styles.contactUsTextComponent}>, 222487</Text>
+            </Text>
+            <Text style={styles.contactUsTextColonComponent}>
+              Website:{' '}
+              <Text
+                style={{
+                  ...styles.contactUsTextComponent,
+                  //   color: Colors.ChatrelInfoBlue,
+                  //   fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                  //   fontFamily:
+                  //     Platform.OS === 'android' ? sFontNameBold : sFontName,
+                  //   textDecorationColor: Colors.ChatrelInfoBlue,
+                  //   textDecorationLine: 'underline',
+                  //   textAlign: 'center',
+                }}
+                // onPress={() => {
+                //   Linking.openURL(sChatrelNetURL);
+                // }}
+              >
+                {sChatrelNetURL}
+              </Text>
+            </Text>
+            <Text style={styles.contactUsTextColonComponent}>
+              Email:{' '}
+              <Text style={styles.contactUsTextComponent}>
+                chatrelonline@tibet.net chatrel@tibet.net
+              </Text>
+            </Text>
+
+            <Text
+              style={{
+                ...styles.contactUsTextComponent,
+                marginTop: hp(3),
+                fontSize: wp(4),
+              }}>
+              Note: It is requested to write your full name, address and phone
+              number if you have any suggestion or any grievances with this
+              project.
+            </Text>
           </View>
         </Card>
       </View>
@@ -87,30 +162,33 @@ const styles = StyleSheet.create({
   },
   contactUsTextComponent: {
     color: Colors.blackText,
-    fontSize: wp(3.5),
+    fontSize: wp(4.25),
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontFamily: sFontName,
-    textAlign: 'auto',
+    textAlign: 'left',
+    lineHeight: hp(3),
+    marginBottom: hp(2),
+  },
+  contactUsTextColonComponent: {
+    color: Colors.ChatrelInfoBlue,
+    fontSize: wp(4.75),
+    fontStyle: 'normal',
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    textAlign: 'left',
+    lineHeight: hp(3),
+    marginBottom: hp(2),
   },
   cardContainerStyle: {
     width: wp(92.5),
     backgroundColor: Colors.white,
     marginTop: hp(5),
-
-    //Border Stuff
     borderRadius: 15,
-    // borderColor: Colors.black,
-    // borderStyle: 'solid',
-    // borderWidth: 0.25,
-
-    //For iOS
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
     shadowOffset: {width: 5, height: 5},
     shadowOpacity: 1,
-
-    //For Android
     elevation: 15,
     overflow: 'visible',
   },
@@ -126,21 +204,10 @@ const styles = StyleSheet.create({
     margin: hp(2),
   },
   iconContainerStyles: {
-    // backgroundColor:Colors.white,
     alignSelf: 'flex-start',
     position: 'absolute',
     top: -55,
-    // left:20,
-    //Border Stuff
     borderRadius: 10,
-    // borderColor: Colors.black,
-    // borderStyle: 'solid',
-    // borderWidth: 0.25,
-
-    //For iOS
-
-    //For Android
     elevation: 15,
-    // overflow: 'visible',
   },
 });

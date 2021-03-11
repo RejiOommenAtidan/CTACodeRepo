@@ -52,7 +52,7 @@ export default function Test () {
                                                     <div className="divider-v divider-v-lg d-none d-lg-block" />
                                                     <div className="text-center mt-4">
                                                     <img alt="CTA" src={projectLogo} width="200px" height="200px"/>
-                                                    <h4  className="display-3 mb-1 text-black">eChatrel</h4>
+                                                    <h4  className="display-3 mb-1 text-black">Chatrel</h4>
                                            <h6 className="display-5 mb-1 text-black ">Your go-to resource for supporting the Tibetan Government</h6>
                                                     </div>
                                                     <div className="text-center mb-3">
@@ -148,7 +148,7 @@ export default function Test () {
                                                     <div className="divider-v divider-v-lg d-none d-lg-block" />
                                                     <div className="text-center mt-4">
                                                     <img alt="CTA" src={projectLogo} width="200px" height="200px"/>
-                                                    <h4  className="display-3 mb-1  text-black">eChatrel</h4>
+                                                    <h4  className="display-3 mb-1  text-black">Chatrel</h4>
                                            <h6 className="display-5 mb-1 text-black ">Your go-to resource for supporting the Tibetan Government</h6>
                                                     </div>
                                                

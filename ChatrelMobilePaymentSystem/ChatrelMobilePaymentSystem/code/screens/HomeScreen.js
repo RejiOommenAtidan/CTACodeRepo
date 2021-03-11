@@ -8,9 +8,11 @@ import {
   Alert,
   Dimensions,
   TouchableWithoutFeedback,
-  ActivityIndicator,
-  TouchableOpacity,
-  Image,
+  Linking,
+  Platform,
+  // ActivityIndicator,
+  // TouchableOpacity,
+  // Image,
 } from 'react-native';
 import {Card, Button, Avatar, Badge} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -22,7 +24,9 @@ import Colors from '../constants/Colors';
 import {
   sFontName,
   sFontNameBold,
-  oActivityIndicatorStyle,
+  sFAQURL,
+  sHimalayaFontName,
+  // oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 
 import {
@@ -37,6 +41,7 @@ import {
   removeGBDetails,
   removeJWTToken,
   storeJWTToken,
+  storePaidUntil,
 } from '../store/actions/GBDetailsAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
@@ -99,6 +104,7 @@ const HomeScreen = (props) => {
   const [outstanding, setOutstanding] = useState(false);
   const [donationDiv, setDonationDiv] = useState(false);
   const [thankYouMsg, setThankYouMsg] = useState(false);
+  const [thankYouMessageContent, setThankYouMessageContent] = useState('');
   const [empty, setEmpty] = useState(false);
 
   const isFocused = useIsFocused();
@@ -157,11 +163,37 @@ const HomeScreen = (props) => {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
       await AsyncStorage.multiRemove(keysToRemove, (err) => {
-        dispatch(removeGoogleCreds);
-        dispatch(removeGBDetails);
-        dispatch(removeJWTToken);
-        dispatch(removeCurrentGBDetails);
-        navigation.navigate('Login');
+        debugger;
+        axios
+          .get(`/User/Logout`)
+          .then((resp) => {
+            if (
+              resp.status === 200 &&
+              resp.data.message === 'Logged Out successfully'
+            ) {
+              console.log(resp.data);
+              dispatch(removeGoogleCreds);
+              dispatch(removeGBDetails);
+              dispatch(removeJWTToken);
+              dispatch(removeCurrentGBDetails);
+              axios.defaults.headers.common['Authorization'] = undefined;
+              navigation.navigate('Login');
+            }
+          })
+          .catch((error) => {
+            console.log('Error ', error.response);
+            if (error.response) {
+              console.error(error.response);
+            } else if (error.request) {
+              console.warn(error.request);
+            } else {
+              console.error('Error', error.message);
+            }
+            console.log(error.config);
+          })
+          .then((release) => {
+            navigation.navigate('Login');
+          });
       });
     } catch (error) {
       console.error(error);
@@ -169,117 +201,118 @@ const HomeScreen = (props) => {
     }
   };
 
-  const getChatrelDetails = () => {
-    axios
-      .get(
-        `/ChatrelPayment/DisplayChatrelPayment/?sGBID=` +
-          oCurrentGBDetails.sGBID,
-      )
-      .then((resp) => {
-        // if (resp.status === 200) {
-        //   const oSession = {
-        //     sJwtToken: resp.data.token,
-        //     bSession: true,
-        //   };
-        //   dispatch(storeJWTToken(oSession));
-        //   console.log(resp.data);
-        //   if (resp.data.chatrel.chatrelPayment) {
-        //     if (resp.data.chatrel.message === 'Paid Until Missing') {
-        //       setpaidUntilMissing(true);
-        //     }
-        //     fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
-        //       .then((response) => response.json())
-        //       .then((data) => {
-        //         setDollarToRupees(data.rates.USD);
-        //       });
+  //const getChatrelDetails = () => {
+  // axios
+  //   .get(
+  //     `/ChatrelPayment/DisplayChatrelPayment/?sGBID=` +
+  //       oCurrentGBDetails.sGBID,
+  //   )
+  //   .then((resp) => {
+  //     // if (resp.status === 200) {
+  //     //   const oSession = {
+  //     //     sJwtToken: resp.data.token,
+  //     //     bSession: true,
+  //     //   };
+  //     //   dispatch(storeJWTToken(oSession));
+  //     //   console.log(resp.data);
+  //     //   if (resp.data.chatrel.chatrelPayment) {
+  //     //     if (resp.data.chatrel.message === 'Paid Until Missing') {
+  //     //       setpaidUntilMissing(true);
+  //     //     }
+  //     //     fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
+  //     //       .then((response) => response.json())
+  //     //       .then((data) => {
+  //     //         setDollarToRupees(data.rates.USD);
+  //     //       });
 
-        //     // resp.data.chatrel.chatrelPayment.nChatrelTotalAmount*parseFloat(dollarToRupees.toFixed(4))
-        //     setnChatrelTotalAmount(
-        //       resp.data.chatrel.chatrelPayment.nChatrelTotalAmount,
-        //     );
-        //     setnCurrentChatrelSalaryAmt(
-        //       resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt,
-        //     );
+  //     //     // resp.data.chatrel.chatrelPayment.nChatrelTotalAmount*parseFloat(dollarToRupees.toFixed(4))
+  //     //     setnChatrelTotalAmount(
+  //     //       resp.data.chatrel.chatrelPayment.nChatrelTotalAmount,
+  //     //     );
+  //     //     setnCurrentChatrelSalaryAmt(
+  //     //       resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt,
+  //     //     );
 
-        //     if (resp.data.chatrel.gbChatrels[0].sAuthRegionCurrency === 'USD') {
-        //       setsCurrencySign('$');
-        //     } else {
-        //       setsCurrencySign('₹');
-        //     }
-        //     setactiveSections([0, 1]);
-        //   }
-        // }
-        // setbLoader(false);
+  //     //     if (resp.data.chatrel.gbChatrels[0].sAuthRegionCurrency === 'USD') {
+  //     //       setsCurrencySign('$');
+  //     //     } else {
+  //     //       setsCurrencySign('₹');
+  //     //     }
+  //     //     setactiveSections([0, 1]);
+  //     //   }
+  //     // }
+  //     // setbLoader(false);
 
-        if (resp.status === 200) {
-          console.log('Self Chatrel Payment data:', resp.data);
-          setbLoader(false);
-          const oSession = {
-            sJwtToken: resp.data.token,
-            bSession: true,
-          };
-          dispatch(storeJWTToken(oSession));
-          fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
-            .then((response) => response.json())
-            .then((data) => {
-              setDollarToRupees(data.rates.USD);
-            });
-          if (resp.data.message !== 'Paid Until Missing') {
-            if (resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0) {
-              setChatrelPending('0');
-              setThankYouMsg(true);
-              if (
-                resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt === 0
-              ) {
-                setOutstanding(false);
-              } else {
-                setDonationDiv(true);
-              }
-            } else {
-              setChatrelPending(
-                resp.data.chatrel.chatrelPayment.nChatrelTotalAmount,
-              );
-              setOutstanding(true);
-            }
-            setPaymentData(resp.data.chatrel);
-            console.log(resp.data.chatrel);
+  //     if (resp.status === 200) {
+  //       debugger;
+  //       console.log('Self Chatrel Payment data:', resp.data);
+  //       setbLoader(false);
+  //       const oSession = {
+  //         sJwtToken: resp.data.token,
+  //         bSession: true,
+  //       };
+  //       dispatch(storeJWTToken(oSession));
+  //       fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
+  //         .then((response) => response.json())
+  //         .then((data) => {
+  //           setDollarToRupees(data.rates.USD);
+  //         });
+  //       if (resp.data.message !== 'Paid Until Missing') {
+  //         if (resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0) {
+  //           setChatrelPending('0');
+  //           setThankYouMsg(true);
+  //           if (
+  //             resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt === 0
+  //           ) {
+  //             setOutstanding(false);
+  //           } else {
+  //             setDonationDiv(true);
+  //           }
+  //         } else {
+  //           setChatrelPending(
+  //             resp.data.chatrel.chatrelPayment.nChatrelTotalAmount,
+  //           );
+  //           setOutstanding(true);
+  //         }
+  //         setPaymentData(resp.data.chatrel);
+  //         console.log(resp.data.chatrel);
 
-            if (resp.data.chatrel.gbChatrels[0].sAuthRegionCurrency === 'USD') {
-              setCurrencySymbol('$');
-            } else {
-              setCurrencySymbol('₹');
-            }
-          } else {
-            //debugger;
-            setEmpty(true);
-          }
-        }
-        //console.log('Data fetched...', resp.data);
-      })
-      .catch((error) => {
-        setbLoader(false);
-        if (error.response.status === 401) {
-          // const oSession = {
-          //   sJwtToken: '',
-          //   bSession: false,
-          // };
-          // dispatch(storeJWTToken(oSession));
-        } else {
-          console.log(error.response);
-          Alert.alert(
-            'Invalid details for Chatrel',
-            'Please Contact CTA',
-            [
-              {
-                text: 'Logout',
-                onPress: () => removeCompleteDetailsAndNavigateToLogin(),
-              },
-            ],
-            {cancelable: false},
-          );
-        }
-      });
-  };
+  //         if (resp.data.chatrel.gbChatrels[0].sAuthRegionCurrency === 'USD') {
+  //           setCurrencySymbol('$');
+  //         } else {
+  //           setCurrencySymbol('₹');
+  //         }
+  //       } else {
+  //         //debugger;
+  //         setEmpty(true);
+  //       }
+  //     }
+  //     //console.log('Data fetched...', resp.data);
+  //   })
+  //   .catch((error) => {
+  //     setbLoader(false);
+  //     if (error.response.status === 401) {
+  //       // const oSession = {
+  //       //   sJwtToken: '',
+  //       //   bSession: false,
+  //       // };
+  //       // dispatch(storeJWTToken(oSession));
+  //     } else {
+  //       console.log(error.response);
+  //       Alert.alert(
+  //         'Invalid details for Chatrel',
+  //         'Please Contact CTA',
+  //         [
+  //           {
+  //             text: 'Logout',
+  //             onPress: () => removeCompleteDetailsAndNavigateToLogin(),
+  //           },
+  //         ],
+  //         {cancelable: false},
+  //       );
+  //     }
+  //   });
+  //};
 
   // const renderSectionTitle = (section) => {
   //   return (
@@ -289,22 +322,22 @@ const HomeScreen = (props) => {
   //   );
   // };
 
-  const renderHeader = (section, index, expanded) => {
-    return (
-      <View style={styles.accordionListHeader}>
-        <Text style={styles.accodrionHeaderText}>{section.sHeader}</Text>
-        {expanded ? (
-          <Icon
-            style={{fontSize: 20}}
-            name="remove-circle"
-            color={Colors.white}
-          />
-        ) : (
-          <Icon style={{fontSize: 20}} name="add-circle" color={Colors.white} />
-        )}
-      </View>
-    );
-  };
+  // const renderHeader = (section, index, expanded) => {
+  //   return (
+  //     <View style={styles.accordionListHeader}>
+  //       <Text style={styles.accodrionHeaderText}>{section.sHeader}</Text>
+  //       {expanded ? (
+  //         <Icon
+  //           style={{fontSize: 20}}
+  //           name="remove-circle"
+  //           color={Colors.white}
+  //         />
+  //       ) : (
+  //         <Icon style={{fontSize: 20}} name="add-circle" color={Colors.white} />
+  //       )}
+  //     </View>
+  //   );
+  // };
   {
     /*<View style={styles.accordionListContent}>*/
   }
@@ -401,9 +434,9 @@ const HomeScreen = (props) => {
     );
   };
 
-  const updateSections = (activeSections) => {
-    setactiveSections(activeSections);
-  };
+  // const updateSections = (activeSections) => {
+  //   setactiveSections(activeSections);
+  // };
 
   useEffect(() => {
     if (isFocused) {
@@ -416,8 +449,96 @@ const HomeScreen = (props) => {
       setOutstanding(false);
       setDonationDiv(false);
       setThankYouMsg(false);
+      setThankYouMessageContent('');
       setactiveSections([0, 1]);
-      getChatrelDetails();
+      //getChatrelDetails();
+      axios
+        .get(
+          `/ChatrelPayment/DisplayChatrelPayment/?sGBID=` +
+            oCurrentGBDetails.sGBID,
+        )
+        .then((resp) => {
+          if (resp.status === 200) {
+            debugger;
+            console.log('Self Chatrel Payment data:', resp.data);
+            const oSession = {
+              sJwtToken: resp.data.token,
+              bSession: true,
+            };
+            dispatch(storeJWTToken(oSession));
+            fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
+              .then((response) => response.json())
+              .then((data) => {
+                setDollarToRupees(data.rates.USD);
+              });
+            if (resp.data.message !== 'Paid Until Missing') {
+              dispatch(storePaidUntil(resp.data.chatrel.nPaidUntil));
+              if (resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0) {
+                setChatrelPending('0');
+                setThankYouMsg(true);
+                setThankYouMessageContent(
+                  resp.data.chatrel.chatrelFrom +
+                    ' - ' +
+                    resp.data.chatrel.chatrelTo,
+
+                  // '2016 - 2020',
+                );
+                if (
+                  resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt === 0
+                ) {
+                  setOutstanding(false);
+                } else {
+                  setDonationDiv(true);
+                }
+              } else {
+                setChatrelPending(
+                  resp.data.chatrel.chatrelPayment.nChatrelTotalAmount,
+                );
+                setOutstanding(true);
+              }
+              setPaymentData(resp.data.chatrel);
+              //console.log(resp.data.chatrel);
+
+              if (
+                resp.data.chatrel.gbChatrels[0].sAuthRegionCurrency === 'USD'
+              ) {
+                setCurrencySymbol('$');
+              } else {
+                setCurrencySymbol('₹');
+              }
+            } else {
+              dispatch(storePaidUntil(null));
+              setEmpty(true);
+            }
+            setbLoader(false);
+          }
+        })
+        .catch((error) => {
+          debugger;
+          setbLoader(false);
+          if (error.response.status === 401) {
+            // const oSession = {
+            //   sJwtToken: '',
+            //   bSession: false,
+            // };
+            // dispatch(storeJWTToken(oSession));
+          } else {
+            console.log(error.response);
+            setTimeout(() => {
+              Alert.alert(
+                'Invalid details for Chatrel',
+                'Please Contact CTA',
+                [
+                  {
+                    text: 'Logout',
+                    onPress: () => removeCompleteDetailsAndNavigateToLogin(),
+                  },
+                ],
+                {cancelable: false},
+              );
+            }, 1000);
+          }
+        });
     }
   }, [isFocused]);
 
@@ -579,7 +700,7 @@ const HomeScreen = (props) => {
                 />
 
                 <View>
-                  <Text
+                  {/* <Text
                     style={{
                       ...styles.boldTextComponent,
                       textAlign: 'left',
@@ -590,8 +711,8 @@ const HomeScreen = (props) => {
                       // fontSize: wp(5),
                     }}>
                     Thank You!
-                  </Text>
-                  <Text
+                  </Text> */}
+                  {/* <Text
                     style={{
                       ...styles.greyTextComponent,
                       color: Colors.greenBG,
@@ -602,6 +723,53 @@ const HomeScreen = (props) => {
                       //   Platform.OS === 'android' ? sFontNameBold : sFontName,
                     }}>
                     This year's Chatrel has been Contributed!
+                  </Text> */}
+
+                  <Text>
+                    <Text
+                      style={{
+                        ...styles.greyTextComponent,
+                        color: Colors.greenBG,
+                        textAlign: 'left',
+                        fontSize: wp(6),
+                        lineHeight: Platform.isPad ? hp(0) : hp(3.5),
+                        fontFamily: sHimalayaFontName,
+                        // fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                        // fontFamily:
+                        //   Platform.OS === 'android' ? sFontNameBold : sFontName,
+                      }}>
+                      རྩིས་ལོ་
+                    </Text>
+                    <Text
+                      style={{
+                        ...styles.greyTextComponent,
+                        color: Colors.greenBG,
+                        textAlign: 'left',
+                        fontSize: wp(6),
+                        lineHeight: Platform.isPad ? hp(0) : hp(3.5),
+                        //fontFamily:sHimalayaFontName
+                        // fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                        // fontFamily:
+                        //   Platform.OS === 'android' ? sFontNameBold : sFontName,
+                      }}>
+                      {' '}
+                      {thankYouMessageContent}{' '}
+                    </Text>
+                  </Text>
+                  <Text
+                    style={{
+                      ...styles.greyTextComponent,
+                      color: Colors.greenBG,
+                      textAlign: 'left',
+                      fontSize: wp(6),
+                      lineHeight: Platform.isPad ? hp(0) : hp(3.5),
+                      fontFamily: sHimalayaFontName,
+                      // lineHeight: Platform.isPad ? hp(2) : hp(3.5),
+                      // fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                      // fontFamily:
+                      //   Platform.OS === 'android' ? sFontNameBold : sFontName,
+                    }}>
+                    ལོའི་དྭང་བླངས་དཔྱ་དངུལ་འབུལ་འབབ་གཙང་འབུལ་ཟིན།
                   </Text>
                 </View>
               </View>
@@ -631,23 +799,80 @@ const HomeScreen = (props) => {
               rounded
               size="large"
               containerStyle={styles.avatarContainerStyle}
-              source={require('../assets/TPresident.jpeg')}
+              // source={require('../assets/TPresident.jpeg')}
+              source={require('../assets/TFM.jpg')}
             />
           }
           titleStyle={{}}>
           {/*<Card.Divider style={styles.presidentCardDividerStyle} />*/}
           <View style={{marginTop: hp(5)}}>
             <View style={styles.viewMarginComponent}>
-              <Text style={styles.greyTextComponent}>
-                This is a huge step for all the Tibetan people that the Chatrel
-                collection services are now Online. Power at your fingertips.
+              <Text
+                style={{
+                  ...styles.greyTextComponent,
+                  marginBottom: hp(1.25),
+                  fontSize: wp(4),
+                }}>
+                {/* This is a huge step for all the Tibetan people that the Chatrel
+                collection services are now Online. Power at your fingertips. */}
+                Tashi Delek
+              </Text>
+              <Text
+                style={{
+                  ...styles.greyTextComponent,
+                  marginBottom: hp(1.25),
+                  fontSize: wp(3.5),
+                }}>
+                I urge all the Tibetans to support this project by timely
+                contributing your yearly Chatrel online.
+              </Text>
+              <Text
+                style={{
+                  ...styles.greyTextComponent,
+                  marginBottom: hp(1.25),
+                  fontSize: wp(3.5),
+                }}>
+                Success of this pilot project solely depends on the
+                participation from Tibetans living in North America.
+              </Text>
+              <Text
+                style={{
+                  ...styles.greyTextComponent,
+                  marginBottom: hp(1.25),
+                  fontSize: wp(3.5),
+                }}>
+                Lastly, I thank each and every one of you, for making this
+                project functional.
+              </Text>
+              <Text
+                style={{
+                  ...styles.greyTextComponent,
+                  marginBottom: hp(1.25),
+                  fontSize: wp(3.5),
+                }}>
+                Based on the efficacy of the pilot initiative, we will gradually
+                expand the reach of the Chatrel online in other regions as well.
+              </Text>
+              <Text
+                style={{
+                  ...styles.greyTextComponent,
+                  marginBottom: hp(1.25),
+                  fontSize: wp(3.5),
+                }}>
+                Thank you Everyone!
               </Text>
             </View>
             <View style={styles.viewMarginComponent}>
-              <Text style={styles.boldTextComponent}>FirstName LastName</Text>
+              <Text style={styles.boldTextComponent}>Karma Yeshi</Text>
             </View>
             <View style={{...styles.viewMarginComponent, marginBottom: 0}}>
-              <Text style={styles.greyTextComponent}>President</Text>
+              <Text
+                style={{
+                  ...styles.greyTextComponent,
+                  fontSize: wp(5),
+                }}>
+                Kalon, Department of Finance, CTA.
+              </Text>
             </View>
           </View>
         </Card>
@@ -692,16 +917,29 @@ const HomeScreen = (props) => {
               marginTop: hp(10),
             }}>
             <View style={styles.viewMarginComponent}>
-              <Text style={styles.boldTextComponent}>
-                Last paid chatrel date not available.
+              <Text>
+                <Text style={{...styles.greyTextComponent, textAlign: 'left'}}>
+                  There is no chatrel contribution record in the database. You
+                  are requested to upload your two year chatrel receipt copy{' '}
+                </Text>
+                <Text
+                  style={{
+                    ...styles.greyTextComponent,
+                    textAlign: 'left',
+                    textDecorationLine: 'underline',
+                    textDecorationColor: Colors.ChatrelInfoBlue,
+                    color: Colors.ChatrelInfoBlue,
+                  }}
+                  onPress={() => {
+                    navigation.navigate('FileDispute');
+                  }}>
+                  here
+                </Text>
               </Text>
             </View>
-            <View style={styles.viewMarginComponent}>
-              <Text style={styles.greyTextComponent}>
-                Please Contact CTA or file a dispute.
-              </Text>
-            </View>
-            <Button
+            {/* <View style={styles.viewMarginComponent}> */}
+            {/* </View> */}
+            {/* <Button
               title="FILE A DISPUTE"
               titleStyle={{
                 color: Colors.white,
@@ -719,7 +957,7 @@ const HomeScreen = (props) => {
                 //setbLoader(true);
                 navigation.navigate('FileDispute');
               }}
-            />
+            /> */}
           </Card>
         )}
         {/*Accordions*/}
@@ -942,7 +1180,7 @@ const HomeScreen = (props) => {
                 }}
                 onPress={() => {
                   //TODO: Add FAQs to Display
-                  console.log('FAQs To be Added');
+                  Linking.openURL(sFAQURL);
                 }}>
                 READ FAQs
               </Button>

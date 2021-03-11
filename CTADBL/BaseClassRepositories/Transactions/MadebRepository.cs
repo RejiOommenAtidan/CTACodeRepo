@@ -103,20 +103,28 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Update Madeb TypeIssued after IssueBook 
-        public void UpdateTypeIssued(string Id, int nIssuedOrNotID,DateTime dtIssuedDate)
+        public void UpdateTypeIssued(string Id, int nIssuedOrNotID,DateTime dtIssuedDate, DateTime dtEntered)
         {
             Madeb madeb = GetMadebById(Id);
             if (madeb.nMadebTypeID == 1)
             {
                 madeb.nIssuedOrNotID = nIssuedOrNotID;
+                // As per discussion on 9th March, 2021 Issue action date in Sarso to be updated to Issued Date when book is issued.
+                madeb.dtIssueAction = dtIssuedDate;
                 madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                
                 this.Update(madeb);
             }
             else {
                 madeb.nIssuedOrNotID = nIssuedOrNotID;
                 madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                madeb.dtIssueAction = dtIssuedDate;
+                if(madeb.nMadebTypeID == 2 || madeb.nMadebTypeID == 3)
+                {
+                    madeb.dtIssueAction = dtEntered;
+                }
+                else
+                {
+                    madeb.dtIssueAction = dtIssuedDate;
+                }
                 this.Update(madeb);
             }
             

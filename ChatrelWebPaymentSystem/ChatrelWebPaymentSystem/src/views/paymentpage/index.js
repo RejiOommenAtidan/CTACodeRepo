@@ -150,12 +150,16 @@ export default function Chatrel(props) {
   const [paymentDiv, setPaymentDiv] = React.useState(true);
   const [successDiv, setSuccessDiv] = React.useState(false);
   const [receiptData, setReceiptData] = React.useState();
+  const [popup, setPopup] = React.useState(false);
+  const [popupOnce, setPopupOnce] = React.useState(false);
 
   const [dataAPI, setDataAPI] = React.useState();
   const [summaryData, setSummaryData] = React.useState();
   const [paymentData, setPaymentData] = React.useState();
   const [donationData, setDonationData] = React.useState();
-
+  const [showPaypalDetails, setShowPaypalDetails] = React.useState(false);
+  const [paypalID, setPaypalID] = React.useState("");
+  
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -170,7 +174,7 @@ export default function Chatrel(props) {
   const [outstanding, setOutstanding] = React.useState(true);
   const [donationNull, setDonationNull] = React.useState(false);
   const [gbChatrelsNull, setGBChatrelsNull] = React.useState(false);
-
+  const [paypalId, setPaypalId] = React.useState("");
   console.log("AuthRegions set in 'authRegions'", authRegions);
   console.log("Current Region set in 'authRegion'", authRegion);
   console.log('Current paymentData is ', paymentData);
@@ -223,25 +227,38 @@ export default function Chatrel(props) {
 
   const updateAuthRegion = (e, value) => {
     console.log('Auth region changed to ', value.id, 'at row ', e.target.id);
+    console.log("test Auth2",value);
+    if(!popupOnce && value.sCurrencyCode==='INR'){
+      setPopup(true);
+      setPopupOnce(true);
+    }
     //const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
     //const index = e.target.id.substring(0, e.target.id.indexOf('_'));
+    //setAuthRegion(value);
     const index = parseInt(e.target.id);
     let chatrelObj = [...paymentData];
-    chatrelObj[index].nAuthRegionID = value.id;
-    chatrelObj[index].sCountryID = value.sCountryID;
-    chatrelObj[index].sAuthRegionCurrency = value.sCurrencyCode;
-    chatrelObj[index].nChatrelAmount =
+    let tempAuthArray =[...authRegion];
+    for (var forIndex = index; forIndex < chatrelObj.length; forIndex++) {
+       
+   tempAuthArray[forIndex]=value;
+      console.log(forIndex);
+    chatrelObj[forIndex].nAuthRegionID = value.id;
+    chatrelObj[forIndex].sCountryID = value.sCountryID;
+    chatrelObj[forIndex].sAuthRegionCurrency = value.sCurrencyCode;
+    chatrelObj[forIndex].nChatrelAmount =
       value.sCurrencyCode === 'INR'
-        ? chatrelObj[index].nChatrelINR
-        : chatrelObj[index].nChatrelUSD;
-    chatrelObj[index].nChatrelMeal =
+        ? chatrelObj[forIndex].nChatrelINR
+        : chatrelObj[forIndex].nChatrelUSD;
+    chatrelObj[forIndex].nChatrelMeal =
       value.sCurrencyCode === 'INR'
-        ? chatrelObj[index].nChatrelMealINR
-        : chatrelObj[index].nChatrelMealUSD;
-    chatrelObj[index].nCurrentChatrelSalaryAmt = 0;
+        ? chatrelObj[forIndex].nChatrelMealINR
+        : chatrelObj[forIndex].nChatrelMealUSD;
+   // chatrelObj[forIndex].nCurrentChatrelSalaryAmt = 0;
 
     setPaymentData(chatrelObj);
-    calculate(index);
+    calculate(forIndex);
+    }
+    setAuthRegion(tempAuthArray);
   };
 
   const modify = (target) => {
@@ -250,9 +267,9 @@ export default function Chatrel(props) {
     let index;
     if (target.type === 'text') {
       index = parseInt(target.id);
-      payObj[index].nCurrentChatrelSalaryAmt = parseFloat(target.value)
-        ? parseFloat(target.value)
-        : 0;
+      // payObj[index].nCurrentChatrelSalaryAmt = parseFloat(target.value)
+      //   ? parseFloat(target.value)
+      //   : 0;
     } else {
       console.log(target.value);
       index = parseInt(target.value);
@@ -266,12 +283,29 @@ export default function Chatrel(props) {
 
         }
         else{
-          payObj[index].nCurrentChatrelSalaryAmt = payObj[index].nSalaryUSD;
+          for (var forIndex = index; forIndex < payObj.length; forIndex++) {
+           // console.log('test loop',payObj[forIndex].dtCurrentChatrelFrom);
+            if(payObj[forIndex].sAuthRegionCurrency==='USD' && !payObj[forIndex].isChild){
+              payObj[forIndex].nCurrentChatrelSalaryAmt = payObj[forIndex].nSalaryUSD;
+              calculate(forIndex);
+            }
+           
+          }
+         // payObj[index].nCurrentChatrelSalaryAmt = payObj[index].nSalaryUSD;
         }
        //payObj[index].nCurrentChatrelSalaryAmt = 50;
         //setPaymentData(payObj);
       } else {
-        payObj[index].nCurrentChatrelSalaryAmt = 0;
+        for (var forIndex = index; forIndex < payObj.length; forIndex++) {
+          // console.log('test loop',payObj[forIndex].dtCurrentChatrelFrom);
+           if(payObj[forIndex].sAuthRegionCurrency==='USD' ){
+             
+             payObj[forIndex].nCurrentChatrelSalaryAmt = 0;
+             calculate(forIndex);
+           }
+          
+         }
+        
       }
     }
     setPaymentData(payObj);
@@ -345,6 +379,8 @@ export default function Chatrel(props) {
 let textFieldDisabled=false;
   const runOnce = () => {
     if (paymentData && dollarToRupees && shouldRun) {
+
+    
       if (!outstanding) {
         if (paymentData[0].nCurrentChatrelSalaryAmt > 0) {
           console.log('we have no outstanding');
@@ -376,10 +412,12 @@ let textFieldDisabled=false;
       } else {
         console.log('we have outstanding');
         const len = paymentData.length;
+  
         for (var i = 0; i < len; i++) {
           calculate(i);
         }
       }
+      
       setShouldRun(false);
     }
   };
@@ -416,7 +454,7 @@ let textFieldDisabled=false;
       //imgData.save();
       const pdf = new jsPdf();
       pdf.addImage(imgData, 'PNG', 10, 10);
-      pdf.save('eChatrel-Receipt.pdf');
+      pdf.save('Chatrel-Receipt.pdf');
     });
   };
 
@@ -507,7 +545,8 @@ let textFieldDisabled=false;
             bSession:true
           }
           dispatch(storeSession(oSession));
-          setBackdrop(false);
+          //setBackdrop(false);
+          setShowPaypalDetails(false);
           setAlertMessage('Chatrel recorded successfully.');
           setAlertType('success');
           snackbarOpen();
@@ -650,6 +689,9 @@ let textFieldDisabled=false;
           axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=` + sGBID)
             .then((resp) => {
               if (resp.status === 200) {
+
+
+
                 const oSession={
                   sJwtToken:resp.data.token,
                   bSession:true
@@ -661,18 +703,35 @@ let textFieldDisabled=false;
                   setDisplayFileDispute(true);
                 }
                 else{
-             
-                  
+                  console.log(resp.data);
+                  setPaypalID(resp.data.clientId);
                   if (resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0) {
                     setOutstanding(false);
                     setBasicResponse(resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt);
-                    console.log('Salary amount',resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt);
+                    //console.log('Salary amount',resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt);
+                   // resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt= resp.data.chatrel.nSalaryUSD;
+                    //console.log('Salary amount',resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt);
                   }
-                  setDataAPI(resp.data.chatrel);
+                  else{
+                    for (var forIndex = 0; forIndex < resp.data.chatrel.gbChatrels.length; forIndex++) {
+                      // console.log('test loop',payObj[forIndex].dtCurrentChatrelFrom);
+                      if( !resp.data.chatrel.gbChatrels[forIndex].isChild){
+                        resp.data.chatrel.gbChatrels[forIndex].nCurrentChatrelSalaryAmt = resp.data.chatrel.gbChatrels[forIndex].nSalaryUSD;
+                       // calculate(forIndex);
+                      }
+                      
+                    }
+                  }
                   setSummaryData(resp.data.chatrel.chatrelPayment);
+                 // let payObj = [...resp.data.chatrel.gbChatrels];
+                
+  
+              //  setPaymentData(payObj);
+                setDataAPI(resp.data.chatrel);
                   setPaymentData(resp.data.chatrel.gbChatrels);
                   setDonationData(resp.data.chatrel.gbChatrelDonation);
                   calcTotal(
+                    //resp.data.chatrel.gbChatrels,
                     resp.data.chatrel.gbChatrels,
                     adonation,
                     bdonation
@@ -720,19 +779,42 @@ let textFieldDisabled=false;
     console.log('dollar rate is ', dollarToRupees);
   }, [dollarToRupees]);
 
-  useEffect(() => {
-    authRegions &&
-      dataAPI &&
-      setAuthRegion(authRegions.find((x) => x.id === dataAPI.nAuthRegionID));
-  }, [authRegions, dataAPI]);
+const runOnceAuthRegion=()=>{
+  var temp=authRegions.find((x) => x.id === dataAPI.nAuthRegionID);
+  // setAuthRegion(authRegions.find((x) => x.id === dataAPI.nAuthRegionID));
 
+  let chatrelObj = [dataAPI.gbChatrels];
+  let tempAuthArray=[];
+ // console.log('length',dataAPI.gbChatrels.length);
+   for (var forIndex = 0; forIndex < dataAPI.gbChatrels.length; forIndex++) {
+    
+   tempAuthArray.push(temp);
+   }
+   setAuthRegion(tempAuthArray);
+   console.log('test Auth',tempAuthArray[0]);
+   if(tempAuthArray[0].sCurrencyCode==='INR'?true:false)
+   {
+    setPopup(true);
+    setPopupOnce(true);
+   }
+   
+
+}
+
+   useEffect(() => {
+    authRegions && dataAPI &&
+    runOnceAuthRegion();
+   
+      //console.log("test Auth",authRegions.find((x) => x.id === dataAPI.nAuthRegionID));
+  }, [authRegions, dataAPI]);
+ 
   return (
     <>
        { displayFileDispute && (
-                <div id="fileDisputeDiv">
+                <div id="fileDisputeDiv" style={{margin:'30px'}}>
                 
                   <Card className="bg-neutral-first d-block card-border-top border-first text-center p-4 p-xl-5 w-50 mx-auto">
-                                    <h4 className="px-3 px-xl-5 display-4 line-height-2 font-weight-bold mb-2">Last Paid Chatrel Date not available in system. Please Contact CTA or file a dispute.</h4>
+                                    <h4 className="px-3 px-xl-5 display-4 line-height-2 font-weight-bold mb-2">There is no chatrel contribution record in the database. You are requested to upload your two year chatrel receipt</h4>
                                     {/* <h5 className="px-3 px-xl-5 display-4 line-height-2  mb-2">Please contact CTA or file a dispute</h5> */}
                                     
  
@@ -750,7 +832,7 @@ let textFieldDisabled=false;
         <>
          {paymentDiv && < >
             {/*<Typography className="myfont" variant="h4" style={{textAlign:'center',color:'#000',fontFamily:fontName,fontWeight:"bold"}} gutterBottom>{pageFrom.toUpperCase()}</Typography>*/}
-            <Grid container spacing={1}>
+            <Grid container spacing={1} style={{margin:'30px'}}>
      <Grid item xs={12} sm={1} ></Grid>
      <Grid item xs={12} sm={10}>
      <Card className="card-box card-box-alt  mx-auto my-4 shadow-lg " style={{borderBottom: "10px solid #4191ff"}} >
@@ -772,32 +854,32 @@ let textFieldDisabled=false;
                     PERSONAL DETAILS
                   </Typography>
 
-                  <Card
-                    style={{  padding: 20,marginBottom:20,border:'1px solid grey'}} className="shadow-first shadow-xl">
+                  {/* <Card
+                    style={{  padding: 20,marginBottom:20,border:'1px solid grey'}} className="shadow-first shadow-xl"> */}
                     <Grid container spacing={3} className="text-black">
-                      <Grid item xs={12} sm={4}>
-                        <Card className="card-box border-first">
-                          <div className="card-indicator bg-success" />
-                          <CardContent className="px-4 py-3">
-                            <div className="d-flex align-items-center justify-content-start">
+                      <Grid item xs={12} sm={6}>
+                   
+                            {/* <div className="d-flex align-items-center justify-content-start">
                               <div
                                 className="badge badge-first px-3"
                                 style={{ fontSize: '14px' }}>
                                 Name
                               </div>
-                            </div>
+                            </div> */}
                             <div
                               style={{
                                 marginTop: '7px',
                                 color: '#000'
                               }} /*className="pb-3 d-flex justify-content-between"*/
                             >
-                              <b>{dataAPI.sName}</b>
+                            <div> <b>NAME: </b>{dataAPI.sName}</div><br/>
+                            <div> <b>GREEN BOOK ID: </b>{dataAPI.sCountryID + dataAPI.chatrelPayment.sGBId}</div>
+
+
                             </div>
-                          </CardContent>
-                        </Card>
+                     
                       </Grid>
-                      <Grid item xs={12} sm={4}>
+                      {/* <Grid item xs={12} sm={4}>
                         <Card className="card-box border-first">
                           <div className="card-indicator bg-success" />
                           <CardContent className="px-4 py-3">
@@ -805,41 +887,31 @@ let textFieldDisabled=false;
                               <div
                                 className="badge badge-first px-3"
                                 style={{ fontSize: '14px' }}>
-                                Green Book ID
+                                
                               </div>
                             </div>
                             <div
                               style={{
                                 marginTop: '7px',
                                 color: '#000'
-                              }} /*className="pb-3 d-flex justify-content-between"*/
+                              }} 
                             >
                               <b>{dataAPI.sCountryID + dataAPI.chatrelPayment.sGBId}</b>
                             </div>
                           </CardContent>
                         </Card>
-                      </Grid>
-                      <Grid item xs={12} sm={4}>
-                        <Card className="card-box border-first">
-                          <div className="card-indicator bg-success" />
-                          <CardContent className="px-4 py-3">
-                            <div className="d-flex align-items-center justify-content-start">
-                              <div
-                                className="badge badge-first px-3"
-                                style={{ fontSize: '14px' }}>
-                                Paid Until
-                              </div>
-                            </div>
+                      </Grid> */}
+                      <Grid item xs={12} sm={6} alignItems="flex-end">
+                
                             <div
                               style={{
                                 marginTop: '7px',
-                                color: '#000'
+                                color: '#000',textAlign:'right'
                               }} /*className="pb-3 d-flex justify-content-between"*/
                             >
-                              <b>{ Moment(dataAPI.nPaidUntil).format('DD-MM-YYYY')}</b>
+                            <b>PAID UNTIL: </b>{ Moment(dataAPI.nPaidUntil).format('DD-MM-YYYY')}
                             </div>
-                          </CardContent>
-                        </Card>
+                      
                       </Grid>
                       {/* <Grid item xs={12} sm={3}>
                         <Card className="card-box border-first">
@@ -864,8 +936,8 @@ let textFieldDisabled=false;
                         </Card>
                       </Grid> */}
                     </Grid>
-                  </Card>
-
+                  {/* </Card> */}
+                  <br/>
                   <Typography
                     className="myfont"
                     variant="h5"
@@ -879,9 +951,9 @@ let textFieldDisabled=false;
                     CHATREL BALANCE
                   </Typography>
 
-                  <Card
-                    style={{  padding: 20,marginBottom:20,border:'1px solid grey'}} className="shadow-first shadow-xl">
-                 
+                  {/* <Card style={{  padding: 20,marginBottom:20,border:'1px solid grey',fontFamily:'Roboto'}}
+                     className="shadow-first shadow-xl"> */}
+                 <div style={{  padding: 20,marginBottom:20,fontFamily:'Roboto'}}>
   {!responsive && (                     
       <Table style={{color:'#000'}}>
       <Thead>
@@ -915,8 +987,8 @@ let textFieldDisabled=false;
       autoComplete={true}
       autoHighlight={true}
       options={authRegions}
-      //value={authRegion}
-      defaultValue={authRegion}
+      value={authRegion[index]}
+      //defaultValue={authRegion}
       getOptionLabel={(option) => option.sAuthRegion}
       renderOption={(option) => (
         <React.Fragment>
@@ -949,19 +1021,19 @@ let textFieldDisabled=false;
 {outstanding && (
  
  
-      <Td align="center">
-        <b style={{ fontSize: '18px' }}>
+      <Td align="center" style={{ fontSize: '18px' }}>
+       
         {row.sAuthRegionCurrency  === 'INR' ? '₹': '$' }{row.nChatrelAmount}
-        </b>
+        
  
       </Td>)}
 
       {outstanding && (
  
-      <Td align="center">
-        <b style={{ fontSize: '18px' }}>
+      <Td align="center" style={{ fontSize: '18px' }}>
+      
         {row.sAuthRegionCurrency  === 'INR' ? '₹': '$' }{row.nChatrelMeal}
-        </b>
+      
       </Td>)}
       {outstanding && (
     <>
@@ -987,7 +1059,9 @@ let textFieldDisabled=false;
                   disabled={row.isChild}
                 />*/}
               <div className="m-2">
-                            <Switch id="employed" onChange={(e) => {console.log('test',e);modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                            <Switch id="employed" checked={row.nCurrentChatrelSalaryAmt>0} onChange={(e) => {
+                              console.log('test',e);
+                              modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
                         </div>
             </Td>
             )}
@@ -1008,10 +1082,10 @@ let textFieldDisabled=false;
               />
             </Td>
             )}
-            <Td align="center"  style={{ color: 'red' }}>
-            <b style={{ fontSize: '18px' }}>
+            <Td align="center"  style={{ color: 'red' , fontSize: '18px'}}>
+            
             {row.sAuthRegionCurrency  === 'INR' ? '₹': '$' }{row.nChatrelLateFeesValue.toFixed(2)}
-            </b>
+          
        </Td>  
           </>)}
        
@@ -1037,7 +1111,9 @@ let textFieldDisabled=false;
                 //   type="checkbox"
                 //   disabled={row.isChild}
                 // />  
-                 <Switch id="employed" onChange={(e) => {console.log('test',e);modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                 <Switch id="employed" checked={row.nCurrentChatrelSalaryAmt>0} onChange={(e) => {
+                   console.log('test',e);modify(e.target);
+                  }} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
               }
               
             </Td>
@@ -1134,7 +1210,7 @@ let textFieldDisabled=false;
             </Td>
             <Td
           align="center"
-            style={{ color: '#29cf00', fontSize: '20px' }}>
+            style={{  fontSize: '20px' }}>
             <b>${row.nChatrelTotalAmount.toFixed(2)}</b>
             </Td>        
 
@@ -1181,7 +1257,7 @@ let textFieldDisabled=false;
       autoHighlight={true}
       options={authRegions}
       //value={authRegion}
-      defaultValue={authRegion}
+      value={authRegion[index]}
       getOptionLabel={(option) => option.sAuthRegion}
       renderOption={(option) => (
         <React.Fragment>
@@ -1214,19 +1290,19 @@ let textFieldDisabled=false;
 {outstanding && (
  
  
-      <Td align="center">
-        <b style={{ fontSize: '18px' }}>
+      <Td align="center" style={{ fontSize: '18px' }}>
+        
         {row.sAuthRegionCurrency  === 'INR' ? '₹': '$' }{row.nChatrelAmount}
-        </b>
+        
  
       </Td>)}
 
       {outstanding && (
  
-      <Td align="center">
-        <b style={{ fontSize: '18px' }}>
+      <Td align="center" style={{ fontSize: '18px' }}>
+       
         {row.sAuthRegionCurrency  === 'INR' ? '₹': '$' }{row.nChatrelMeal}
-        </b>
+       
       </Td>)}
       {outstanding && (
     <>
@@ -1252,7 +1328,9 @@ let textFieldDisabled=false;
                   disabled={row.isChild}
                 />*/}
               <div className="m-2">
-                            <Switch id="employed" onChange={(e) => {console.log('test',e);modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                            <Switch id="employed" checked={row.nCurrentChatrelSalaryAmt>0} onChange={(e) => {
+                              console.log('test',e);
+                            modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
                         </div>
             </Td>
             )}
@@ -1273,10 +1351,10 @@ let textFieldDisabled=false;
               />
             </Td>
             )}
-            <Td align="center"  style={{ color: 'red' }}>
-            <b style={{ fontSize: '18px' }}>
+            <Td align="center"  style={{ color: 'red',fontSize: '18px' }}>
+           
             {row.sAuthRegionCurrency  === 'INR' ? '₹': '$' }{row.nChatrelLateFeesValue.toFixed(2)}
-            </b>
+           
        </Td>  
           </>)}
        
@@ -1302,7 +1380,9 @@ let textFieldDisabled=false;
                 //   type="checkbox"
                 //   disabled={row.isChild}
                 // />  
-                 <Switch id="employed" onChange={(e) => {console.log('test',e);modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                 <Switch id="employed" onChange={(e) => {
+                   console.log('test',e);modify(e.target);
+                  }} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
               }
             </Td>
             )}
@@ -1395,7 +1475,7 @@ let textFieldDisabled=false;
             </Td>
             <Td
           align="center"
-            style={{ color: '#29cf00', fontSize: '20px' }}>
+            style={{  fontSize: '20px' }}>
             <b>${row.nChatrelTotalAmount.toFixed(2)}</b>
             </Td>        
 
@@ -1406,175 +1486,156 @@ let textFieldDisabled=false;
        
       </Tbody>
     </Table>)}
-    
-                    {/*paymentData &&
-                      paymentData.map((row, index) => (
-                        <Grid
-                          container
-                          id="test"
-                          spacing={1}
-                          style={{
-                            border: '1px solid lightgrey',
-                            borderRadius: '10px',
-                            marginBottom: '30px'
+    <Grid
+                      container
+                      spacing={3}
+                      className="text-black"
+                      justify="center">
+                      <Grid item xs={12} sm={12} align="right" style={{marginRight:'50px'}}>
+                        
+                        <div
+                                className="badge badge-first px-3"
+                                style={{ fontSize: '14px',marginBottom:'15px',marginRight:'20px' }}>
+                                Business Donation
+                              </div>
+                        <div>
+                        <TextField
+                          className="h-50"
+                          value={bdonation}
+                         // variant="outlined"
+                         type='number'
+                          onChange={(e) => {
+                            if (e.target.value === '') {
+                              calcTotal(paymentData, adonation, 0);
+                              setBdonation(0);
+                            } else {
+                              calcTotal(
+                                paymentData,
+                                adonation,
+                                parseFloat(e.target.value)
+                              );
+                              setBdonation(parseFloat(e.target.value));
+                            }
                           }}
-                          className="text-black">
-                          <Grid item xs={1} style={{ verticalAlign: 'middle' }}>
-                            {row.nChatrelYear}
-                          </Grid>
-                          <Grid item xs={2}>
-                            <Autocomplete
-                              disabled={!outstanding}
-                              id={`${index}`}
-                              openOnFocus
-                              clearOnEscape
-                              disableClearable
-                              autoComplete={true}
-                              autoHighlight={true}
-                              options={authRegions}
-                              //value={authRegion}
-                              defaultValue={authRegion}
-                              getOptionLabel={(option) => option.sAuthRegion}
-                              renderOption={(option) => (
-                                <React.Fragment>
-                                  <span id={`${index}`}>
-                                    {option.sAuthRegion}
-                                  </span>
-                                </React.Fragment>
-                              )}
-                              onChange={(e, value) => {
-                                if (value !== null) {
-                                  updateAuthRegion(e, value);
-                                } else {
-                                  //setMadebStatusID(0);
-                                }
-                              }}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  //label="Authority Region"
-                                  variant="standard"
-                                  inputProps={{
-                                    ...params.inputProps,
-                                    autoComplete: 'new-password' // disable autocomplete and autofill
-                                  }}
+                          inputProps={{ min: 0 }}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                $
+                              </InputAdornment>
+                            )
+                          }}
+                        />
+                        
+                        </div>
+                      </Grid>
+                      <Grid item xs={12} sm={12} align="right" style={{marginRight:'50px'}}>
+                        <div
+                                className="badge badge-first px-3"
+                                style={{ fontSize: '14px',marginBottom:'15px',marginRight:'20px' }}>
+                                Additional Donation
+                              </div>
+                              <div>
+                        <TextField
+                         
+                          value={adonation}
+                          type='number'
+                          onChange={(e) => {
+                            if (e.target.value === '') {
+                              calcTotal(paymentData, 0, bdonation);
+                              setAdonation(0);
+                            } else {
+                              calcTotal(
+                                paymentData,
+                                parseFloat(e.target.value),
+                                bdonation
+                              );
+                              setAdonation(parseFloat(e.target.value));
+                            }
+                          }}
+                          inputProps={{ min: 0 }}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                $
+                              </InputAdornment>
+                            )
+                          }}
+                        />
+                        </div>
+                      </Grid>
+                    </Grid>
+                  <div style={{textAlign:'right',marginRight:'100px'}}>
+                    <div className="font-weight-bold text-black display-2 mt-4 mb-1">
+                      
+                      <CountUp
+                                    start={0}
+                                    end={total}
+                                    duration={1}
+                                    //deplay={2}
+                                    separator=""
+                                    decimals={2}
+                                    decimal="."
+                                    prefix="$ "
+                                    suffix=""
                                 />
-                              )}
-                            />
-                          </Grid>
-                          <Grid item xs={1}>
-                            {row.sAuthRegionCurrency}{' '}
-                            <Flag
-                              country={
-                                row.sAuthRegionCurrency === 'INR' ? 'IN' : 'US'
-                              }
-                              size={20}
-                            />
-                          </Grid>
-                          {outstanding && (
-                            <>
-                              {' '}
-                              <Grid item xs={1}>
-                                <b style={{ fontSize: '18px' }}>
-                                  ₹{row.nChatrelAmount}
-                                </b>
-                              </Grid>
-                              <Grid item xs={1}>
-                                <b style={{ fontSize: '18px' }}>
-                                  ₹{row.nChatrelMeal}
-                                </b>
-                              </Grid>
-                              <Grid item xs={2} style={{ color: 'red' }}>
-                                {row.nChatrelLateFeesValue > 0 && (
-                                  <>
-                                    {' '}
-                                    <div
-                                      style={{ display: 'inline' }}
-                                      className="badge badge-danger">
-                                      {' '}
-                                      Overdue
-                                    </div>{' '}
-                                    &nbsp;{' '}
-                                    <b style={{ fontSize: '18px' }}>
-                                      ₹{row.nChatrelLateFeesValue.toFixed(2)}
-                                    </b>
-                                  </>
-                                )}
-                                {row.nChatrelLateFeesValue == 0 && (
-                                  <>
-                                    {' '}
-                                    <div
-                                      style={{ display: 'inline' }}
-                                      className="badge badge-warning">
-                                      {' '}
-                                      Pending
-                                    </div>
-                                  </>
-                                )}
-                              </Grid>{' '}
-                            </>
-                          )}
-                          {!outstanding && (
-                            <>
-                              {' '}
-                              <Grid item xs={1}><div className="badge badge-success"> Paid</div></Grid>
-                              <Grid item xs={1}><div className="badge badge-success"> Paid</div></Grid>
-                              <Grid item xs={2}>
                                 
-                              </Grid>{' '}
-                            </>
-                          )}
-                          {row.sAuthRegionCurrency === 'USD' && (
-                            <Grid item xs={2}>
-                              {
-                                <input
-                                  id="employed"
-                                  value={index}
+                      </div>
+                      <div className="font-size-xl text-dark opacity-8">
+                        Grand Total
+                      </div>
+                   </div>
+                      
+                      {total.toFixed(2) != 0.0 && (
+                    <div
+                      style={{ textAlign: 'center',marginLeft:'75%' }}
+                      className="w-25 ">
+                      <br />
+                      <PayPalButton
 
-                                  onChange={(e) => {
-                                    modify(e.target);
-                                  }}
-                                  type="checkbox"
-                                  disabled={row.isChild}
-                                />
-                              }
-                            </Grid>
-                          )}
-                          {row.sAuthRegionCurrency === 'INR' && (
-                            <Grid item xs={2}>
-                              <input
-                                id={index}
-                                type="text"
-                                style={{
-                                  maxWidth: '100px',
-                                  border: 'none',
-                                  borderBottom: '1px solid',
-                                  backgroundColor:'#ced9fd'
-                                }}
-                                onChange={(e) => {
-                                  modify(e.target);
-                                }}
-                              />
-                            </Grid>
-                          )}
+                    
+                        amount={total.toFixed(2)}
+                        style={{ label: 'pay' }}
+                        options={{
+                          clientId:paypalID,
+                          currency: 'USD'
+                        }}
+                        shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                        onSuccess={(details, data) => {
+                          //setBackdrop(true);
+                          //alert("Transaction completed by " + details.payer.name.given_name);
+                          console.log('Details:', details);
+                          console.log('Data', data);
+                          setPaypalID(details.id);
+                          setBackdrop(false);
+                          setShowPaypalDetails(true);
+                          submit(details);
 
-                          <Grid item xs={1} style={{ color: 'grey' }}>
-                            {dollarToRupees && row.sAuthRegionCurrency === 'INR'
-                              ? dollarToRupees.toFixed(4)
-                              : '-'}
-                          </Grid>
-                          <Grid
-                            item
-                            xs={1}
-                            style={{ color: '#29cf00', fontSize: '20px' }}>
-                            <b>${row.nChatrelTotalAmount.toFixed(2)}</b>
-                          </Grid>
-                        </Grid>
-                              ))*/}
-                
-                  </Card>
+                         
+                        }}
+                        onError={(err) => {
+                          console.log(err);
+                          setAlertMessage('Chatrel donation failed.');
+                          setAlertType('error');
+                          snackbarOpen();
+                        }}
+                        onCancel={(data)=>{
+                          setBackdrop(false);
+                        }}
+                        createOrder={(data, actions)=> { 
+                          setBackdrop(true);
+                          pingPong();
+                          return actions.order.create({ purchase_units: [ { amount: { value: total.toFixed(2), }, }, ], }); 
+                        
+                        }}
+                        // onError={(details, data)=>{console.log(details);}}
+                      />
+                    </div>
+                  )}
+                 </div>     
+                  {/* </Card> */}
 
-                  <Typography
+                  {/* <Typography
                     className="myfont"
                     variant="h5"
                     style={{
@@ -1669,15 +1730,15 @@ let textFieldDisabled=false;
                       </Grid>
                     </Grid>
                   </Card>
-              
+               */}
                    
                   
              
-                  <Card  style={{marginTop:'75px',  padding: 20,marginBottom:20,border:'1px solid grey'}}
+                  {/* <Card  style={{marginTop:'75px',  padding: 20,marginBottom:20,border:'1px solid grey'}}
                           className="card-box card-box-alt w-50 mx-auto shadow-first shadow-xl" >
                     <div className="card-content-overlay text-center pb-4">
                       <div className="d-50 rounded border-0 mb-1 card-icon-wrapper  btn-icon mx-auto text-center ">
-                        <img alt="eChatrel" src={projectLogo} width="100px" />
+                        <img alt="Chatrel" src={projectLogo} width="100px" />
                       </div>
                       <div className="font-weight-bold text-black display-2 mt-4 mb-1">
                       
@@ -1742,7 +1803,7 @@ let textFieldDisabled=false;
                   )}
                       
                     </div>
-                  </Card>                     
+                  </Card>                      */}
                 
 
         </div>
@@ -1762,8 +1823,8 @@ let textFieldDisabled=false;
                 
                   <Card className="bg-neutral-first d-block card-border-top border-first text-center p-4 p-xl-5 w-50 mx-auto">
                                     <h4 className="px-3 px-xl-5 display-4 line-height-2 font-weight-bold mb-2">Thank You for your contribution!!</h4>
-                                    <h5 className="px-3 px-xl-5 display-4 line-height-2  mb-2">དྭང་བླངས་དཔྱ་དངུལ་དྲ་རྒྱའི་བརྒྱུད་གནང་བར་ཐུགས་རྗེ་ཆེ་ཞུ།</h5>
-                                    <h5 className="px-3 px-xl-5 display-4 line-height-2  mb-2">བོད་མིའི་སྒྲིག་འཛུགས་དཔལ་འབྱོར་ལས་ཁུངས་ནས།</h5>
+                                    <h5 className="px-3 px-xl-5 display-4 line-height-2  mb-2">དཔྱ་དངུལ་དྲྭ་ཐོག་གནང་བར་ཐུགས་རྗེ་ཆེ་ཞུ། </h5>
+                                    
  
 
 
@@ -2393,7 +2454,26 @@ let textFieldDisabled=false;
               </Button>
             </DialogActions>
           </Dialog>
-
+          <Dialog
+        open={popup}
+        onClose={()=>{setPopup(false);}}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        
+      >
+        {/* <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle> */}
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+          Please enter Employment Contribution manually for your Authority Region
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>{setPopup(false);}} color="primary">
+            Close
+          </Button>
+         
+        </DialogActions>
+      </Dialog>
           {snackbar && (
             <Alerts
               alertObj={alertObj}
@@ -2402,7 +2482,19 @@ let textFieldDisabled=false;
             />
           )}
           <Backdrop className={classes.backdrop} open={backdrop}>
+         
             <CircularProgress color="inherit" />
+          </Backdrop>
+          <Backdrop className={classes.backdrop} open={showPaypalDetails}>
+          <Card  variant="outlined" className='text-center mx-auto p-3 text-black'>
+          <strong>PayPal Contribution Details</strong><br/>
+          PayPal Transaction ID: {paypalID}<br/>
+          Kindly save this ID for future reference.
+            <br/>
+          <CircularProgress color="black" />
+          </Card>
+          
+            
           </Backdrop>
         </>
       )}

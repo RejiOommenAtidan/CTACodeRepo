@@ -24,9 +24,9 @@ namespace CTADBL.ViewModelsRepositories
 	                        `users`.`sUsername`,
 	                        `users`.`sFullName`,
 	                        `users`.`sOffice`,
-	                        `users`.`sPassword`,
-                            `users`.`sSalt`,
-	                        `users`.`nUserRightsId`,
+                            NULL AS sPassword,
+	                        NULL AS sSalt,
+                            `users`.`nUserRightsId`,
                             `users`.`bActive`,
 	                        `users`.`dtEntered`,
 	                        `users`.`nEnteredBy`,
@@ -37,6 +37,22 @@ namespace CTADBL.ViewModelsRepositories
                         INNER JOIN lstuserrights AS userrights ON users.nUserRightsId = userrights.Id 
                         ORDER BY users.Id DESC
                         LIMIT @rows;";
+            //string sql = @"SELECT `users`.`Id`,
+            //             `users`.`_Id`,
+            //             `users`.`sUsername`,
+            //             `users`.`sFullName`,
+            //             `users`.`sOffice`,
+            //             `users`.`nUserRightsId`,
+            //                `users`.`bActive`,
+            //             `users`.`dtEntered`,
+            //             `users`.`nEnteredBy`,
+            //             `users`.`dtUpdated`,
+            //             `users`.`nUpdatedBy`,
+            //             `userrights`.`sUserRightsName`
+            //            FROM tbluser AS users
+            //            INNER JOIN lstuserrights AS userrights ON users.nUserRightsId = userrights.Id 
+            //            ORDER BY users.Id DESC
+            //            LIMIT @rows;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("rows", rows);

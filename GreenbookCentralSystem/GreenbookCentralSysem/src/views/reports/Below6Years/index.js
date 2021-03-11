@@ -83,7 +83,25 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
+
+      },
+    },
+    {
+      field: "sName",
+      title: "NAME",
+      
+      headerStyle: {
+        padding: '5px',
+
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+
+        textAlign: 'left',
+        border: '1px solid black'
 
       },
     },
@@ -101,29 +119,12 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
 
-    {
-      field: "sName",
-      title: "NAME",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'left',
-        borderRight: '1px solid grey'
-
-      },
-    },
+   
     {
       field: "dtFormattedDOB",
       title: "DATE OF BIRTH",
@@ -139,7 +140,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
       customSort: (a, b) => {
@@ -169,7 +170,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -281,7 +282,7 @@ export default function Report() {
             title={title}
             columns={columns}
             data={below6yearsData}
-            options={{ ...oOptions, tableLayout: "fixed" }}
+            options={{ ...oOptions, exportFileName: "Below6YearsReport"}}
             actions={[
 
               {

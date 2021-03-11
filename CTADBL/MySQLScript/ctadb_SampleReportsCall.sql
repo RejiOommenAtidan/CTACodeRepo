@@ -1,20 +1,19 @@
-﻿CALL spReportGreenBookIssuedOverAll ('F','2004-12-14','2004-12-17','lstauthregion.sAuthRegion');
-CALL spReportGreenBookIssuedOverAll ('F','2004-12-14','2004-12-17','lstauthregion.sCountryID');
-CALL spReportGreenBookIssuedOverAll ('M','2003-12-14','2009-12-17','lstauthregion.sAuthRegion');
-CALL spReportGreenBookIssuedOverAll ('M','2003-12-14','2009-12-17','lstauthregion.sCountryID');
-CALL spReportGreenBookIssuedOverAll ('L','2003-12-14','2009-12-17','lstauthregion.sAuthRegion');
-CALL spReportGreenBookIssuedOverAll ('L','2003-12-14','2009-12-17','lstauthregion.sCountryID');
-CALL spReportGreenBookIssuedOverAll ('A','2011-12-14','2015-12-17','lstauthregion.sAuthRegion');
-CALL spReportGreenBookIssuedOverAll ('A','2011-12-14','2015-12-17','lstauthregion.sCountryID');
-CALL spReportGreenBookIssuedOverAll ('U','2003-12-14','2012-12-17','lstauthregion.sAuthRegion');
-CALL spReportGreenBookIssuedOverAll ('U','2003-12-14','2012-12-17','lstauthregion.sCountryID');
-CALL spReportGreenBookIssuedOverAll ('B','2003-12-14','2015-12-17','lstauthregion.sAuthRegion');
-CALL spReportGreenBookIssuedOverAll ('B','2001-12-14','2015-12-17','lstauthregion.sCountryID');
+﻿    
+CALL spReportGreenBookIssuedOverAll (2,'2003-12-14','2009-12-17','lstauthregion.sAuthRegion','lstauthregion.sAuthRegion');
+CALL spReportGreenBookIssuedOverAll (2,'2003-12-14','2009-12-17','lstcountry.sCountryID','lstcountry.sCountryID');
+CALL spReportGreenBookIssuedOverAll (3,'2003-12-14','2009-12-17','lstauthregion.sAuthRegion','lstauthregion.sAuthRegion');
+CALL spReportGreenBookIssuedOverAll (3,'2003-12-14','2009-12-17','lstcountry.sCountryID','lstcountry.sCountryID');
+CALL spReportGreenBookIssuedOverAll (4,'2011-12-14','2015-12-17','lstauthregion.sAuthRegion','lstauthregion.sAuthRegion');
+CALL spReportGreenBookIssuedOverAll (4,'2011-12-14','2015-12-17','lstcountry.sCountryID','lstcountry.sCountryID');
+CALL spReportGreenBookIssuedOverAll (5,'2003-12-14','2012-12-17','lstauthregion.sAuthRegion','lstauthregion.sAuthRegion');
+CALL spReportGreenBookIssuedOverAll (5,'2003-12-14','2012-12-17','lstcountry.sCountryID','lstcountry.sCountryID');
+CALL spReportGreenBookIssuedOverAll (6,'2003-12-14','2015-12-17','lstauthregion.sAuthRegion','lstauthregion.sAuthRegion');
+CALL spReportGreenBookIssuedOverAll (6,'2001-12-14','2015-12-17','lstcountry.sCountryID','lstcountry.sCountryID');
 
 
 
-CALL spReportGreenBookIssuedIndividual ('F','2004-12-14','2004-12-17','lstcountry.sCountry','lstcountry.sCountry');
-CALL spReportGreenBookIssuedIndividual ('F','2004-12-14','2004-12-17','lstauthregion.ID','lstauthregion.sAuthRegion');
+CALL spReportGreenBookIssuedIndividual ('F','2020-03-10','2020-04-10','lstcountry.sCountry','lstcountry.sCountry');
+CALL spReportGreenBookIssuedIndividual ('F','2020-03-10','2020-04-10','lstauthregion.ID','lstauthregion.sAuthRegion');
 CALL spReportGreenBookIssuedIndividual ('M','2003-12-14','2009-12-17','lstcountry.sCountry','lstcountry.sCountry');
 CALL spReportGreenBookIssuedIndividual ('M','2003-12-14','2009-12-17','lstauthregion.ID','lstauthregion.sAuthRegion');
 CALL spReportGreenBookIssuedIndividual ('L','2003-12-14','2009-12-17','lstcountry.sCountry','lstcountry.sCountry');
@@ -71,3 +70,14 @@ CALL spReportChatrelRecordsRegionOrCountryWise ('2009-12-17','2015-12-17','lnkgb
 ======================================================================
 
 CALL spReportGreenBookDeleted ('2014-01-14','2014-12-17');
+
+
+-- Create index in greenbookPrime
+
+CREATE INDEX FORMNO_INDEX_MADEB ON MADEB(FormNo);
+CREATE INDEX FORMNO_INDEX_GBNOGIVEN ON GBNOGIVEN(FormNo);
+CREATE INDEX GIVENORNOT_INDEX_GBNOGIVEN ON GBNOGIVEN(GivenOrNot);
+CREATE INDEX IDENTITYID_INDEX_IDENT_BOOKISSUED ON IDENT_BOOKISSUED(IdentityID);
+CREATE INDEX WHYISSUED_INDEX_IDENT_BOOKISSUED ON IDENT_BOOKISSUED(WhyIssued);
+CREATE INDEX IDNo_INDEX_IDENT_BOOKSERIAL ON IDENT_BOOKSERIAL(IDNo);
+CREATE INDEX GB_INDEX_abroad ON abroad(GB);

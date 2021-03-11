@@ -82,7 +82,11 @@ namespace ChatrelPaymentWebAPI.Controllers
             //var response = await flow.ExchangeCodeForTokenAsync(string.Empty, code, redirectUrl, CancellationToken.None);
 
             GoogleJsonWebSignature.ValidationSettings settings = new GoogleJsonWebSignature.ValidationSettings();
-            settings.Audience = new List<string>() { "176037070348-10livm7g5iehb6mrl72bjv29b4bdmavu.apps.googleusercontent.com", "987929460767-jf4d713glngd3o109vdqj6mt3c2e0fju.apps.googleusercontent.com" };
+            string sGoogleClientIDWebApp = ChatrelConfigRepository.GetValueByKey("sGoogleClientIDWebApp").ToString();
+            string sGoogleClientIDAndroid = ChatrelConfigRepository.GetValueByKey("sGoogleClientIDAndroid").ToString();
+            string sGoogleClientIDIOS = ChatrelConfigRepository.GetValueByKey("sGoogleClientIDIOS").ToString();
+            settings.Audience = new List<string>() { sGoogleClientIDWebApp, sGoogleClientIDAndroid, sGoogleClientIDIOS };
+            //settings.Audience = new List<string>() { "176037070348-10livm7g5iehb6mrl72bjv29b4bdmavu.apps.googleusercontent.com", "805523212166-j3oa67dcgkkff0pps9qp779ecmsp1c5o.apps.googleusercontent.com", "805523212166-osj9e06odhct70cen9n028ri06q4o2av.apps.googleusercontent.com" };
             GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(code, settings);
 
             return payload;
@@ -128,21 +132,25 @@ namespace ChatrelPaymentWebAPI.Controllers
                         string sAuthRegion = _authRegionRepository.GetAuthRegionById(greenbook.nAuthRegionID.ToString()).sAuthRegion;
                         if (greenbook.dtDOB == dtDOB && greenbook.sLoginGmail == sEmail)
                         {
-                            #region Information Logging 
-                            _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, Convert.ToInt32(greenbook.sGBID));
-                            #endregion
+                            
 
                             #region JWT
                             UserVM user = new UserVM { User = greenbook, sJwtToken = String.Empty };
 
                             //WriteToken
                             user.sJwtToken = JwT.GenerateNewToken(user, _appSettings);
-
+                            while (BlockedTokens.Tokens.Contains(user.sJwtToken))
+                            {
+                                user.sJwtToken = JwT.GenerateNewToken(user, _appSettings);
+                            }
 
                             //   userVMFromDB.nTimeoutInDays = dTimeout;
                             #endregion
 
                             // should we set a cookie or a token?
+                            #region Information Logging 
+                            _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), "AuthenticateGBID Method Called, sJwtToken is: " + user.sJwtToken, null, Convert.ToInt32(greenbook.sGBID));
+                            #endregion
                             return Ok(new { result = "Verified", user.sJwtToken, user.User.sCountryID, sAuthRegion });
                         }
                         else
@@ -166,6 +174,22 @@ namespace ChatrelPaymentWebAPI.Controllers
             }
 
 
+        }
+        #endregion
+
+        #region Log Out
+        [AuthorizeToken]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult Logout()
+        {
+            string sGBID = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
+            var jwt = Request.Headers["Authorization"].ToString().Substring(7);
+            BlockedTokens.Tokens.Add(jwt);
+            #region Information Logging 
+            _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), "Logout Method Called, token is: " + jwt, null, Convert.ToInt32(sGBID));
+            #endregion
+            return Ok(new { message = "Logged Out successfully" });
         }
         #endregion
 

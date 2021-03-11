@@ -176,7 +176,7 @@ const close=(id)=>{
             </div>
           </NavLink>
         </div>
-      <div className="app-header-menu">
+      <div className="app-header-menu" >
       {authUser
               &&
               ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 3)) !== undefined
@@ -196,7 +196,7 @@ const close=(id)=>{
           onClick={handleMadebClick}
          // onMouseOver={handleMadebClick}
           id="id_Madeb"
-          className="btn-transition-none btn-neutral-primary mr-3">
+          className="btn-transition-none btn-neutral-primary mr-3" style={{fontFamily: 'inherit'}} >
           Madebs
         </Button>}
         {
@@ -210,7 +210,7 @@ const close=(id)=>{
           onClick={handleGBClick}
           //onMouseOver={handleGBClick}
         //  onMouseEnter={handleGBClick}
-          
+        style={{fontFamily: 'inherit'}}
           
           className="btn-transition-none btn-neutral-primary mr-3">
           Green Book
@@ -249,6 +249,7 @@ const close=(id)=>{
           size="small"
           id="id_Report"
          onClick={handleReportClick}
+         style={{fontFamily: 'inherit'}}
        //  onMouseEnter={handleReportClick}
           className="btn-transition-none btn-neutral-primary mr-3">
           Reports
@@ -265,6 +266,7 @@ const close=(id)=>{
           onClick={handleUserClick}
         //  onMouseEnter={handleUserClick}
           id="id_User"
+          style={{fontFamily: 'inherit'}}
           className="btn-transition-none btn-neutral-primary mr-3">
           Users
         </Button>}
@@ -294,6 +296,7 @@ const close=(id)=>{
         <Button
           size="small"
           id="id_Master"
+          style={{fontFamily: 'inherit'}}
           onClick={handleMasterClick}
        //   onMouseEnter={handleMasterClick}
           className="btn-transition-none btn-neutral-primary mr-3">
@@ -317,6 +320,7 @@ const close=(id)=>{
           <Button
           size="small"
           id="id_Chatrel"
+          style={{fontFamily: 'inherit'}}
           onClick={handleChatrelClick}
        //   onMouseEnter={handleMasterClick}
           className="btn-transition-none btn-neutral-primary mr-3">
@@ -328,6 +332,7 @@ const close=(id)=>{
           open={openGB}
           anchorEl={anchorElGB}
           onClose={handleGBClose}
+          style={{fontFamily: 'Noto Serif'}}
          // onMouseLeave={handleGBClose}
       //   onMouseLeave={handleGBClose}
           anchorOrigin={{
@@ -338,7 +343,7 @@ const close=(id)=>{
             vertical: 'top',
             horizontal: 'left'
           }}>
-          <div className="popover-custom-xxl p-0">
+          <div className="popover-custom-xxl p-0" >
         
             <Grid container spacing={0}>
             <Grid item xs={4}>
@@ -525,7 +530,7 @@ const close=(id)=>{
           open={openMadeb}
           anchorEl={anchorElMadeb}
           onClose={handleMadebClose}
-          
+          style={{fontFamily: 'Noto Serif'}}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left'
@@ -661,6 +666,7 @@ const close=(id)=>{
             vertical: 'bottom',
             horizontal: 'left'
           }}
+          style={{fontFamily: 'Noto Serif'}}
           transformOrigin={{
             vertical: 'top',
             horizontal: 'left'
@@ -907,6 +913,7 @@ const close=(id)=>{
             vertical: 'bottom',
             horizontal: 'left'
           }}
+          style={{fontFamily: 'Noto Serif'}}
           transformOrigin={{
             vertical: 'top',
             horizontal: 'left'
@@ -1107,6 +1114,7 @@ const close=(id)=>{
           open={openUser}
           anchorEl={anchorElUser}
           onClose={handleUserClose}
+          style={{fontFamily: 'Noto Serif'}}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left'
@@ -1180,6 +1188,7 @@ const close=(id)=>{
             vertical: 'bottom',
             horizontal: 'left'
           }}
+          style={{fontFamily: 'Noto Serif'}}
           transformOrigin={{
             vertical: 'top',
             horizontal: 'left'

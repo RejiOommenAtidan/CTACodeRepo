@@ -118,7 +118,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                         LEFT JOIN `lstauthregion` on `tblgreenbookissued`.`nAuthRegionId` = `lstauthregion`.`ID`
                         LEFT JOIN `lsttypeissued` on `tblgreenbookissued`.`nTypeIssuedId` = `lsttypeissued`.`Id`
                         LEFT JOIN `lstmadebtype` on `tblgreenbookissued`.`nMadebTypeId` = `lstmadebtype`.`Id`
-                        WHERE nGBId=@nGBId";
+                        WHERE nGBId=@nGBId AND tblgreenbookissued.nTypeIssuedId = 2; ";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("nGBId", nGBId);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -67,11 +67,35 @@ export const CustomSidebarMenu = (props) => {
         await GoogleSignin.revokeAccess();
         await GoogleSignin.signOut();
         await AsyncStorage.multiRemove(keysToRemove, (err) => {
-          dispatch(removeGoogleCreds);
-          dispatch(removeGBDetails);
-          dispatch(removeJWTToken);
-          dispatch(removeCurrentGBDetails);
-          navigation.navigate('Login');
+          axios
+            .get(`/User/Logout`)
+            .then((resp) => {
+              if (
+                resp.status === 200 &&
+                resp.data.message === 'Logged Out successfully'
+              ) {
+                dispatch(removeGoogleCreds);
+                dispatch(removeGBDetails);
+                dispatch(removeJWTToken);
+                dispatch(removeCurrentGBDetails);
+                axios.defaults.headers.common['Authorization'] = undefined;
+                navigation.navigate('Login');
+              }
+            })
+            .catch((error) => {
+              console.log('Error ', error.response);
+              if (error.response) {
+                console.error(error.response);
+              } else if (error.request) {
+                console.warn(error.request);
+              } else {
+                console.error('Error', error.message);
+              }
+              console.log(error.config);
+            })
+            .then((release) => {
+              navigation.navigate('Login');
+            });
         });
       } catch (error) {
         console.error(error);
@@ -83,6 +107,15 @@ export const CustomSidebarMenu = (props) => {
   const [sessionTimeout, setSessionTimeout] = React.useState(false);
   const [timerId, setTimerId] = React.useState(null);
   const sJwtToken = useSelector((state) => state.GBDetailsReducer.sJwtToken);
+  const setSessionTimeoutTrue = () => {
+    //console.log('Index for Page: ' + state.index);
+    //Note: Login index is 7
+    if (state.index === 7) {
+      setSessionTimeout(false);
+    } else {
+      setSessionTimeout(true);
+    }
+  };
   if (
     sJwtToken?.sJwtToken !== null &&
     sJwtToken?.sJwtToken !== undefined &&
@@ -94,14 +127,11 @@ export const CustomSidebarMenu = (props) => {
     ] = `Bearer ${sJwtToken.sJwtToken}`;
 
     if (!sJwtToken.bSession) {
-      console.log('bSession');
       setSessionTimeout(true);
     }
 
-    console.log('old', oldToken);
-    console.log('new', 'Bearer ' + sJwtToken.sJwtToken);
-    axios.defaults.headers.common['Authorization'] =
-      'Bearer ' + sJwtToken.sJwtToken;
+    //console.log('old', oldToken);
+    //console.log('new', 'Bearer ' + sJwtToken.sJwtToken);
 
     if (oldToken !== 'Bearer ' + sJwtToken.sJwtToken) {
       console.log('Timer Reset', timerId);
@@ -118,50 +148,59 @@ export const CustomSidebarMenu = (props) => {
       );
       const jwtObject = JSON.parse(jsonPayload);
 
-      console.log('JWT Token:', JSON.parse(jsonPayload));
+      //console.log('JWT Token:', JSON.parse(jsonPayload));
 
       if (timerId) {
         clearTimeout(timerId);
       }
 
-      console.log(timerId);
+      //console.log(timerId);
+      //console.log(Math.floor(Date.now() / 1000) - jwtObject.exp);
+      //console.log(Date.now() - jwtObject.exp * 1000);
 
-      console.log(Math.floor(Date.now() / 1000) - jwtObject.exp);
-      console.log(Date.now() - jwtObject.exp * 1000);
       const timer = () =>
         setTimeout(() => {
-          setSessionTimeout(true);
-          Alert.alert(
-            'Session Timeout',
-            'Your session has expired. Please login again.',
-            [
-              {
-                text: 'Ok',
-                onPress: async () => {
-                  try {
-                    await GoogleSignin.revokeAccess();
-                    await GoogleSignin.signOut();
-                    await AsyncStorage.multiRemove(keysToRemove, (err) => {
-                      dispatch(removeGoogleCreds);
-                      dispatch(removeGBDetails);
-                      dispatch(removeJWTToken);
-                      dispatch(removeCurrentGBDetails);
-                      navigation.navigate('Login');
-                    });
-                  } catch (error) {
-                    navigation.navigate('Login');
-                  }
-                },
-                style: 'default',
-              },
-            ],
-            {cancelable: false},
-          );
+          //setSessionTimeout(true);
+          setSessionTimeoutTrue();
         }, jwtObject.exp * 1000 - Date.now());
+      //}, 1000 * 60 * 1);
       setTimerId(timer());
     }
-    console.log('Token changed:', sJwtToken.sJwtToken);
+
+    //console.log('Token changed:', sJwtToken.sJwtToken);
   }
+
+  useEffect(() => {
+    if (sessionTimeout) {
+      Alert.alert(
+        'Session Timeout',
+        'Your session has expired. Please login again.',
+        [
+          {
+            text: 'Ok',
+            onPress: async () => {
+              try {
+                await GoogleSignin.revokeAccess();
+                await GoogleSignin.signOut();
+                axios.defaults.headers.common['Authorization'] = undefined;
+                dispatch(removeGoogleCreds);
+                dispatch(removeGBDetails);
+                dispatch(removeJWTToken);
+                dispatch(removeCurrentGBDetails);
+                await AsyncStorage.multiRemove(keysToRemove, (err) => {
+                  navigation.navigate('Login');
+                });
+              } catch (error) {
+                navigation.navigate('Login');
+              }
+            },
+            style: 'default',
+          },
+        ],
+        {cancelable: false},
+      );
+    }
+  }, [sessionTimeout]);
   return (
     <SafeAreaView style={{flex: 1}}>
       {/*Avatar*/}
@@ -223,20 +262,6 @@ export const CustomSidebarMenu = (props) => {
           </Text>
         </View>
       </View>
-      {/* <View
-        style={{
-          //marginLeft: hp(1.5),
-          //marginTop: hp(2.5),
-          marginBottom: hp(1.5),
-          marginHorizontal: hp(1.5),
-          maxWidth: 210,
-          //marginRight: hp(2.5),
-          //minWidth:100,
-          //maxWidth:150,
-          //flexDirection: 'row',
-          //justifyContent: 'space-between',
-        }}>
-      </View> */}
       <View
         style={{
           backgroundColor: Colors.separatorColor,
@@ -283,25 +308,7 @@ export const CustomSidebarMenu = (props) => {
                   {drawerLabel}
                 </Text>
               )}
-              focused={
-                // Old Now
-                // state.routes.findIndex((e) => e.key === route.key)
-                // === state.index
-                //0 LS (NA)
-                //1 GDS (NA)
-                //2 HS (0)
-                //3 Self (1)
-                //4 Fam IS (2)
-                //5 Fam (NA)
-                //6 Friend IS (3)
-                //7 Friend (NA)
-                //8 CHS (4)
-                //9 FDS (5)
-                //10 MPS (6)
-                // state.routes.findIndex((e) => e.key === route.key).id
-                // === state.id
-                state.routeNames[state.index] === route.name
-              }
+              focused={state.routeNames[state.index] === route.name}
               activeTintColor={activeTintColor}
               onPress={() => navigation.navigate(route.name)}
               style={styles.drawerItemStyles}
@@ -331,6 +338,7 @@ export const CustomSidebarMenu = (props) => {
           icon={(focused, size, color) => (
             <MaterialIcons
               name="logout"
+              //Value Coded
               size={23}
               color={Colors.black}
               style={{
@@ -341,43 +349,11 @@ export const CustomSidebarMenu = (props) => {
           )}
         />
       </DrawerContentScrollView>
-      {/*<View style={styles.customItem}>
-          <Text
-            onPress={() => {
-              Linking.openURL('https://cta-portal-webapi.azurewebsites.net/weatherforecast');
-            }}>
-            Rate Us
-          </Text>
-          <Image
-            source={{uri: BASE_PATH + 'star_filled.png'}}
-            style={styles.iconStyle}
-          />
-          </View>*/}
-      {/* <Text
-        style={{
-          fontSize: 16,
-          textAlign: 'center',
-          color: 'grey',
-        }}>
-        www.aboutreact.com
-      </Text> */}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  sectionLine: {
-    backgroundColor: Colors.grey,
-    flex: 1,
-    height: 1,
-    marginLeft: 10,
-    marginRight: 20,
-  },
   logoutLabelStyles: {
     alignSelf: 'flex-start',
     color: Colors.black,

@@ -7,8 +7,8 @@ import {
 import {createStackNavigator} from '@react-navigation/stack';
 import {
   createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
+  // DrawerContentScrollView,
+  // DrawerItemList,
 } from '@react-navigation/drawer';
 import {
   ChatrelHistoryScreen,
@@ -36,10 +36,6 @@ import {
   FriendChatrelScreen,
   FriendChatrelScreenOptions,
 } from '../screens/FriendChatrelScreen';
-// import {
-//   FamilyChatrelScreen,
-//   FamilyChatrelScreenOptions,
-// } from '../screens/FamilyChatrel';
 import {
   FamilyChatrelIntermediateScreen,
   FamilyChatrelIntermediateScreenOptions,
@@ -51,15 +47,19 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import {sFontName} from '../constants/CommonConfig';
 import {CustomSidebarMenu} from '../components/CustomSidebar';
 import {MyWebView, MyWebViewOptions} from '../components/MyWebView';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
-import HeaderButton from '../components/HeaderButton';
-import {GLogout} from '../components/GLogout';
 import {ContactUsScreen, ContactUsScreenOptions} from '../screens/ContactUs';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
+// import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+// import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+// import HeaderButton from '../components/HeaderButton';
+// import {GLogout} from '../components/GLogout';
+// import {
+//   FamilyChatrelScreen,
+//   FamilyChatrelScreenOptions,
+// } from '../screens/FamilyChatrel';
 
 const defaultStackNavOptions = {
   headerMode: 'screen',
@@ -133,21 +133,21 @@ const SelfChatrelNavigator = () => {
   );
 };
 
-const FamilyChatrelIntermediateStackNavigator = createStackNavigator();
+// const FamilyChatrelIntermediateStackNavigator = createStackNavigator();
 
-const FamilyChatrelIntermediateNavigator = () => {
-  return (
-    <FamilyChatrelIntermediateStackNavigator.Navigator
-      screenOptions={defaultStackNavOptions}>
-      <FamilyChatrelIntermediateStackNavigator.Screen
-        name="FamilyChatrelIntermediate"
-        component={FamilyChatrelIntermediateScreen}
-        options={
-          FamilyChatrelIntermediateScreenOptions
-        }></FamilyChatrelIntermediateStackNavigator.Screen>
-    </FamilyChatrelIntermediateStackNavigator.Navigator>
-  );
-};
+// const FamilyChatrelIntermediateNavigator = () => {
+//   return (
+//     <FamilyChatrelIntermediateStackNavigator.Navigator
+//       screenOptions={defaultStackNavOptions}>
+//       <FamilyChatrelIntermediateStackNavigator.Screen
+//         name="FamilyChatrelIntermediate"
+//         component={FamilyChatrelIntermediateScreen}
+//         options={
+//           FamilyChatrelIntermediateScreenOptions
+//         }></FamilyChatrelIntermediateStackNavigator.Screen>
+//     </FamilyChatrelIntermediateStackNavigator.Navigator>
+//   );
+// };
 
 // const FamilyChatrelStackNavigator = createStackNavigator();
 
@@ -252,18 +252,18 @@ const FileDisputeNavigator = () => {
   );
 };
 
-const MyWebViewStackNavigator = createStackNavigator();
+// const MyWebViewStackNavigator = createStackNavigator();
 
-const MyWebViewNavigator = () => {
-  return (
-    <MyWebViewStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-      <MyWebViewStackNavigator.Screen
-        name="MyWebView"
-        component={MyWebView}
-        options={MyWebViewOptions}></MyWebViewStackNavigator.Screen>
-    </MyWebViewStackNavigator.Navigator>
-  );
-};
+// const MyWebViewNavigator = () => {
+//   return (
+//     <MyWebViewStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+//       <MyWebViewStackNavigator.Screen
+//         name="MyWebView"
+//         component={MyWebView}
+//         options={MyWebViewOptions}></MyWebViewStackNavigator.Screen>
+//     </MyWebViewStackNavigator.Navigator>
+//   );
+// };
 
 const MainDrawerNavigator = createDrawerNavigator();
 
@@ -307,14 +307,14 @@ export const MainNavigator = () => {
       }}
       drawerContentOptions={{
         itemStyle: {
+          backgroundColor: Colors.white,
+          marginBottom: hp(1),
+          marginHorizontal: 0,
+          justifyContent: 'flex-start',
           // borderBottomWidth:0.75,
           //borderBottomColor:Colors.black,
-          justifyContent: 'flex-start',
-          marginBottom: hp(1),
-          backgroundColor: Colors.white,
           // borderBottomColor:Colors.black,
           // borderBottomWidth:1,
-          marginHorizontal: 0,
           // marginLeft:wp(2)
           //alignContent:"center",
           //alignSelf:"center"
@@ -327,11 +327,11 @@ export const MainNavigator = () => {
         activeTintColor: Colors.primary,
         inactiveTintColor: Colors.black,
         labelStyle: {
+          alignSelf: 'flex-start',
           fontFamily: sFontName,
+          fontSize: wp(3.75),
           fontStyle: 'normal',
           fontWeight: 'normal',
-          alignSelf: 'flex-start',
-          fontSize: wp(3.75),
           // paddingLeft: 0,
           // marginLeft: 0,
           // marginLeft:0,
@@ -357,7 +357,6 @@ export const MainNavigator = () => {
             />
           ),
           drawerLabel: 'HOME',
-          //labelStyle:{fontfamily:sFontName},
           gestureEnabled: true,
           swipeEnabled: true,
           unmountOnBlur: true,
@@ -528,7 +527,7 @@ export const MainNavigator = () => {
         options={{
           gestureEnabled: false,
           swipeEnabled: false,
-          unmountOnBlur: false,
+          unmountOnBlur: true,
         }}></MainDrawerNavigator.Screen>
       {/*FamilyChatrel*/}
       {/* <MainDrawerNavigator.Screen
@@ -539,8 +538,8 @@ export const MainNavigator = () => {
         name={'FriendChatrel'}
         component={FriendChatrelNavigator}
         options={{
-          gestureEnabled: false,
-          swipeEnabled: false,
+          gestureEnabled: true,
+          swipeEnabled: true,
           unmountOnBlur: true,
         }}></MainDrawerNavigator.Screen>
       {/*Web View */}

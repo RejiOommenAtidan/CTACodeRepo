@@ -900,7 +900,8 @@ export const AddDialog = (props) => {
   const [id, setId] = React.useState(0);
   const [madebType, setMadebType] = React.useState(5);
   const [nAuthRegionID, setAuthRegionId] = React.useState(null);
-  const [receivedDate, setReceivedDate] = React.useState(new Date(Date.now()).toISOString().substring(0, 10));
+  //const [receivedDate, setReceivedDate] = React.useState(new Date(Date.now()).toISOString().substring(0, 10));
+  const [receivedDate, setReceivedDate] = React.useState(null);
   const [sName, setName] = React.useState('');
   const [sGBID, setGbId] = useState('');
   const [sFathersName, setFname] = React.useState('');
@@ -1008,6 +1009,8 @@ placeholder="DD-MM-YYYY"
                         value={receivedDate}
                         label={<>Received Date<span style={{ color: 'red' }}> *</span></>}
                         format={sDateFormatMUIDatepicker}
+                        autoFocus
+                        autoOk
                         returnMoment={true}
                         onChange={(date) => {
                           if (date) {

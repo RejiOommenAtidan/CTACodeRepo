@@ -6,15 +6,31 @@ import  {removeGoogleCreds} from '../../actions/transactions/GLoginAction';
 import {sGoogleAuth_ClientID} from '../../config/commonConfig'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {useHistory} from 'react-router-dom';
-
+import axios from 'axios';
 const GoogleLogoutButton = () => {
 
 
     const dispatch = useDispatch();
     let history = useHistory();
     const save =() =>{
-        history.push("/Login");
-        dispatch(removeGoogleCreds()); //oGoogle null
+        axios
+        .get(`/User/Logout`)
+        .then((resp) => {
+          if (resp.status === 200 && resp.data.message === 'Logged Out successfully') {
+            //alert(resp.data);
+            console.log('logged out');
+            history.push("/Login");
+            dispatch(removeGoogleCreds());
+            /* history.goBack();
+        console.log(resp.data); */
+          }
+        })
+        .catch((error) => {
+          console.log(error.config);
+          console.log(error.message);
+          console.log(error.response);
+        });
+        //oGoogle null
        // localStorage.removeItem("currentUser");
         // window.location.replace('/login');
         

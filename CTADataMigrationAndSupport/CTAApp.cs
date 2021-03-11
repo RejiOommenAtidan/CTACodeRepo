@@ -582,6 +582,7 @@ namespace CTADataMigrationAndSupport
             string updateString = string.Empty;
             progressBarProcess.Value = 0;
             progressBarProcess.Refresh();
+            labelStartTime.Text = DateTime.Now.ToString();
 
             if (checkBoxsFirstName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsFirstName.Text : checkBoxsFirstName.Text; }
             if (checkBoxsMiddleName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsMiddleName.Text : checkBoxsMiddleName.Text; }
@@ -613,7 +614,7 @@ namespace CTADataMigrationAndSupport
                 try
                 {
                     cnn.Open();
-                    string query = "select sGBID," + sDummyColumn + " from tblgreenbook";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook";
                     //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 10000";
                     //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 10000,10000";
                     //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 20000,10000";
@@ -628,8 +629,8 @@ namespace CTADataMigrationAndSupport
                     //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 110000,10000";
                     //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 120000,10000";
                     //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 130000,10000";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 140000,10000";
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 150000,10000";
+                     //string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 140000,10000";
+                    string query = "select sGBID," + sDummyColumn + " from tblgreenbook LIMIT 150000,10000";
 
                     //select * from tblgreenbook  where sBookIssued is null;
 
@@ -1282,6 +1283,7 @@ namespace CTADataMigrationAndSupport
             string updateString = string.Empty;
             progressBarProcess.Value = 0;
             progressBarProcess.Refresh();
+            labelStartTime.Text = DateTime.Now.ToString();
 
             if (checkBoxMadebName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxMadebName.Text : checkBoxMadebName.Text; }
             if (checkBoxMadebFathersName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxMadebFathersName.Text : checkBoxMadebFathersName.Text; }
@@ -1299,10 +1301,10 @@ namespace CTADataMigrationAndSupport
                 try
                 {
                     cnn.Open();
-                    //string query = "select ID as sGBID,nMadebTypeID," + sDummyColumn + " from tblmadeb";
+                    string query = "select ID as sGBID,nMadebTypeID," + sDummyColumn + " from tblmadeb";
                     //string query = "select ID as sGBID,nMadebTypeID," + sDummyColumn + " from tblmadeb where sAlias is not null Limit 5000";
                     //string query = "select ID as sGBID,nMadebTypeID," + sDummyColumn + " from tblmadeb nMadebTypeID = 4";
-                    string query = "select ID as sGBID,nMadebTypeID," + sDummyColumn + " from tblmadeb where nMadebTypeID != 2";
+                   // string query = "select ID as sGBID,nMadebTypeID," + sDummyColumn + " from tblmadeb where nMadebTypeID != 2";
                     //string query = "select ID as sGBId," + sDummyColumn + " from tblmadeb";
                     //string query = "select ID as sGBId," + sDummyColumn + " from tblmadeb where id >= 38067";
                     MySqlCommand cmd = new MySqlCommand(query, cnn);
@@ -2236,13 +2238,14 @@ namespace CTADataMigrationAndSupport
         {
             string connetionString = null;
             MySqlConnection cnn;
-            //connetionString = "Server=127.0.0.1;Port=3306;Database=ctadb;Uid=root;allow zero datetime=no";
-            //string sLogFolderPath = @"D:\Reji\Chatrel\CTAImageFile-DataMigration\CTAImageUploadFromFolder\CTAImageUploadFromFolder\";
-            //string sPathPrifix = @"C:\xampp\htdocs\GreenBook\gb\images\";
-            string sLogFolderPath = txtLogFolderPath.Text;
+            connetionString = "Server=127.0.0.1;Port=3306;Database=ctadb;Uid=root;Pwd=CTAD@t@2021;allow zero datetime=no";
+            string sLogFolderPath = @"C:\log\";
+            string sPathPrifix = @"C:\backup\upload\";
+            //string sLogFolderPath = txtLogFolderPath.Text;
 
-            connetionString = txtConnectionString.Text;
-            string sPathPrifix = textBoxDocumentPath.Text;
+            //connetionString = txtConnectionString.Text;
+            //string sPathPrifix = textBoxDocumentPath.Text;
+
 
             progressBarProcess.Value = 0;
             progressBarProcess.Refresh();
@@ -2253,8 +2256,8 @@ namespace CTADataMigrationAndSupport
             {
                 cnn.Open();
 
-                string query = "SELECT * FROM tmpgbdocument limit 10";
-               
+                string query = "SELECT * FROM tmpgbdocument";
+
 
 
                 MySqlCommand cmd = new MySqlCommand(query, cnn);
@@ -2296,7 +2299,6 @@ namespace CTADataMigrationAndSupport
                     string sFileName = row["imageFileName"].ToString().Trim();
                     FileStream fs;
                     BinaryReader br;
-
                     string sFullPath = sPathPrifix + sFileName;
                     if (File.Exists(sFullPath))
                     {
@@ -2304,9 +2306,15 @@ namespace CTADataMigrationAndSupport
                         byte[] ImageData;
                         fs = new FileStream(sFullPath, FileMode.Open, FileAccess.Read);
                         br = new BinaryReader(fs);
+
                         ImageData = br.ReadBytes((int)fs.Length);
+
                         br.Close();
                         fs.Close();
+
+
+
+
 
                         string cmdString = "INSERT INTO lnkgbdocument(nRegisterDate, sGBId, sTitle, sDocType, binFileDoc, sFileExtension, dtEntered, nEnteredBy,dtUpdated,nUpdatedBy) " +
                                             "VALUES(@nRegisterDate,@sGBId,@sTitle,@sDocType,@binFileDoc,@sFileExtension,@dtEntered,@nEnteredBy,@dtEntered,@nEnteredBy)";
@@ -2324,11 +2332,11 @@ namespace CTADataMigrationAndSupport
 
                         cmd.Parameters["@nRegisterDate"].Value = DBNull.Value;
                         cmd.Parameters["@sGBId"].Value = row["sGBID"].ToString();
-                        cmd.Parameters["@sTitle"].Value = row["sTitle"].ToString(); 
-                        cmd.Parameters["@sDocType"].Value = "Document";
+                        cmd.Parameters["@sTitle"].Value = row["sTitle"].ToString();
+                        cmd.Parameters["@sDocType"].Value = "Support Document";
                         cmd.Parameters["@binFileDoc"].Value = ImageData;
-                        cmd.Parameters["@sFileExtension"].Value = "pdf";
-                        cmd.Parameters["@dtEntered"].Value = DateTime.Now;
+                        cmd.Parameters["@sFileExtension"].Value = "File";
+                        cmd.Parameters["@dtEntered"].Value = Convert.ToDateTime(row["nRegisterDate"].ToString());
                         cmd.Parameters["@nEnteredBy"].Value = 1;
                         int RowsAffected = cmd.ExecuteNonQuery();
                         nInsertedFileCount++;
@@ -2338,7 +2346,7 @@ namespace CTADataMigrationAndSupport
                     else
                     {
                         labelResult.Text = @"File NOT Exists: " + row["sGBID"].ToString().Trim();
-                        sbLogging.AppendLine("Document: "+ sFileName + " Not Exist for Green Book Id: " + sGBNum);
+                        sbLogging.AppendLine("Document: " + sFileName + " Not Exist for Green Book Id: " + sGBNum);
                         nNotFoundFileCount++;
 
                     }
@@ -2382,6 +2390,28 @@ namespace CTADataMigrationAndSupport
             {
                 labelResult.Text += Environment.NewLine + ex.ToString();
             }
+        }
+
+
+        private bool IsPdf(string path)
+        {
+            var pdfString = "%PDF-";
+            var pdfBytes = Encoding.ASCII.GetBytes(pdfString);
+            var len = pdfBytes.Length;
+            var buf = new byte[len];
+            var remaining = len;
+            var pos = 0;
+            using (var f = File.OpenRead(path))
+            {
+                while (remaining > 0)
+                {
+                    var amtRead = f.Read(buf, pos, remaining);
+                    if (amtRead == 0) return false;
+                    remaining -= amtRead;
+                    pos += amtRead;
+                }
+            }
+            return pdfBytes.SequenceEqual(buf);
         }
         #endregion
     }

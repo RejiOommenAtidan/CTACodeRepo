@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>987929460767-gfij1cqojpciksu9i69j4q20rjoe2j41.apps.googleusercontent.com</string>
+	<string>805523212166-osj9e06odhct70cen9n028ri06q4o2av.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.987929460767-gfij1cqojpciksu9i69j4q20rjoe2j41</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>987929460767-2fn63rg11sn4k5srivt7tb1u8vr0gml0.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.805523212166-osj9e06odhct70cen9n028ri06q4o2av</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCVKXQP8BeOnuN4rjtVlDegmDC7vHwZj9M</string>
+	<string>AIzaSyCJYaYuBTA_0vx4_tEex0-hbiTVzCPjAfY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>987929460767</string>
+	<string>805523212166</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>org.CTA.eChatrel</string>
 	<key>PROJECT_ID</key>
-	<string>echatrel-mobile-app</string>
+	<string>chatrel</string>
 	<key>STORAGE_BUCKET</key>
-	<string>echatrel-mobile-app.appspot.com</string>
+	<string>chatrel.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:987929460767:ios:04581359a4d0f5b397552a</string>
+	<string>1:805523212166:ios:7cb4495a5365220a6cce07</string>
 </dict>
 </plist>

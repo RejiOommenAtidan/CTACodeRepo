@@ -1,42 +1,57 @@
 {
   "project_info": {
-    "project_number": "987929460767",
-    "project_id": "echatrel-mobile-app",
-    "storage_bucket": "echatrel-mobile-app.appspot.com"
+    "project_number": "805523212166",
+    "project_id": "chatrel",
+    "storage_bucket": "chatrel.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:987929460767:android:1e0c836ee06b3e1e97552a",
+        "mobilesdk_app_id": "1:805523212166:android:23f51d6f1755f5b96cce07",
         "android_client_info": {
           "package_name": "com.chatrelmobilepaymentsystem"
         }
       },
       "oauth_client": [
         {
-          "client_id": "987929460767-2fn63rg11sn4k5srivt7tb1u8vr0gml0.apps.googleusercontent.com",
+          "client_id": "805523212166-t2llvn36cp7ei5s3jv7rr7ibumu8cm4q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.chatrelmobilepaymentsystem",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+            "certificate_hash": "2b9d32614dd9f7f5b1451a27365504d5383316c8"
           }
         },
         {
-          "client_id": "987929460767-jf4d713glngd3o109vdqj6mt3c2e0fju.apps.googleusercontent.com",
+          "client_id": "805523212166-u4u0fkrl7fadgdev1ff1l35tiet2p5pp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chatrelmobilepaymentsystem",
+            "certificate_hash": "94bd19a803dbccdf9f6c0850211156dfb1e7568b"
+          }
+        },
+        {
+          "client_id": "805523212166-j3oa67dcgkkff0pps9qp779ecmsp1c5o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCRz4Na3wsKRufrsp0xz1F7F_mlBb7jMkc"
+          "current_key": "AIzaSyAP-SuMghiTKZBf1QaSTggfzmGfJmHPUCk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "987929460767-jf4d713glngd3o109vdqj6mt3c2e0fju.apps.googleusercontent.com",
+              "client_id": "805523212166-j3oa67dcgkkff0pps9qp779ecmsp1c5o.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "805523212166-osj9e06odhct70cen9n028ri06q4o2av.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.CTA.eChatrel"
+              }
             }
           ]
         }

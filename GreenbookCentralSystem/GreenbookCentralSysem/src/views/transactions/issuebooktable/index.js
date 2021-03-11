@@ -112,7 +112,8 @@ export const IssueBookTable = (props) => {
   const [historyData, setHistoryData] = useState([]);
   const [pendingData, setPendingData] = useState([]);
 
-
+  // 
+  const [sarsoIssueDate, setSarsoIssueDate] = useState([]);
   //VAR
 
   const [historyTable, setHistoryTable] = React.useState(false);
@@ -148,6 +149,13 @@ export const IssueBookTable = (props) => {
       .then(resp => {
         if (resp.status === 200) {
           setHistoryData(resp.data);
+          resp.data.forEach(element => {
+            if(element.nMadebTypeId === 1){
+              setSarsoIssueDate(element.dtIssuedDate);
+              console.log("Found Sarso Date: ", element.dtIssuedDate);
+              return;
+            }
+          });
           //   setHistoryTable(true);
           // console.log(resp.data);
           // setdataAPI(resp.data)
@@ -432,6 +440,7 @@ export const IssueBookTable = (props) => {
               saveModal={saveModal}
               classes={classes}
               saveObj={saveObj}
+              issuedDate={sarsoIssueDate}
               selectData={selectData}
               saveAPICall={saveAPICall}
               saveModalClose={saveModalClose}

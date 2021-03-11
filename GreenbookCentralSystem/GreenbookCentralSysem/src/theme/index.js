@@ -109,7 +109,7 @@ const MuiTheme = createMuiTheme({
     }
   },
   typography: {
-    fontFamily: ['Lato', 'sans-serif'].join(','),
+    fontFamily: ['Noto Serif', 'sans-serif'].join(','),
     fontSize: 14
   },
   shadows

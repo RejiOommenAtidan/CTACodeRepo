@@ -29,7 +29,7 @@ const Header = (props) => {
       className={clsx('app-header', {
         'app-header--shadow': headerShadow,
         'app-header--opacity-bg': headerBgTransparent
-      })}>
+      })} style={{fontFamily: 'inherit'}}>
       <div className="app-header--pane">
         <button
           className={clsx(

@@ -111,7 +111,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -129,7 +129,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -147,7 +147,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -165,7 +165,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -183,7 +183,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -201,7 +201,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -219,7 +219,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -238,7 +238,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -473,7 +473,7 @@ export default function Report() {
             title={title}
             columns={columns}
             data={bookfullData}
-            options={oOptions}
+            options={{...oOptions, exportFileName: "BookFullReport"}}
             actions={[
 
               {

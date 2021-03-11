@@ -6,13 +6,16 @@ import {
   BackHandler,
   ImageBackground,
   Platform,
-  ActivityIndicator,
-  Modal,
   Linking,
+  ActivityIndicator,
 } from 'react-native';
-import {Input, Button} from 'react-native-elements';
+import {Input, Button, Icon} from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
-import {sDateFormat} from '../constants/CommonConfig';
+import {
+  sDateFormat,
+  sVerificationSuccessfulMessage,
+  sVerificationFailedMessage,
+} from '../constants/CommonConfig';
 import Moment from 'moment';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeGBDetails, storeJWTToken} from '../store/actions/GBDetailsAction';
@@ -46,8 +49,9 @@ import axios from 'axios';
 import {useIsFocused} from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
 import {TextInputMask} from 'react-native-masked-text';
-import {WebView} from 'react-native-webview';
+import Toast from 'react-native-root-toast';
 
+// import {WebView} from 'react-native-webview';
 // import LinearGradient from 'react-native-linear-gradient';
 
 export const GBDetailScreen = (props) => {
@@ -147,8 +151,9 @@ export const GBDetailScreen = (props) => {
   //     });
   // };
 
-  const [bShowWebView, setbShowWebView] = useState(false);
+  // const [bShowWebView, setbShowWebView] = useState(false);
   const dtDOBRef = useRef(null);
+  const dtDOBInputRef = useRef(null);
   const isFocused = useIsFocused();
   const {control, handleSubmit, errors} = useForm();
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
@@ -176,79 +181,56 @@ export const GBDetailScreen = (props) => {
   };
   const handleVerifyDetailsPress = async () => {
     setbLoader(true);
-    setTimeout(() => {
-      let oAPI = {
-        sGBID: sGBID,
-        // dtDOB: dtDOB,
-        dtDOB: Moment(dtDOB, sDateFormat).format(sISODateFormat),
-        // sFirstName: oGoogle.user?.givenName,
-        // sLastName: oGoogle.user?.familyName,
-        sEmail: oGoogle.user?.email,
-        code: oGoogle.idToken,
-      };
+    let oAPI = {
+      sGBID: sGBID,
+      // dtDOB: dtDOB,
+      dtDOB: Moment(dtDOB, sDateFormat).format(sISODateFormat),
+      // sFirstName: oGoogle.user?.givenName,
+      // sLastName: oGoogle.user?.familyName,
+      sEmail: oGoogle.user?.email,
+      code: oGoogle.idToken,
+    };
 
-      console.log(oAPI);
+    //console.log(oAPI);
 
-      axios
-        .post('User/AuthenticateGBID', oAPI)
-        .then((response) => {
-          if (response.status === 200) {
-            {
-              /*exception only sJWTToken rest token*/
-            }
-            const oSession = {
-              sJwtToken: response.data.sJwtToken,
-              bSession: true,
-            };
-            dispatch(storeJWTToken(oSession));
-            if (response.data.result === 'Verified') {
-              let oGBDetails = {
-                sGBID: sGBID,
-                dtDOB: dtDOB,
-                sCountryID: response.data.sCountryID,
-              };
-              dispatch(storeGBDetails(oGBDetails));
-              dispatch(storeCurrentGBDetails(oGBDetails));
-              try {
-                const jsonGBInfoValue = JSON.stringify(oGBDetails);
-                AsyncStorage.setItem('oGBInfo', jsonGBInfoValue);
-              } catch (e) {
-                console.info(e);
-              }
-              //TODO: Show Toast of Verification Successful
-              props.navigation.navigate('Home');
-            } else {
-              Alert.alert(
-                'Verification failed!',
-                "The entered details didn't match our database. Please try again.",
-                [
-                  {
-                    text: 'Ok',
-                    onPress: () => true,
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'Logout',
-                    onPress: () => removeCompleteDetailsAndNavigateToLogin(),
-                  },
-                ],
-                {cancelable: false},
-              );
-            }
-            setbLoader(false);
+    axios
+      .post('User/AuthenticateGBID', oAPI)
+      .then((response) => {
+        if (response.status === 200) {
+          {
+            /*Using here word "sJWTToken" rest places "token" word*/
           }
-        })
-        .catch((error) => {
-          //console.log(error.response);
-          if (error.response.status === 401) {
-            // const oSession = {
-            //   sJwtToken: '',
-            //   bSession: false,
-            // };
-            // dispatch(storeJWTToken(oSession));
+          const oSession = {
+            sJwtToken: response.data.sJwtToken,
+            bSession: true,
+          };
+          dispatch(storeJWTToken(oSession));
+          if (response.data.result === 'Verified') {
+            let oGBDetails = {
+              sGBID: sGBID,
+              dtDOB: dtDOB,
+              sCountryID: response.data.sCountryID,
+            };
+            dispatch(storeGBDetails(oGBDetails));
+            dispatch(storeCurrentGBDetails(oGBDetails));
+            try {
+              const jsonGBInfoValue = JSON.stringify(oGBDetails);
+              AsyncStorage.setItem('oGBInfo', jsonGBInfoValue);
+            } catch (e) {
+              console.info(e);
+            }
+            Toast.show(sVerificationSuccessfulMessage, {
+              duration: Toast.durations.SHORT,
+              position: Toast.positions.BOTTOM,
+              shadow: true,
+              animation: true,
+              hideOnPress: true,
+              delay: 0,
+            });
+            props.navigation.navigate('Home');
           } else {
             Alert.alert(
-              'Verification failed!',
+              sVerificationFailedMessage,
               "The entered details didn't match our database. Please try again.",
               [
                 {
@@ -265,14 +247,47 @@ export const GBDetailScreen = (props) => {
             );
           }
           setbLoader(false);
-        });
-    }, 2000);
+        }
+      })
+      .catch((error) => {
+        //console.log(error.response);
+        if (error.response.status === 401) {
+          // const oSession = {
+          //   sJwtToken: '',
+          //   bSession: false,
+          // };
+          // dispatch(storeJWTToken(oSession));
+        } else {
+          Alert.alert(
+            sVerificationFailedMessage,
+            "The entered details didn't match our database. Please try again.",
+            [
+              {
+                text: 'Ok',
+                onPress: () => true,
+                style: 'cancel',
+              },
+              {
+                text: 'Logout',
+                onPress: () => removeCompleteDetailsAndNavigateToLogin(),
+              },
+            ],
+            {cancelable: false},
+          );
+        }
+        setbLoader(false);
+      });
   };
 
   useEffect(() => {
     if (isFocused) {
       setsGBID('');
       setdtDOB(null);
+      dispatch(removeGoogleCreds);
+      dispatch(removeGBDetails);
+      dispatch(removeJWTToken);
+      dispatch(removeCurrentGBDetails);
+      axios.defaults.headers.common['Authorization'] = undefined;
     }
   }, [isFocused]);
 
@@ -306,7 +321,7 @@ export const GBDetailScreen = (props) => {
           }}
         />
       )}
-      <Modal
+      {/*<Modal
         visible={bShowWebView}
         onRequestClose={() => setbShowWebView(false)}>
         <WebView
@@ -327,7 +342,7 @@ export const GBDetailScreen = (props) => {
             />
           )}
         />
-      </Modal>
+          </Modal>*/}
       <View style={styles.mainContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerComponent}>
@@ -345,9 +360,11 @@ export const GBDetailScreen = (props) => {
             render={({onChange, onBlur, value}) => (
               <Input
                 //autoFocus={true}
-                returnKeyType={'next'}
+                //returnKeyType={'next'}
+                returnKeyType={'done'}
                 onSubmitEditing={() => {
-                  dtDOBRef.current.onPressDate();
+                  //dtDOBRef.current.onPressDate();
+                  dtDOBInputRef.current._inputElement.focus();
                 }}
                 blurOnSubmit={false}
                 style={styles.gbidComponent}
@@ -368,7 +385,7 @@ export const GBDetailScreen = (props) => {
                   setsGBID(value);
                 }}
                 value={sGBID}
-                // enablesReturnKeyAutomatically={true}
+                //enablesReturnKeyAutomatically={true}
                 // spellCheck={false}
               />
             )}
@@ -387,14 +404,18 @@ export const GBDetailScreen = (props) => {
           </View>
         )}
 
-        {/*Android Date Picker With Text Component as a Masking*/}
-        {Platform.OS === 'android' && (
+        {/*Android/iOS Date Picker With Text Component as a Masking*/}
+
+        {
           <View>
-            <View style={styles.dobContainerAndroid}>
+            <View style={styles.dobContainer}>
               <Controller
                 control={control}
                 render={({onChange, onBlur, value}) => (
                   <TextInputMask
+                    ref={dtDOBInputRef}
+                    keyboardType={'number-pad'}
+                    returnKeyType={'done'}
                     style={{
                       // flexGrow: 1,
                       borderBottomColor: Colors.grey,
@@ -421,9 +442,8 @@ export const GBDetailScreen = (props) => {
                     placeholder={sDateFormat + '*   '}
                     placeholderTextColor={Colors.grey}
                     onBlur={onBlur}
-                    // enablesReturnKeyAutomatically={true}
-                    // maxLength={10}
-                    // textBreakStrategy={'simple'}
+                    enablesReturnKeyAutomatically={true}
+                    //textBreakStrategy={'simple'}
                   />
                 )}
                 name="name_dtDOB"
@@ -434,6 +454,13 @@ export const GBDetailScreen = (props) => {
                 control={control}
                 render={({onChange, onBlur, value}) => (
                   <DatePicker
+                    iconComponent={
+                      <Icon
+                        color={Colors.white}
+                        type="font-awesome"
+                        name="calendar"
+                      />
+                    }
                     ref={dtDOBRef}
                     blurOnSubmit={true}
                     showIcon={true}
@@ -443,9 +470,11 @@ export const GBDetailScreen = (props) => {
                     mode="date"
                     hideText={true}
                     placeholder={sDateFormat + '*'}
-                    //Had to Code for Adjusting Icon to End
+                    //Had to Code Value for Adjusting Icon to End
                     style={{
                       width: 30,
+                      borderBottomColor: Colors.grey,
+                      borderBottomWidth: 1,
                       // borderBottomColor:Colors.grey,
                       // borderBottomWidth:2
                     }}
@@ -460,7 +489,7 @@ export const GBDetailScreen = (props) => {
                       dateIcon: {
                         alignItems: 'center',
                         display: 'flex',
-                        marginTop: hp(2.25),
+                        marginTop: Platform.OS === 'android' ? hp(2.25) : hp(0),
                         //borderBottomWidth: 1,
                         //borderBottomColor: Colors.grey,
                         // borderWidth: 0,
@@ -501,6 +530,10 @@ export const GBDetailScreen = (props) => {
                       // marginLeft: 0,
                       // },
                       dateInput: {
+                        borderWidth: 0,
+                        borderStyle: null,
+                        height: 0,
+                        width: 0,
                         // flexGrow: 1,
                         // alignItems: 'flex-start',
                         // borderLeftWidth: 0,
@@ -508,10 +541,6 @@ export const GBDetailScreen = (props) => {
                         // borderTopWidth: 0,
                         // margin:0
                         //margin: 0,
-                        borderWidth: 0,
-                        borderStyle: null,
-                        height: 0,
-                        width: 0,
                         // marginRight: -32,
                       },
                     }}
@@ -537,9 +566,9 @@ export const GBDetailScreen = (props) => {
               </View>
             )}
           </View>
-        )}
+        }
         {/*IOS PART*/}
-        {Platform.OS === 'ios' && (
+        {/*{Platform.OS === 'ios' && (
           <View>
             <View style={styles.dobContainer}>
               <Controller
@@ -628,7 +657,7 @@ export const GBDetailScreen = (props) => {
               </View>
             )}
           </View>
-        )}
+              )}*/}
         <View style={styles.buttonContainer}>
           <Button
             buttonStyle={styles.buttonStyleComponent}
@@ -662,8 +691,8 @@ export const GBDetailScreen = (props) => {
                 textDecorationColor: Colors.darkYellowFamilyPage,
               }}
               onPress={() => {
-                setbShowWebView(true);
-                //Linking.openURL(sMappingURL);
+                //setbShowWebView(true);
+                Linking.openURL(sMappingURL);
               }}>
               this form
             </Text>
@@ -696,17 +725,17 @@ export const GBDetailScreenOptions = (navData) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
+    alignSelf: 'center',
+    backgroundColor: 'rgba(0,0,0,0.80)',
+    flexDirection: 'column',
+    height: hp(100),
+    width: wp(100),
     //flex: 1,
     // flexGrow:1,
     // marginHorizontal:
     //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     // marginVertical:
     //   Dimensions.get('window').height * Resolution.nHeightScreenMargin,
-    alignSelf: 'center',
-    backgroundColor: 'rgba(0,0,0,0.80)',
-    flexDirection: 'column',
-    height: hp(100),
-    width: wp(100),
   },
   imagebackgroundComponent: {
     height: hp(100),
@@ -728,7 +757,7 @@ const styles = StyleSheet.create({
   },
   headerComponent: {
     color: Colors.white,
-    fontSize: hp(3.75),
+    fontSize: hp(3.25),
     fontStyle: 'normal',
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,

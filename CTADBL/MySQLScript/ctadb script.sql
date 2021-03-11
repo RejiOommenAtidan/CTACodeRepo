@@ -737,12 +737,6 @@ INSERT INTO `lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdate
 INSERT INTO `lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Closed',now(),1,now(),1);
 INSERT INTO `lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Double',now(),1,now(),1);
 
-UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Double' WHERE (`Id` = '4');
-UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Cancelled' WHERE (`Id` = '5');
-UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Closed' WHERE (`Id` = '6');
-
-
-
 DROP TABLE IF EXISTS `lstMadebType`;
 CREATE TABLE `lstMadebType` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -856,8 +850,7 @@ INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtEntered`,`nEnteredBy`,`dt
 (7, 'CTAEmailServerPort', 'set email server port here', now(), 1, now(), 1),
 (8, 'CTAEmailUseSSL', 'set ssl here', now(), 1, now(), 1),
 (9, 'CTAEmailCC', 'set cc email here', now(), 1, now(), 1),
-(10, 'LoginSessionTimeout', '600', now(), 1, now(), 1);
-
+(10, 'LoginSessionTimeout', '600', now(), 1, now(), 1),
 
 
 CREATE TABLE `lstChatrel` (
@@ -877,13 +870,17 @@ INSERT INTO `lstChatrel` (`Id`, `sChatrelKey`, `nChatrelValue`, `dtChatrelFrom`,
 (2, 'USDYearChatrelMeal', '10', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
 (3, 'USDYearChatrelSalaryAmt', '50', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
 (4, 'USDChatrelLateFeesPercentage', '10', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
-(5, 'USDChildMonthChatrelAmount', '1', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(5, 'USDChildMonthChatrelAmount', '3', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
 (6, 'INRYearChatrelAmount', '48', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
 (7, 'INRYearChatrelMeal', '10', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
 (8, 'INRYearChatrelSalaryAmt', '0', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
 (9, 'INRChatrelLateFeesPercentage', '10', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
 (10, 'INRChildMonthChatrelAmount', '1', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
-(11, 'ChatrelStartYear', '2011', NULL, now(), 1, now(), 1);
+(11, 'ChatrelStartYear', '2011', NULL, now(), 1, now(), 1),
+(12, 'USDChildMonthChatrelAmount', '1', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1);
+
+
+
 
 -- -------------------------
 -- --Transactional Tables---
@@ -1899,6 +1896,7 @@ BEGIN
 END$$
 
 DELIMITER ;
+
 DROP procedure IF EXISTS `spReportGreenBookIssuedOverAll`;
 
 DELIMITER $$
@@ -1911,7 +1909,10 @@ CREATE PROCEDURE spReportGreenBookIssuedOverAll
     ,IN sOrderBy varchar(255)
 )
 BEGIN
+
     declare SQLText varchar(5000);
+	SET session sql_mode = '';
+	SET session group_concat_max_len=1024000;
     SET @SQLText = CONCAT('select 
      ',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion.sAuthRegion", "distinct lstcountry.sCountry" ),' as IndividualPlace ,  
     count(tblgreenbookissued.nGBId) as nCount 
@@ -1978,6 +1979,7 @@ BEGIN
 END$$
 DELIMITER ;
 
+
 DROP procedure IF EXISTS `spReportCTAChangesLog`;
 DELIMITER $$
 CREATE PROCEDURE spReportCTAChangesLog
@@ -2004,7 +2006,8 @@ BEGIN
 		Left Join lstfeature
 			on tblauditlog.nFeatureID = lstfeature.Id
 		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') >= ''',dtRecordFrom ,'''
-		AND DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') <= ''',dtRecordTo ,'''');
+		AND DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') <= ''',dtRecordTo ,''' 
+        AND tblauditlog.nFeatureID = 16');
     -- select @SQLText;
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -2038,7 +2041,7 @@ BEGIN
 		Left Join lstfeature
 			on tblauditlog.nFeatureID = lstfeature.Id
 		where
-			tblauditlog.nFeatureId = 100 
+			tblauditlog.nFeatureId = 101 
 		AND
  DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') >= ''',dtRecordFrom ,'''
 AND DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') <= ''',dtRecordTo ,'''');
@@ -2155,8 +2158,7 @@ DELIMITER ;
 DROP procedure IF EXISTS `spReportCTAMadebRegionOrCountryWise`;
 
 DELIMITER $$
-CREATE PROCEDURE spReportCTAMadebRegionOrCountryWise
-(
+CREATE PROCEDURE `spReportCTAMadebRegionOrCountryWise`(
 	IN nMadebTypeId int
 	,IN dtRecordFrom date
     ,IN dtRecordTo date
@@ -2168,17 +2170,12 @@ BEGIN
 	SET @SQLText = CONCAT('SELECT 
 				DISTINCT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.sAuthRegion", "lstcountry.sCountry" ),') as sPlaceName 
 				,CONVERT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.ID" , "lstcountry.sCountryID" ),',CHAR) as sPlaceID
-				,if(sum(tblMadeb.nIssuedOrNotID = 2) is null,0,sum(tblMadeb.nIssuedOrNotID = 2)) as MadebIssued
-				,if(sum(tblMadeb.nIssuedOrNotID = 3) is null,0,sum(tblMadeb.nIssuedOrNotID = 3)) as MadebRejected
-				,if(sum(tblMadeb.nIssuedOrNotID = 4) is null,0,sum(tblMadeb.nIssuedOrNotID = 4)) as MadebDouble
-				,if(sum(tblMadeb.nIssuedOrNotID = 5) is null,0,sum(tblMadeb.nIssuedOrNotID = 5)) as MadebCancelled
-				,if(sum(tblMadeb.nIssuedOrNotID = 1 or tblMadeb.nIssuedOrNotID is null) is null,0,sum(tblMadeb.nIssuedOrNotID = 1  or tblMadeb.nIssuedOrNotID is null)) as MadebPending
-				-- ,Count(tblMadeb.nIssuedOrNotID) as MadebTotalReceived
-                ,if(sum(tblMadeb.nIssuedOrNotID = 2) is null,0,sum(tblMadeb.nIssuedOrNotID = 2)) +
-                if(sum(tblMadeb.nIssuedOrNotID = 3) is null,0,sum(tblMadeb.nIssuedOrNotID = 3)) +
-                if(sum(tblMadeb.nIssuedOrNotID = 4) is null,0,sum(tblMadeb.nIssuedOrNotID = 4)) +
-                if(sum(tblMadeb.nIssuedOrNotID = 5) is null,0,sum(tblMadeb.nIssuedOrNotID = 5)) +
-                if(sum(tblMadeb.nIssuedOrNotID = 1 or tblMadeb.nIssuedOrNotID is null) is null,0,sum(tblMadeb.nIssuedOrNotID = 1  or tblMadeb.nIssuedOrNotID is null)) as MadebTotalReceived
+				, if(sum(tblMadeb.nIssuedOrNotID = 2) is null,0,sum(tblMadeb.nIssuedOrNotID = 2)) as MadebIssued
+				, if(sum(tblMadeb.nMadebStatusID = 3) is null,0,sum(tblMadeb.nMadebStatusID = 3)) as MadebRejected
+				, if(sum(tblMadeb.nMadebStatusID = 4) is null,0,sum(tblMadeb.nMadebStatusID = 4)) as MadebDouble
+				, if(sum(tblMadeb.nMadebStatusID = 5) is null,0,sum(tblMadeb.nMadebStatusID = 5)) as MadebCancelled
+				, if(sum((tblMadeb.nMadebStatusID = 1) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID is NULL) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID = 1 )) is null,0,sum((tblMadeb.nMadebStatusID = 1) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID is NULL) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID = 1 ))) as MadebPending
+				, if(sum(tblMadeb.nIssuedOrNotID = 2) is null,0,sum(tblMadeb.nIssuedOrNotID = 2)) + if(sum(tblMadeb.nMadebStatusID = 3) is null,0,sum(tblMadeb.nMadebStatusID = 3)) + if(sum(tblMadeb.nMadebStatusID = 4) is null,0,sum(tblMadeb.nMadebStatusID = 4)) + if(sum(tblMadeb.nMadebStatusID = 5) is null,0,sum(tblMadeb.nMadebStatusID = 5)) + if(sum((tblMadeb.nMadebStatusID = 1) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID is NULL) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID = 1 )) is null,0,sum((tblMadeb.nMadebStatusID = 1) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID is NULL) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID = 1 ))) as MadebTotalReceived
 			FROM 
 				tblMadeb 
 			INNER JOIN ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion
@@ -2192,10 +2189,8 @@ BEGIN
 			and DATE(tblMadeb.dtReceived) >= ''', dtRecordFrom ,''' 
 			and DATE(tblMadeb.dtReceived) <= ''', dtRecordTo ,'''
 	GROUP BY ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.sAuthRegion", "lstcountry.sCountry" ),'
-	ORDER BY  ', sOrderBy );
-        
-          
-  --	select @SQLText;
+	ORDER BY  ', sOrderBy ); 
+  -- select @SQLText;
   PREPARE stmt FROM @SQLText;
   EXECUTE stmt;
   DEALLOCATE PREPARE stmt;
@@ -2335,7 +2330,7 @@ BEGIN
             `lstauthregion`.`sAuthRegion`
         FROM `tblauditlog`
         LEFT JOIN lstauthregion on lstauthregion.ID = tblauditlog.nRegionID
-        inner join tbluser on tblauditlog.nEnteredBy=tbluser.id
+        LEFT JOIN tbluser on tblauditlog.nEnteredBy=tbluser.id
         where 
             DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') >= ''' ,  dtRecordFrom
     ,'''  and DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') <= ''', dtRecordTo
@@ -2698,7 +2693,6 @@ SET SQL_SAFE_UPDATES=0;
 END$$
 DELIMITER ;
 
-
 DROP procedure IF EXISTS  spInsertBulkUploadedDataByBatchNumber;
 DELIMITER $$
 
@@ -2766,7 +2760,7 @@ declare continue handler for not found set done=1;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
 		GET CURRENT DIAGNOSTICS CONDITION 1 errno = MYSQL_ERRNO;
-		-- SELECT errno AS MYSQL_ERROR;
+		 SELECT errno AS MYSQL_ERROR;
         SET rowsinserted = errno;
 		ROLLBACK;
     END;
@@ -2778,6 +2772,8 @@ declare continue handler for not found set done=1;
 								WHERE tblchatrelbulkdata.sBatchNumber = strBatchNumber 
 				) > 0) THEN
 						-- Checking ReceiptNo is present in DB
+						SET SQL_SAFE_UPDATES=0;
+						
 								UPDATE `tblchatrelbulkdata` 
 									SET `sRemarkText` ='BatchNumber already exist in DB; Please Validate' , `bValidate` = 0, `sStatus` = 'Validation Failed'
 								WHERE `tblchatrelbulkdata`.`sBatchNumber` = strBatchNumber;
@@ -2790,49 +2786,11 @@ SET SQL_SAFE_UPDATES=0;
   
 START TRANSACTION;
 
-INSERT INTO `tblchatrelpayment`
-(
-`sGBId`,
-`nChatrelYear`,
-`nChatrelTotalAmount`,
-`sChatrelReceiptNumber`,
-`sPaymentStatus`,
-`sPaymentMode`,
-`sPaymentCurrency`,
-`sPaidByGBId`,
-`sPayPal_Status`,
-`sPayPal_ID`,
-`sPayPal_Currency_Code`,
-`sPayPal_Currency_Value`,
-`sPayPal_Response_Object`,
-`dtPayment`,
-`dtEntered`,
-`nEnteredBy`,
-`dtUpdated`,
-`nUpdatedBy`)
-SELECT 
-    cast(SUBSTRING(`tblchatrelbulkdata`.`GBID` FROM 3)  as unsigned),
-    `tblchatrelbulkdata`.`FinancialYear`,
-    `tblchatrelbulkdata`.`TotalAmount`,
-    `tblchatrelbulkdata`.`ReceiptNo`,
-	'Success',
-    'Offline',
-    `tblchatrelbulkdata`.`Currency`,
-    cast(SUBSTRING(`tblchatrelbulkdata`.`PaidByGBId` FROM 3)  as unsigned),
-    null,
-    null,
-    null,
-    null,
-    null,
-    if(`tblchatrelbulkdata`.`PaymentDate` LIKE '%-%',STR_TO_DATE(`tblchatrelbulkdata`.`PaymentDate`, "%d-%m-%Y"),STR_TO_DATE(`tblchatrelbulkdata`.`PaymentDate`, "%d/%m/%Y")),
-    now(),
-    1,
-	now(),
-	1
-FROM `tblchatrelbulkdata` where  `tblchatrelbulkdata`.`sBatchNumber` = strBatchNumber and `tblchatrelbulkdata`.`bValidate` = 1;
+set rowsinserted = 0;
 
-SET rowsinserted = ROW_COUNT();
-
+SELECT sValue into @tblChatrelPayment_ID from lstctaconfig where sKey = 'CTAChatreltblChatrelPaymentID';
+SELECT sValue into @lnkgbChatrel_ID from lstctaconfig where sKey = 'CTAChatrellnkgbChatrelID';
+SELECT sValue into @lnkgbChatrelDonation_ID from lstctaconfig where sKey = 'CTAChatrellnkgbChatrelDonationID';
 
 SET SQL_SAFE_UPDATES=0;
 
@@ -2849,9 +2807,60 @@ SET SQL_SAFE_UPDATES=0;
 		--  						ArrearsTo,BusinessDonation,AdditionalDonation,TotalAmount,ReceiptNo,PaymentDate,Region,Country,PaymentMode,
 		--  						sStatus;
         
+        -- Insert tbl Tables Data one at a time
+        
+        INSERT INTO `tblchatrelpayment`
+			(`Id`,
+			`sGBId`,
+			`nChatrelYear`,
+			`nChatrelTotalAmount`,
+			`sChatrelReceiptNumber`,
+			`sPaymentStatus`,
+			`sPaymentMode`,
+			`sPaymentCurrency`,
+			`sPaidByGBId`,
+			`sPayPal_Status`,
+			`sPayPal_ID`,
+			`sPayPal_Currency_Code`,
+			`sPayPal_Currency_Value`,
+			`sPayPal_Response_Object`,
+			`dtPayment`,
+			`dtEntered`,
+			`nEnteredBy`,
+			`dtUpdated`,
+			`nUpdatedBy`)
+            VALUES
+            (
+				@tblChatrelPayment_ID + 1,
+                cast(SUBSTRING(GBID FROM 3)  as unsigned),
+                FinancialYear,
+                TotalAmount,
+                ReceiptNo,
+                'Success',
+                'Offline',
+                Currency,
+                cast(SUBSTRING(PaidByGBId FROM 3)  as unsigned),
+                null,
+				null,
+				null,
+				null,
+				null,
+                if(PaymentDate LIKE '%-%',STR_TO_DATE(PaymentDate, "%d-%m-%Y"),STR_TO_DATE(PaymentDate, "%d/%m/%Y")),
+                now(),
+				1,
+				now(),
+				1
+            );
+        
         -- Insert lnk Tables with ID
+			set @ChatrelPaymentID_var = @tblChatrelPayment_ID + 1;
+            set @tblChatrelPayment_ID = @ChatrelPaymentID_var;
+            set rowsinserted = rowsinserted + 1;
+
+            update lstctaconfig set sValue =  @tblChatrelPayment_ID where sKey = 'CTAChatreltblChatrelPaymentID';
+            
 			SELECT lstauthregion.ID into @ChatrelRegion_Id from lstauthregion where lstauthregion.sAuthRegion = Region limit 1;		
-			SELECT tblChatrelPayment.Id into @ChatrelPaymentID_var FROM tblChatrelPayment WHERE sChatrelReceiptNumber = ReceiptNo limit 1;		
+			-- SELECT tblChatrelPayment.Id into @ChatrelPaymentID_var FROM tblChatrelPayment WHERE sChatrelReceiptNumber = ReceiptNo limit 1;		
 		    SELECT lstcountry.sCountryID into @ChatrelCountry_str from lstcountry where lstcountry.sCountry = Country limit 1;		
 			
 				-- select trim(ArrearsFrom) is not null AND ArrearsFrom regexp DateFormatRegexString;
@@ -2879,6 +2888,7 @@ SET SQL_SAFE_UPDATES=0;
 					 -- SELECT @ArrearsFromDate, @ArrearsToDate, @ArrearsFeesPerYear;
 						INSERT INTO `lnkgbchatrel`
 						(
+							`Id`,
 							`chatrelpaymentID`,
 							`sGBId`,
 							`nChatrelAmount`,
@@ -2908,6 +2918,7 @@ SET SQL_SAFE_UPDATES=0;
 						)
 						VALUES
 						(
+							@lnkgbChatrel_ID + 1,
 							@ChatrelPaymentID_var,
 							cast(SUBSTRING(GBID FROM 3)  as unsigned),
 							@ArrearsChatrelFees,
@@ -2936,7 +2947,8 @@ SET SQL_SAFE_UPDATES=0;
 							1
 						);
                         
-                        
+                        set @lnkgbChatrel_ID = @lnkgbChatrel_ID + 1;
+                        update lstctaconfig set sValue =  @lnkgbChatrel_ID where sKey = 'CTAChatrellnkgbChatrelID';
                     
                     SET @ArrearsFromYear = @ArrearsFromYear + 1;
 				SET startLoop = startLoop + 1;
@@ -2948,6 +2960,7 @@ SET SQL_SAFE_UPDATES=0;
             -- select @ChatrelPaymentID_var,cast(SUBSTRING(GBID FROM 3)  as unsigned),Chatrel,Meal,FinancialYear;
 			INSERT INTO `lnkgbchatrel`
 			(
+				`Id`,
 				`chatrelpaymentID`,
 				`sGBId`,
 				`nChatrelAmount`,
@@ -2977,6 +2990,7 @@ SET SQL_SAFE_UPDATES=0;
             )
 			VALUES
 			(
+				@lnkgbChatrel_ID + 1,
 				@ChatrelPaymentID_var,
 				cast(SUBSTRING(GBID FROM 3)  as unsigned),
 				Chatrel,
@@ -3005,6 +3019,9 @@ SET SQL_SAFE_UPDATES=0;
 				1
 			);
             
+             set @lnkgbChatrel_ID = @lnkgbChatrel_ID + 1;
+             update lstctaconfig set sValue =  @lnkgbChatrel_ID where sKey = 'CTAChatrellnkgbChatrelID';
+             
             -- updating sPaidUntil By sGBId in tblgreenbook
             -- select sGBID, FinancialYear, now() from tblgreenbook where sGBID=cast(SUBSTRING(GBID FROM 3)  as unsigned);
             
@@ -3015,6 +3032,7 @@ SET SQL_SAFE_UPDATES=0;
 			IF	(cast(AdditionalDonation as decimal(11,2)) != 0 or cast(BusinessDonation as decimal(11,2)) != 0) THEN
 				INSERT INTO `lnkgbchatreldonation`
 				(
+					`Id`,
 					`chatrelpaymentID`,
 					`sGBId`,
 					`nChatrelAdditionalDonationAmt`,
@@ -3034,6 +3052,7 @@ SET SQL_SAFE_UPDATES=0;
 				)
 				VALUES
 				(
+					@lnkgbChatrelDonation_ID + 1,
 					@ChatrelPaymentID_var,
 					cast(SUBSTRING(GBID FROM 3)  as unsigned),
 					AdditionalDonation,
@@ -3051,6 +3070,10 @@ SET SQL_SAFE_UPDATES=0;
 					now(),
 					1
 				);
+                
+                set @lnkgbChatrelDonation_ID = @lnkgbChatrelDonation_ID + 1;
+				update lstctaconfig set sValue =  @lnkgbChatrelDonation_ID where sKey = 'CTAChatrellnkgbChatrelDonationID';
+             
 			END IF;
 
       END LOOP igmLoop;
@@ -3060,16 +3083,18 @@ COMMIT;
 END$$
 DELIMITER ;
 
-
 CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
 CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);
 CREATE INDEX GBID_RELATION ON lnkgbrelation(sgbidrelation, nrelationid);
 CREATE INDEX GB_DOC_GBID ON lnkgbdocument (sGBID);
-CREATE INDEX FORM_INDEX_MADEB ON tblmadeb(nFormNumber);
 CREATE INDEX FORM_INDEX_GBSERIAL ON tblgreenbookserial(nFormNumber);
 CREATE INDEX BOOK_NUMBER ON tblgreenbookserial(nBookNo);
-CREATE INDEX GBID_INDEX_GBDOCUMENT ON lnkgbdocument(sGBId);
-CREATE INDEX DOCTYPE_INDEX_GBDOCUMENT ON lnkgbdocument(sDocType);
+CREATE INDEX GB_DOC_SDOCTYPE ON lnkgbdocument (sDocType);
+CREATE INDEX MADEBTYPE_FORMNO_INX_MADEB ON tblmadeb(nMadebTypeID,nFormNumber);
+
+
+UPDATE `lstchatrel` SET `nChatrelValue` = '3' WHERE (`Id` = '5');
+INSERT INTO `lstchatrel` (`sChatrelKey`, `nChatrelValue`, `dtChatrelFrom`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES ('USDChildMonthChatrelAmount', '1', '2015-04-01', '2021-02-22 11:53:57', '1', '2021-02-22 11:53:57', '1');
 
 -- ALTER TABLE `tblgreenbook`
 -- DROP COLUMN `dtLastSuccessfullLogin`,

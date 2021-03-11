@@ -215,7 +215,7 @@ export const EditDialog = (props) => {
   const [sFullname, setsFullname] = React.useState(props.oUserObj.sFullname);
   const [nUserRightsId, setnUserRightsId] = React.useState(props.oUserObj.nUserRightsId);
   const [sUserRightsName, setsUserRightsName] = React.useState(props.oUserObj.sUserRightsName);
-  const [sPassword, setsPassword] = React.useState(props.oUserObj.sPassword);
+  const [sPassword, setsPassword] = React.useState(null);
   const [sOffice, setsOffice] = React.useState(props.oUserObj.sOffice);
   const [bActive, setbActive] = React.useState(props.oUserObj.bActive);
   const handleSubmitEditUserRecord = () => {
@@ -278,6 +278,7 @@ export const EditDialog = (props) => {
                       name="name_sPassword"
                       label={<>Password<span style={{ color: 'red' }}> *</span></>}
                       type="password"
+                      defaultValue={`1234567890`}
                       value={sPassword}
                       onChange={(e) => { setsPassword(e.target.value) }}
                       inputRef={register({

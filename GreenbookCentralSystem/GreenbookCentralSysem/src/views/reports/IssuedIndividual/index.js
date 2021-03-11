@@ -95,7 +95,26 @@ const { register, handleSubmit, watch, errors, clearErrors, control, setValue, f
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
+
+
+      },
+    },
+    {
+      field: "sName",
+      title: "Name",
+      
+      headerStyle: {
+        padding: '5px',
+
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+
+        textAlign: 'left',
+        border: '1px solid black'
 
 
       },
@@ -114,31 +133,13 @@ const { register, handleSubmit, watch, errors, clearErrors, control, setValue, f
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
     },
 
-    {
-      field: "sName",
-      title: "Name",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'left',
-        borderRight: '1px solid grey'
-
-
-      },
-    },
+    
     {
       field: "dtFormattedIssuedDate",
       title: "Issued Date",
@@ -154,7 +155,7 @@ const { register, handleSubmit, watch, errors, clearErrors, control, setValue, f
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -173,7 +174,7 @@ const { register, handleSubmit, watch, errors, clearErrors, control, setValue, f
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -193,7 +194,7 @@ const { register, handleSubmit, watch, errors, clearErrors, control, setValue, f
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -458,7 +459,7 @@ const { register, handleSubmit, watch, errors, clearErrors, control, setValue, f
             title={title}
             columns={columns}
             data={issuedIndividualData}
-            options={oOptions}
+            options={{ ...oOptions, tableLayout: "fixed" , exportFileName: "GreenBookIssuedIndividualReport"}}
             actions={[
 
               {

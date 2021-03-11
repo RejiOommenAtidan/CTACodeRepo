@@ -96,6 +96,7 @@
             this.txtLogFolderPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
+            this.labelStartTime = new System.Windows.Forms.Label();
             this.tabControlCTA.SuspendLayout();
             this.tabPageRelationDataClincing.SuspendLayout();
             this.tabPageImageMigration.SuspendLayout();
@@ -324,6 +325,7 @@
             // 
             // tabPageDummyData
             // 
+            this.tabPageDummyData.Controls.Add(this.labelStartTime);
             this.tabPageDummyData.Controls.Add(this.checkBoxMadebsAlias);
             this.tabPageDummyData.Controls.Add(this.buttonMadebDummyData);
             this.tabPageDummyData.Controls.Add(this.checkBoxMadebFathersName);
@@ -410,7 +412,7 @@
             this.checkBoxTBUSpouseName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTBUSpouseName.Location = new System.Drawing.Point(275, 178);
             this.checkBoxTBUSpouseName.Name = "checkBoxTBUSpouseName";
-            this.checkBoxTBUSpouseName.Size = new System.Drawing.Size(118, 19);
+            this.checkBoxTBUSpouseName.Size = new System.Drawing.Size(117, 19);
             this.checkBoxTBUSpouseName.TabIndex = 25;
             this.checkBoxTBUSpouseName.Text = "TBUSpouseName";
             this.checkBoxTBUSpouseName.UseVisualStyleBackColor = true;
@@ -422,7 +424,7 @@
             this.checkBoxTBUMothersName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTBUMothersName.Location = new System.Drawing.Point(147, 178);
             this.checkBoxTBUMothersName.Name = "checkBoxTBUMothersName";
-            this.checkBoxTBUMothersName.Size = new System.Drawing.Size(124, 19);
+            this.checkBoxTBUMothersName.Size = new System.Drawing.Size(123, 19);
             this.checkBoxTBUMothersName.TabIndex = 24;
             this.checkBoxTBUMothersName.Text = "TBUMothersName";
             this.checkBoxTBUMothersName.UseVisualStyleBackColor = true;
@@ -434,7 +436,7 @@
             this.checkBoxTBUFathersName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTBUFathersName.Location = new System.Drawing.Point(27, 178);
             this.checkBoxTBUFathersName.Name = "checkBoxTBUFathersName";
-            this.checkBoxTBUFathersName.Size = new System.Drawing.Size(118, 19);
+            this.checkBoxTBUFathersName.Size = new System.Drawing.Size(117, 19);
             this.checkBoxTBUFathersName.TabIndex = 23;
             this.checkBoxTBUFathersName.Text = "TBUFathersName";
             this.checkBoxTBUFathersName.UseVisualStyleBackColor = true;
@@ -446,7 +448,7 @@
             this.checkBoxTBUOriginVillage.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTBUOriginVillage.Location = new System.Drawing.Point(275, 153);
             this.checkBoxTBUOriginVillage.Name = "checkBoxTBUOriginVillage";
-            this.checkBoxTBUOriginVillage.Size = new System.Drawing.Size(116, 19);
+            this.checkBoxTBUOriginVillage.Size = new System.Drawing.Size(115, 19);
             this.checkBoxTBUOriginVillage.TabIndex = 22;
             this.checkBoxTBUOriginVillage.Text = "TBUOriginVillage";
             this.checkBoxTBUOriginVillage.UseVisualStyleBackColor = true;
@@ -458,7 +460,7 @@
             this.checkBoxTBUPlaceOfBirth.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTBUPlaceOfBirth.Location = new System.Drawing.Point(147, 153);
             this.checkBoxTBUPlaceOfBirth.Name = "checkBoxTBUPlaceOfBirth";
-            this.checkBoxTBUPlaceOfBirth.Size = new System.Drawing.Size(114, 19);
+            this.checkBoxTBUPlaceOfBirth.Size = new System.Drawing.Size(113, 19);
             this.checkBoxTBUPlaceOfBirth.TabIndex = 21;
             this.checkBoxTBUPlaceOfBirth.Text = "TBUPlaceOfBirth";
             this.checkBoxTBUPlaceOfBirth.UseVisualStyleBackColor = true;
@@ -470,7 +472,7 @@
             this.checkBoxTibetanName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTibetanName.Location = new System.Drawing.Point(27, 153);
             this.checkBoxTibetanName.Name = "checkBoxTibetanName";
-            this.checkBoxTibetanName.Size = new System.Drawing.Size(98, 19);
+            this.checkBoxTibetanName.Size = new System.Drawing.Size(97, 19);
             this.checkBoxTibetanName.TabIndex = 20;
             this.checkBoxTibetanName.Text = "TibetanName";
             this.checkBoxTibetanName.UseVisualStyleBackColor = true;
@@ -769,7 +771,7 @@
             this.labelSyncReport.AutoSize = true;
             this.labelSyncReport.Location = new System.Drawing.Point(137, 350);
             this.labelSyncReport.Name = "labelSyncReport";
-            this.labelSyncReport.Size = new System.Drawing.Size(236, 15);
+            this.labelSyncReport.Size = new System.Drawing.Size(235, 15);
             this.labelSyncReport.TabIndex = 30;
             this.labelSyncReport.Text = "Sync the CTA Admin and Chatrel Databases";
             // 
@@ -818,7 +820,7 @@
             this.labelDB1.AutoSize = true;
             this.labelDB1.Location = new System.Drawing.Point(3, 21);
             this.labelDB1.Name = "labelDB1";
-            this.labelDB1.Size = new System.Drawing.Size(128, 15);
+            this.labelDB1.Size = new System.Drawing.Size(127, 15);
             this.labelDB1.TabIndex = 10;
             this.labelDB1.Text = "DB CTA Main Database";
             // 
@@ -854,6 +856,15 @@
             this.progressBarProcess.Name = "progressBarProcess";
             this.progressBarProcess.Size = new System.Drawing.Size(763, 23);
             this.progressBarProcess.TabIndex = 20;
+            // 
+            // labelStartTime
+            // 
+            this.labelStartTime.AutoSize = true;
+            this.labelStartTime.Location = new System.Drawing.Point(21, 240);
+            this.labelStartTime.Name = "labelStartTime";
+            this.labelStartTime.Size = new System.Drawing.Size(60, 15);
+            this.labelStartTime.TabIndex = 30;
+            this.labelStartTime.Text = "Start Time";
             // 
             // CTAApp
             // 
@@ -958,6 +969,7 @@
         private System.Windows.Forms.TextBox textBoxDB1;
         private System.Windows.Forms.Label labelSyncReport;
         private System.Windows.Forms.Label labelResult;
+        private System.Windows.Forms.Label labelStartTime;
     }
 }
 

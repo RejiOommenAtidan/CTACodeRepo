@@ -133,13 +133,14 @@ const HeaderUserbox = () => {
           variant="contained"
           className="btn-second m-2"
           color="primary"
-          aria-label="split button">
-          <Button className="btn-transition-none">Welcome, {oUserAuth.oUser.sFullname + " (" + oUserAuth.oUserRights.sUserRightsName + ")"}</Button>
+          aria-label="split button" style={{fontFamily: 'inherit'}}>
+          <Button className="btn-transition-none" style={{fontFamily: 'inherit'}}>Welcome, {oUserAuth.oUser.sFullname + " (" + oUserAuth.oUserRights.sUserRightsName + ")"}</Button>
           <Button
             className="btn-transition-none px-2"
             color="primary"
             size="small"
             aria-haspopup="true"
+            style={{fontFamily: 'inherit'}}
             onClick={handleClick}>
             <ArrowDropDownIcon />
           </Button>
@@ -148,14 +149,15 @@ const HeaderUserbox = () => {
           id="simple-menu2"
           anchorEl={anchorEl}
           keepMounted
+          style={{fontFamily: 'Noto Serif'}}
           open={Boolean(anchorEl)}
           onClose={handleClose}
           classes={{ list: 'p-0' }}>
-          <div className="p-3">
-            <MenuItem className="pr-5 px-3 text-dark" onClick={handleChangePasswordClose}>
+          <div className="p-3" style={{fontFamily: 'inherit'}}>
+            <MenuItem className="pr-5 px-3 text-dark" style={{fontFamily: 'inherit'}} onClick={handleChangePasswordClose}>
               Change Password
             </MenuItem>
-            <MenuItem className="pr-5 px-3 text-danger" onClick={handleLogoutConfirmationOpen}>
+            <MenuItem className="pr-5 px-3 text-danger" style={{fontFamily: 'inherit'}} onClick={handleLogoutConfirmationOpen}>
               Logout
             </MenuItem>
           </div>
@@ -166,6 +168,7 @@ const HeaderUserbox = () => {
         onClose={handleLogoutConfirmationClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        style={{fontFamily: 'inherit'}}
       >
         <DialogTitle id="alert-dialog-title">Logout?</DialogTitle>
         <DialogContent>

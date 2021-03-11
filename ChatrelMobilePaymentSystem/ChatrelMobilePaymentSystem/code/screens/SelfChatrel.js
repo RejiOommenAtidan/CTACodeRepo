@@ -1,23 +1,23 @@
 import React from 'react';
 import {
-  Text,
   View,
   StyleSheet,
   Dimensions,
-  Platform,
-  Animated,
+  // Text,
+  // Platform,
+  // Animated,
 } from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Chatrel} from '../components/Chatrel';
 import Colors from '../constants/Colors';
 import Resolution from '../constants/ResolutionBreakpoint';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {sFontName, sFontNameBold} from '../constants/CommonConfig';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+// import {
+//   widthPercentageToDP as wp,
+//   heightPercentageToDP as hp,
+// } from 'react-native-responsive-screen';
+// import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+// import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 // import {useCollapsibleHeader} from 'react-navigation-collapsible';
 
 export const SelfChatrelScreen = (props) => {

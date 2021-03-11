@@ -4,6 +4,10 @@ use ctadb;
 
 -- set session sql_mode = ''
 
+UPDATE `lstchatrel` SET `nChatrelValue` = '3' WHERE (`Id` = '5');
+INSERT INTO `lstchatrel` (`sChatrelKey`, `nChatrelValue`, `dtChatrelFrom`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES ('USDChildMonthChatrelAmount', '1', '2015-04-01', '2021-02-22 11:53:57', '1', '2021-02-22 11:53:57', '1');
+
+
 Insert into tbluser
 (
     `tbluser`.`Id`,
@@ -82,8 +86,7 @@ Update tbluser
 set sSalt = '/xPgGzm22nBKPtBsoAzC8w==',
 	sPassword = 'hydhXeUd2Upt6OSJcxVYoTMCdmvvRKVVEm4bNVWxmyQ=';	
 	
-	
-	
+
 SET sql_mode = 'allow_invalid_dates';
 
 insert into  tblgreenbook
@@ -209,7 +212,9 @@ SELECT `ident`.`id`,
     if(`ident`.`EnteredBy` REGEXP '^-?[0-9]+$',`ident`.`EnteredBy`,1) AS 'nUpdatedBy'
 FROM `greenbookprime`.`ident`;
 
-
+set sql_mode='';
+SET SQL_SAFE_UPDATES=0;
+truncate TABLE tblmadeb;
 Insert into tblmadeb
 (
     `tblmadeb`.`_Id`,
@@ -243,315 +248,100 @@ Insert into tblmadeb
     `tblmadeb`.`nUpdatedBy`
 )
 SELECT 
-	`madeb`.`Id`,
-	`madeb`.`FormNo`,
-	null,
-	1,
-	`madeb`.`Name`,
-	`madeb`.`FathersName`,
-	`madeb`.`AuthRegionID`,
-	`madeb`.`ReceivedDate`,
-	`madeb`.`IssueActionDate`,
-	`madeb`.`IssuedOrNot`,
-	`madeb`.`Type`,
-	null,
-	`madeb`.`OOT`,
-	`madeb`.`DA`,
-	null,
-	null,
-	null,
-	null,
-	null,
-	`madeb`.`Email`,
-	null,
-	null,
-	null,
-	`madeb`.`RejectDate`,
-	`madeb`.`ReturnDate`,
-	now(),
-	`madeb`.`EnteredBy`,
-	now(),
-	`madeb`.`EnteredBy`
-
-FROM `greenbookprime`.`madeb`;
-
-
-Insert into tblmadeb
-(
-    `tblmadeb`.`_Id`,
-    `tblmadeb`.`nFormNumber`,
-    `tblmadeb`.`sGBID`,
-    `tblmadeb`.`nMadebTypeID`,
-    `tblmadeb`.`sName`,
-    `tblmadeb`.`sFathersName`,
-    `tblmadeb`.`nAuthRegionID`,
-    `tblmadeb`.`dtReceived`,
-    `tblmadeb`.`dtIssueAction`,
-    `tblmadeb`.`nIssuedOrNotID`,
-    `tblmadeb`.`nType`,
-    `tblmadeb`.`sChangeField`,
-    `tblmadeb`.`sOfficeOfTibetan`,
-    `tblmadeb`.`sDocumentAttached`,
-    `tblmadeb`.`nCurrentGBSno`,
-    `tblmadeb`.`nPreviousGBSno`,
-    `tblmadeb`.`nSaneyFormNo`,
-    `tblmadeb`.`nReceiptNo`,
-    `tblmadeb`.`dtEmailSend`,
-    `tblmadeb`.`sAlias`,
-    `tblmadeb`.`sApprovedReject`,
-    `tblmadeb`.`nMadebStatusID`,
-    `tblmadeb`.`sMadebStatusRemark`,
-    `tblmadeb`.`dtReject`,
-    `tblmadeb`.`dtReturnEmail`,
-    `tblmadeb`.`dtEntered`,
-    `tblmadeb`.`nEnteredBy`,
-    `tblmadeb`.`dtUpdated`,
-    `tblmadeb`.`nUpdatedBy`
-
-)
-SELECT 
-`madebchange`.`Id`,
-    `madebchange`.`FormNo`,
-    `madebchange`.`IdentityID`,
-    2,
-    `madebchange`.`Name`,
+    `bookfull`.`Id`,
+    `bookfull`.`FormNo`,
+    `bookfull`.`GB`,
+    5,
+    `bookfull`.`Name`,
+    `bookfull`.`FathersName`,
+    `bookfull`.`AuthRegionID`,
+    `bookfull`.`ReceivedDate`,
+    (SELECT IssuedDate FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'U' AND ident_bookissued.FormNo = bookfull.FormNo AND ident_bookissued.IdentityID = bookfull.GB AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1),
+    IF((SELECT IssuedDate FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'U' AND ident_bookissued.FormNo = bookfull.FormNo AND ident_bookissued.IdentityID = bookfull.GB AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1) IS NOT NULL, 2,  IF((SELECT BookNo FROM greenbookprime.ident_bookserial WHERE BookFull = bookfull.FormNo AND ident_bookserial.IDNo = bookfull.GB HAVING COUNT(BookFull) = 1) IS NOT NULL, 1, NULL)),
+    `bookfull`.`Type`,
     null,
-    `madebchange`.`AuthRegionID`,
-    `madebchange`.`ReceivedDate`,
-    `madebchange`.`IssueActionDate`,
-    `madebchange`.`IssuedOrNot`,
-    `madebchange`.`Type`,
-    `madebchange`.`ChangeField`,
+    `bookfull`.`OOT`,
     null,
-    `madebchange`.`DA`,
+    `bookfull`.`CurrentGBSno`,
+    `bookfull`.`PreviousGBSno`,
+    `bookfull`.`SaneyFormNo`,
+    null,
+    `bookfull`.`Email`,
     null,
     null,
+    IF((SELECT IssuedDate FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'U' AND ident_bookissued.FormNo = bookfull.FormNo AND ident_bookissued.IdentityID = bookfull.GB AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1) IS NOT NULL, 2, IF((SELECT BookNo FROM greenbookprime.ident_bookserial WHERE BookFull = bookfull.FormNo AND ident_bookserial.IDNo = bookfull.GB HAVING COUNT(BookFull) = 1) IS NOT NULL, 2, IF(IssuedOrNot = 3, 3, IF(IssuedOrNot = 4, 4, IF(IssuedOrNot = 5, 5, 1))))),
     null,
-    `madebchange`.`ReceiptNo`,
-    `madebchange`.`Email`,
-    null,
-    `madebchange`.`ApprovedReject`,
-IF(`madebchange`.`ApprovedReject` IS null or `madebchange`.`ApprovedReject` = '', null, 
-		IF(`madebchange`.`ApprovedReject` = 'Approved', 2,
-			IF(`madebchange`.`ApprovedReject` like 'Reject%', 3, 
-				IF(`madebchange`.`ApprovedReject` like '%Double%', 4, 
-				IF(`madebchange`.`ApprovedReject` like 'Cancel%', 5, 
-					IF(`madebchange`.`ApprovedReject` like 'Close%', 6, 
-						null)))))) as nMadebStatusID,
-IF(`madebchange`.`ApprovedReject` IS null or `madebchange`.`ApprovedReject` = '', null, 
-		IF(`madebchange`.`ApprovedReject` = 'Approved', null,
-			IF(`madebchange`.`ApprovedReject` like 'Reject%', `madebchange`.`ApprovedReject`,`madebchange`.`ApprovedReject`))) as nMadebStatusRemark,
-    `madebchange`.`RejectDate`,
-    `madebchange`.`ReturnDate`,
-   now(),
-    `madebchange`.`EnteredBy`,
-   now(),
-    `madebchange`.`EnteredBy`
-FROM `greenbookprime`.`madebchange`;
-
-
-
-
-Insert into tblmadeb
-(
-    `tblmadeb`.`_Id`,
-    `tblmadeb`.`nFormNumber`,
-    `tblmadeb`.`sGBID`,
-    `tblmadeb`.`nMadebTypeID`,
-    `tblmadeb`.`sName`,
-    `tblmadeb`.`sFathersName`,
-    `tblmadeb`.`nAuthRegionID`,
-    `tblmadeb`.`dtReceived`,
-    `tblmadeb`.`dtIssueAction`,
-    `tblmadeb`.`nIssuedOrNotID`,
-    `tblmadeb`.`nType`,
-    `tblmadeb`.`sChangeField`,
-    `tblmadeb`.`sOfficeOfTibetan`,
-    `tblmadeb`.`sDocumentAttached`,
-    `tblmadeb`.`nCurrentGBSno`,
-    `tblmadeb`.`nPreviousGBSno`,
-    `tblmadeb`.`nSaneyFormNo`,
-    `tblmadeb`.`nReceiptNo`,
-    `tblmadeb`.`dtEmailSend`,
-    `tblmadeb`.`sAlias`,
-    `tblmadeb`.`sApprovedReject`,
-    `tblmadeb`.`nMadebStatusID`,
-    `tblmadeb`.`sMadebStatusRemark`,
-    `tblmadeb`.`dtReject`,
-    `tblmadeb`.`dtReturnEmail`,
-    `tblmadeb`.`dtEntered`,
-    `tblmadeb`.`nEnteredBy`,
-    `tblmadeb`.`dtUpdated`,
-    `tblmadeb`.`nUpdatedBy`
-)
-SELECT 
-	`madeblost`.`Id`,
-	`madeblost`.`FormNo`,
-	`madeblost`.`IdentityID`,
-	3,
-	`madeblost`.`Name`,
-	null,
-	`madeblost`.`AuthRegionID`,
-	`madeblost`.`ReceivedDate`,
-	`madeblost`.`IssueActionDate`,
-	`madeblost`.`IssuedOrNot`,
-	`madeblost`.`Type`,
-	`madeblost`.`ChangeField`,
-	null,
-	`madeblost`.`DA`,
-	null,
-	null,
-	null,
-	`madeblost`.`ReceiptNo`,
-	`madeblost`.`Email`,
-	null,
-	`madeblost`.`ApprovedReject`,
-	`madeblost`.`IssuedOrNot`,
-	IF(`madeblost`.`ApprovedReject` IS null or `madeblost`.`ApprovedReject` = '', null, 
-		IF(`madeblost`.`ApprovedReject` = 'Approved', null,
-			IF(`madeblost`.`ApprovedReject` like 'Reject%', `madeblost`.`ApprovedReject`,`madeblost`.`ApprovedReject`))) as nMadebStatusRemark,
-	`madeblost`.`RejectDate`,
-	`madeblost`.`ReturnDate`,
-	now(),
-	`madeblost`.`EnteredBy`,
-	now(),
-	`madeblost`.`EnteredBy`
-FROM `greenbookprime`.`madeblost`;
-
-
-
-Insert into tblmadeb
-(
-    `tblmadeb`.`_Id`,
-    `tblmadeb`.`nFormNumber`,
-    `tblmadeb`.`sGBID`,
-    `tblmadeb`.`nMadebTypeID`,
-    `tblmadeb`.`sName`,
-    `tblmadeb`.`sFathersName`,
-    `tblmadeb`.`nAuthRegionID`,
-    `tblmadeb`.`dtReceived`,
-    `tblmadeb`.`dtIssueAction`,
-    `tblmadeb`.`nIssuedOrNotID`,
-    `tblmadeb`.`nType`,
-    `tblmadeb`.`sChangeField`,
-    `tblmadeb`.`sOfficeOfTibetan`,
-    `tblmadeb`.`sDocumentAttached`,
-    `tblmadeb`.`nCurrentGBSno`,
-    `tblmadeb`.`nPreviousGBSno`,
-    `tblmadeb`.`nSaneyFormNo`,
-    `tblmadeb`.`nReceiptNo`,
-    `tblmadeb`.`dtEmailSend`,
-    `tblmadeb`.`sAlias`,
-    `tblmadeb`.`sApprovedReject`,
-    `tblmadeb`.`nMadebStatusID`,
-    `tblmadeb`.`sMadebStatusRemark`,
-    `tblmadeb`.`dtReject`,
-    `tblmadeb`.`dtReturnEmail`,
-    `tblmadeb`.`dtEntered`,
-    `tblmadeb`.`nEnteredBy`,
-    `tblmadeb`.`dtUpdated`,
-    `tblmadeb`.`nUpdatedBy`
-)
-SELECT 
-	`abroad`.`Id`,
-	`abroad`.`FormNo`,
-	`abroad`.`GB`,
-	4,
-	`abroad`.`Name`,
-	`abroad`.`FathersName`,
-	`abroad`.`AuthRegionID`,
-	`abroad`.`ReceivedDate`,
-	`abroad`.`IssueActionDate`,
-	`abroad`.`IssuedOrNot`,
-	`abroad`.`Type`,
-	null,
-	`abroad`.`OOT`,
-	null,
-	`abroad`.`CurrentGBSno`,
-	`abroad`.`PreviousGBSno`,
-	`abroad`.`SaneyFormNo`,
-	`abroad`.`ReceiptNo`,
-	`abroad`.`Email`,
-	`abroad`.`Alias`,
-	null,
-	`abroad`.`IssuedOrNot`,
-	null,
-	`abroad`.`RejectDate`,
-	`abroad`.`ReturnDate`,
-	now(),
-	`abroad`.`EnteredBy`,
-	now(),
-	`abroad`.`EnteredBy`
-FROM `greenbookprime`.`abroad`;
-
-
-
-Insert into tblmadeb
-(
-    `tblmadeb`.`_Id`,
-    `tblmadeb`.`nFormNumber`,
-    `tblmadeb`.`sGBID`,
-    `tblmadeb`.`nMadebTypeID`,
-    `tblmadeb`.`sName`,
-    `tblmadeb`.`sFathersName`,
-    `tblmadeb`.`nAuthRegionID`,
-    `tblmadeb`.`dtReceived`,
-    `tblmadeb`.`dtIssueAction`,
-    `tblmadeb`.`nIssuedOrNotID`,
-    `tblmadeb`.`nType`,
-    `tblmadeb`.`sChangeField`,
-    `tblmadeb`.`sOfficeOfTibetan`,
-    `tblmadeb`.`sDocumentAttached`,
-    `tblmadeb`.`nCurrentGBSno`,
-    `tblmadeb`.`nPreviousGBSno`,
-    `tblmadeb`.`nSaneyFormNo`,
-    `tblmadeb`.`nReceiptNo`,
-    `tblmadeb`.`dtEmailSend`,
-    `tblmadeb`.`sAlias`,
-    `tblmadeb`.`sApprovedReject`,
-    `tblmadeb`.`nMadebStatusID`,
-    `tblmadeb`.`sMadebStatusRemark`,
-    `tblmadeb`.`dtReject`,
-    `tblmadeb`.`dtReturnEmail`,
-    `tblmadeb`.`dtEntered`,
-    `tblmadeb`.`nEnteredBy`,
-    `tblmadeb`.`dtUpdated`,
-    `tblmadeb`.`nUpdatedBy`
-)
-SELECT 
-	`bookfull`.`Id`,
-	`bookfull`.`FormNo`,
-	`bookfull`.`GB`,
-	5,
-	`bookfull`.`Name`,
-	`bookfull`.`FathersName`,
-	`bookfull`.`AuthRegionID`,
-	`bookfull`.`ReceivedDate`,
-	`bookfull`.`IssueActionDate`,
-	`bookfull`.`IssuedOrNot`,
-	`bookfull`.`Type`,
-	null,
-	`bookfull`.`OOT`,
-	null,
-	`bookfull`.`CurrentGBSno`,
-	`bookfull`.`PreviousGBSno`,
-	`bookfull`.`SaneyFormNo`,
-	null,
-	`bookfull`.`Email`,
-	null,
-	null,
-	`bookfull`.`IssuedOrNot`,
-	null,
-	`bookfull`.`RejectDate`,
-	`bookfull`.`ReturnDate`,
-	now(),
-	`bookfull`.`EnteredBy`,
-	now(),
-	`bookfull`.`EnteredBy`
+    `bookfull`.`RejectDate`,
+    `bookfull`.`ReturnDate`,
+    now(),
+    `bookfull`.`EnteredBy`,
+    now(),
+    `bookfull`.`EnteredBy`
 FROM `greenbookprime`.`bookfull`;
 
-
-
+Insert ignore into tblmadeb
+(
+    `tblmadeb`.`_Id`,
+    `tblmadeb`.`nFormNumber`,
+    `tblmadeb`.`sGBID`,
+    `tblmadeb`.`nMadebTypeID`,
+    `tblmadeb`.`sName`,
+    `tblmadeb`.`sFathersName`,
+    `tblmadeb`.`nAuthRegionID`,
+    `tblmadeb`.`dtReceived`,
+    `tblmadeb`.`dtIssueAction`,
+    `tblmadeb`.`nIssuedOrNotID`,
+    `tblmadeb`.`nType`,
+    `tblmadeb`.`sChangeField`,
+    `tblmadeb`.`sOfficeOfTibetan`,
+    `tblmadeb`.`sDocumentAttached`,
+    `tblmadeb`.`nCurrentGBSno`,
+    `tblmadeb`.`nPreviousGBSno`,
+    `tblmadeb`.`nSaneyFormNo`,
+    `tblmadeb`.`nReceiptNo`,
+    `tblmadeb`.`dtEmailSend`,
+    `tblmadeb`.`sAlias`,
+    `tblmadeb`.`sApprovedReject`,
+    `tblmadeb`.`nMadebStatusID`,
+    `tblmadeb`.`sMadebStatusRemark`,
+    `tblmadeb`.`dtReject`,
+    `tblmadeb`.`dtReturnEmail`,
+    `tblmadeb`.`dtEntered`,
+    `tblmadeb`.`nEnteredBy`,
+    `tblmadeb`.`dtUpdated`,
+    `tblmadeb`.`nUpdatedBy`
+)
+SELECT 
+    `abroad`.`Id`,
+    `abroad`.`FormNo`,
+    `abroad`.`GB`,
+    4,
+    `abroad`.`Name`,
+    `abroad`.`FathersName`,
+    `abroad`.`AuthRegionID`,
+    `abroad`.`ReceivedDate`,
+    (SELECT IssuedDate FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'A' AND ident_bookissued.FormNo = abroad.FormNo AND ident_bookissued.IdentityID = abroad.GB AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1),
+    IF((SELECT IssuedDate FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'A' AND ident_bookissued.FormNo = abroad.FormNo AND ident_bookissued.IdentityID = abroad.GB AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1) IS NOT NULL, 2,  IF((SELECT BookNo FROM greenbookprime.ident_bookserial WHERE Abroad = abroad.FormNo AND ident_bookserial.IDNo = abroad.GB HAVING COUNT(Abroad) = 1) IS NOT NULL, 1, NULL)),
+    `abroad`.`Type`,
+    null,
+    `abroad`.`OOT`,
+    null,
+    `abroad`.`CurrentGBSno`,
+    `abroad`.`PreviousGBSno`,
+    `abroad`.`SaneyFormNo`,
+    `abroad`.`ReceiptNo`,
+    `abroad`.`Email`,
+    `abroad`.`Alias`,
+    null,
+    IF((SELECT IssuedDate FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'U' AND ident_bookissued.FormNo = abroad.FormNo AND ident_bookissued.IdentityID = abroad.GB AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1) IS NOT NULL, 2, IF((SELECT BookNo FROM greenbookprime.ident_bookserial WHERE Abroad = abroad.FormNo AND ident_bookserial.IDNo = abroad.GB HAVING COUNT(Abroad) = 1) IS NOT NULL, 2, IF(IssuedOrNot = 3, 3, IF(IssuedOrNot = 4, 4, IF(IssuedOrNot = 5, 5, 1))))),
+    null,
+    `abroad`.`RejectDate`,
+    `abroad`.`ReturnDate`,
+    now(),
+    `abroad`.`EnteredBy`,
+    now(),
+    `abroad`.`EnteredBy`
+FROM `greenbookprime`.`abroad`;
 Insert into tblmadeb
 (
     `tblmadeb`.`_Id`,
@@ -588,81 +378,230 @@ SELECT
 `briefgb`.`Id`,
     `briefgb`.`FormNo`,
     `briefgb`.`GB`,
-	6,
+    6,
     `briefgb`.`Name`,
     `briefgb`.`FathersName`,
     `briefgb`.`AuthRegionID`,
     `briefgb`.`ReceivedDate`,
-    `briefgb`.`IssueActionDate`,
-    `briefgb`.`IssuedOrNot`,
+    (SELECT IssuedDate FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'B' AND ident_bookissued.FormNo = briefgb.FormNo AND ident_bookissued.IdentityID = briefgb.GB AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1),
+    IF((SELECT IssuedDate FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'B' AND ident_bookissued.FormNo = briefgb.FormNo AND ident_bookissued.IdentityID = briefgb.GB AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1) IS NOT NULL, 2,  IF((SELECT BookNo FROM greenbookprime.ident_bookserial WHERE BriefGB = briefgb.FormNo AND ident_bookserial.IDNo = briefgb.GB HAVING COUNT(BriefGB) = 1) IS NOT NULL, 1, NULL)),
     `briefgb`.`Type`,
-	null,
+    null,
     `briefgb`.`OOT`,
-	null,
+    null,
     `briefgb`.`CurrentGBSno`,
     `briefgb`.`PreviousGBSno`,
     `briefgb`.`SaneyFormNo`,
     `briefgb`.`ReceiptNo`,
     `briefgb`.`Email`,
-	null,
-	null,
-	`briefgb`.`IssuedOrNot`,
-	null,
+    null,
+    null,
+    IF((SELECT IssuedDate FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'B' AND ident_bookissued.FormNo = briefgb.FormNo AND ident_bookissued.IdentityID = briefgb.GB AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1) IS NOT NULL, 2, IF((SELECT BookNo FROM greenbookprime.ident_bookserial WHERE BriefGB = briefgb.FormNo AND ident_bookserial.IDNo = briefgb.GB HAVING COUNT(BriefGB) = 1) IS NOT NULL, 2, IF(IssuedOrNot = 3, 3, IF(IssuedOrNot = 4, 4, IF(IssuedOrNot = 5, 5, 1))))),
+    null,
     `briefgb`.`RejectDate`,
     `briefgb`.`ReturnDate`,
-	now(),
+    now(),
     `briefgb`.`EnteredBy`,
-	now(),
+    now(),
     `briefgb`.`EnteredBy`
 FROM `greenbookprime`.`briefgb`;
-
-
-
--- Correcting Data
-
-
--- SELECT * FROM tblmadeb where dtReceived = '0000-00-00';
--- SELECT * FROM tblmadeb where dtIssueAction = '0000-00-00';
--- SELECT * FROM tblmadeb where dtEmailSend = '0000-00-00';
--- SELECT * FROM tblmadeb where dtReject = '0000-00-00';
--- SELECT * FROM tblmadeb where dtReturnEmail = '0000-00-00';
--- SELECT * FROM tblmadeb where sName = '';
--- SELECT * FROM tblgreenbook where dtDOB = '0000-00-00';
--- SELECT * FROM tblgreenbook where dtFormDate = '0000-00-00';
--- SELECT * FROM tblgreenbook where dtDeceased = '0000-00-00';
--- SELECT * FROM tblgreenbook where dtValidityDate = '0000-00-00';
-
-SET SQL_SAFE_UPDATES=0;
-
-update `tblgreenbook` 
-set `dtDOB` = null
-where `dtDOB` like '%-00%';
-
-update `tblmadeb` 
-set `dtReceived` = null
-where `dtReceived` =  '0000-00-00';
- 
-update `tblmadeb` 
-set `dtIssueAction` = null
-where `dtIssueAction` =  '0000-00-00';
- 
-update `tblmadeb` 
-set `dtEmailSend` = null
-where `dtEmailSend` =  '0000-00-00';
- 
-update `tblmadeb` 
-set `dtReject` = null
-where `dtReject` = '0000-00-00';
- 
-update `tblmadeb` 
-set `dtReturnEmail` = null
-where `dtReturnEmail` = '0000-00-00';
-
+Insert into tblmadeb
+(
+    `tblmadeb`.`_Id`,
+    `tblmadeb`.`nFormNumber`,
+    `tblmadeb`.`sGBID`,
+    `tblmadeb`.`nMadebTypeID`,
+    `tblmadeb`.`sName`,
+    `tblmadeb`.`sFathersName`,
+    `tblmadeb`.`nAuthRegionID`,
+    `tblmadeb`.`dtReceived`,
+    `tblmadeb`.`dtIssueAction`,
+    `tblmadeb`.`nIssuedOrNotID`,
+    `tblmadeb`.`nType`,
+    `tblmadeb`.`sChangeField`,
+    `tblmadeb`.`sOfficeOfTibetan`,
+    `tblmadeb`.`sDocumentAttached`,
+    `tblmadeb`.`nCurrentGBSno`,
+    `tblmadeb`.`nPreviousGBSno`,
+    `tblmadeb`.`nSaneyFormNo`,
+    `tblmadeb`.`nReceiptNo`,
+    `tblmadeb`.`dtEmailSend`,
+    `tblmadeb`.`sAlias`,
+    `tblmadeb`.`sApprovedReject`,
+    `tblmadeb`.`nMadebStatusID`,
+    `tblmadeb`.`sMadebStatusRemark`,
+    `tblmadeb`.`dtReject`,
+    `tblmadeb`.`dtReturnEmail`,
+    `tblmadeb`.`dtEntered`,
+    `tblmadeb`.`nEnteredBy`,
+    `tblmadeb`.`dtUpdated`,
+    `tblmadeb`.`nUpdatedBy`
+)
+SELECT 
+    `madeblost`.`Id`,
+    `madeblost`.`FormNo`,
+    `madeblost`.`IdentityID`,
+    3,
+    `madeblost`.`Name`,
+    null,
+    `madeblost`.`AuthRegionID`,
+    `madeblost`.`ReceivedDate`,
+    (SELECT Entered FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'L' AND ident_bookissued.FormNo = madeblost.FormNo AND ident_bookissued.IdentityID = madeblost.IdentityID AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1),
+    IF((SELECT Entered FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'L' AND ident_bookissued.FormNo = madeblost.FormNo AND ident_bookissued.IdentityID = madeblost.IdentityID AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1) IS NOT NULL, 2,  IF((SELECT BookNo FROM greenbookprime.ident_bookserial WHERE LostFormNo = madeblost.FormNo AND ident_bookserial.IDNo = madeblost.IdentityID HAVING COUNT(LostFormNo) = 1) IS NOT NULL, 1, NULL)),
+    `madeblost`.`Type`,
+    `madeblost`.`ChangeField`,
+    null,
+    `madeblost`.`DA`,
+    null,
+    null,
+    null,
+    if(`madeblost`.`ReceiptNo` REGEXP '^-?[0-9]+$',`madeblost`.`ReceiptNo`,1) AS 'nReceiptNo',
+    `madeblost`.`Email`,
+    null,
+    `madeblost`.`ApprovedReject`,
+    IF((SELECT Entered FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'L' AND ident_bookissued.FormNo = madeblost.FormNo AND ident_bookissued.IdentityID = madeblost.IdentityID AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1) IS NOT NULL, 2, IF((SELECT BookNo FROM greenbookprime.ident_bookserial WHERE LostFormNo = madeblost.FormNo AND ident_bookserial.IDNo = madeblost.IdentityID HAVING COUNT(LostFormNo) = 1) IS NOT NULL, 2, IF(IssuedOrNot = 3, 3, IF(IssuedOrNot = 4, 4, IF(IssuedOrNot = 5, 5, 1))))),
+    IF(`madeblost`.`ApprovedReject` IS null or `madeblost`.`ApprovedReject` = '', null, 
+        IF(`madeblost`.`ApprovedReject` = 'Approved', null,
+            IF(`madeblost`.`ApprovedReject` like 'Reject%', `madeblost`.`ApprovedReject`,`madeblost`.`ApprovedReject`))),
+    `madeblost`.`RejectDate`,
+    `madeblost`.`ReturnDate`,
+    now(),
+    `madeblost`.`EnteredBy`,
+    now(),
+    `madeblost`.`EnteredBy`
+FROM `greenbookprime`.`madeblost`;
+Insert into tblmadeb
+(
+    `tblmadeb`.`_Id`,
+    `tblmadeb`.`nFormNumber`,
+    `tblmadeb`.`sGBID`,
+    `tblmadeb`.`nMadebTypeID`,
+    `tblmadeb`.`sName`,
+    `tblmadeb`.`sFathersName`,
+    `tblmadeb`.`nAuthRegionID`,
+    `tblmadeb`.`dtReceived`,
+    `tblmadeb`.`dtIssueAction`,
+    `tblmadeb`.`nIssuedOrNotID`,
+    `tblmadeb`.`nType`,
+    `tblmadeb`.`sChangeField`,
+    `tblmadeb`.`sOfficeOfTibetan`,
+    `tblmadeb`.`sDocumentAttached`,
+    `tblmadeb`.`nCurrentGBSno`,
+    `tblmadeb`.`nPreviousGBSno`,
+    `tblmadeb`.`nSaneyFormNo`,
+    `tblmadeb`.`nReceiptNo`,
+    `tblmadeb`.`dtEmailSend`,
+    `tblmadeb`.`sAlias`,
+    `tblmadeb`.`sApprovedReject`,
+    `tblmadeb`.`nMadebStatusID`,
+    `tblmadeb`.`sMadebStatusRemark`,
+    `tblmadeb`.`dtReject`,
+    `tblmadeb`.`dtReturnEmail`,
+    `tblmadeb`.`dtEntered`,
+    `tblmadeb`.`nEnteredBy`,
+    `tblmadeb`.`dtUpdated`,
+    `tblmadeb`.`nUpdatedBy`
+)
+SELECT 
+`madebchange`.`Id`,
+    `madebchange`.`FormNo`,
+    `madebchange`.`IdentityID`,
+    2,
+    `madebchange`.`Name`,
+    null,
+    `madebchange`.`AuthRegionID`,
+    `madebchange`.`ReceivedDate`,
+    (SELECT Entered FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'M' AND ident_bookissued.FormNo = madebchange.FormNo AND ident_bookissued.IdentityID = madebchange.IdentityID AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1),
+    IF((SELECT Entered FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'M' AND ident_bookissued.FormNo = madebchange.FormNo AND ident_bookissued.IdentityID = madebchange.IdentityID AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1) IS NOT NULL, 2,  IF((SELECT BookNo FROM greenbookprime.ident_bookserial WHERE ChangeFormNo = madebchange.FormNo AND ident_bookserial.IDNo = madebchange.IdentityID HAVING COUNT(ChangeFormNo) = 1) IS NOT NULL, 1, NULL)),
+    `madebchange`.`Type`,
+    `madebchange`.`ChangeField`,
+    null,
+    `madebchange`.`DA`,
+    null,
+    null,
+    null,
+    NULLIF(CAST(`madebchange`.`ReceiptNo` AS UNSIGNED),0),
+    `madebchange`.`Email`,
+    null,
+    `madebchange`.`ApprovedReject`,
+IF((SELECT Entered FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'M' AND ident_bookissued.FormNo = madebchange.FormNo AND ident_bookissued.IdentityID = madebchange.IdentityID AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1) IS NOT NULL, 2, IF((SELECT BookNo FROM greenbookprime.ident_bookserial WHERE ChangeFormNo = madebchange.FormNo AND ident_bookserial.IDNo = madebchange.IdentityID HAVING COUNT(ChangeFormNo) = 1) IS NOT NULL, 2, IF(IssuedOrNot = 3, 3, IF(IssuedOrNot = 4, 4, IF(IssuedOrNot = 5, 5, 1))))),
+IF(`madebchange`.`ApprovedReject` IS null or `madebchange`.`ApprovedReject` = '', null, 
+        IF(`madebchange`.`ApprovedReject` = 'Approved', null,
+            IF(`madebchange`.`ApprovedReject` like 'Reject%', `madebchange`.`ApprovedReject`,`madebchange`.`ApprovedReject`))) as nMadebStatusRemark,
+    `madebchange`.`RejectDate`,
+    `madebchange`.`ReturnDate`,
+   now(),
+    `madebchange`.`EnteredBy`,
+   now(),
+    `madebchange`.`EnteredBy`
+FROM `greenbookprime`.`madebchange`;
+Insert into tblmadeb
+(
+    `tblmadeb`.`_Id`,
+    `tblmadeb`.`nFormNumber`,
+    `tblmadeb`.`sGBID`,
+    `tblmadeb`.`nMadebTypeID`,
+    `tblmadeb`.`sName`,
+    `tblmadeb`.`sFathersName`,
+    `tblmadeb`.`nAuthRegionID`,
+    `tblmadeb`.`dtReceived`,
+    `tblmadeb`.`dtIssueAction`,
+    `tblmadeb`.`nIssuedOrNotID`,
+    `tblmadeb`.`nType`,
+    `tblmadeb`.`sChangeField`,
+    `tblmadeb`.`sOfficeOfTibetan`,
+    `tblmadeb`.`sDocumentAttached`,
+    `tblmadeb`.`nCurrentGBSno`,
+    `tblmadeb`.`nPreviousGBSno`,
+    `tblmadeb`.`nSaneyFormNo`,
+    `tblmadeb`.`nReceiptNo`,
+    `tblmadeb`.`dtEmailSend`,
+    `tblmadeb`.`sAlias`,
+    `tblmadeb`.`sApprovedReject`,
+    `tblmadeb`.`nMadebStatusID`,
+    `tblmadeb`.`sMadebStatusRemark`,
+    `tblmadeb`.`dtReject`,
+    `tblmadeb`.`dtReturnEmail`,
+    `tblmadeb`.`dtEntered`,
+    `tblmadeb`.`nEnteredBy`,
+    `tblmadeb`.`dtUpdated`,
+    `tblmadeb`.`nUpdatedBy`
+)
+SELECT 
+    `madeb`.`Id`,
+    `madeb`.`FormNo`,
+    (select gbNoGiven.IdentityID from greenbookprime.gbnogiven WHERE gbNoGiven.FormNo = madeb.FormNo AND gbNoGiven.GivenOrNot = 1 HAVING count(formNo) = 1),
+    1,
+    `madeb`.`Name`,
+    `madeb`.`FathersName`,
+    `madeb`.`AuthRegionID`,
+    `madeb`.`ReceivedDate`,
+    (SELECT date FROM greenbookprime.gbnogiven WHERE gbNoGiven.FormNo = madeb.FormNo AND gbNoGiven.GivenOrNot = 1 HAVING count(formNo) = 1),
+    IF((SELECT Entered FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'F' AND ident_bookissued.FormNo = madeb.FormNo AND ident_bookissued.IdentityID = (select gbNoGiven.IdentityID from greenbookprime.gbnogiven WHERE gbNoGiven.FormNo = madeb.FormNo AND gbNoGiven.GivenOrNot = 1 HAVING count(formNo) = 1) AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1) IS NOT NULL, 2, IF((select gbNoGiven.IdentityID from greenbookprime.gbnogiven WHERE gbNoGiven.FormNo = madeb.FormNo AND gbnogiven.givenornot = 1 HAVING count(formNo) = 1) IS NOT NULL, 1, NULL)),
+    `madeb`.`Type`,
+    null,
+    `madeb`.`OOT`,
+    `madeb`.`DA`,
+    null,
+    null,
+    null,
+    null,
+    `madeb`.`Email`,
+    null,
+    null,
+    IF((SELECT Entered FROM greenbookprime.ident_bookissued WHERE ident_bookissued.WhyIssued = 'F' AND ident_bookissued.FormNo = madeb.FormNo AND ident_bookissued.IdentityID = (select gbNoGiven.IdentityID from greenbookprime.gbnogiven WHERE gbNoGiven.FormNo = madeb.FormNo AND gbNoGiven.GivenOrNot = 1 HAVING count(formNo) = 1) AND ident_bookissued.IssuedOrNot = 2 HAVING count(FormNo) = 1) IS NOT NULL, 2, IF((select gbNoGiven.IdentityID from greenbookprime.gbnogiven WHERE gbNoGiven.FormNo = madeb.FormNo AND gbnogiven.givenornot = 1 HAVING count(formNo) = 1) IS NOT NULL, 2, IF(IssuedOrNot = 3, 3, IF(IssuedOrNot = 4, 4, IF(IssuedOrNot = 5, 5, 1))))),
+    null,
+    `madeb`.`RejectDate`,
+    `madeb`.`ReturnDate`,
+    now(),
+    `madeb`.`EnteredBy`,
+    now(),
+    `madeb`.`EnteredBy`
+FROM `greenbookprime`.`madeb`;
 
 update `tblmadeb` 
 set `dtReturnEmail` = null
 where `dtReturnEmail` like '%-00%';
-
 update `tblmadeb` 
 set `dtReceived` = null
 where `dtReceived` like '%-00%';
@@ -678,11 +617,9 @@ where `dtEmailSend` like '%-00%';
 update `tblmadeb` 
 set `dtReject` = null
 where `dtReject` like '%-00%';
-
 update `tblmadeb` 
 set `dtReturnEmail` = null
 where `dtReturnEmail` like '0000%';
-
 update `tblmadeb` 
 set `dtReceived` = null
 where `dtReceived` like '0000%';
@@ -697,7 +634,13 @@ where `dtEmailSend` like '0000%';
  
 update `tblmadeb` 
 set `dtReject` = null
-where `dtReject` like '0000%';
+where `dtReject` like '0000%';                        
+
+UPDATE tblmadeb a
+INNER JOIN tblgreenbookserial b ON a.nFormNumber = b.nFormNumber
+SET a.nCurrentGBSno = b.nBookNo
+where a.nMadebTypeID = 1;
+
 
 update `tblmadeb` 
 set `sName` = null
@@ -1059,27 +1002,6 @@ set bActive = 0
 where nGBId = 0;
 
 
-INSERT INTO `tblauditlog` 
-( 
-	`dtEntered`, 
-	`nFeatureID`, 
-	`nRegionID`, 
-	`nRecordID`, 
-	`sGBID`, 
-	`sFieldValuesOld`, 
-	`sFieldValuesNew`, 
-	`nEnteredBy`
-) 
-SELECT   
-	historychangeschild.ModifiedDate as dtEntered     
-	, 101 as nFeatureID     
-	, null as nRegionID     
-	, historychangeschild.ChildID as nRecordID     
-	, historychangeschild.ParentID as sGBID     
-	, concat(historychangeschild.FieldName, ' = ',historychangeschild.ChangesFrom) as sFieldValuesOld
-	, concat(historychangeschild.FieldName, ' = ',historychangeschild.ChangesFrom) as sFieldValuesNew
-	,if(concat('',historychangeschild.byWhom * 1) = historychangeschild.byWhom,historychangeschild.byWhom,1) as nEnteredBy 
-FROM greenbookprime.historychangeschild; 
 
 
 SET SQL_SAFE_UPDATES=0;
@@ -1093,62 +1015,14 @@ UPDATE lstMadebType
         where lstMadebType.ID = MaxNum.ID;
 		
 
-INSERT INTO `tblauditlog`
-(
-`dtEntered`,
-`nFeatureID`,
-`nRegionID`,
-`nRecordID`,
-`sGBID`,
-`sFieldValuesOld`,
-`sFieldValuesNew`,
-`nEnteredBy`)
-SELECT 
-	`deletelog`.`WhenDeleted`,
-	17,
-    null,
-    `deletelog`.`ID`,
-    `deletelog`.`IdentityID`,
-    concat('Name = ',`deletelog`.`Name`) as sFieldValuesOld,
-    concat('Delete GB = ',`deletelog`.`IdentityID`) as sFieldValuesNew,
-    1
-FROM `greenbookprime`.`deletelog`;
 
 
-
-UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = 36000 WHERE lstmadebtype.Id = 1;
-UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = 16827 where lstmadebtype.Id = 2;
-UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = 2499 WHERE lstmadebtype.Id = 3;
-UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = 2119 WHERE lstmadebtype.Id = 4;
-UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = 86 WHERE lstmadebtype.Id = 5;
-UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = 655 WHERE lstmadebtype.Id = 6;
-
-
--- UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 1 ) WHERE lstmadebtype.Id = 1;
--- UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 2) where lstmadebtype.Id = 2;
--- UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 3) WHERE lstmadebtype.Id = 3;
--- UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 4) WHERE lstmadebtype.Id = 4;
--- UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 5) WHERE lstmadebtype.Id = 5;
--- UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 6) WHERE lstmadebtype.Id = 6;
-
-
-
-
-CREATE TABLE `tmpGBDocument` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sGBId` varchar(255) NOT NULL,
-  `sTitle` varchar(255) DEFAULT NULL,
-  `sDocType` varchar(255) DEFAULT NULL,
-  `imageFileName` varchar(255) DEFAULT NULL,
-  `sFileExtension` varchar(255) DEFAULT NULL,
-  `nRegisterDate` datetime DEFAULT NULL,
-  `dtEntered` datetime NOT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime NOT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `GB_TMP_DOC_GBID` (`sGBId`)
-)ENGINE=InnoDB AUTO_INCREMENT=1 ;
+UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 1 ) WHERE lstmadebtype.Id = 1;
+UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 2) where lstmadebtype.Id = 2;
+UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 3) WHERE lstmadebtype.Id = 3;
+UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 4) WHERE lstmadebtype.Id = 4;
+UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 5) WHERE lstmadebtype.Id = 5;
+UPDATE lstmadebtype SET lstmadebtype.nMadebLastFormNumber = (SELECT max(tblmadeb.nFormNumber) FROM tblmadeb WHERE tblmadeb.nMadebTypeID = 6) WHERE lstmadebtype.Id = 6;
 
 
 INSERT INTO `tmpgbdocument`
@@ -1179,92 +1053,6 @@ FROM
   greenbookprime.document;
   
   
-INSERT INTO tblchatrelpayment (sGBId,nChatrelYear,nChatrelTotalAmount,sChatrelReceiptNumber,sPaymentStatus,sPaymentMode,sPaymentCurrency,sPaidByGBId,sPayPal_Status,sPayPal_ID,sPayPal_Currency_Code,sPayPal_Currency_Value,sPayPal_Response_Object,dtPayment,dtEntered,nEnteredBy,dtUpdated,nUpdatedBy) VALUES ('4489430',2020,500.23,'1','Success','Online','USD','9675',NULL,NULL,NULL,NULL,NULL,'2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',9675,'2020-12-01 16:54:44.0',9675), ('4110460',2020,314.71,'2','Success','Online','USD','9675',NULL,NULL,NULL,NULL,NULL,'2020-12-01 17:08:07.0','2020-12-01 17:08:07.0',9675,'2020-12-01 17:08:07.0',9675), ('23542',2020,11.98,'3','Success','Online','USD','8822',NULL,NULL,NULL,NULL,NULL,'2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), ('1443296',2020,7.32,'4','Success','Online','USD','1443296',NULL,NULL,NULL,NULL,NULL,'2020-12-01 21:17:21.0','2020-12-01 21:17:21.0',1443296,'2020-12-01 21:17:21.0',1443296), ('693161',2020,7.82,'5','Success','Online','USD','1443296',NULL,NULL,NULL,NULL,NULL,'2020-12-01 21:28:05.0','2020-12-01 21:28:05.0',1443296,'2020-12-01 21:28:05.0',1443296);
-
-
-INSERT INTO lnkgbchatrel (chatrelpaymentID,sGBId,nChatrelAmount,nChatrelMeal,nChatrelYear,nChatrelLateFeesPercentage,nChatrelLateFeesValue,nArrearsAmount,dtArrearsFrom,dtArrearsTo,nCurrentChatrelSalaryAmt,dtCurrentChatrelFrom,dtCurrentChatrelTo,nChatrelTotalAmount,sChatrelReceiptNumber,nAuthRegionID,sCountryID,sPaymentCurrency,sAuthRegionCurrency,nConversionRate,sPaidByGBId,dtPayment,dtEntered,nEnteredBy,dtUpdated,nUpdatedBy) 
-VALUES (1,'4489430',48.00,10.00,2011,10,5.80,63.80,'2011-04-01','2012-03-31',0.00,'2011-04-01','2012-03-31',0.86,'1',135,'NP','USD','INR',0.0137,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',9675,'2020-12-01 16:54:44.0',9675)
-, (1,'4489430',48.00,10.00,2012,10,5.80,63.80,'2012-04-01','2013-03-31',0.00,'2012-04-01','2013-03-31',0.86,'1',135,'NP','USD','INR',0.0137,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',9675,'2020-12-01 16:54:44.0',9675), (1,'4489430',36.00,10.00,2013,10,9.60,105.60,'2013-04-01','2014-03-31',50.00,'2013-04-01','2014-03-31',105.60,'1',131,'CH','USD','USD',1.00,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',9675,'2020-12-01 16:54:44.0',9675), (1,'4489430',36.00,10.00,2014,10,9.60,105.60,'2014-04-01','2015-03-31',50.00,'2014-04-01','2015-03-31',105.60,'1',131,'CH','USD','USD',1.00,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',9675,'2020-12-01 16:54:44.0',9675), (1,'4489430',36.00,10.00,2015,10,9.60,105.60,'2015-04-01','2016-03-31',50.00,'2015-04-01','2016-03-31',105.60,'1',141,'JP','USD','USD',1.00,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',9675,'2020-12-01 16:54:44.0',9675), (1,'4489430',36.00,10.00,2016,10,4.60,50.60,'2016-04-01','2017-03-31',0.00,'2016-04-01','2017-03-31',50.60,'1',132,'TW','USD','USD',1.00,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',9675,'2020-12-01 16:54:44.0',9675), (1,'4489430',48.00,10.00,2017,10,5.80,63.80,'2017-04-01','2018-03-31',0.00,'2017-04-01','2018-03-31',0.86,'1',135,'NP','USD','INR',0.0137,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',9675,'2020-12-01 16:54:44.0',9675), (1,'4489430',36.00,10.00,2018,10,4.60,50.60,'2018-04-01','2019-03-31',0.00,'2018-04-01','2019-03-31',50.60,'1',149,'US','USD','USD',1.00,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',9675,'2020-12-01 16:54:44.0',9675), (1,'4489430',48.00,10.00,2019,10,5.80,63.80,'2019-04-01','2020-03-31',0.00,'2019-04-01','2020-03-31',0.86,'1',135,'NP','USD','INR',0.0137,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',9675,'2020-12-01 16:54:44.0',9675), (1,'4489430',48.00,10.00,2020,10,0.00,NULL,NULL,NULL,0.00,'2020-04-01','2021-03-31',0.78,'1',135,'NP','USD','INR',0.0137,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',9675,'2020-12-01 16:54:44.0',9675), (2,'4110460',48.00,10.00,2011,10,5.80,63.80,'2011-04-01','2012-03-31',0.00,'2011-04-01','2012-03-31',0.86,'2',135,'NP','USD','INR',0.0137,'9675','2020-12-01 17:08:07.0','2020-12-01 17:08:07.0',9675,'2020-12-01 17:08:07.0',9675), (2,'4110460',48.00,10.00,2012,10,5.80,63.80,'2012-04-01','2013-03-31',0.00,'2012-04-01','2013-03-31',0.86,'2',135,'NP','USD','INR',0.0137,'9675','2020-12-01 17:08:07.0','2020-12-01 17:08:07.0',9675,'2020-12-01 17:08:07.0',9675), (2,'4110460',48.00,10.00,2013,10,15.80,173.80,'2013-04-01','2014-03-31',100.00,'2013-04-01','2014-03-31',2.35,'2',135,'NP','USD','INR',0.0137,'9675','2020-12-01 17:08:07.0','2020-12-01 17:08:07.0',9675,'2020-12-01 17:08:07.0',9675), (2,'4110460',48.00,10.00,2014,10,5.80,63.80,'2014-04-01','2015-03-31',0.00,'2014-04-01','2015-03-31',0.86,'2',135,'NP','USD','INR',0.0137,'9675','2020-12-01 17:08:07.0','2020-12-01 17:08:07.0',9675,'2020-12-01 17:08:07.0',9675), (2,'4110460',48.00,10.00,2015,10,5.80,63.80,'2015-04-01','2016-03-31',0.00,'2015-04-01','2016-03-31',0.86,'2',135,'NP','USD','INR',0.0137,'9675','2020-12-01 17:08:07.0','2020-12-01 17:08:07.0',9675,'2020-12-01 17:08:07.0',9675), (2,'4110460',48.00,10.00,2016,10,5.80,63.80,'2016-04-01','2017-03-31',0.00,'2016-04-01','2017-03-31',0.86,'2',135,'NP','USD','INR',0.0137,'9675','2020-12-01 17:08:07.0','2020-12-01 17:08:07.0',9675,'2020-12-01 17:08:07.0',9675), (2,'4110460',48.00,10.00,2017,10,5.80,63.80,'2017-04-01','2018-03-31',0.00,'2017-04-01','2018-03-31',0.86,'2',135,'NP','USD','INR',0.0137,'9675','2020-12-01 17:08:07.0','2020-12-01 17:08:07.0',9675,'2020-12-01 17:08:07.0',9675), (2,'4110460',36.00,10.00,2018,10,9.60,105.60,'2018-04-01','2019-03-31',50.00,'2018-04-01','2019-03-31',105.60,'2',75,'US','USD','USD',1.00,'9675','2020-12-01 17:08:07.0','2020-12-01 17:08:07.0',9675,'2020-12-01 17:08:07.0',9675), (2,'4110460',36.00,10.00,2019,10,9.60,105.60,'2019-04-01','2020-03-31',50.00,'2019-04-01','2020-03-31',105.60,'2',71,'GB','USD','USD',1.00,'9675','2020-12-01 17:08:07.0','2020-12-01 17:08:07.0',9675,'2020-12-01 17:08:07.0',9675), (2,'4110460',36.00,10.00,2020,10,0.00,NULL,NULL,NULL,50.00,'2020-04-01','2021-03-31',96.00,'2',71,'GB','USD','USD',1.00,'9675','2020-12-01 17:08:07.0','2020-12-01 17:08:07.0',9675,'2020-12-01 17:08:07.0',9675), (3,'23542',48.00,10.00,2007,10,5.80,63.80,'2007-04-01','2008-03-31',0.00,'2007-04-01','2008-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2008,10,5.80,63.80,'2008-04-01','2009-03-31',0.00,'2008-04-01','2009-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2009,10,5.80,63.80,'2009-04-01','2010-03-31',0.00,'2009-04-01','2010-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2010,10,5.80,63.80,'2010-04-01','2011-03-31',0.00,'2010-04-01','2011-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2011,10,5.80,63.80,'2011-04-01','2012-03-31',0.00,'2011-04-01','2012-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2012,10,5.80,63.80,'2012-04-01','2013-03-31',0.00,'2012-04-01','2013-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2013,10,5.80,63.80,'2013-04-01','2014-03-31',0.00,'2013-04-01','2014-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2014,10,5.80,63.80,'2014-04-01','2015-03-31',0.00,'2014-04-01','2015-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2015,10,5.80,63.80,'2015-04-01','2016-03-31',0.00,'2015-04-01','2016-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2016,10,5.80,63.80,'2016-04-01','2017-03-31',0.00,'2016-04-01','2017-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2017,10,5.80,63.80,'2017-04-01','2018-03-31',0.00,'2017-04-01','2018-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2018,10,5.80,63.80,'2018-04-01','2019-03-31',0.00,'2018-04-01','2019-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2019,10,5.80,63.80,'2019-04-01','2020-03-31',0.00,'2019-04-01','2020-03-31',0.86,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (3,'23542',48.00,10.00,2020,10,0.00,NULL,NULL,NULL,0.00,'2020-04-01','2021-03-31',0.78,'3',12,'BT','USD','INR',0.0137,'8822','2020-12-01 18:28:18.0','2020-12-01 18:28:18.0',8822,'2020-12-01 18:28:18.0',8822), (4,'1443296',12.00,0.00,2010,10,1.20,13.20,'2010-04-01','2011-03-31',0.00,'2010-04-01','2011-03-31',0.18,'4',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:17:21.0','2020-12-01 21:17:21.0',1443296,'2020-12-01 21:17:21.0',1443296), (4,'1443296',12.00,0.00,2011,10,1.20,13.20,'2011-04-01','2012-03-31',0.00,'2011-04-01','2012-03-31',0.18,'4',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:17:21.0','2020-12-01 21:17:21.0',1443296,'2020-12-01 21:17:21.0',1443296), (4,'1443296',30.00,0.00,2012,10,3.00,33.00,'2012-04-01','2013-03-31',0.00,'2012-04-01','2013-03-31',0.45,'4',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:17:21.0','2020-12-01 21:17:21.0',1443296,'2020-12-01 21:17:21.0',1443296), (4,'1443296',48.00,0.00,2013,10,4.80,52.80,'2013-04-01','2014-03-31',0.00,'2013-04-01','2014-03-31',0.71,'4',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:17:21.0','2020-12-01 21:17:21.0',1443296,'2020-12-01 21:17:21.0',1443296), (4,'1443296',48.00,0.00,2014,10,4.80,52.80,'2014-04-01','2015-03-31',0.00,'2014-04-01','2015-03-31',0.71,'4',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:17:21.0','2020-12-01 21:17:21.0',1443296,'2020-12-01 21:17:21.0',1443296), (4,'1443296',48.00,10.00,2015,10,5.80,63.80,'2015-04-01','2016-03-31',0.00,'2015-04-01','2016-03-31',0.86,'4',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:17:21.0','2020-12-01 21:17:21.0',1443296,'2020-12-01 21:17:21.0',1443296), (4,'1443296',48.00,10.00,2016,10,5.80,63.80,'2016-04-01','2017-03-31',0.00,'2016-04-01','2017-03-31',0.86,'4',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:17:21.0','2020-12-01 21:17:21.0',1443296,'2020-12-01 21:17:21.0',1443296), (4,'1443296',48.00,10.00,2017,10,5.80,63.80,'2017-04-01','2018-03-31',0.00,'2017-04-01','2018-03-31',0.86,'4',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:17:21.0','2020-12-01 21:17:21.0',1443296,'2020-12-01 21:17:21.0',1443296), (4,'1443296',48.00,10.00,2018,10,5.80,63.80,'2018-04-01','2019-03-31',0.00,'2018-04-01','2019-03-31',0.86,'4',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:17:21.0','2020-12-01 21:17:21.0',1443296,'2020-12-01 21:17:21.0',1443296), (4,'1443296',48.00,10.00,2019,10,5.80,63.80,'2019-04-01','2020-03-31',0.00,'2019-04-01','2020-03-31',0.86,'4',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:17:21.0','2020-12-01 21:17:21.0',1443296,'2020-12-01 21:17:21.0',1443296), (4,'1443296',48.00,10.00,2020,10,0.00,NULL,NULL,NULL,0.00,'2020-04-01','2021-03-31',0.78,'4',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:17:21.0','2020-12-01 21:17:21.0',1443296,'2020-12-01 21:17:21.0',1443296), (5,'693161',12.00,0.00,2010,10,1.20,13.20,'2010-04-01','2011-03-31',0.00,'2010-04-01','2011-03-31',0.18,'5',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:28:05.0','2020-12-01 21:28:05.0',1443296,'2020-12-01 21:28:05.0',1443296), (5,'693161',18.00,0.00,2011,10,1.80,19.80,'2011-04-01','2012-03-31',0.00,'2011-04-01','2012-03-31',0.27,'5',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:28:05.0','2020-12-01 21:28:05.0',1443296,'2020-12-01 21:28:05.0',1443296), (5,'693161',48.00,0.00,2012,10,4.80,52.80,'2012-04-01','2013-03-31',0.00,'2012-04-01','2013-03-31',0.71,'5',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:28:05.0','2020-12-01 21:28:05.0',1443296,'2020-12-01 21:28:05.0',1443296), (5,'693161',48.00,0.00,2013,10,4.80,52.80,'2013-04-01','2014-03-31',0.00,'2013-04-01','2014-03-31',0.71,'5',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:28:05.0','2020-12-01 21:28:05.0',1443296,'2020-12-01 21:28:05.0',1443296), (5,'693161',48.00,10.00,2014,10,5.80,63.80,'2014-04-01','2015-03-31',0.00,'2014-04-01','2015-03-31',0.86,'5',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:28:05.0','2020-12-01 21:28:05.0',1443296,'2020-12-01 21:28:05.0',1443296), (5,'693161',48.00,10.00,2015,10,5.80,63.80,'2015-04-01','2016-03-31',0.00,'2015-04-01','2016-03-31',0.86,'5',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:28:05.0','2020-12-01 21:28:05.0',1443296,'2020-12-01 21:28:05.0',1443296), (5,'693161',48.00,10.00,2016,10,5.80,63.80,'2016-04-01','2017-03-31',0.00,'2016-04-01','2017-03-31',0.86,'5',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:28:05.0','2020-12-01 21:28:05.0',1443296,'2020-12-01 21:28:05.0',1443296), (5,'693161',48.00,10.00,2017,10,5.80,63.80,'2017-04-01','2018-03-31',0.00,'2017-04-01','2018-03-31',0.86,'5',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:28:05.0','2020-12-01 21:28:05.0',1443296,'2020-12-01 21:28:05.0',1443296), (5,'693161',48.00,10.00,2018,10,5.80,63.80,'2018-04-01','2019-03-31',0.00,'2018-04-01','2019-03-31',0.86,'5',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:28:05.0','2020-12-01 21:28:05.0',1443296,'2020-12-01 21:28:05.0',1443296), (5,'693161',48.00,10.00,2019,10,5.80,63.80,'2019-04-01','2020-03-31',0.00,'2019-04-01','2020-03-31',0.86,'5',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:28:05.0','2020-12-01 21:28:05.0',1443296,'2020-12-01 21:28:05.0',1443296), (5,'693161',48.00,10.00,2020,10,0.00,NULL,NULL,NULL,0.00,'2020-04-01','2021-03-31',0.78,'5',35,'IN','USD','INR',0.0137,'1443296','2020-12-01 21:28:05.0','2020-12-01 21:28:05.0',1443296,'2020-12-01 21:28:05.0',1443296);
-
-
-INSERT INTO lnkgbchatreldonation (chatrelpaymentID,sGBId,nChatrelAdditionalDonationAmt,nChatrelBusinessDonationAmt,sChatrelReceiptNumber,nAuthRegionID,sCountryID,sPaymentCurrency,sAuthRegionCurrency,nConversionRate,sPaidByGBId,dtPayment,dtEntered,nEnteredBy,dtUpdated,nUpdatedBy) VALUES (1,'4489430',60.00,18.00,'1',135,'NP','USD','INR',1.00,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',1,'2020-12-01 16:54:44.0',1);
-
-
-UPDATE `lstctaconfig` SET `sValue` = 'chatrelcta@gmail.com' WHERE (`Id` = '4');
-UPDATE `lstctaconfig` SET `sValue` = 'hjmzfrcillpuvsxv' WHERE (`Id` = '5');
-UPDATE `lstctaconfig` SET `sValue` = 'smtp.gmail.com' WHERE (`Id` = '6');
-UPDATE `lstctaconfig` SET `sValue` = '465' WHERE (`Id` = '7');
-UPDATE `lstctaconfig` SET `sValue` = 'true' WHERE (`Id` = '8');
-UPDATE `lstctaconfig` SET `sValue` = 'reji.oommen@atidan.com' WHERE (`Id` = '9');
-
-UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy101@gmail.com', `sLoginGmail` = 'ctadummy101@gmail.com' WHERE (`Id` = '161');
-UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy103@gmail.com', `sLoginGmail` = 'ctadummy103@gmail.com' WHERE (`Id` = '1001');
-UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy104@gmail.com', `sLoginGmail` = 'ctadummy104@gmail.com' WHERE (`Id` = '141573');
-UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy105@gmail.com', `sLoginGmail` = 'ctadummy105@gmail.com' WHERE (`Id` = '141573');
-UPDATE `tblgreenbook` SET `sPaidUntil` = '2012' WHERE (`Id` = '141573');
-
-
--- To Clear the Login cendentials with some values
--- clear Chatrel from UAT for 9675
-delete from tblchatrelpayment where sGBId='9675';
-delete from lnkgbchatrel where sGBId='9675';
-delete from lnkgbchatreldonation where sGBId='9675';
-update tblgreenbook 
-set spaiduntil = '2015'
-where sGBId='9675';
-
--- clear Chatrel from UAT for 9996070
-delete from tblchatrelpayment where sGBId='9996070';
-delete from lnkgbchatrel where sGBId='9996070';
-delete from lnkgbchatreldonation where sGBId='9996070';
-update tblgreenbook 
-set spaiduntil = '2015'
-where sGBId='9996070';
-
--- clear Chatrel from UAT for 68324
-delete from tblchatrelpayment where sGBId='68324';
-delete from lnkgbchatrel where sGBId='68324';
-delete from lnkgbchatreldonation where sGBId='68324';
-update tblgreenbook 
-set spaiduntil = '2015'
-where sGBId='68324';
-
--- clear Chatrel from UAT for 11909
-delete from tblchatrelpayment where sGBId='11909';
-delete from lnkgbchatrel where sGBId='11909';
-delete from lnkgbchatreldonation where sGBId='11909';
-update tblgreenbook 
-set spaiduntil = '2015'
-where sGBId='11909';
-
-
--- 
--- updating tblmadeb gbid if the madeb is Sarso and the status is Given
-UPDATE tblmadeb a
-INNER JOIN tblgivengbid b ON a.nFormNumber = b.nFormNo
-SET a.sGBID = b.nGBId
-WHERE a.nMadebTypeID = 1 AND b.bGivenOrNot=1;
-
-UPDATE tblmadeb a
-INNER JOIN tblgreenbookserial b ON a.nFormNumber = b.nFormNumber
-SET a.nCurrentGBSno = b.nBookNo
-where a.nMadebTypeID = 1;
-
-UPDATE tblmadeb 
-SET nMadebStatusID = 3,
-	nIssuedOrNotID = null,
-    dtIssueAction = null
-where nIssuedOrNotID=3;
-
-UPDATE tblmadeb 
-SET nMadebStatusID = 2
-where nIssuedOrNotID=2;
-
-UPDATE tblmadeb 
-SET nMadebStatusID = 1,
-	nIssuedOrNotID = null,
-    dtIssueAction = null
-where nIssuedOrNotID is null or nIssuedOrNotID = 0;
 
 SET sql_mode = 'NO_ZERO_DATE';
 update tblgreenbook
@@ -1276,9 +1064,60 @@ update tblgreenbook
 set dtEntered = STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y')
 where STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y') is not null and date(dtEntered) = date(dtUpdated) and sEnteredDateTime like '%/%/%';
 
-update tblgreenbook
-set dtEntered = STR_TO_DATE(sEnteredDateTime, '%d-%m-%Y')
-where STR_TO_DATE(sEnteredDateTime, '%d-%m-%Y') is not null and date(dtEntered) = date(dtUpdated) and sEnteredDateTime like '%-%-%';
+UPDATE tblgreenbook
+SET dtEntered = STR_TO_DATE(sEnteredDateTime, '%d-%m-%Y')
+WHERE STR_TO_DATE(sEnteredDateTime, '%d-%m-%Y') is not null and date(dtEntered) = date(dtUpdated) and sEnteredDateTime like '%-%-%';
+
+
+UPDATE lnkgbchildren
+SET sgbidChild = if(sgbidChild = 0 ,null,sgbidChild);
+
+UPDATE tblgreenbook 
+   SET nChildrenM = (
+       SELECT COUNT(id) 
+         FROM lnkgbchildren 
+        WHERE lnkgbchildren.sGBIDParent = tblgreenbook.sGBID 
+			AND sGender = 'M'
+        GROUP BY lnkgbchildren.sGBIDParent
+       ),
+       nChildrenF = (
+       SELECT COUNT(id) 
+         FROM lnkgbchildren 
+        WHERE lnkgbchildren.sGBIDParent = tblgreenbook.sGBID 
+			AND sGender = 'F'
+        GROUP BY lnkgbchildren.sGBIDParent
+       );
+	   
+	   
+-- tblauditlog
+
+
+-- SHOW variables like 'group_concat_max_len';
+
+SET session group_concat_max_len=1024000;
+
+INSERT ignore INTO tblauditlog(dtEntered, nFeatureID, nRecordID, sGBID, sFieldValuesOld, sFieldValuesNew, nEnteredBy) SELECT h.ModifiedDate, 16, h.ID, h.IdentityID, concat('[', group_concat('{"Field":"',FieldName , '", "PreviousValue":"', ifnull(replace(ChangesFrom, '\\', '\\\\'), ''),'", "NewValue":"', ifnull(replace(ChangesTo, '\\','\\\\'), ''),'"}'), ']'),'', IFNULL(CAST(h.byWhom AS UNSIGNED), 0) FROM greenbookprime.historychanges h  GROUP BY h.IdentityID, date_format(ModifiedDate, '%Y-%m-%d %H:%i');
+ 
+INSERT ignore INTO tblauditlog(dtEntered, nFeatureID, nRecordID, sGBID, sFieldValuesOld, sFieldValuesNew, nEnteredBy) SELECT h.ModifiedDate, 101, h.ID, h.ParentID, concat('[', group_concat('{"Field":"',FieldName , '", "PreviousValue":"', ifnull(replace(ChangesFrom, '\\', '\\\\'), ''),'", "NewValue":"', ifnull(replace(ChangesTo, '\\', '\\\\'), ''),'"}'), ']'),'', IFNULL(CAST(h.byWhom AS UNSIGNED), 0) FROM greenbookprime.historychangeschild h  GROUP BY h.ParentID, ModifiedDate ORDER BY ModifiedDate;
+
+INSERT ignore INTO tblauditlog(dtEntered, nFeatureID, nRecordID, sGBID, sFieldValuesOld, sFieldValuesNew, nEnteredBy)  SELECT d.WhenDeleted, 17 as featureID, d.ID as RecordID, d.IdentityID as gbid, concat('[', '{"Field":"Greenbook ID Deleted", "PreviousValue":"", "NewValue":"',d.IdentityID,'"}', ']') as old , concat('Greenbook Id ', d.IdentityID ,' Deleted') as new, 0 FROM greenbookprime.deletelog d ORDER BY d.WhenDeleted;
+
+ 
+
+
+UPDATE lnkgbdocument AS d
+INNER JOIN tblgreenbook AS g ON d.sGBId = g.sGBId
+SET d.dtEntered = g.dtEntered,
+	d.nEnteredBy = g.nEnteredBy,
+    d.nUpdatedBy =  g.nUpdatedBy
+WHERE  d.sDocType = 'Photo Identity';
+
+UPDATE lnkgbdocument AS d
+INNER JOIN tblgreenbook AS g ON d.sGBId = g.sGBId
+SET 
+	d.nEnteredBy = g.nEnteredBy,
+    d.nUpdatedBy =  g.nUpdatedBy
+WHERE  d.sDocType = 'Support Document';
 
 UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Double' WHERE (`Id` = '4');
 UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Cancelled' WHERE (`Id` = '5');

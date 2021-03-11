@@ -17,7 +17,7 @@ export const Loader = (props) => {
             animating={loading}
             size={Platform.OS === 'ios' ? 0 : 'large'}
             color={Colors.spinnerColor}
-            //hidesWhenStopped={true}
+            hidesWhenStopped={true}
           />
         </View>
       </View>
@@ -26,19 +26,19 @@ export const Loader = (props) => {
 };
 const styles = StyleSheet.create({
   modalBackground: {
-    flex: 1,
     alignItems: 'center',
+    backgroundColor: Colors.Opacity40Color,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
-    backgroundColor: Colors.Opacity40Color,
   },
   activityIndicatorWrapper: {
+    alignItems: 'center',
     backgroundColor: Colors.white,
-    height: 100,
-    width: 100,
     borderRadius: 10,
     display: 'flex',
-    alignItems: 'center',
+    height: 100,
     justifyContent: 'space-around',
+    width: 100,
   },
 });

@@ -5,6 +5,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using TimeZoneConverter;
 
 namespace CTADBL.BaseClassRepositories.Transactions
 {
@@ -32,6 +33,37 @@ namespace CTADBL.BaseClassRepositories.Transactions
         {
             var builder = new SqlQueryBuilder<Greenbook>(greenbook);
             ExecuteCommand(builder.GetUpdateCommand());
+        }
+        #endregion
+
+        #region Update Green Book Google Account
+        public bool UpdateGoogleAccount(string sGBID,string sLoginGmail, string userId, DateTime dtUpdated)
+        {
+            
+            string sql = @"UPDATE tblgreenbook SET sLoginGmail = @sLoginGmail, dtUpdated = @dtUpdated, nUpdatedBy = @nUpdatedBy where sGBID = @sGBID;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sLoginGmail", sLoginGmail);
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                command.Parameters.AddWithValue("dtUpdated", dtUpdated);
+                command.Parameters.AddWithValue("nUpdatedBy", userId);
+                command.Connection = _connection;
+                //MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                //mySqlDataAdapter
+                _connection.Open();
+                int result = command.ExecuteNonQuery();
+                _connection.Close();
+                if (result == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+               
+            }
+
         }
         #endregion
 

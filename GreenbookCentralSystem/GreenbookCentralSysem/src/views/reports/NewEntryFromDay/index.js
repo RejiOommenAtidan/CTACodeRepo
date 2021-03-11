@@ -89,25 +89,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
-
-      },
-    },
-    {
-      field: "sGBId",
-      title: "GB ID",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -125,10 +107,29 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
+    {
+      field: "sGBId",
+      title: "GB ID",
+      
+      headerStyle: {
+        padding: '5px',
+
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+
+        textAlign: 'center',
+        border: '1px solid black'
+
+      },
+    },
+    
 
     {
       field: "dtFormattedEntered",
@@ -145,7 +146,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
       customSort: (a, b) => {
@@ -175,7 +176,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -193,7 +194,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -393,7 +394,7 @@ export default function Report() {
             title={`New Entry from ${Moment(startDate).format(sDateFormat)} To ${Moment(endDate).format(sDateFormat)}`}
             columns={columns}
             data={newEntryFromDayData}
-            options={{ ...oOptions, tableLayout: "fixed" }}
+            options={{ ...oOptions, exportFileName: "NewEntryReport"}}
             actions={[
 
               {

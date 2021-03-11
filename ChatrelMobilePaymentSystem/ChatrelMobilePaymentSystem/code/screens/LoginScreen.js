@@ -6,9 +6,9 @@ import {
   StyleSheet,
   Platform,
   BackHandler,
-  Modal,
-  ActivityIndicator,
   Linking,
+  // Modal,
+  // ActivityIndicator,
 } from 'react-native';
 import {GLogin} from '../components/GLogin';
 import Colors from '../constants/Colors';
@@ -22,7 +22,7 @@ import {
   sFontNameBold,
   sHimalayaFontName,
   sMappingURL,
-  oActivityIndicatorStyle,
+  // oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import axios from 'axios';
 import {useDispatch} from 'react-redux';
@@ -36,10 +36,11 @@ import {
   removeJWTToken,
 } from '../store/actions/GBDetailsAction';
 import Resolution from '../constants/ResolutionBreakpoint';
-import {WebView} from 'react-native-webview';
+// import {WebView} from 'react-native-webview';
 
 export const LoginScreen = (props) => {
-  const [bShowWebView, setbShowWebView] = useState(false);
+  // const [bShowWebView, setbShowWebView] = useState(false);
+  // const [bLogoLoaded, setbLogoLoaded] = useState(false);
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -69,7 +70,6 @@ export const LoginScreen = (props) => {
     }, []),
   );
 
-  // const [bLogoLoaded, setbLogoLoaded] = useState(false);
   const dispatch = useDispatch();
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
 
@@ -91,26 +91,33 @@ export const LoginScreen = (props) => {
 
   axios.interceptors.response.use(
     (response) => {
-      // Any status code that lie within the range of 2xx cause this function to trigger
-      // Do something with response data
+      //if (response.data.sJwtToken) {
+      //console.log('Token inside 200 sJWT: ' + response.data.sJwtToken);
+      //}
+      //if (response.data.token) {
+      //console.log('Token inside 200 Token: ' + response.data.token);
+      //}
       return response;
     },
     (error) => {
-      // Any status codes that falls outside the range of 2xx cause this function to trigger
-      // Do something with response error
       if (error.response.status === 401) {
-        Alert.alert(
-          'Session Timeout',
-          'Your session has expired. Please login again.',
-          [
-            {
-              text: 'Logout',
-              onPress: () => removeCompleteDetails(),
-              style: 'default',
-            },
-          ],
-          {cancelable: false},
-        );
+        //console.log(
+        //'Token inside 401: ' + axios.defaults.headers.common['Authorization'],
+        //);
+        setTimeout(() => {
+          Alert.alert(
+            'Session Timeout',
+            'Your session has expired. Please login again.',
+            [
+              {
+                text: 'Logout',
+                onPress: () => removeCompleteDetails(),
+                style: 'default',
+              },
+            ],
+            {cancelable: false},
+          );
+        }, 1000);
         //return;
       }
       return Promise.reject(error);
@@ -119,7 +126,7 @@ export const LoginScreen = (props) => {
 
   return (
     <View style={styles.mainContainer}>
-      <Modal
+      {/*<Modal
         visible={bShowWebView}
         onRequestClose={() => setbShowWebView(false)}>
         <WebView
@@ -140,7 +147,7 @@ export const LoginScreen = (props) => {
             />
           )}
         />
-      </Modal>
+          </Modal>*/}
       <View style={styles.imgContainer}>
         {/*Values Coded*/}
         <ResponsiveImage
@@ -184,7 +191,7 @@ export const LoginScreen = (props) => {
           <Text
             style={{
               ...styles.textComponent,
-              fontSize: wp(4.25),
+              fontSize: wp(4.15),
             }}>
             Update your Google Account by filling{' '}
           </Text>
@@ -192,15 +199,15 @@ export const LoginScreen = (props) => {
             style={{
               ...styles.textComponent,
               color: Colors.darkYellowFamilyPage,
-              fontSize: wp(4.25),
+              fontSize: wp(4.15),
               fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
               fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
               textDecorationLine: 'underline',
               textDecorationColor: Colors.darkYellowFamilyPage,
             }}
             onPress={() => {
-              setbShowWebView(true);
-              //Linking.openURL(sMappingURL);
+              //setbShowWebView(true);
+              Linking.openURL(sMappingURL);
             }}>
             this form
           </Text>
@@ -210,8 +217,8 @@ export const LoginScreen = (props) => {
         style={{
           ...styles.tibetanTextContainer,
           flex: 1,
-          marginBottom: hp(1.75),
           justifyContent: 'flex-end',
+          marginBottom: hp(1.75),
         }}>
         <Text style={styles.tibetanTextComponent}>
           བོད་མིའི་སྒྲིག་འཛུགས་དཔལ་འབྱོར་ལས་ཁུངས་ནས།
@@ -233,11 +240,11 @@ export const LoginScreenOptions = (navData) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    //flex: 1,
+    // flex: 1,
     // justifyContent: 'center',
     // alignSelf: 'center',
-    flexGrow: 1,
     alignItems: 'center',
+    flexGrow: 1,
     marginHorizontal: wp(Resolution.nWidthMarginValueScreen),
     marginVertical: hp(Resolution.nHeightMarginValueScreen),
   },

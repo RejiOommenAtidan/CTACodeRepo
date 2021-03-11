@@ -277,16 +277,16 @@ placeholder="DD-MM-YYYY"
                                         <TextField
                                             id="fname"
                                             name="name_fname"
-                                            label={<p>Father's Name<span style={{ color: "red" }} > *</span></p>}
-                                            inputRef={register({
-                                                required: true
-                                            })}
+                                            label={<p>Father's Name</p>}
+                                            // inputRef={register({
+                                            //     required: true
+                                            // })}
                                             value={fname}
                                             onChange={(e) => { setFname(e.target.value) }}
                                         />
-                                        {_.get("name_fname.type", errors) === "required" && (
+                                        {/* {_.get("name_fname.type", errors) === "required" && (
                                             <p style={{ color: "red" }}>This field is required</p>
-                                        )}
+                                        )} */}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -722,18 +722,18 @@ placeholder="DD-MM-YYYY"
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
                                             id="fname"
-                                            label={<p>Father's Name<span style={{ color: "red" }} > *</span></p>}
+                                            label={<p>Father's Name</p>}
                                             name="name_fname"
 
-                                            inputRef={register({
-                                                required: true
-                                            })}
+                                            // inputRef={register({
+                                            //     required: true
+                                            // })}
                                             //value='Aayush Pandya'
                                             onChange={(e) => { setFname(e.target.value) }}
                                         />
-                                        {_.get("name_fname.type", errors) === "required" && (
+                                        {/* {_.get("name_fname.type", errors) === "required" && (
                                             <p style={{ color: "red" }}>This field is required</p>
-                                        )}
+                                        )} */}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>

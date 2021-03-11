@@ -7,6 +7,6 @@ export default {
   nLetterSpacing: -0.96,
 
   //New Values
-  nWidthMarginValueScreen:3.25,
+  nWidthMarginValueScreen: 3.25,
   nHeightMarginValueScreen: 3.25,
 };

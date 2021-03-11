@@ -38,8 +38,6 @@ namespace CTADataSyncMySQL
             string DB2Name = textBoxChatrelDBName.Text;
             MySqlConnection cnnDB1;
             MySqlConnection cnnDB2;
-            //connetionStringDB1 = "Server=127.0.0.1;Port=3306;Database=ctadb;Uid=root;allow zero datetime=no";
-            //connetionStringDB2 = "Server=127.0.0.1;Port=3306;Database=chatreldb;Uid=root;allow zero datetime=no";
             connetionStringDB1 = textBoxDB1.Text;
             connetionStringDB2 = textBoxDB2.Text;
             // Set cursor as hourglass
@@ -162,8 +160,16 @@ namespace CTADataSyncMySQL
                 labelSyncReport.Text = "Sync the two Databases";
                 strQuery = string.Empty;
 
+
+                //Updating the DB CTALastSyncDateTime value to now 
+                string Querystring = "UPDATE `lstctaconfig` SET`sValue` = now(), `dtUpdated` = now() WHERE `sKey` = 'CTALastSyncDateTime'";
+                executeQueryInDB(cnnDB1, Querystring);
+                stringBuilderQuery.Append("CTALastSyncDateTime updated to " + DateTime.Now.ToString());
+
                 cnnDB1.Close();
                 cnnDB2.Close();
+
+
 
 
                 File.AppendAllText(sLogFolderPath + "log-" + Guid.NewGuid().ToString() + ".txt", stringBuilderQuery.ToString());
@@ -254,14 +260,32 @@ namespace CTADataSyncMySQL
         {
             string queryLabelTableName = "tblgreenbook";
             string queryLabelColumnNames = "`tblgreenbook`.`Id`,`tblgreenbook`.`sGBID`,`tblgreenbook`.`nAuthRegionID`,`tblgreenbook`.`sFirstName`,`tblgreenbook`.`sLastName`," +
-                "`tblgreenbook`.`dtDOB`,`tblgreenbook`.`sEmail`,`tblgreenbook`.`sPhone`,`tblgreenbook`.`dtDeceased`,`tblgreenbook`.`sCountryID`,`tblgreenbook`.`sPaidUntil`," +
+                "`tblgreenbook`.`dtDOB`,`tblgreenbook`.`sEmail`,`tblgreenbook`.`sPhone`,`tblgreenbook`.`dtDeceased`,`tblgreenbook`.`sCountryID`," +
                 "`tblgreenbook`.`sLoginGmail`,`tblgreenbook`.`dtLastSuccessfullLogin`,`tblgreenbook`.`dtEntered`,`tblgreenbook`.`nEnteredBy`,`tblgreenbook`.`dtUpdated`," +
                 "`tblgreenbook`.`nUpdatedBy`";
-            //string strWhereclause = " where dtUpdated > DATE_SUB(now(), INTERVAL 3 DAY)";
-            string strWhereclause = " where sgbid='86'";
+            string changeGBIds = GetLastUpdatedRecordsIDs(cnnDB1, "tblgreenbook", "sGBId");
+            string strWhereclause = string.Empty;
+            if (changeGBIds != string.Empty)
+            {
+                strWhereclause = " where sGBId in (" + changeGBIds + ") ";
+            }
+            else
+            {
+                strWhereclause = "No WhereClause";
+            }
 
-            //GenerateQueryAndExecute
-            return GenerateUpdateQueryAndExecuteBothDB(cnnDB1, cnnDB2, queryLabelColumnNames, queryLabelTableName, db1Name, db2Name, strWhereclause);
+            //string strWhereclause = " where sGBId in ('" + GetLastSyncDateTime(cnnDB1, "lstctaconfig", "CTALastSyncDateTime") + "' ";
+            //string strWhereclause = " where sgbid='86'";
+
+            if (strWhereclause != "No WhereClause")
+            {
+                //GenerateQueryAndExecute
+                return GenerateUpdateQueryAndExecuteBothDB(cnnDB1, cnnDB2, queryLabelColumnNames, queryLabelTableName, db1Name, db2Name, strWhereclause); 
+            }
+            else
+            {
+                return string.Empty;
+            }
 
         }
         #endregion
@@ -358,6 +382,80 @@ namespace CTADataSyncMySQL
 
         #endregion
 
+
+        public string GetLastSyncDateTime(MySqlConnection cnnDB1, string queryLabelTableName, string keywordForSyncDateTime)
+        {
+
+            string queryDB1 = "SELECT sKey, sValue FROM `" + queryLabelTableName + "` where sKey='" + keywordForSyncDateTime + "' ";
+            MySqlDataAdapter returnValDB1 = new MySqlDataAdapter(queryDB1, cnnDB1);
+            DataTable dtDB1 = new DataTable(queryLabelTableName);
+            returnValDB1.Fill(dtDB1);
+
+            if (dtDB1!=null && dtDB1.Rows.Count > 0)
+            {
+                return dtDB1.Rows[0]["sValue"].ToString();
+            }
+            else
+            {
+                return DateTime.Today.AddDays(-2).ToString();
+            }
+
+            
+        }
+
+        public string  SetLastSyncDateTime(MySqlConnection cnnDB1, string queryLabelTableName, string keywordForSyncDateTime)
+        {
+
+            string queryDB1 = "SELECT sKey, sValue FROM `" + queryLabelTableName + "` where sKey='" + keywordForSyncDateTime + "' ";
+            MySqlDataAdapter returnValDB1 = new MySqlDataAdapter(queryDB1, cnnDB1);
+            DataTable dtDB1 = new DataTable(queryLabelTableName);
+            returnValDB1.Fill(dtDB1);
+
+            if (dtDB1 != null && dtDB1.Rows.Count > 0)
+            {
+                return dtDB1.Rows[0]["sValue"].ToString();
+            }
+            else
+            {
+                return DateTime.Today.AddDays(-2).ToString();
+            }
+
+
+        }
+
+        public string GetLastUpdatedRecordsIDs(MySqlConnection cnnDB1, string queryLabelTableName, string queryLabelIDColumnName)
+        {
+            string Ids = string.Empty;
+
+            string queryDB1 = "SELECT "+ queryLabelIDColumnName + " FROM `" + queryLabelTableName + "` ";
+            queryDB1 += " where dtUpdated > '" + GetLastSyncDateTime(cnnDB1, "lstctaconfig", "CTALastSyncDateTime") + "' ";
+            MySqlDataAdapter returnValDB1 = new MySqlDataAdapter(queryDB1, cnnDB1);
+            DataTable dtDB1 = new DataTable(queryLabelTableName);
+            returnValDB1.Fill(dtDB1);
+
+            if (dtDB1 != null && dtDB1.Rows.Count > 0)
+            {
+                foreach (DataRow row in dtDB1.Rows)
+                {
+                    if (Ids==string.Empty)
+                    {
+                        Ids = "'" + row[queryLabelIDColumnName].ToString() + "'"; 
+                    }
+                    else
+                    {
+                        Ids += ", '" + row[queryLabelIDColumnName].ToString() + "'";
+                    }
+
+                }
+                return Ids;
+            }
+            else
+            {
+                return string.Empty;
+            }
+
+
+        }
         public string ExecuteForUpdateTblGreenbook(MySqlConnection cnnDB1, MySqlConnection cnnDB2, string queryLabelColumnNames, string queryLabelTableName, string db1Name, string db2Name, string optionalWhereClause = "No WhereClause")
         {
             string insertIdsCommaSeperated = string.Empty;
@@ -719,8 +817,9 @@ namespace CTADataSyncMySQL
                 foreach (DataRow item in dtInsertingRecords.Rows)
                 {
                     string sgbId = item["sGBId"].ToString();
+                    string nChatrelYear = item["nChatrelYear"].ToString();
                     string Querystring = "update tblGreenbook " +
-                                            "set spaiduntil = if (month(now()) > 3 , year(now()), year(now()) - 1  )" +
+                                            "set spaiduntil = '" + nChatrelYear + "'" +
                                              "where sgbid = '" + sgbId + "';";
 
                     executeQueryInDB(dbConn, Querystring);
@@ -874,7 +973,7 @@ namespace CTADataSyncMySQL
                 //When Return1st is false: ResultDataTable contains Deletes Or Updates found in FirstDataTable as compared to SecondDataTable
 
                 DataTable dtAddedEditedRecords = getDifferentRecords("ResultSet", dtDB1, dtDB2, true);
-                //DataTable dtDeletedRecords = getDifferentRecords("ResultSet", dtDB1, dtDB2, false);
+                DataTable dtDeletedRecords = getDifferentRecords("ResultSet", dtDB1, dtDB2, false);
 
                 //log the difference in records
                 //create database script for changing in Chatrel Database

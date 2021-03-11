@@ -852,7 +852,8 @@ export const AddDialog = (props) => {
   const [id, setId] = React.useState(0);
   const [madebType, setMadebType] = React.useState(3);
   const [nAuthRegionID, setAuthRegionId] = React.useState(0);
-  const [dtReceived, setReceivedDate] = React.useState(new Date(Date.now()).toISOString().substring(0, 10));
+   //const [dtReceived, setReceivedDate] = React.useState(new Date(Date.now()).toISOString().substring(0, 10));
+  const [dtReceived, setReceivedDate] = React.useState(null);
   const [sName, setName] = React.useState('');
   const [sGBID, setGbId] = useState('');
   const [sFathersName, setFname] = React.useState('');
@@ -963,7 +964,8 @@ placeholder="DD-MM-YYYY"
                         label={<>Received Date<span style={{ color: 'red' }}> *</span></>}
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
-
+                        autoFocus
+                        autoOk
                         value={dtReceived}
                         KeyboardButtonProps={{
                           "aria-label": "change date",

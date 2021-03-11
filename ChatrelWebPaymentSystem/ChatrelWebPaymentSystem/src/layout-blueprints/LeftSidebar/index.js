@@ -19,6 +19,7 @@ const LeftSidebar = (props) => {
     contentBackground
   } = props;
 
+ 
   return (
     <>
       <div
@@ -37,7 +38,7 @@ const LeftSidebar = (props) => {
         <div className="app-main">
           <Header />
           <div className="app-content">
-            <div className="app-content--inner">
+            <div className="app-content--inner" style={{padding:'0'}} >
               <div className="app-content--inner__wrapper">{children}</div>
             </div>
             <Footer />

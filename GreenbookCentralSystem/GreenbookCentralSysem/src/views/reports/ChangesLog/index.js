@@ -89,7 +89,25 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
+
+      },
+    },
+    {
+      field: "name",
+      title: "NAME",
+      
+      headerStyle: {
+        padding: '5px',
+
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+
+        textAlign: 'left',
+        border: '1px solid black'
 
       },
     },
@@ -108,28 +126,11 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
-    {
-      field: "name",
-      title: "NAME",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'left',
-        borderRight: '1px solid grey'
-
-      },
-    },
+    
     {
       field: "field",
       title: "NAME OF FIELD",
@@ -144,7 +145,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -161,7 +162,7 @@ export default function Report() {
       cellStyle: {
         // padding:'0px',
         padding: '5px',
-        borderRight: '1px solid grey',
+        border: '1px solid black',
 
         textAlign: 'left'
 
@@ -181,12 +182,12 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
     {
-      width: '7%',
+      //width: '7%',
       field: "changedBy",
       title: "CHANGED BY",
       
@@ -200,12 +201,12 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
     {
-      width: '15%',
+      //width: '15%',
       field: "changedAt",
       title: "CHANGED AT",
       // render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
@@ -220,7 +221,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -255,10 +256,11 @@ export default function Report() {
                 
                 
                
-                JSON.parse(element1.sFieldValuesOld).forEach((element2) => {
+                JSON.parse(element1.sFieldValuesOld).forEach((element2) => {  
                   let row={};
-                  console.log(element2);
-                  row.no = x;
+                  console.log(x);
+                  
+                row.no = x;
                   
 
                   row.GBId=element1.sGBId;
@@ -269,7 +271,7 @@ export default function Report() {
                   row.changedBy=element1.sFullName;
                   row.changedAt=element1.dtEntered ? Moment(element1.dtEntered).format("DD-MM-YY HH:mm") : null;
                   arr.push(row);
-                  
+                  console.log(row);
                   x = x + 1;
                 })
                 
@@ -433,7 +435,7 @@ export default function Report() {
         {
           changesLogData.length > 0 &&
 
-          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px', color: 'black', fontSize:'1.05rem' }}
+          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid black', borderRadius: '10px', color: 'black', fontSize:'1.05rem' }}
             //isLoading={isLoading}
             icons={oTableIcons}
             title={`Changes Log from ${Moment(startDate).format(sDateFormat)} To ${Moment(endDate).format(sDateFormat)}`}
@@ -451,7 +453,7 @@ export default function Report() {
               pageSize: pageSize,
               pageSizeOptions: pageSizeArray
             }}*/
-            options={{ ...oOptions, tableLayout: "fixed" }}
+            options={{ ...oOptions, exportFileName: "ChangesLogReport"}}
             actions={[
 
               {

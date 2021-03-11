@@ -17,6 +17,7 @@ import {
   Card,
   CircularProgress,
   Divider,
+  TextField
 } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -28,8 +29,9 @@ import { Alerts } from '../../alerts';
 import handleError from "../../../auth/_helpers/handleError";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddSingleChatrel from 'views/chatrelhome/addchatrel';
-
-
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import SaveIcon from '@material-ui/icons/Save';
 export const ViewDialog = (props) => {
   let history = useHistory();
   const userRightsId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.nUserRightsId);
@@ -62,7 +64,7 @@ export const ViewDialog = (props) => {
   const [sFeature, setsFeature] = useState("");
   const [expanded, setExpanded] = React.useState('panel1');
   const [data, setData] = React.useState([]);
-
+  const [sLoginGmail, setLoginGmail] = React.useState("");
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -97,7 +99,7 @@ export const ViewDialog = (props) => {
         if (resp.status === 200) {
           console.log(resp.data);
           setData(resp.data);
-       
+          setLoginGmail( resp.data.profile.sLoginGmail );
           // console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
 
         }
@@ -126,12 +128,62 @@ export const ViewDialog = (props) => {
     };
   }
 
+
+
   useEffect(() => {
     let count=1;
     loadData();
 
   }, []);
+  const [gmailUpdate,setGmailUpdate]=React.useState(false);
 
+  const updateGoogleAccount = ()=>{
+    console.log(sLoginGmail);
+    setBackdrop(true);
+
+    if(sLoginGmail==='' || sLoginGmail===null){
+          setAlertMessage('Enter Google Account');
+          setAlertType('info');
+          snackbarOpen();
+    }
+    else{
+    var emailCheck=/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
+    if(emailCheck.test(sLoginGmail)){
+        axios.get(`ChatrelPayment/UpdateGoogleAccount?sGBID=` + props.sGBID+`&sLoginGmail=`+sLoginGmail)
+          .then(resp => {
+            if (resp.status === 200) {
+              setAlertMessage('Google Account Updated');
+              setAlertType('success');
+              snackbarOpen();
+              setBackdrop(false);
+              setGmailUpdate(false);
+            }
+          })
+          .catch(error => {
+            if (error.response) {
+              console.error(error.response.data);
+              console.error(error.response.status);
+              console.error(error.response.headers);
+            } else if (error.request) {
+              console.warn(error.request);
+            } else {
+              console.error('Error', error.message);
+            }
+            console.log(error.config);
+          })
+          .then(release => {
+            //console.log(release); => udefined
+          });
+      }
+      else{
+        setAlertMessage('Enter a valid Google Account');
+        setAlertType('info');
+        snackbarOpen();
+
+      }
+    }
+  
+  }
   return (
     <>
       {data.length == 0 && <Dialog open={true}
@@ -193,12 +245,21 @@ export const ViewDialog = (props) => {
                       
                       <Grid container spacing={1} style={{ textAlign: 'left' }}>
                       <Grid item sm={4}>
-                                Phone Number: {data.profile.sPhone}
+                                Authority Region: {data.profile.sAuthRegion}
                               </Grid>
                         
                         <Grid item sm={4}>
-                                Email: {data.profile.sEmail}
-
+                                Google Email: 
+                                {!gmailUpdate && <>  {sLoginGmail} 
+                                <IconButton aria-label="edit" onClick={()=>{setGmailUpdate(true)}}>
+                                  <EditIcon />
+                                </IconButton></>}
+                                {gmailUpdate && <>
+                                  <TextField onChange={(e)=>{setLoginGmail(e.target.value);}} style={{width:'85%'}} value={sLoginGmail}  />
+                                  <IconButton aria-label="edit" onClick={()=>{updateGoogleAccount();}}>
+                                  <SaveIcon />
+                                </IconButton>
+                                </>}
                               </Grid>
                               
                       </Grid>

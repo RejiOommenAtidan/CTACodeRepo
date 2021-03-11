@@ -634,6 +634,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         smtpClient.Dispose();
                         Madeb madeb = _madebRepository.GetMadebByFormNumber(email.nFormNumber, email.nMadebTypeId);
                         madeb.dtReject = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                        madeb.dtEmailSend = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                         _madebRepository.Update(madeb);
                         return Ok("Email sent successfully.");
                     }

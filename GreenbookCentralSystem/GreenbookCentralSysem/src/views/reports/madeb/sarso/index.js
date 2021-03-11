@@ -97,7 +97,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -116,7 +116,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -135,7 +135,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -154,7 +154,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -173,7 +173,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -192,30 +192,30 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
     },
-    // {
-    //   field: "madebCancelled",
-    //   title: "MADEB CANCELLED",
+    {
+      field: "madebCancelled",
+      title: "MADEB CANCELLED",
       
-    //   headerStyle: {
-    //     padding: '5px',
+      headerStyle: {
+        padding: '5px',
 
-    //     textAlign: 'center'
-    //   },
-    //   cellStyle: {
-    //     // padding:'0px',
-    //     padding: '5px',
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
 
-    //     textAlign: 'center',
-    //     borderRight: '1px solid grey'
+        textAlign: 'center',
+        border: '1px solid black'
 
 
-    //   },
-    // },
+      },
+    },
 
     {
       field: "madebTotalReceived",
@@ -231,7 +231,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -467,7 +467,7 @@ export default function Report() {
             title={title} 
             columns={columns}
             data={sarsoData}
-            options={oOptions}
+            options={{...oOptions, exportFileName: "SarsoReport"}}
             actions={[
 
               {

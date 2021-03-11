@@ -172,7 +172,7 @@ namespace CTADBL.ViewModelsRepositories
             string parameters = "";
             using (var command = new MySqlCommand())
             {
-                command.Parameters.AddWithValue("sGBID", sGBID + '%');
+                command.Parameters.AddWithValue("sGBID", '%' + sGBID + '%');
                 command.Parameters.AddWithValue("records", records);
 
                 if (sFirstName != null && !String.IsNullOrEmpty(sFirstName.Trim()))
@@ -191,7 +191,7 @@ namespace CTADBL.ViewModelsRepositories
                     parameters += $@" AND t2.sMothersName LIKE sMothersName ";
                     command.Parameters.AddWithValue("sMothersName", sMothersName + '%');
                 }
-                string sql = String.Format(@"set session sql_mode = '';SELECT t.sGBId, t2.sFirstName, t2.sLastName, CAST((date_format(curdate(), '%Y%m%d') -  date_format(t2.dtdob, '%Y%m%d'))/10000 AS UNSIGNED) AS nAge, l.sAuthRegion, l2.sCountry, if(t2.dtDeceased IS NULL, 'Alive', 'Deceased' ) AS sStatus, max(t.dtPayment) as dtPayment FROM tblchatrelpayment t INNER JOIN tblgreenbook t2 ON t.sGBId = t2.sGBID LEFT JOIN lstauthregion l ON t2.nAuthRegionID = l.ID LEFT JOIN lstcountry l2 ON t2.sCountryID = l2.sCountryID WHERE t.sGBId LIKE @sGBID {0} GROUP BY t.sGBId LIMIT @records;", parameters);
+                string sql = String.Format(@"set session sql_mode = '';SELECT t2.sGBId, t2.sFirstName, t2.sLastName, CAST((date_format(curdate(), '%Y%m%d') -  date_format(t2.dtdob, '%Y%m%d'))/10000 AS UNSIGNED) AS nAge, l.sAuthRegion, l2.sCountry, if(t2.dtDeceased IS NULL, 'Alive', 'Deceased' ) AS sStatus, max(t.dtPayment) as dtPayment FROM tblgreenbook t2 LEFT JOIN tblchatrelpayment t  ON t.sGBId = t2.sGBID LEFT JOIN lstauthregion l ON t2.nAuthRegionID = l.ID LEFT JOIN lstcountry l2 ON t2.sCountryID = l2.sCountryID WHERE t2.sGBId LIKE @sGBID {0} GROUP BY t2.sGBId LIMIT @records;", parameters);
 
                 command.CommandText = sql;
                 command.CommandType = CommandType.Text;
@@ -221,7 +221,7 @@ namespace CTADBL.ViewModelsRepositories
         #region User Profile from Search Users
         public Object GetUserProfileFromGBID(string sGBID)
         {
-            string sql = @"SELECT t.sGBID, t.sFirstName, t.sLastName, t.sGender, t.dtDOB, t.sFamilyName, l.sCountry, t.sCountryID, t.sEmail, t.sPhone FROM  tblgreenbook t INNER JOIN lstcountry l ON l.sCountryID = t.sCountryID WHERE t.sGBID = @sGBID;
+            string sql = @"SELECT t.sGBID, t.sFirstName, t.sLastName, t.sGender, t.dtDOB, t.sFamilyName, l.sCountry, t.sCountryID, t.sLoginGmail, l2.sAuthRegion FROM  tblgreenbook t INNER JOIN lstcountry l ON l.sCountryID = t.sCountryID LEFT JOIN lstauthregion l2 ON t.nAuthRegionID = l2.ID WHERE t.sGBID = @sGBID;
                            SELECT t.sGBId, t.sChatrelReceiptNumber, t.dtPayment, t.nChatrelYear, t.sPaymentCurrency, t.nChatrelTotalAmount, t.sPaymentMode, t.sPaymentStatus, t.sPaidByGBId  FROM tblchatrelpayment t WHERE t.sGBId = @sGBID;";
             using (var command = new MySqlCommand(sql))
             {
@@ -242,8 +242,8 @@ namespace CTADBL.ViewModelsRepositories
                     dtDOB = row.Field<DateTime?>("dtDOB"),
                     sFamilyName = row.Field<string>("sFamilyName"),
                     sCountry = row.Field<string>("sCountry"),
-                    sEmail = row.Field<string>("sEmail"),
-                    sPhone = row.Field<string>("sPhone"),
+                    sLoginGmail = row.Field<string>("sLoginGmail"),
+                    sAuthRegion = row.Field<string>("sAuthRegion"),
                 }).FirstOrDefault();
                 var payment = tables[1].AsEnumerable().Select(row => new
                 {

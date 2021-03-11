@@ -24,7 +24,7 @@ import Moment from 'moment';
 import avatar1 from '../../assets/images/avatars/avatar1.jpg';
 
 import stock3 from '../../assets/images/stock-photos/stock-3.jpg';
-
+import BackGroundImage from '../../assets/images/potala-profile.jpg';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -58,7 +58,11 @@ console.log("UserObj",userObj);
 console.log("UserGBObj",userGBObj);
   return (
     <>
-     <Card className="w-50 mx-auto shadow-lg " style={{paddingTop:'100px'}}>
+    <div style={{background:`url(${BackGroundImage}) no-repeat center`,backgroundSize:'auto'}}>
+    <Grid container spacing={1} style={{padding:'30px'}}>
+      <Grid item xs={12} sm={3} ></Grid>
+      <Grid item xs={12} sm={6}>
+     <Card className="mx-auto shadow-lg " style={{paddingTop:'100px',margin:'40px'}}>
                                
                                 <CardContent className="text-center card-body-avatar">
                                     <a href="#/" onClick={e => e.preventDefault()} className="avatar-icon-wrapper shadow-lg rounded-circle card-box-hover-rise hover-scale-lg d-130">
@@ -119,7 +123,11 @@ console.log("UserGBObj",userGBObj);
                                         </Grid>
                                 </CardContent>
                             </Card>
-    
+                            </Grid>
+                            <Grid item xs={12} sm={3} ></Grid>
+                            </Grid>
+                        
+                            </div>
     </>
   );
 }

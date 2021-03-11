@@ -1,14 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {
-  Text,
-  View,
-  ScrollView,
-  StyleSheet,
-  ToastAndroid,
-  Dimensions,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import {Text, View, ScrollView, StyleSheet, ToastAndroid} from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Platform} from 'react-native';
@@ -24,8 +15,7 @@ import {
   sDateFormat,
   sISODateFormat,
   oRequiredStyles,
-  sDateFormatDatePicker,
-  oActivityIndicatorStyle,
+  sVerificationSuccessfulMessage,
 } from '../constants/CommonConfig';
 import {TextInputMask} from 'react-native-masked-text';
 import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
@@ -35,15 +25,16 @@ import {
 } from 'react-native-responsive-screen';
 import {sFontName, sFontNameBold} from '../constants/CommonConfig';
 import axios from 'axios';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {Loader} from '../components/Loader';
+import {useIsFocused} from '@react-navigation/native';
+import Toast from 'react-native-root-toast';
 import {
   storeJWTToken,
-  storeGBDetails,
-  removeGBDetails,
-  removeJWTToken,
+  // storeGBDetails,
+  // removeGBDetails,
+  // removeJWTToken,
 } from '../store/actions/GBDetailsAction';
-import {useIsFocused} from '@react-navigation/native';
 // import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 
 export const FriendChatrelIntermediateScreen = (props) => {
@@ -61,14 +52,12 @@ export const FriendChatrelIntermediateScreen = (props) => {
       // dtDOB: dtFriendDOB,
     };
     //console.log('Friend GB Details: ' + oFriendGBDetails.dtDOB);
-    //debugger;
     axios
       .get(
         `/ChatrelPayment/VerifyFriendDetails/?sGBID=${oFriendGBDetails.sFriendGBID}&sFirstName=${oFriendGBDetails.sFirstName}&sLastName=${oFriendGBDetails.sLastName}&dtDOB=${oFriendGBDetails.dtDOB}`,
       )
       .then((resp) => {
         if (resp.status === 200 && resp.data.verified === true) {
-          //console.log(resp.data);
           const oSession = {
             sJwtToken: resp.data.token,
             bSession: true,
@@ -79,11 +68,15 @@ export const FriendChatrelIntermediateScreen = (props) => {
             sGBID: nFriendGBID,
             dtDOB: dtFriendDOB,
           };
-          ToastAndroid.showWithGravity(
-            'Verification Successful',
-            ToastAndroid.SHORT,
-            ToastAndroid.BOTTOM,
-          );
+
+          Toast.show(sVerificationSuccessfulMessage, {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
           dispatch(storeCurrentGBDetails(oGBDetails));
           // setsFriendFirstname('');
           // setsFriendLastname('');
@@ -97,6 +90,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
             bSession: true,
           };
           dispatch(storeJWTToken(oSession));
+          //TODO:
           alert("Values don't match with database. Enter correct values.");
         }
       })
@@ -109,6 +103,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
           // };
           // dispatch(storeJWTToken(oSession));
         } else {
+          //TODO:
           alert("Values don't match with database. Enter correct values.");
         }
       });
@@ -120,6 +115,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
   // const [bShowFriendGBID, setbShowFriendGBID] = useState(true);
   const nFriendGBIDRef = useRef(null);
   const dtFriendDOBRef = useRef(null);
+  const dtFriendDOBInputRef = useRef(null);
   const [nFriendGBID, setnFriendGBID] = useState('');
   const [dtFriendDOB, setdtFriendDOB] = useState(null);
   const dtToday = Moment().format(sDateFormat);
@@ -295,7 +291,8 @@ export const FriendChatrelIntermediateScreen = (props) => {
                 <Input
                   blurOnSubmit={false}
                   onSubmitEditing={() => {
-                    dtFriendDOBRef.current.onPressDate();
+                    //dtFriendDOBRef.current.onPressDate();
+                    dtFriendDOBInputRef.current._inputElement.focus();
                   }}
                   ref={nFriendGBIDRef}
                   //inputContainerStyle={{borderBottomWidth: 0}}
@@ -318,6 +315,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   clearButtonMode={'while-editing'}
                   //dataDetectorTypes={"phoneNumber"}
                   //secureTextEntry={!bShowFriendGBID}
+                  returnKeyType={'done'}
                   keyboardType={'number-pad'}
                   keyboardAppearance={'default'}
                   disableFullscreenUI={true}
@@ -350,156 +348,164 @@ export const FriendChatrelIntermediateScreen = (props) => {
           <Text>Show/Hide Friend's GBID</Text>
         </View>*/}
           {/*First Name*/}
-          {/*ANDROID PART*/}
-          {Platform.OS === 'android' && (
-            <View>
-              <View style={styles.labelContainer}>
-                <Text>
-                  <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
-                  <Text style={oRequiredStyles}>*</Text>
+          {/*ANDROID/iOS Date Part*/}
+
+          <View>
+            <View style={styles.labelContainer}>
+              <Text>
+                <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
+                <Text style={oRequiredStyles}>*</Text>
+              </Text>
+            </View>
+            <View style={styles.dobValueContainer}>
+              <Controller
+                control={control}
+                render={({onChange, onBlur, value}) => (
+                  <TextInputMask
+                    ref={dtFriendDOBInputRef}
+                    returnKeyType={'done'}
+                    keyboardType={'number-pad'}
+                    style={{
+                      borderBottomColor: Colors.black,
+                      borderBottomWidth: 1,
+                      color: Colors.black,
+                      flexGrow: 1,
+                      fontSize: wp(5),
+                      fontStyle: 'normal',
+                      fontWeight: 'normal',
+                      fontFamily: sFontName,
+                      textAlign: 'left',
+                    }}
+                    type={'datetime'}
+                    options={{
+                      format: sDateFormat,
+                      validator: true,
+                      // the options for your mask if needed
+                    }}
+                    value={dtFriendDOB}
+                    onChangeText={(date) => {
+                      onChange(date);
+                      setdtFriendDOB(date);
+                    }}
+                    placeholder={sDateFormat}
+                    placeholderTextColor={Colors.grey}
+                    onBlur={onBlur}
+                    // enablesReturnKeyAutomatically={true}
+                    // maxLength={10}
+                    // textBreakStrategy={'simple'}
+                  />
+                )}
+                name="name_dtFriendDOB"
+                rules={{required: true}}
+                defaultValue=""
+              />
+              <Controller
+                control={control}
+                render={({onChange, onBlur, value}) => (
+                  <DatePicker
+                    iconComponent={
+                      <Icon
+                        color={Colors.black}
+                        type="font-awesome"
+                        name="calendar"
+                      />
+                    }
+                    blurOnSubmit={true}
+                    ref={dtFriendDOBRef}
+                    useNativeDriver={true}
+                    androidMode={'calendar'}
+                    style={{
+                      width: 30,
+                      borderBottomColor: Colors.black,
+                      borderBottomWidth: 1,
+                    }}
+                    hideText={true}
+                    date={dtFriendDOB}
+                    mode="date"
+                    placeholder={sDateFormat}
+                    format={sDateFormat}
+                    //minDate={dtToday}
+                    maxDate={dtToday}
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    showIcon={true}
+                    customStyles={{
+                      dateIcon: {
+                        alignItems: 'center',
+                        display: 'flex',
+                        marginTop: Platform.OS === 'android' ? hp(2.25) : hp(0),
+                        // borderWidth: 0,
+                        // borderStyle: null,
+                        // height: 0,
+                        // width: 0,
+                        // borderBottomWidth:1,
+                        // marginLeft: 0,
+                      },
+                      // dateText: {
+                      //   textAlign: 'left',
+                      //   fontSize: wp(5),
+                      //   fontStyle: 'normal',
+                      //   fontWeight: 'normal',
+                      //   fontFamily: sFontName,
+                      // },
+                      // placeholderText: {
+                      //   color: Colors.grey,
+                      //   textAlign: 'left',
+                      //   fontSize: wp(5),
+                      //   fontStyle: 'normal',
+                      //   fontWeight: 'normal',
+                      //   fontFamily: sFontName,
+                      // },
+                      // dateIcon: {
+                      //   width:0,
+                      //   height:0,
+                      //   },
+                      dateInput: {
+                        borderWidth: 0,
+                        borderStyle: null,
+                        height: 0,
+                        width: 0,
+                        //textAlign:'left',
+                        //height:hp(6),
+                        //marginRight: wp(2.75),
+                        //flexGrow: 1,
+                        // backgroundColor: Colors.white,
+                        //borderLeftWidth: 0,
+                        //borderRightWidth: 0,
+                        //borderTopWidth: 0,
+                        //borderRadius: 0,
+                        //borderWidth: 1,
+                        //borderTopRightRadius: 0,
+                        //borderBottomRightRadius: 0,
+                        //overflow: 'hidden',
+                        // borderColor: Colors.white,
+                        //justifyContent: 'flex-start',
+                        //alignItems: 'flex-start',
+                      },
+                    }}
+                    onBlur={onBlur}
+                    onDateChange={(date) => {
+                      onChange(date);
+                      setdtFriendDOB(date);
+                    }}
+                  />
+                )}
+                name="name_dtFriendDOB"
+                rules={{required: true}}
+                defaultValue=""
+              />
+            </View>
+            {errors.name_dtFriendDOB && (
+              <View style={errorContainer}>
+                <Text style={{...errorComponent, marginTop: hp(1)}}>
+                  Please enter Date of Birth.
                 </Text>
               </View>
-              <View style={styles.dobValueContainer}>
-                <Controller
-                  control={control}
-                  render={({onChange, onBlur, value}) => (
-                    <TextInputMask
-                      style={{
-                        borderBottomColor: Colors.black,
-                        borderBottomWidth: 1,
-                        color: Colors.black,
-                        flexGrow: 1,
-                        fontSize: wp(5),
-                        fontStyle: 'normal',
-                        fontWeight: 'normal',
-                        fontFamily: sFontName,
-                        textAlign: 'left',
-                      }}
-                      type={'datetime'}
-                      options={{
-                        format: sDateFormat,
-                        validator: true,
-                        // the options for your mask if needed
-                      }}
-                      value={dtFriendDOB}
-                      onChangeText={(date) => {
-                        onChange(date);
-                        setdtFriendDOB(date);
-                      }}
-                      placeholder={sDateFormat}
-                      placeholderTextColor={Colors.grey}
-                      onBlur={onBlur}
-                      // enablesReturnKeyAutomatically={true}
-                      // maxLength={10}
-                      // textBreakStrategy={'simple'}
-                    />
-                  )}
-                  name="name_dtFriendDOB"
-                  rules={{required: true}}
-                  defaultValue=""
-                />
-                <Controller
-                  control={control}
-                  render={({onChange, onBlur, value}) => (
-                    <DatePicker
-                      blurOnSubmit={true}
-                      ref={dtFriendDOBRef}
-                      useNativeDriver={true}
-                      androidMode={'calendar'}
-                      style={{
-                        width: 30,
-                      }}
-                      hideText={true}
-                      date={dtFriendDOB}
-                      mode="date"
-                      placeholder={sDateFormat}
-                      format={sDateFormat}
-                      //minDate={dtToday}
-                      maxDate={dtToday}
-                      confirmBtnText="Confirm"
-                      cancelBtnText="Cancel"
-                      showIcon={true}
-                      customStyles={{
-                        dateIcon: {
-                          alignItems: 'center',
-                          borderBottomWidth: 1,
-                          //borderBottomColor: Colors.grey,
-                          display: 'flex',
-                          marginTop: hp(2.25),
+            )}
+          </View>
 
-                          // borderWidth: 0,
-                          // borderStyle: null,
-                          // height: 0,
-                          // width: 0,
-                          // borderBottomWidth:1,
-                          // marginLeft: 0,
-                        },
-                        // dateText: {
-                        //   textAlign: 'left',
-                        //   fontSize: wp(5),
-                        //   fontStyle: 'normal',
-                        //   fontWeight: 'normal',
-                        //   fontFamily: sFontName,
-                        // },
-                        // placeholderText: {
-                        //   color: Colors.grey,
-                        //   textAlign: 'left',
-                        //   fontSize: wp(5),
-                        //   fontStyle: 'normal',
-                        //   fontWeight: 'normal',
-                        //   fontFamily: sFontName,
-                        // },
-                        // dateIcon: {
-                        //   width:0,
-                        //   height:0,
-                        //   },
-                        dateInput: {
-                          borderWidth: 0,
-                          borderStyle: null,
-                          height: 0,
-                          width: 0,
-                          //textAlign:'left',
-                          //height:hp(6),
-                          //marginRight: wp(2.75),
-                          //flexGrow: 1,
-                          // backgroundColor: Colors.white,
-                          //borderLeftWidth: 0,
-                          //borderRightWidth: 0,
-                          //borderTopWidth: 0,
-                          //borderRadius: 0,
-                          //borderWidth: 1,
-                          //borderTopRightRadius: 0,
-                          //borderBottomRightRadius: 0,
-                          //overflow: 'hidden',
-                          // borderColor: Colors.white,
-                          //justifyContent: 'flex-start',
-                          //alignItems: 'flex-start',
-                        },
-                      }}
-                      onBlur={onBlur}
-                      onDateChange={(date) => {
-                        onChange(date);
-                        setdtFriendDOB(date);
-                      }}
-                    />
-                  )}
-                  name="name_dtFriendDOB"
-                  rules={{required: true}}
-                  defaultValue=""
-                />
-              </View>
-              {errors.name_dtFriendDOB && (
-                <View style={errorContainer}>
-                  <Text style={{...errorComponent, marginTop: hp(1)}}>
-                    Please enter Date of Birth.
-                  </Text>
-                </View>
-              )}
-            </View>
-          )}
-          {/*IOS PART*/}
-          {Platform.OS === 'ios' && (
-            <View>
+          {/*iOS Part Old*/}
+          {/*<View>
               <View style={styles.labelContainer}>
                 <Text>
                   <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
@@ -591,8 +597,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   </Text>
                 </View>
               )}
-            </View>
-          )}
+              </View>*/}
           <View style={styles.buttonContainer}>
             <Button
               title="VERIFY AND CONTRIBUTE"

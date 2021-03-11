@@ -90,26 +90,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
-
-
-      },
-    },
-    {
-      field: "sGBID",
-      title: "GB ID",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -128,11 +109,31 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
     },
+    {
+      field: "sGBID",
+      title: "GB ID",
+      
+      headerStyle: {
+        padding: '5px',
+
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+
+        textAlign: 'center',
+        border: '1px solid black'
+
+
+      },
+    },
+    
 
     {
       field: "dtFormattedDOB",
@@ -149,7 +150,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -181,7 +182,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -212,7 +213,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -231,7 +232,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
 
       },
@@ -453,7 +454,7 @@ export default function Report() {
             title={title}
             columns={columns}
             data={deceasedData}
-            options={{ ...oOptions, tableLayout: "fixed" }}
+            options={{ ...oOptions, exportFileName: "DeceasedReport"}}
             actions={[
 
               {

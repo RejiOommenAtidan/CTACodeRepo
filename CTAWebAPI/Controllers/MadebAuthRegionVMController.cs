@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
+using System.Threading.Tasks;
 
 namespace CTAWebAPI.Controllers
 {
@@ -361,6 +361,33 @@ namespace CTAWebAPI.Controllers
 
         }
 
+        #endregion
+
+        #region Common Search
+        [AuthorizeRole(FeatureID = 0)]
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> SearchMadebsAlternate(string parameter, int madebType)
+        {
+            if (String.IsNullOrEmpty(parameter))
+            {
+                return RedirectToAction("GetMadebsByType", new { madebType });
+                //return BadRequest("Search parameter not specified");
+            }
+            try
+            {
+                IEnumerable<MadebAuthRegionVM> result = await _madebAuthRegionVMRepository.SearchMadebsAlternate(parameter, madebType);
+                if (result != null && result.Count() > 0)
+                {
+                    return Ok(result);
+                }
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
         #endregion
     }
 }

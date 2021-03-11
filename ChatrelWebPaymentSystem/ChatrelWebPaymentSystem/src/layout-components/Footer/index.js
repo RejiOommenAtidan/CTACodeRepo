@@ -57,11 +57,11 @@ const Footer = (props) => {
                     <a
                       //href="/Home"
                       onClick={(e) => e.preventDefault()}
-                    //  title="eChatrel"
+                    //  title="Chatrel"
                       className="app-nav-logo app-nav-logo--dark">
                      
                       <img
-                        alt="eChatrel"
+                        alt="Chatrel"
                         src={projectLogo}
                         width="75px"
                       />
@@ -69,7 +69,7 @@ const Footer = (props) => {
                       <div className="app-nav-logo--text">
                         <span>CTA</span>
 
-                        <b style={{textTransform:'none'}}>eChatrel</b>
+                        <b style={{textTransform:'none'}}>Chatrel</b>
                       </div>
                     </a>
                   </div>
@@ -256,7 +256,7 @@ const Footer = (props) => {
             </Grid>
             <div className="divider border-1 d-none d-md-block rounded-circle border-dark bg-dark opacity-2 mx-auto my-4 my-lg-5 w-25" />
             <small className="text-center d-block text-black-50">
-              Copyright &copy; 2021 - eChatrel   {/*-    <a href="/PrivacyPolicy">Privacy Policy </a>  */}
+              Copyright &copy; 2021 - Chatrel   {/*-    <a href="/PrivacyPolicy">Privacy Policy </a>  */}
             </small>
 
             

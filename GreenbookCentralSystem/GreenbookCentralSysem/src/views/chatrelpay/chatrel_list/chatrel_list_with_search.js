@@ -281,7 +281,7 @@ export default function ChatrelListWithSearch() {
     {
       width: "10%",
       field: "sName",
-      title: "NAME",
+      title: "FULL NAME",
       headerStyle: {
         width: "10%",
         textAlign: "center",
@@ -329,7 +329,7 @@ export default function ChatrelListWithSearch() {
 
     {
       field: "sFinancialYear",
-      title: "YEAR",
+      title: "CHATREL YEAR",
       cellStyle: {
         padding: '5px',
         textAlign: "right",

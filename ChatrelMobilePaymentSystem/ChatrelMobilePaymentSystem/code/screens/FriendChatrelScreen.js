@@ -5,12 +5,12 @@ import HeaderButton from '../components/HeaderButton';
 import {Chatrel} from '../components/Chatrel';
 import Colors from '../constants/Colors';
 import Resolution from '../constants/ResolutionBreakpoint';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {sFontName, sFontNameBold} from '../constants/CommonConfig';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+// import {
+//   widthPercentageToDP as wp,
+//   heightPercentageToDP as hp,
+// } from 'react-native-responsive-screen';
+// import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+// import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 
 export const FriendChatrelScreen = (props) => {
   return (

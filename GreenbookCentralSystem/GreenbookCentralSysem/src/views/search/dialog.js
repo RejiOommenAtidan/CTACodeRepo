@@ -30,6 +30,7 @@ import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
   Button,
@@ -66,7 +67,55 @@ import DeleteIcon from "@material-ui/icons/Delete";
   })
 }*/
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    height: '100%',
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3),
+    flexGrow: 1,
+    'label + &': {
+      marginTop: theme.spacing(3)
+    }
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  formControl: {
+    margin: theme.spacing(0.5),
+    width: '100%'
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1)
+  },
+  box: {
+    marginBottom: theme.spacing(1.5),
+    marginTop: theme.spacing(1.5)
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+  
+  tableRowBorder: {
+    borderColor: 'black'
+  },
+  expansionHeading: {
+    color: '#ffffff'
+  },
+  expansionPanel: {
+    backgroundColor: '#4e5287'
+  },
+}));
+
 export const ViewDialog = (props) => {
+  const classes =  useStyles();
   let history = useHistory();
   const [addDocumentModal, setaddDocumentModal] = useState(false);
   const [dialogBackdrop, setdialogBackdrop] = useState(false);
@@ -283,7 +332,7 @@ export const ViewDialog = (props) => {
 
   //  return new Blob(byteArrays);
   }
-
+  let count = 0;
   return (
     <>
       {data.length == 0 && <Dialog open={true}
@@ -366,7 +415,7 @@ export const ViewDialog = (props) => {
                         </Grid>
                         <Grid item sm={6}>
                           {/* Edited By: {data.sUpdatedBy} */}
-                          <strong>  Entered On:</strong> {data.greenBook.dtEntered ? Moment(data.greenBook.dtEntered).format('DD-MM-YYYY h:m:s a') : ''}
+                          <strong>  Entered On:</strong> {data.greenBook.dtEntered ? Moment(data.greenBook.dtEntered).format('DD-MM-YYYY HH:m:s a') : ''}
                         </Grid>
                       </Grid>
                       <div className="divider my-4" />
@@ -797,14 +846,14 @@ export const ViewDialog = (props) => {
                             {data.auditLogs.length != 0 &&
                               <Table className="table table-hover table-striped table-bordered " >
                                 <thead className="thead-dark" style={{ padding: 0 }}>
-                                  <tr>
+                                  <tr style={{borderColor: 'black'}} >
                                     <th scope="col">SR No.</th>
                                     <th > Name Of Field</th>
                                     <th > Change From </th>
                                     <th > Changed To </th>
                                     <th > Changed By </th>
                                     <th > Changed At </th>
-                                    
+                                    <th > Date &amp; Time </th>
 
                                   </tr>
                                 </thead>
@@ -814,23 +863,25 @@ export const ViewDialog = (props) => {
                                      {
                                     data.auditLogs.map((row1, i) => (
                                         <>
-                                        <tr >
+                                        {/* <tr >
                                           <td colSpan={7} style={{textAlign: 'center'}} >
                                             {row1.auditLog.dtEntered ? Moment(row1.auditLog.dtEntered).format('DD-MM-YYYY HH:mm:ss') : ''}
                                           </td>
-                                          </tr>
+                                          </tr> */}
                                       
                                       
                                        {JSON.parse(row1.auditLog.sFieldValuesOld).map((row2, j) => (
-                                      <tr>
-                                        <td scope='row' className={props.classes.mytable} >{j+1}</td>  
-                                        <td style={{ padding: '0px' }} >{row2.Field}</td>
-                                        <td style={{ padding: '0px' }}>{row2.PreviousValue}</td>
-                                        <td style={{ padding: '0px' }}>{row2.NewValue}</td>
-                                        <td style={{ padding: '0px' }}>{row1.sEnteredBy}</td>
-                                        <td style={{ padding: '0px' }}>{row1.sOffice}</td>
-                                       {/*  <td style={{ padding: '0px' }}>{row1.auditLog.dtEntered ? Moment(row1.auditLog.dtEntered).format('DD-MM-YYYY HH:mm:ss') : ''}</td>*/}
+                                      <tr style={{borderColor: 'black'}}>
+
+                                        <td style={{ padding: '0px', borderColor: 'black' }} scope='row' className={props.classes.mytable} >{++count}</td>{/* Uncomment above and Change i to j if grouping required*/}
+                                        <td style={{ padding: '0px', borderColor: 'black' }} >{row2.Field}</td>
+                                        <td style={{ padding: '0px', borderColor: 'black' }}>{row2.PreviousValue}</td>
+                                        <td style={{ padding: '0px', borderColor: 'black' }}>{row2.NewValue}</td>
+                                        <td style={{ padding: '0px', borderColor: 'black' }}>{row1.sEnteredBy}</td>
+                                        <td style={{ padding: '0px', borderColor: 'black' }}>{row1.sOffice}</td>
+                                        <td style={{ padding: '0px', borderColor: 'black' }}>{row1.auditLog.dtEntered ? Moment(row1.auditLog.dtEntered).format('DD-MM-YYYY HH:mm:ss') : ''}</td>
                                       </tr>
+
                                        ))}
                                         
                                         </>

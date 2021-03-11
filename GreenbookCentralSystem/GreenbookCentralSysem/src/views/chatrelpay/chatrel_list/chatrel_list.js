@@ -221,7 +221,7 @@ export default function ChatrelList(){
     {
       width: "10%",
       field: "sName",
-      title: "NAME",
+      title: "FULL NAME",
       headerStyle: {
         width: "10%",
         textAlign: "center",
@@ -367,7 +367,7 @@ export default function ChatrelList(){
 
     {
       field: "sFinancialYear",
-      title: "YEAR",
+      title: "CHATREL YEAR",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",

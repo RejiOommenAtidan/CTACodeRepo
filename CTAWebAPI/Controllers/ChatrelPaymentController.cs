@@ -17,6 +17,7 @@ using MailKit.Net.Smtp;
 using MimeKit;
 using System.Threading.Tasks;
 using TimeZoneConverter;
+using System.Security.Claims;
 
 namespace CTAWebAPI.Controllers
 {
@@ -30,12 +31,14 @@ namespace CTAWebAPI.Controllers
         private readonly DBConnectionInfo _info;
         private readonly ChatrelPaymentRepository _chatrelPaymentRepository;
         private readonly ChatrelPaymentVMRepository _chatrelPaymentVMRepository;
+        private readonly GreenbookRepository _greenBookRepository;
         private readonly CTALogger _ctaLogger;
         public ChatrelPaymentController(DBConnectionInfo info)
         {
             _info = info;
             _chatrelPaymentRepository = new ChatrelPaymentRepository(info.sConnectionString);
             _chatrelPaymentVMRepository = new ChatrelPaymentVMRepository(info.sConnectionString);
+            _greenBookRepository = new GreenbookRepository(info.sConnectionString);
             _ctaLogger = new CTALogger(info);
         }
 
@@ -473,6 +476,47 @@ namespace CTAWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+        #endregion
+
+
+        #region UpdateGoogleAccount
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult UpdateGoogleAccount(string sGBID,string sLoginGmail)
+        {
+            if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sLoginGmail))
+            {
+                return BadRequest("Required parameters are missing.");
+            }
+            try
+            {
+                string userId = User.Claims.Where(claim => claim.Type == ClaimTypes.Name).Select(claim => claim.Value).FirstOrDefault();
+                DateTime dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                var result = _greenBookRepository.UpdateGoogleAccount(sGBID, sLoginGmail, userId, dtUpdated);
+                //Object familyDetails = _chatrelPaymentRepository.GetFamilyDetails(sGBID);
+                if (result)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok();
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+
+                _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
+            }
+        }
+
         #endregion
     }
 }

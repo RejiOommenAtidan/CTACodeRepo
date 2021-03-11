@@ -195,11 +195,11 @@ export const ViewDialog = (props) => {
                       
                       <Grid container spacing={1} style={{ textAlign: 'left' }}>
                       <Grid item sm={4}>
-                                Phone Number: {data.profile.sPhone}
+                                Authority Region: {data.profile.sAuthRegion}
                               </Grid>
                         
                         <Grid item sm={4}>
-                                Email: {data.profile.sEmail}
+                                Google Email: {data.profile.sLoginGmail}
 
                               </Grid>
                               

@@ -261,11 +261,20 @@ namespace CTAWebAPI.Controllers.Transactions
                         user.nEnteredBy = fetchedUser.nEnteredBy;
                         user.dtEntered = fetchedUser.dtEntered;
                         user.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                        //user.sPassword = PasswordEncryption.EncryptString(user.sPassword);
-                        string salt = PasswordHash.CreateSalt();
-                        user.sSalt = salt;
-                        user.sPassword = PasswordHash.GenerateHash(user.sPassword, salt);
-                        //user.sPassword = PasswordHash.GenerateHash(user.sPassword, fetchedUser.sSalt);
+
+                        if (!String.IsNullOrEmpty(user.sPassword) && !String.IsNullOrWhiteSpace(user.sPassword))
+                        {
+                            //user.sPassword = PasswordEncryption.EncryptString(user.sPassword);
+                            string salt = PasswordHash.CreateSalt();
+                            user.sSalt = salt;
+                            user.sPassword = PasswordHash.GenerateHash(user.sPassword, salt);
+                            //user.sPassword = PasswordHash.GenerateHash(user.sPassword, fetchedUser.sSalt);
+                        }
+                        else
+                        {
+                            user.sSalt = fetchedUser.sSalt;
+                            user.sPassword = fetchedUser.sPassword;
+                        }
                         _userRepository.Update(user);
 
                         #region Audit Log
@@ -386,11 +395,13 @@ namespace CTAWebAPI.Controllers.Transactions
                 User userFromDB = _userRepository.GetUserByUsername(userFromUI.sUsername);
                 if (userFromDB == null)
                 {
-                    return NotFound("User Not Found with Username: " + userFromUI.sUsername);
+                    //return NotFound("User Not Found with Username: " + userFromUI.sUsername);
+                    return Unauthorized("User Name or Password is incorrect");
                 }
                 //Check for Active
                 if (!userFromDB.bActive) {
-                    return BadRequest("User disabled for login, please contact administrator");
+                    //return BadRequest("User disabled for login, please contact administrator");
+                    return Unauthorized("User Name or Password is incorrect");
                 }
                 //Note: Equals is Case Sensitive
                 
@@ -402,7 +413,8 @@ namespace CTAWebAPI.Controllers.Transactions
                     UserVM userVMFromDB = _userVMRepository.AuthenticateUser(userFromDB.Id);
                     if (userVMFromDB == null)
                     {
-                        return BadRequest("UserVM Generation Failed");
+                        //return BadRequest("UserVM Generation Failed");
+                        return Unauthorized("User Name or Password is incorrect");
                     }
                     int minutes = Convert.ToInt32(CTAConfigRepository.GetValueByKey("LoginSessionTimeout"));
                     var tokenHandler = new JwtSecurityTokenHandler();
@@ -427,7 +439,8 @@ namespace CTAWebAPI.Controllers.Transactions
                     #endregion
                 }
                 else
-                    return Unauthorized("Incorrect Password");
+                    //return Unauthorized("Incorrect Password");
+                    return Unauthorized("User Name or Password is incorrect");
                 #endregion        
             }
             catch (Exception ex)

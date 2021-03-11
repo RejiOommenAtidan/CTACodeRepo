@@ -29,6 +29,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import BackGroundImage from '../../assets/images/lake-file-dispute.jpg';
+import TestImage from '../../assets/images/wallpaper.jpg';
 import {storeSession} from '../../actions/transactions/SessionAction';
 
 const useStyles = makeStyles((theme) => ({
@@ -237,11 +238,13 @@ dispatch(storeSession(oSession));
  };
   return (
     <> 
-    <div style={{background:`url("${BackGroundImage}")`}}>
-     <Grid container spacing={1}>
+    <div style={{background:`url(${BackGroundImage}) no-repeat center`,backgroundSize:'auto'}}>
+   
+    
+     <Grid container spacing={1} style={{padding:'30px'}}>
       <Grid item xs={12} sm={4} ></Grid>
       <Grid item xs={12} sm={4}>
-      <Card className="card-box card-box-alt  mx-auto mt-4">
+      <Card className="card-box card-box-alt  mx-auto mt-4" style={{borderBottomLeftRadius:'0',borderBottomRightRadius:'0'}}>
       <div className="card-content-overlay text-left">
       <div className="px-4">
                                         <div className="d-50 rounded-lg border-0 mb-1 card-icon-wrapper bg-first text-white btn-icon text-center shadow-first">
@@ -294,15 +297,17 @@ dispatch(storeSession(oSession));
 
       </div>
           <div className="divider mt-4" />
-          <a type="submit"  onClick={()=>{handleDisputeFileSubmit();}} className="px-4 py-3 btn-transition-none text-white bg-first btn btn-white shadow-none d-flex justify-content-between align-items-center">
+         
+         
+         
+      </div>
+    {/*    <Button variant="outlined" color="primary" type="submit" >Verify &amp; Pay</Button>*/}
+                            </Card>
+                            <a type="submit"  onClick={()=>{handleDisputeFileSubmit();}} className="px-4 py-3 btn-transition-none text-white bg-first btn btn-white shadow-none d-flex justify-content-between align-items-center">
               
               <div>File a Dispute</div>
               <FontAwesomeIcon icon={['fas', 'chevron-right']}/>
           </a>
-      </div>
-    {/*    <Button variant="outlined" color="primary" type="submit" >Verify &amp; Pay</Button>*/}
-                            </Card>
-
      
      </Grid>
      <Grid item xs={12} sm={4} ></Grid>

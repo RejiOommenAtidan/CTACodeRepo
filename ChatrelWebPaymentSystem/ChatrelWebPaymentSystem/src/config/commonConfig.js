@@ -16,16 +16,20 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
 //Local
-export const sAPIBASEURL = "http://localhost:49700/api";
+//export const sAPIBASEURL = "http://localhost:49700/api";
 
 //QA
- //export const sAPIBASEURL = "https://chatrel-webapi.azurewebsites.net/api";
+export const sAPIBASEURL = "https://chatrel-webapi.azurewebsites.net/api";
 
 //UAT
 // export const sAPIBASEURL = "https://chatrel-webapi-uat.azurewebsites.net/api";
 
+
+//CTA PROD
+//export const sAPIBASEURL = "https://chatrelapi.azurewebsites.net/api";
+
+export const sGoogleAuth_ClientID = "1077718482731-r63mupcpv0b687qd9f7ooktilkemb3qk.apps.googleusercontent.com";
 export const sPayPal_ClientID = "AdqxwGp5tKswa3OfXdw5dcCp5SQNtAEkDmPI9InDri3FcXnGCfWfpwhBsLRenYqMwrUrUTLLbnGTOM14";
-export const sGoogleAuth_ClientID = "176037070348-10livm7g5iehb6mrl72bjv29b4bdmavu.apps.googleusercontent.com";
 
 export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record added successfully";

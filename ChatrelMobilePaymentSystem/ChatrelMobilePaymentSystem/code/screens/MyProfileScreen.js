@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Platform,
-  ScrollView,
-  PermissionsAndroid,
-} from 'react-native';
+import {Text, View, StyleSheet, Platform, ScrollView} from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Dimensions} from 'react-native';
@@ -21,7 +14,7 @@ import {
   sDateFormat,
   sFontName,
   sFontNameBold,
-  sDateFormatDatePicker,
+  // sDateFormatDatePicker,
 } from '../constants/CommonConfig';
 import {Avatar, Badge, Icon, withBadge, Card} from 'react-native-elements';
 import {useIsFocused} from '@react-navigation/native';
@@ -29,7 +22,7 @@ import {Loader} from '../components/Loader';
 import axios from 'axios';
 import {storeJWTToken} from '../store/actions/GBDetailsAction';
 import Moment from 'moment';
-import CTALogo from '../../code/assets/CTALogo.png';
+// import CTALogo from '../../code/assets/CTALogo.png';
 // import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 // import {BoxShadow, BorderShadow} from 'react-native-shadow';
 

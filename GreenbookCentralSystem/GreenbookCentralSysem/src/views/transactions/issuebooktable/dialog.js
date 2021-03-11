@@ -333,8 +333,8 @@ placeholder="DD-MM-YYYY"
 
 export const SaveDialog = (props) => {
 	const { register, handleSubmit, errors, setValue, formState } = useForm();
-	console.log(props.selectData);
-	console.log(props.saveObj);
+	//console.log(props.selectData);
+	console.log("Props received", props);
 	const [authorityData, setAuthoritData] = React.useState(props.selectData['authRegions']);
 	const [madebData, setMadebData] = React.useState(props.selectData['madebTypes']);
 	// const [typeIssuedData,setTypeIssuedData]= React.useState(props.selectData['typeIssued']);
@@ -344,12 +344,15 @@ export const SaveDialog = (props) => {
 	const [madebType, setMadebType] = React.useState(props.saveObj['nMadebTypeID']);
 	const [authorityId, setAuthorityId] = React.useState(props.saveObj['nAuthRegionID']);
   //const [receivedDate, setReceivedDate] = React.useState(props.saveObj.dtReceived ? (props.saveObj.dtReceived).split('T')[0] : undefined);
-  const [receivedDate, setReceivedDate] = React.useState(new Date());
+  const [receivedDate, setReceivedDate] = React.useState((madebType === 2 || madebType === 3) ? props.issuedDate : new Date());
 	const [gbId, setGbId] = React.useState(parseInt(props.saveObj['sGBID']));
 	const [issuedOrNotId, setIssuedOrNotId] = React.useState(2);
 
 	const [printed, setPrinted] = React.useState(false);
 	const [remarks, setRemarks] = React.useState('');
+
+  const [dtIssuedDate, setIssuedDate] = React.useState(null);
+
 	const saveObj = {
 
 		nFormNumber: formNumber,
@@ -358,11 +361,14 @@ export const SaveDialog = (props) => {
 		nGBId: gbId,
 		//dtIssuedDate: receivedDate,
 		dtIssuedDate: Moment(receivedDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(receivedDate).format('YYYY-MM-DD') : '',
-		nAuthRegionId: authorityId,
+    nAuthRegionId: authorityId,
 		bPrinted: printed,
 		sRemarks: remarks
 
 	}
+
+  console.log("saveObj:", saveObj);
+
 	const changeObj = {
 		id: id,
 		//dtIssuedDate: receivedDate,
@@ -401,6 +407,7 @@ export const SaveDialog = (props) => {
 		}
 	});
 	useEffect(() => {
+    
 		//  console.log(typeIssuedDataAll);
 	}, []);
 
@@ -576,6 +583,7 @@ placeholder="DD-MM-YYYY"
 								<Grid item xs={12} sm={6}>
 									<FormControl className={props.classes.formControl}>
 										<Autocomplete
+                      disabled
 											openOnFocus
 											clearOnEscape
 											onChange={

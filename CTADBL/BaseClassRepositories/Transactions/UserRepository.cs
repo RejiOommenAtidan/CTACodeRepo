@@ -52,8 +52,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sUsername`,
                             `sFullName`,
                             `sOffice`,
-                            `sPassword`,
-                            `sSalt`,
+                            NULL AS sPassword,
+	                        NULL AS sSalt,
                             `nUserRightsId`,
                             `bActive`,
                             `dtEntered`,
@@ -75,7 +75,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sFullName`,
                             `sOffice`,
                             `sPassword`,
-                            `sSalt`,
+	                        `sSalt`,
                             `nUserRightsId`,
                             `bActive`,
                             `dtEntered`,
@@ -115,7 +115,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sFullName`,
                             `sOffice`,
                             `sPassword`,
-                            `sSalt`,
+	                        `sSalt`,
                             `nUserRightsId`,
                             `bActive`,
                             `dtEntered`,
@@ -142,7 +142,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             user.sUsername = (string)reader["sUsername"];
             user.sFullname = (string)reader["sFullName"];
             user.sOffice = (string)reader["sOffice"];
-            user.sPassword = (string)reader["sPassword"];
+            user.sPassword = reader.IsDBNull("sPassword") ? null : (string)reader["sPassword"];
             user.sSalt = reader.IsDBNull("sSalt") ? null : (string)reader["sSalt"];
             user.nUserRightsId = (int)reader["nUserRightsId"];
             user.bActive = (bool)reader["bActive"];

@@ -45,7 +45,7 @@ class HandleNotifications extends Component {
       this.getToken();
     } catch (error) {
       // User has rejected permissions
-      console.log('permission rejected');
+      console.log('Permission Rejected');
     }
   }
 
@@ -77,11 +77,10 @@ class HandleNotifications extends Component {
   }
 
   displayNotification(title, body) {
-    // we display notification in alert box with title and body
     Alert.alert(
       title,
       body,
-      [{text: 'Ok', onPress: () => console.log('ok pressed')}],
+      [{text: 'Ok', onPress: () => console.log('Ok Pressed')}],
       {cancelable: false},
     );
   }

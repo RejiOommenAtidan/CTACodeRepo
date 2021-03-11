@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using TimeZoneConverter;
 
 namespace ChatrelDBL.BaseClassRepositories.Transactions
@@ -137,6 +138,14 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
             int pendingYears = _currentYear - paidUntil;
             if (pendingYears <= 0)
             {
+                int[] years = GetToFromChatrelYear(sGBID);
+                int chatrelFrom = 0, chatrelTo = 0;
+                if (years != null)
+                {
+                    chatrelFrom = years[0];
+                    chatrelTo = years[1];
+                }
+                
                 GBChatrel current = _gbChatrelRepository.GetChatrelByGBIDForYear(sGBID, _currentYear);
                 current.Id = 0;
                 current.chatrelpaymentID = 0;
@@ -168,7 +177,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                     sAuthRegionCurrency = gbChatrel[0].sAuthRegionCurrency
                 };
 
-                var response = new { gbChatrel[0].nAuthRegionID, greenbook.sCountryID, authRegionProfile = authRegionProfile.sAuthRegion, nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), message = "No Outstandings", sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrel, gbChatrels = gbChatrel, gbChatrelDonation = donation, nSalaryUSD = (decimal)_chatrelSalaryUSD[paidUntil] };
+                var response = new { gbChatrel[0].nAuthRegionID, greenbook.sCountryID, authRegionProfile = authRegionProfile.sAuthRegion, nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), message = "No Outstandings", sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrel, gbChatrels = gbChatrel, gbChatrelDonation = donation, nSalaryUSD = (decimal)_chatrelSalaryUSD[paidUntil], chatrelFrom , chatrelTo };
 
                 return response;
                 //return (new { message = "No Outstandings", currency = authRegion.sCurrencyCode });
@@ -757,8 +766,33 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
             //            ON         lnkrel.sGBID = pymt.sPaidByGBId
             //            AND        lnkrel.sGBIDRelation = pymt.sGBID
             //            WHERE      pymt.sPaidByGBId = @sGBID;";
-            string sql = @"SELECT   pymt.dtPayment,
-                                    pymt.sPaidByGBId,
+            //string sql = @"SELECT   pymt.dtPayment,
+            //                        pymt.sPaidByGBId,
+            //                        pymt.sGBID AS sGBIDPaidFor,
+            //                        pymt.sPaymentCurrency,
+            //                        pymt.nChatrelTotalAmount,
+            //                        pymt.sChatrelReceiptNumber,
+            //                        pymt.sPaymentStatus,
+            //                        pymt.sPaymentMode,
+            //                        gb.sFirstName,
+            //                        gb.sLastName,
+            //                        gb.sCountryID as sCountryIDPaidFor,
+            //                        CASE
+            //                                    WHEN lnkrel.nRelationID = 1 THEN 'Father'
+            //                                    WHEN lnkrel.nRelationID = 2 THEN 'Mother'
+            //                                    WHEN lnkrel.nRelationID = 3 THEN 'Spouse'
+            //                                    WHEN pymt.sGBId = pymt.sPaidByGBId THEN 'Self'
+            //                                    ELSE 'Friend'
+            //                        END
+            //                        AS sRelation
+            //            FROM       tblchatrelpayment AS pymt
+            //            INNER JOIN tblgreenbook      AS gb
+            //            ON         pymt.sGBId = gb.sGBId
+            //            LEFT JOIN  lnkgbrelation AS lnkrel
+            //            ON         lnkrel.sGBID = pymt.sPaidByGBId
+            //            AND        lnkrel.sGBIDRelation = pymt.sGBID
+            //            WHERE      pymt.sPaidByGBId = @sGBID or pymt.sGBID = @sGBID; ";
+            string sql = @"SELECT   pymt.dtPayment,            pymt.sPaidByGBId,
                                     pymt.sGBID AS sGBIDPaidFor,
                                     pymt.sPaymentCurrency,
                                     pymt.nChatrelTotalAmount,
@@ -768,21 +802,16 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     gb.sFirstName,
                                     gb.sLastName,
                                     gb.sCountryID as sCountryIDPaidFor,
-                                    CASE
-                                                WHEN lnkrel.nRelationID = 1 THEN 'Father'
-                                                WHEN lnkrel.nRelationID = 2 THEN 'Mother'
-                                                WHEN lnkrel.nRelationID = 3 THEN 'Spouse'
-                                                WHEN pymt.sGBId = pymt.sPaidByGBId THEN 'Self'
-                                                ELSE 'Friend'
+                                    CASE 
+                                    	WHEN pymt.sGBId = pymt.sPaidByGBId 
+                                    	THEN 'Self'
+                                        ELSE 'Friend'
                                     END
                                     AS sRelation
                         FROM       tblchatrelpayment AS pymt
                         INNER JOIN tblgreenbook      AS gb
                         ON         pymt.sGBId = gb.sGBId
-                        LEFT JOIN  lnkgbrelation AS lnkrel
-                        ON         lnkrel.sGBID = pymt.sPaidByGBId
-                        AND        lnkrel.sGBIDRelation = pymt.sGBID
-                        WHERE      pymt.sPaidByGBId = @sGBID or pymt.sGBID = @sGBID; ";
+                        WHERE      pymt.sPaidByGBId = @sGBID or pymt.sGBID = @sGBID;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sGBID", sGBID);
@@ -968,7 +997,29 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
 
         #endregion
 
-
+        #region Get Chatrel Year range for a GBID (if Paid)
+        private int[] GetToFromChatrelYear(string sGBID)
+        {
+            string sql = "SET SESSION sql_mode = '';SELECT min(l2.nChatrelYear), max(nChatrelYear) FROM lnkgbchatrel l2 WHERE l2.sGBId = @sGBID AND l2.chatrelpaymentID = (SELECT (l2.chatrelpaymentID) FROM lnkgbchatrel l2 WHERE l2.nChatrelYear = (SELECT max(l.nChatrelYear) FROM lnkgbchatrel l WHERE sGBId = @sGBID GROUP BY sGBId) AND l2.sGBId  = @sGBID and l2.nChatrelAmount != 0.00 );";
+            using(MySqlCommand command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                command.Connection = _connection;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTable dt = ds.Tables[0];
+                if(dt.Rows[0][0].GetType().Name != "DBNull")
+                {
+                    int min = Convert.ToInt32(dt.Rows[0][0]);
+                    int max = Convert.ToInt32(dt.Rows[0][1]);
+                    return new[] { min, max };
+                }
+                return null;
+                
+            }
+        }
+        #endregion
 
         #region Populate records
 

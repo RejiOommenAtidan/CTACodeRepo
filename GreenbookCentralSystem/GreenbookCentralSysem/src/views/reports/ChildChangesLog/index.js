@@ -88,25 +88,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
-
-      },
-    },
-    {
-      field: "GBId",
-      title: "GB ID",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -124,10 +106,29 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
+    {
+      field: "GBId",
+      title: "GB ID",
+      
+      headerStyle: {
+        padding: '5px',
+
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+
+        textAlign: 'center',
+        border: '1px solid black'
+
+      },
+    },
+   
     {
       field: "field",
       title: "NAME OF FIELD",
@@ -142,7 +143,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -159,7 +160,7 @@ export default function Report() {
       cellStyle: {
         // padding:'0px',
         padding: '5px',
-        borderRight: '1px solid grey',
+        border: '1px solid black',
 
         textAlign: 'left'
 
@@ -179,7 +180,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -197,7 +198,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'left',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -216,7 +217,7 @@ export default function Report() {
         padding: '5px',
 
         textAlign: 'center',
-        borderRight: '1px solid grey'
+        border: '1px solid black'
 
       },
     },
@@ -414,7 +415,7 @@ export default function Report() {
             title={`Child Changes Log from ${Moment(startDate).format(sDateFormat)} To ${Moment(endDate).format(sDateFormat)}`}
             columns={columns}
             data={changesLogData}
-            options={{ ...oOptions, tableLayout: "fixed" }}
+            options={{ ...oOptions, exportFileName: "ChildChangesReport"}}
             actions={[
 
               {

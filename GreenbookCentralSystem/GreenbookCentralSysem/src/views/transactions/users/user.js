@@ -347,7 +347,7 @@ export default function Users() {
       id: tableRowArray["oUser"]["id"],
       sUsername: tableRowArray["oUser"]["sUsername"],
       sFullname: tableRowArray["oUser"]["sFullname"],
-      sPassword: tableRowArray["oUser"]["sPassword"],
+      //sPassword: tableRowArray["oUser"]["sPassword"],
       nUserRightsId: tableRowArray["oUser"]["nUserRightsId"],
       sUserRightsName: tableRowArray["oUser"]["sUserRightsName"],
       sOffice: tableRowArray["oUser"]["sOffice"],

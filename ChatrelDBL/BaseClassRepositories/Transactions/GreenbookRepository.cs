@@ -74,97 +74,74 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         //#endregion
         
 
-        #region Get Green Book/Books
-        public IEnumerable<Greenbook> GetAllGreenBooks(int records)
-        {
-            string sql = @"SELECT `Id`,
-                            `sGBID`,
-                            `nAuthRegionID`,
-                            `sFirstName`,
-                            `sMiddleName`,
-                            `sLastName`,
-                            `sFamilyName`,
-                            `sGender`,
-                            `dtDOB`,
-                            `sMarried`,
-                            `sFathersName`,
-                            `sFathersID`,
-                            `sFathersGBID`,
-                            `sMothersName`,
-                            `sMothersID`,
-                            `sMothersGBID`,
-                            `sSpouseName`,
-                            `sSpouseID`,
-                            `sSpouseGBID`,
-                            `nChildrenM`,
-                            `nChildrenF`,
-                            `sEmail`,
-                            `sPhone`,
-                            `sFax`,
-                            `dtDeceased`,
-                            `sCountryID`,
-                            `sPaidUntil`,
-                            `sLoginGmail`,
-                            `dtLastSuccessfullLogin`,                           
-                            `dtEntered`,
-                            `nEnteredBy`,
-                            `dtUpdated`,
-                            `nUpdatedBy`
-                        FROM `tblgreenbook`;
-                        ORDER BY Id DESC,
-                        dtUpdated DESC 
-                        LIMIT @records;";
-            using (var command = new MySqlCommand(sql))
-            {
-                command.Parameters.AddWithValue("records", records);
-                return GetRecords(command);
-            }
-        }
+        //#region Get Green Book/Books
+        //public IEnumerable<Greenbook> GetAllGreenBooks(int records)
+        //{
+        //    string sql = @"SELECT `Id`,
+        //                    `sGBID`,
+        //                    `nAuthRegionID`,
+        //                    `sFirstName`,
+        //                    `sMiddleName`,
+        //                    `sLastName`,
+        //                    `sFamilyName`,
+        //                    `sGender`,
+        //                    `dtDOB`,
+                            
+        //                    `sEmail`,
+        //                    `sPhone`,
+                            
+        //                    `dtDeceased`,
+        //                    `sCountryID`,
+        //                    `sPaidUntil`,
+        //                    `sLoginGmail`,
+        //                    `dtLastSuccessfullLogin`,                           
+        //                    `dtEntered`,
+        //                    `nEnteredBy`,
+        //                    `dtUpdated`,
+        //                    `nUpdatedBy`
+        //                FROM `tblgreenbook`;
+        //                ORDER BY Id DESC,
+        //                dtUpdated DESC 
+        //                LIMIT @records;";
+        //    using (var command = new MySqlCommand(sql))
+        //    {
+        //        command.Parameters.AddWithValue("records", records);
+        //        return GetRecords(command);
+        //    }
+        //}
 
-        public Greenbook GetGreenboookById(string Id)
-        {
-            string sql = @"SELECT `Id`,
-                            `sGBID`,
-                            `nAuthRegionID`,
-                            `sFirstName`,
-                            `sMiddleName`,
-                            `sLastName`,
-                            `sFamilyName`,
-                            `sGender`,
-                            `dtDOB`,
-                            `sMarried`,
-                            `sFathersName`,
-                            `sFathersID`,
-                            `sFathersGBID`,
-                            `sMothersName`,
-                            `sMothersID`,
-                            `sMothersGBID`,
-                            `sSpouseName`,
-                            `sSpouseID`,
-                            `sSpouseGBID`,
-                            `nChildrenM`,
-                            `nChildrenF`,
-                            `sEmail`,
-                            `sPhone`,
-                            `sFax`,
-                            `dtDeceased`,
-                            `sCountryID`,
-                            `sPaidUntil`,
-                            `sLoginGmail`,
-                            `dtLastSuccessfullLogin`,
-                            `dtEntered`,
-                            `nEnteredBy`,
-                            `dtUpdated`,
-                            `nUpdatedBy`
-                        FROM `tblgreenbook`
-                        WHERE Id=@Id;";
-            using (var command = new MySqlCommand(sql))
-            {
-                command.Parameters.AddWithValue("Id", Id);
-                return GetRecord(command);
-            }
-        }
-        #endregion
+        //public Greenbook GetGreenboookById(string Id)
+        //{
+        //    string sql = @"SELECT `Id`,
+        //                    `sGBID`,
+        //                    `nAuthRegionID`,
+        //                    `sFirstName`,
+        //                    `sMiddleName`,
+        //                    `sLastName`,
+        //                    `sFamilyName`,
+        //                    `sGender`,
+        //                    `dtDOB`,
+        //                    `sEmail`,
+        //                    `sPhone`,
+                            
+        //                    `dtDeceased`,
+        //                    `sCountryID`,
+        //                    `sPaidUntil`,
+        //                    `sLoginGmail`,
+        //                    `dtLastSuccessfullLogin`,
+        //                    `dtEntered`,
+        //                    `nEnteredBy`,
+        //                    `dtUpdated`,
+        //                    `nUpdatedBy`
+        //                FROM `tblgreenbook`
+        //                WHERE Id=@Id;";
+        //    using (var command = new MySqlCommand(sql))
+        //    {
+        //        command.Parameters.AddWithValue("Id", Id);
+        //        return GetRecord(command);
+        //    }
+        //}
+        //#endregion
 
         #region Get GreenBook by passing GreenBook Id.
 
@@ -174,26 +151,14 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                             `sGBID`,
                             `nAuthRegionID`,
                             `sFirstName`,
-                            `sMiddleName`,
+                            
                             `sLastName`,
-                            `sFamilyName`,
-                            `sGender`,
+                            
                             `dtDOB`,
-                            `sMarried`,
-                            `sFathersName`,
-                            `sFathersID`,
-                            `sFathersGBID`,
-                            `sMothersName`,
-                            `sMothersID`,
-                            `sMothersGBID`,
-                            `sSpouseName`,
-                            `sSpouseID`,
-                            `sSpouseGBID`,
-                            `nChildrenM`,
-                            `nChildrenF`,
+                            
                             `sEmail`,
                             `sPhone`,
-                            `sFax`,
+                            
                             `dtDeceased`,
                             `sCountryID`,
                             `sPaidUntil`,
@@ -223,26 +188,26 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
             greenbook.sGBID = reader.IsDBNull("sGBID") ? null : (string)reader["sGBID"];
             greenbook.nAuthRegionID = (int)reader["nAuthRegionID"];
             greenbook.sFirstName = reader.IsDBNull("sFirstName") ? null : (string)reader["sFirstName"];
-            greenbook.sMiddleName = reader.IsDBNull("sMiddleName") ? null : (string)reader["sMiddleName"];
+            //greenbook.sMiddleName = reader.IsDBNull("sMiddleName") ? null : (string)reader["sMiddleName"];
             greenbook.sLastName = reader.IsDBNull("sLastName") ? null : (string)reader["sLastName"];
-            greenbook.sFamilyName = reader.IsDBNull("sFamilyName") ? null : (string)reader["sFamilyName"];
-            greenbook.sGender = reader.IsDBNull("sGender") ? null : (string)reader["sGender"];
+            //greenbook.sFamilyName = reader.IsDBNull("sFamilyName") ? null : (string)reader["sFamilyName"];
+            //greenbook.sGender = reader.IsDBNull("sGender") ? null : (string)reader["sGender"];
             greenbook.dtDOB = reader.IsDBNull("dtDOB") ? null : (DateTime?)(reader["dtDOB"]);
-            greenbook.sMarried = reader.IsDBNull("sMarried") ? null : (string)reader["sMarried"];
-            greenbook.sFathersName = reader.IsDBNull("sFathersName") ? null : (string)reader["sFathersName"];
-            greenbook.sFathersID = reader.IsDBNull("sFathersID") ? null : (string)reader["sFathersID"];
-            greenbook.sFathersGBID = reader.IsDBNull("sFathersGBID") ? null : (string)reader["sFathersGBID"];
-            greenbook.sMothersName = reader.IsDBNull("sMothersName") ? null : (string)reader["sMothersName"];
-            greenbook.sMothersID = reader.IsDBNull("sMothersID") ? null : (string)reader["sMothersID"];
-            greenbook.sMothersGBID = reader.IsDBNull("sMothersGBID") ? null : (string)reader["sMothersGBID"];
-            greenbook.sSpouseName = reader.IsDBNull("sSpouseName") ? null : (string)reader["sSpouseName"];
-            greenbook.sSpouseID = reader.IsDBNull("sSpouseID") ? null : (string)reader["sSpouseID"];
-            greenbook.sSpouseGBID = reader.IsDBNull("sSpouseGBID") ? null : (string)reader["sSpouseGBID"];
-            greenbook.nChildrenM = (int)reader["nChildrenM"];
-            greenbook.nChildrenF = (int)reader["nChildrenF"];
+            //greenbook.sMarried = reader.IsDBNull("sMarried") ? null : (string)reader["sMarried"];
+            //greenbook.sFathersName = reader.IsDBNull("sFathersName") ? null : (string)reader["sFathersName"];
+            //greenbook.sFathersID = reader.IsDBNull("sFathersID") ? null : (string)reader["sFathersID"];
+            //greenbook.sFathersGBID = reader.IsDBNull("sFathersGBID") ? null : (string)reader["sFathersGBID"];
+            //greenbook.sMothersName = reader.IsDBNull("sMothersName") ? null : (string)reader["sMothersName"];
+            //greenbook.sMothersID = reader.IsDBNull("sMothersID") ? null : (string)reader["sMothersID"];
+            //greenbook.sMothersGBID = reader.IsDBNull("sMothersGBID") ? null : (string)reader["sMothersGBID"];
+            //greenbook.sSpouseName = reader.IsDBNull("sSpouseName") ? null : (string)reader["sSpouseName"];
+            //greenbook.sSpouseID = reader.IsDBNull("sSpouseID") ? null : (string)reader["sSpouseID"];
+            //greenbook.sSpouseGBID = reader.IsDBNull("sSpouseGBID") ? null : (string)reader["sSpouseGBID"];
+            //greenbook.nChildrenM = (int)reader["nChildrenM"];
+            //greenbook.nChildrenF = (int)reader["nChildrenF"];
             greenbook.sEmail = reader.IsDBNull("sEmail") ? null : (string)reader["sEmail"];
             greenbook.sPhone = reader.IsDBNull("sPhone") ? null : (string)reader["sPhone"];
-            greenbook.sFax = reader.IsDBNull("sFax") ? null : (string)reader["sFax"];
+            //greenbook.sFax = reader.IsDBNull("sFax") ? null : (string)reader["sFax"];
             greenbook.dtDeceased = reader.IsDBNull("dtDeceased") ? null : (DateTime?)(reader["dtDeceased"]);
             greenbook.sCountryID = reader.IsDBNull("sCountryID") ? null : (string)reader["sCountryID"];
             greenbook.sPaidUntil = (string)reader["sPaidUntil"];

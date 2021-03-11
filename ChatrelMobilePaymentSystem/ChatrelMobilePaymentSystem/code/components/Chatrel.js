@@ -8,14 +8,12 @@ import {
   Platform,
   Modal,
   PermissionsAndroid,
-  ToastAndroid,
   Alert,
-  ActivityIndicator,
-  Linking,
+  TouchableOpacity,
+  Clipboard,
 } from 'react-native';
-
-import {Picker, PickerIOS} from '@react-native-picker/picker';
-import IOSPicker from '../components/IOSPicker';
+import Resolution from '../constants/ResolutionBreakpoint';
+import Autocomplete from 'react-native-autocomplete-input';
 import {
   sFailurePayPalWebPageURL,
   sFontName,
@@ -25,18 +23,19 @@ import {
   sFolderName,
   sReceiptDownloadMessageAndroid,
   sReceiptDownloadMessageIOS,
+  sINRAuthRegionHelpMessage,
+  errorComponent,
+  errorContainer,
+  sCopyPayPalPaymentID,
+  sCopyPayPalTransactionID,
+  sPayPalPaymentIDCopied,
+  sPayPalTransactionIDCopied,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import {Loader} from '../components/Loader';
 import {WebView} from 'react-native-webview';
 import {useNavigation} from '@react-navigation/native';
-
-// import http from 'https';
-// import qs from "querystring";
-// import DropDownPicker from 'react-native-dropdown-picker';
-// import Icon from 'react-native-vector-icons/Feather';
-// import ModalDropdown from 'react-native-modal-dropdown';
-
+import {useForm, Controller} from 'react-hook-form';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   Input,
@@ -45,23 +44,15 @@ import {
   PricingCard,
   Icon,
   Badge,
-  withBadge,
 } from 'react-native-elements';
 import axios from 'axios';
 import Moment from 'moment';
 import Colors from '../constants/Colors';
-import {
-  storeJWTToken,
-  removeGBDetails,
-  removeJWTToken,
-} from '../store/actions/GBDetailsAction';
-// import RNPaypal from 'react-native-paypal-lib';
+import {storeJWTToken} from '../store/actions/GBDetailsAction';
 import {
   sPayPalClientID,
   sClientSecret,
   sHimalayaFontName,
-  sAPIBASEURL,
-  oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import {
   widthPercentageToDP as wp,
@@ -70,12 +61,69 @@ import {
 import base64 from 'react-native-base64';
 import RNFetchBlob from 'react-native-fetch-blob';
 import Toast from 'react-native-root-toast';
+import Dialog from 'react-native-dialog';
 
 export const Chatrel = (props) => {
-  // let approvalUrl = null;
-  // let sAccessToken = null;
-  // let sPayerID = null;
-  // let paymentID = null;
+  // const [
+  //   bTransactionIDDialogVisible,
+  //   setbTransactionIDDialogVisible,
+  // ] = useState(false);
+  const [bPaymentIDDialogVisible, setbPaymentIDDialogVisible] = useState(false);
+  const {control, handleSubmit, errors} = useForm();
+  //let validationForAutocomplete = true;
+  // const [bValidateAutocomplete, setbValidateAutocomplete] = useState(false);
+  const [lBValidateAutocomplete, setlBValidateAutocomplete] = useState(true);
+  //let mytempDefaultValueArray = [];
+  const autoCompleteRef = useRef('');
+  const [bEnableScrollView, setbEnableScrollView] = useState(true);
+  //for Main Data
+  const [lAuthRegions, setlAuthRegions] = React.useState([]);
+  //for filtered data
+  const [lFilteredAuthRegions, setlFilteredAuthRegions] = React.useState(null);
+  // for selected Auth region
+  const [oSelectedAuthRegion, setoSelectedAuthRegion] = React.useState({});
+
+  const findAuthRegion = (sAuthRegionNameQueryParam, mainIndex) => {
+    // Method called every time when we change the value of the input
+    let myTempAuthRegionsArray = [];
+    let myTempBValidateArray = lBValidateAutocomplete;
+    if (sAuthRegionNameQueryParam) {
+      // Making a case insensitive regular expression
+      const regex = new RegExp(`${sAuthRegionNameQueryParam.trim()}`, 'i');
+      // Setting the filtered film array according the query
+
+      myTempAuthRegionsArray[mainIndex] = lAuthRegions.filter(
+        (aR) => aR.sAuthRegion.search(regex) >= 0,
+      );
+
+      myTempBValidateArray[mainIndex] = false;
+
+      myTempBValidateArray = myTempBValidateArray.map(
+        (singleBooleanArray, validateArrayIndex) => {
+          if (
+            mainIndex !== validateArrayIndex &&
+            singleBooleanArray !== false
+          ) {
+            singleBooleanArray = true;
+          }
+          return singleBooleanArray;
+        },
+      );
+
+      setlFilteredAuthRegions(myTempAuthRegionsArray);
+
+      setlBValidateAutocomplete(myTempBValidateArray);
+    } else {
+      // If the query is null then return blank
+      // lFilteredAuthRegions[mainIndex] = [];
+      myTempAuthRegionsArray[mainIndex] = [];
+      myTempBValidateArray[mainIndex] = false;
+      setlFilteredAuthRegions(myTempAuthRegionsArray);
+      setlBValidateAutocomplete(myTempBValidateArray);
+      // setlFilteredAuthRegions([]);
+    }
+  };
+
   const dispatch = useDispatch();
   const sJwtToken = useSelector((state) => state.GBDetailsReducer.sJwtToken);
   const [showData, setshowData] = useState(true);
@@ -86,7 +134,6 @@ export const Chatrel = (props) => {
   const [paymentID, setpaymentID] = useState('');
   const [sPayerID, setsPayerID] = useState('');
   const [bPaymentModal, setbPaymentModal] = useState(false);
-  // const [sAccessToken, setsAccessToken] = useState('');
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [bLoader, setbLoader] = useState(true);
@@ -101,7 +148,6 @@ export const Chatrel = (props) => {
   const [nGrandTotal, setnGrandTotal] = useState(0);
   const [nAdditionalDonation, setnAdditionalDonation] = useState(0);
   const [nBusinessDonation, setnBusinessDonation] = useState(0);
-  const [lAuthRegions, setlAuthRegions] = React.useState([]);
   const [dataAPI, setDataAPI] = React.useState();
   const [summaryData, setSummaryData] = React.useState();
   const [donationData, setDonationData] = React.useState();
@@ -129,7 +175,6 @@ export const Chatrel = (props) => {
       .get(`/ChatrelPayment/Ping`)
       .then((resp) => {
         if (resp.status === 200) {
-          console.log(resp.data);
           const oSession = {
             sJwtToken: resp.data.token,
             bSession: true,
@@ -154,83 +199,103 @@ export const Chatrel = (props) => {
   };
 
   const modify = (value, index) => {
-    debugger;
     let oPayment = [...aGBChatrels];
+    let chatrelObj = [...aGBChatrels];
     if (typeof value === 'string') {
+      //Those 3
       oPayment[index].nCurrentChatrelSalaryAmt = parseFloat(value)
         ? parseFloat(value)
         : 0;
+      setaGBChatrels(oPayment);
+      calculateMethod(index);
     } else {
+      //Other Than those 3
       if (oPayment[index].nCurrentChatrelSalaryAmt === 0) {
-        // oPayment[index].nCurrentChatrelSalaryAmt = oPayment[index].nSalaryUSD;
-        //setPaymentData(payObj);
-
         if (dataAPI.message === 'No Outstandings') {
-          oPayment[index].nCurrentChatrelSalaryAmt = dataAPI.nSalaryUSD;
+          for (var forIndex = index; forIndex < chatrelObj.length; forIndex++) {
+            //check if it is of those 3 or not
+            if (chatrelObj[forIndex].sAuthRegionCurrency === 'USD') {
+              chatrelObj[forIndex].nCurrentChatrelSalaryAmt =
+                dataAPI.nSalaryUSD;
+              calculateMethod(forIndex);
+            }
+          }
         } else {
-          oPayment[index].nCurrentChatrelSalaryAmt = oPayment[index].nSalaryUSD;
+          for (var forIndex = index; forIndex < chatrelObj.length; forIndex++) {
+            if (chatrelObj[forIndex].sAuthRegionCurrency === 'USD') {
+              chatrelObj[forIndex].nCurrentChatrelSalaryAmt =
+                chatrelObj[forIndex].nSalaryUSD;
+              calculateMethod(forIndex);
+            }
+          }
         }
       } else {
-        oPayment[index].nCurrentChatrelSalaryAmt = 0;
+        for (var forIndex = index; forIndex < chatrelObj.length; forIndex++) {
+          if (chatrelObj[forIndex].sAuthRegionCurrency === 'USD') {
+            chatrelObj[forIndex].nCurrentChatrelSalaryAmt = 0;
+            calculateMethod(forIndex);
+          }
+        }
+        setaGBChatrels(chatrelObj);
+        //calculateMethod(index);
       }
     }
-    setaGBChatrels(oPayment);
-    calculateMethod(index);
   };
 
-  // const toggleSwitch = (index, year) => {
-  //   let oPayment = [...aGBChatrels];
-  //   if (year.nCurrentChatrelSalaryAmt === 0) {
-  //     oPayment[index].nCurrentChatrelSalaryAmt = oPayment[index].nSalaryUSD;
-  //   } else {
-  //     oPayment[index].nCurrentChatrelSalaryAmt = 0;
-  //   }
-  //   setaGBChatrels(oPayment);
-  //   calculateMethod(index);
-  // };
-
   const runOnce = () => {
-    //Co-ordinate with aayush
     if (aGBChatrels && dollarToRupees && shouldRun) {
-      //if (!outstanding) {
-      if (aGBChatrels[0].nCurrentChatrelSalaryAmt > 0) {
-        // const checkBox = document.getElementById('employed');
-        // const rateField = document.getElementById('rate');
-        // const totalField = document.getElementById('total');
-        //if (checkBox) {
-        // rateField.innerText = '';
-        // checkBox.checked = true;
-        // checkBox.disabled = true;
-        setaGBChatrels(
-          aGBChatrels.map((element) => {
-            element.nChatrelTotalAmount = 0;
-            element.nCurrentChatrelSalaryAmt = 0;
-            return element;
-          }),
-        );
+      if (!outstanding) {
+        if (aGBChatrels[0].nCurrentChatrelSalaryAmt > 0) {
+          // const checkBox = document.getElementById('employed');
+          // const rateField = document.getElementById('rate');
+          // const totalField = document.getElementById('total');
+          //if (checkBox) {
+          // rateField.innerText = '';
+          // checkBox.checked = true;
+          // checkBox.disabled = true;
+          setaGBChatrels(
+            aGBChatrels.map((element) => {
+              element.nChatrelTotalAmount = 0;
+              element.nCurrentChatrelSalaryAmt = 0;
+              return element;
+            }),
+          );
 
-        //totalField.innerText = '';
-        setnGrandTotal(0.0);
-        setGBChatrelsNull(true);
-        //}
+          //totalField.innerText = '';
+          setnGrandTotal(0.0);
+          setGBChatrelsNull(true);
+          //}
+        }
+      } else {
+        const len = aGBChatrels.length;
+        for (var i = 0; i < len; i++) {
+          calculateMethod(i);
+        }
       }
-      //}
-      //else {
-      //console.log('we have outstanding');
-      const len = aGBChatrels.length;
-      for (var i = 0; i < len; i++) {
-        calculateMethod(i);
-      }
-      //}
       setShouldRun(false);
     }
   };
 
   const updateAuthRegionIOS = (index, value) => {
-    debugger;
-    //let index = e;
     let chatrelObj = [...aGBChatrels];
-    let value1 = lAuthRegions.find((x) => x.sAuthRegion === value);
+    let value1 = lAuthRegions.find((x) => x.id === value.id);
+
+    if (value1.sCurrencyCode === 'INR' && !chatrelObj[index].isChild) {
+      setTimeout(() => {
+        Alert.alert(
+          '',
+          sINRAuthRegionHelpMessage,
+          [
+            {
+              text: 'Ok',
+              onPress: () => true,
+              style: 'cancel',
+            },
+          ],
+          {cancelable: true},
+        );
+      }, 500);
+    }
 
     for (var forIndex = index; forIndex < chatrelObj.length; forIndex++) {
       chatrelObj[forIndex].nAuthRegionID = value1.id;
@@ -245,44 +310,18 @@ export const Chatrel = (props) => {
           ? chatrelObj[forIndex].nChatrelMealINR
           : chatrelObj[forIndex].nChatrelMealUSD;
 
-      chatrelObj[forIndex].nCurrentChatrelSalaryAmt = 0;
-      setaGBChatrels(chatrelObj);
-      calculateMethod(forIndex);
-    }
-  };
-
-  const updateAuthRegion = (index, value) => {
-    debugger;
-
-    //const index = e;
-    let chatrelObj = [...aGBChatrels];
-    //let forIndex = index;
-    // let value1  = lAuthRegions.find((x) => x.id === value)
-    //var a  = document.getElementById(e);
-    //console.info(pickerRef);
-    // pickerRef.current.props.selectedValue = value;
-
-    for (var forIndex = index; forIndex < chatrelObj.length; forIndex++) {
-      chatrelObj[forIndex].nAuthRegionID = value.id;
-      chatrelObj[forIndex].sCountryID = value.sCountryID;
-      chatrelObj[forIndex].sAuthRegionCurrency = value.sCurrencyCode;
-      chatrelObj[forIndex].nChatrelAmount =
-        value.sCurrencyCode === 'INR'
-          ? chatrelObj[forIndex].nChatrelINR
-          : chatrelObj[forIndex].nChatrelUSD;
-      chatrelObj[forIndex].nChatrelMeal =
-        value.sCurrencyCode === 'INR'
-          ? chatrelObj[forIndex].nChatrelMealINR
-          : chatrelObj[forIndex].nChatrelMealUSD;
-
-      chatrelObj[forIndex].nCurrentChatrelSalaryAmt = 0;
+      chatrelObj[forIndex].nCurrentChatrelSalaryAmt =
+        value1.sCurrencyCode === 'INR'
+          ? 0
+          : chatrelObj[forIndex].isChild
+          ? 0
+          : chatrelObj[forIndex].nSalaryUSD;
       setaGBChatrels(chatrelObj);
       calculateMethod(forIndex);
     }
   };
 
   const calculateMethod = (index) => {
-    console.log('Calculate Method Index: ' + index);
     let oPayment = [...aGBChatrels];
     let len = aGBChatrels.length;
     if (index != len - 1) {
@@ -325,57 +364,6 @@ export const Chatrel = (props) => {
     });
     setnGrandTotal(temptotal);
   };
-
-  // const handleDownloadReceiptOnPress = (sChatrelReceiptNumber) => {
-  //   const {dirs} = RNFetchBlob.fs;
-  //   RNFetchBlob.config({
-  //     fileCache: true,
-  //     addAndroidDownloads: {
-  //       useDownloadManager: true,
-  //       notification: true,
-  //       mediaScannable: true,
-  //       title: `Receipt.pdf`,
-  //       path: `${dirs.DownloadDir}/Receipt.pdf`,
-  //     },
-  //   })
-  //     .fetch(
-  //       'GET',
-  //       sAPIBASEURL +
-  //         '/ChatrelPayment/GetReceipt/?sReceiptNumber=' +
-  //         sChatrelReceiptNumber,
-  //       {
-  //         Authorization: 'Bearer ' + sJwtToken,
-  //       },
-  //     )
-  //     .then((resp) => {
-  //       console.log(resp);
-  //       //TODO: iOS
-  //       Platform.OS === 'android'
-  //         ? ToastAndroid.show(
-  //             'Receipt Downloaded Successfully',
-  //             ToastAndroid.SHORT,
-  //             ToastAndroid.CENTER,
-  //           )
-  //         : null;
-  //     })
-  //     .catch((error) => {
-  //       console.log('Error ', error.response);
-  //       if (error.response) {
-  //         console.error(error.response);
-  //         console.error(error.response.data);
-  //         console.error(error.response.status);
-  //         console.error(error.response.headers);
-  //       } else if (error.request) {
-  //         console.warn(error.request);
-  //       } else {
-  //         console.error('Error', error.message);
-  //       }
-  //       console.log(error.config);
-  //     })
-  //     .then((release) => {
-  //       //console.log(release); => udefined
-  //     });
-  // };
 
   const handleSubmitAfterPayPal = async (paypalObj) => {
     let tempSummaryObj = summaryData;
@@ -440,11 +428,21 @@ export const Chatrel = (props) => {
       paypalObj.purchase_units[0].amount.value;
     tempSummaryObj.sPayPal_Response_Object = JSON.stringify(paypalObj);
 
-    if (gbChatrelsNull) {
+    // if (gbChatrelsNull) {
+    //   oPayment = null;
+    // }
+
+    if (
+      //oPayment[0].nCurrentChatrelSalaryAmt > 0 &&
+      oPayment[0].nChatrelAmount === 0 &&
+      oPayment.length === 1 &&
+      oPayment[0].nCurrentChatrelSalaryAmt === undefined
+    ) {
       oPayment = null;
     }
 
     if (donationNull) {
+      //donationObj = null;
     }
 
     let finalObj = {
@@ -459,10 +457,9 @@ export const Chatrel = (props) => {
     setbRender(false);
 
     axios
-      .post(`/ChatrelPayment/AddNewChatrelPayment`, finalObj)
+      .post(`/ChtrelPayment/AddNewChatrelPayment`, finalObj)
       .then((resp) => {
         if (resp.status === 200) {
-          debugger;
           const oSession = {
             sJwtToken: resp.data.token,
             bSession: true,
@@ -485,37 +482,83 @@ export const Chatrel = (props) => {
           // };
           // dispatch(storeJWTToken(oSession));
         } else {
-          alert('Something went wrong, please try again later');
+          //setbTransactionIDDialogVisible(true);
+          setTimeout(() => {
+            Alert.alert(
+              'Attention Required',
+              'Cannot Connect to Server, Please save PayPal Transaction ID: ' +
+                paypalObj.id +
+                '\nand Contact CTA',
+              [
+                {
+                  text: sCopyPayPalTransactionID,
+                  onPress: () => {
+                    Clipboard.setString(paypalObj.id);
+                    Toast.show(sPayPalTransactionIDCopied, {
+                      duration: Toast.durations.SHORT,
+                      position: Toast.positions.BOTTOM,
+                      shadow: true,
+                      animation: true,
+                      hideOnPress: true,
+                      delay: 0,
+                    });
+                    navigation.navigate('Home');
+                  },
+                  style: 'default',
+                },
+                {
+                  text: 'Close',
+                  onPress: () => {
+                    navigation.navigate('Home');
+                  },
+                  style: 'cancel',
+                },
+              ],
+              {
+                cancelable: false,
+                //onDismiss:()=>{}
+              },
+            );
+          }, 1000);
+          // setTimeout(() => {
+          //   <Dialog.Container visible={bTransactionIDDialogVisible}>
+          //     <Dialog.Title>Attention Required</Dialog.Title>
+          //     <Dialog.Description>
+          //       {'Cannot Connect to Server, Please save PayPal Transaction ID: ' +
+          //         paypalObj.id +
+          //         ' and Contact CTA'}
+          //     </Dialog.Description>
+          //     <Dialog.Button
+          //       label="sCopyPayPalTransactionID"
+          //       onPress={() => {
+          //         Clipboard.setString(paypalObj.id);
+          //         Toast.show(sPayPalTransactionIDCopied, {
+          //           duration: Toast.durations.SHORT,
+          //           position: Toast.positions.BOTTOM,
+          //           shadow: true,
+          //           animation: true,
+          //           hideOnPress: true,
+          //           delay: 0,
+          //         });
+          //       }}
+          //     />
+          //     <Dialog.Button
+          //       label="Close"
+          //       onPress={() => {
+          //         setbTransactionIDDialogVisible(false);
+          //       }}
+          //     />
+          //   </Dialog.Container>
+          // }, 1000);
         }
       });
-
-    // const {
-    //     nonce,
-    //     payerId,
-    //     email,
-    //     firstName,
-    //     lastName,
-    //     phone
-    // } = await requestOneTimePayment(
-    //   sPayPalClientID,
-    //   {
-    //     amount: '5', // required
-    //     // any PayPal supported currency (see here: https://developer.paypal.com/docs/integration/direct/rest/currency-codes/#paypal-account-payments)
-    //     currency: 'USD',
-    //     // any PayPal supported locale (see here: https://braintree.github.io/braintree_ios/Classes/BTPayPalRequest.html#/c:objc(cs)BTPayPalRequest(py)localeCode)
-    //     localeCode: 'en_GB',
-    //     shippingAddressRequired: false,
-    //     userAction: 'commit', // display 'Pay Now' on the PayPal review page
-    //     // one of 'authorize', 'sale', 'order'. defaults to 'authorize'. see details here: https://developer.paypal.com/docs/api/payments/v1/#payment-create-request-body
-    //     intent: 'sale',
-    //   }
-    // );
   };
 
   useEffect(() => {
     if (isFocused) {
-      getChatrelDetails();
       console.log('Chatrel Common Component Called');
+      setbRender(false);
+      setbLoader(true);
       setDisplayFileDispute(false);
       setshowData(true);
       setSuccessDiv(false);
@@ -526,20 +569,20 @@ export const Chatrel = (props) => {
       setaGBChatrels([]);
       setOutstanding(true);
       setBasicResponse(0);
-      setbRender(false);
-      setbLoader(true);
+      getChatrelDetails();
       //setShouldRun(true);
     }
   }, [isFocused]);
 
   const getChatrelDetails = () => {
+    let myTempAuthRegionsToAdd = [];
+    let myINRAuthRegion = null;
     axios
       .get(`/AuthRegion/GetAuthRegions`)
       .then((resp) => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setlAuthRegions(resp.data);
-
+          myTempAuthRegionsToAdd = resp.data;
           let myURL =
             props.props === 'Self' ? oGBDetails.sGBID : oCurrentGBDetails.sGBID;
 
@@ -547,29 +590,22 @@ export const Chatrel = (props) => {
             .get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=` + myURL)
             .then((resp) => {
               if (resp.status === 200) {
-                //console.log(resp.data);
                 const oSession = {
                   sJwtToken: resp.data.token,
                   bSession: true,
                 };
                 dispatch(storeJWTToken(oSession));
                 if (resp.data.message === 'Paid Until Missing') {
-                  //console.log("Inside File Dispute Condition");
                   setbLoader(false);
                   setbRender(true);
                   setDisplayFileDispute(true);
-                  // setbRender(true);
-                  // setbRender(true);
                 } else {
+                  console.log(resp.data);
                   setsCountryID(resp.data?.chatrel?.sCountryID);
                   if (
                     resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0
                   ) {
                     setOutstanding(false);
-                    debugger;
-                    console.log(
-                      resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt,
-                    );
                     setBasicResponse(
                       resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt,
                     );
@@ -577,7 +613,33 @@ export const Chatrel = (props) => {
                   setnChatrelLateFeesPercentage(
                     resp.data.chatrel.chatrelPayment.nChatrelLateFeesPercentage,
                   );
-                  setaGBChatrels(resp.data.chatrel.gbChatrels);
+                  let aGBChatrelsUSDEnabled = resp.data.chatrel.gbChatrels.map(
+                    (singleChatrel) => {
+                      if (
+                        singleChatrel.sAuthRegionCurrency === 'USD' &&
+                        !singleChatrel.isChild
+                      ) {
+                        singleChatrel.nCurrentChatrelSalaryAmt =
+                          singleChatrel.nSalaryUSD;
+                      }
+                      return singleChatrel;
+                    },
+                  );
+                  setaGBChatrels(aGBChatrelsUSDEnabled);
+                  // console.log(resp.data.chatrel.gbChatrels);
+                  // console.log(aGBChatrelsUSDEnabled);
+                  let tempFilteredAuthRegions = [];
+                  let tempBValidateAutocomplete = [];
+                  resp.data.chatrel.gbChatrels.forEach((chatrelRecord) => {
+                    tempFilteredAuthRegions.push([]);
+                  });
+                  resp.data.chatrel.gbChatrels.forEach((chatrelRecord) => {
+                    tempBValidateAutocomplete.push(true);
+                  });
+                  //console.log(tempFilteredAuthRegions);
+                  //console.log(tempBValidateAutocomplete);
+                  setlFilteredAuthRegions(tempFilteredAuthRegions);
+                  setlBValidateAutocomplete(tempBValidateAutocomplete);
                   setsName(resp.data.chatrel.sName);
                   setnPaidUntil(resp.data.chatrel.nPaidUntil);
                   setsGBID(resp.data.chatrel.chatrelPayment.sGBId);
@@ -596,13 +658,32 @@ export const Chatrel = (props) => {
                   );
                   setbLoader(false);
                   setbRender(true);
+
+                  myINRAuthRegion = myTempAuthRegionsToAdd.find(
+                    (x) => x.id === resp.data.chatrel.nAuthRegionID,
+                  );
                   fetch(
                     'https://api.ratesapi.io/api/latest?base=INR&symbols=USD',
                   )
                     .then((response) => response.json())
                     .then((data) => {
-                      console.log('currency', data.rates.USD);
                       setDollarToRupees(data.rates.USD);
+                      if (myINRAuthRegion.sCurrencyCode === 'INR') {
+                        setTimeout(() => {
+                          Alert.alert(
+                            '',
+                            sINRAuthRegionHelpMessage,
+                            [
+                              {
+                                text: 'Ok',
+                                onPress: () => true,
+                                style: 'cancel',
+                              },
+                            ],
+                            {cancelable: true},
+                          );
+                        }, 500);
+                      }
                     });
                 }
               }
@@ -652,9 +733,31 @@ export const Chatrel = (props) => {
   }, [lAuthRegions, dataAPI, isFocused]);
 
   const onNavigationStateChange = (webViewState) => {
-    console.log(webViewState.title);
+    // console.log(webViewState.title);
+    // console.log(webViewState.url);
+    if (webViewState.url.includes(sFailurePayPalWebPageURL)) {
+      setbPaymentModal(false);
+      setTimeout(() => {
+        Alert.alert(
+          'Contribution Unsuccessful',
+          'Some thing went wrong. Please try again later',
+          [
+            {
+              text: 'Ok',
+              onPress: () => true,
+              style: 'cancel',
+            },
+          ],
+          {cancelable: false},
+        );
+      }, 1000);
+    }
     // get payer from of the url
-    if (webViewState.title === 'eChatrel' || webViewState.title === 'Success') {
+    if (
+      webViewState.title === 'eChatrel' ||
+      webViewState.title === 'Success' ||
+      webViewState.title === 'Chatrel'
+    ) {
       // const params = new URL(webViewState.url).searchParams;
       var regexp = /[?&]([^=#]+)=([^&#]*)/g,
         params = {},
@@ -669,10 +772,10 @@ export const Chatrel = (props) => {
       {
         /*Fourth Step: Capture payment Request*/
       }
-      debugger;
       var axios = require('axios');
       var dataFourth = JSON.stringify({payer_id: params.PayerID});
 
+      debugger;
       var fourthConfig = {
         baseURL: sPayPalBASEURL,
         method: 'post',
@@ -689,7 +792,6 @@ export const Chatrel = (props) => {
           {
             /*Fifth Step: Payment verification Request*/
           }
-          debugger;
           var fifthConfig = {
             baseURL: sPayPalBASEURL,
             method: 'get',
@@ -699,21 +801,90 @@ export const Chatrel = (props) => {
               Authorization: 'Bearer ' + sAccessToken,
             },
           };
-          debugger;
+
           axios(fifthConfig)
             .then(function (response) {
-              console.log(response);
               setbPaymentModal(false);
               handleSubmitAfterPayPal(response.data);
             })
             .catch(function (error) {
-              //TODO: Ask Team
-              console.log(error);
+              console.error('Caught in Step 5: ' + error);
+              setTimeout(() => {
+                Alert.alert(
+                  'Attention Required',
+                  'Cannot verify contribution from PayPal, Please save PayPal Payment ID: ' +
+                    paymentID +
+                    '\nand Contact CTA',
+                  [
+                    {
+                      text: sCopyPayPalPaymentID,
+                      onPress: () => {
+                        Clipboard.setString(paymentID);
+                        Toast.show(sPayPalPaymentIDCopied, {
+                          duration: Toast.durations.SHORT,
+                          position: Toast.positions.BOTTOM,
+                          shadow: true,
+                          animation: true,
+                          hideOnPress: true,
+                          delay: 0,
+                        });
+                        navigation.navigate('Home');
+                      },
+                      style: 'default',
+                    },
+                    {
+                      text: 'Close',
+                      onPress: () => {
+                        navigation.navigate('Home');
+                      },
+                      style: 'cancel',
+                    },
+                  ],
+                  {
+                    cancelable: false,
+                  },
+                );
+              }, 1000);
             });
         })
         .catch(function (error) {
-          //TODO: Ask Team
-          console.log(error);
+          console.error('Caught in Step 4: ' + error);
+          setTimeout(() => {
+            Alert.alert(
+              'Attention Required',
+              'Cannot verify contribution from PayPal, Please save PayPal Payment ID: ' +
+                paymentID +
+                '\nand Contact CTA',
+              [
+                {
+                  text: sCopyPayPalPaymentID,
+                  onPress: () => {
+                    Clipboard.setString(paymentID);
+                    Toast.show(sPayPalPaymentIDCopied, {
+                      duration: Toast.durations.SHORT,
+                      position: Toast.positions.BOTTOM,
+                      shadow: true,
+                      animation: true,
+                      hideOnPress: true,
+                      delay: 0,
+                    });
+                    navigation.navigate('Home');
+                  },
+                  style: 'default',
+                },
+                {
+                  text: 'Close',
+                  onPress: () => {
+                    navigation.navigate('Home');
+                  },
+                  style: 'cancel',
+                },
+              ],
+              {
+                cancelable: false,
+              },
+            );
+          }, 1000);
         });
     }
   };
@@ -737,7 +908,7 @@ export const Chatrel = (props) => {
   };
 
   const handleDownloadReceiptOnPress = async (sChatrelReceiptNumber) => {
-    console.log(sChatrelReceiptNumber);
+    setbRender(false);
     setbLoader(true);
     const {dirs} = RNFetchBlob.fs;
     axios
@@ -751,12 +922,19 @@ export const Chatrel = (props) => {
             bSession: true,
           };
           dispatch(storeJWTToken(oSession));
+
           let fPath = Platform.select({
             ios: dirs.DocumentDir,
             android: dirs.DownloadDir,
           });
 
           fPath = fPath + '/' + sFolderName;
+
+          if (Platform.OS === 'ios') {
+            RNFetchBlob.fs.mkdir(fPath).catch((err) => {
+              console.log(err);
+            });
+          }
 
           fPath = `${fPath}/ChatrelReceipt-` + sChatrelReceiptNumber + `.pdf`;
 
@@ -766,34 +944,22 @@ export const Chatrel = (props) => {
             RNFetchBlob.fs.writeFile(fPath, resp.data.receipt, 'base64');
           }
 
+          setbRender(true);
           setbLoader(false);
 
-          Platform.OS === 'android'
-            ? ToastAndroid.show(
-                sReceiptDownloadMessageAndroid,
-                ToastAndroid.SHORT,
-                ToastAndroid.CENTER,
-              )
-            : Toast.show(sReceiptDownloadMessageIOS, {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-                delay: 0,
-                // onShow: () => {
-                //     // calls on toast\`s appear animation start
-                // },
-                // onShown: () => {
-                //     // calls on toast\`s appear animation end.
-                // },
-                // onHide: () => {
-                //     // calls on toast\`s hide animation start.
-                // },
-                // onHidden: () => {
-                //     // calls on toast\`s hide animation end.
-                // }
-              });
+          Toast.show(
+            Platform.OS === 'android'
+              ? sReceiptDownloadMessageAndroid
+              : sReceiptDownloadMessageIOS,
+            {
+              duration: Toast.durations.LONG,
+              position: Toast.positions.BOTTOM,
+              shadow: true,
+              animation: true,
+              hideOnPress: true,
+              delay: 0,
+            },
+          );
         }
       })
       .catch((error) => {
@@ -807,9 +973,7 @@ export const Chatrel = (props) => {
         } else {
         }
       })
-      .then((release) => {
-        //console.log(release); => udefined
-      });
+      .then((release) => {});
   };
 
   if (!bRender) {
@@ -821,7 +985,6 @@ export const Chatrel = (props) => {
   }
 
   if (displayFileDispute) {
-    //debugger;
     return (
       <>
         <Card
@@ -846,67 +1009,43 @@ export const Chatrel = (props) => {
             marginHorizontal: 0,
             width: wp(87.5),
             backgroundColor: Colors.white,
-
-            //Border Stuff
             borderRadius: 15,
-            // borderColor: Colors.black,
-            // borderStyle: 'solid',
-            // borderWidth: 0.25,
-
-            //For iOS
             shadowRadius: 15,
             shadowColor: Colors.lightBlueChatrelWebsite,
             shadowOffset: {width: 5, height: 5},
             shadowOpacity: 1,
-
-            //For Android
             elevation: 15,
             overflow: 'visible',
             marginTop: hp(5),
           }}>
           <View style={styles.viewMarginComponent}>
-            <Text style={styles.boldTextComponent}>
-              Last paid chatrel date not available.
+            <Text>
+              <Text
+                style={{
+                  ...styles.greyTextComponent,
+                  textAlign: 'left',
+                  fontSize: wp(5),
+                }}>
+                There is no chatrel contribution record in the database. You are
+                requested to upload your two year chatrel receipt copy{' '}
+              </Text>
+              <Text
+                style={{
+                  ...styles.greyTextComponent,
+                  color: Colors.ChatrelInfoBlue,
+                  fontSize: wp(5),
+                  textAlign: 'left',
+                  textDecorationColor: Colors.ChatrelInfoBlue,
+                  textDecorationLine: 'underline',
+                }}
+                onPress={() => {
+                  navigation.navigate('FileDispute');
+                }}>
+                here
+              </Text>
             </Text>
           </View>
-          <View style={styles.viewMarginComponent}>
-            <Text style={styles.greyTextComponent}>
-              Please Contact CTA or file a dispute.
-            </Text>
-          </View>
-          <Button
-            title="FILE A DISPUTE"
-            titleStyle={{
-              color: Colors.white,
-              textAlign: 'center',
-              fontStyle: 'normal',
-              fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-              fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
-            }}
-            buttonStyle={{
-              backgroundColor: Colors.websiteLightBlueColor,
-              borderRadius: 15,
-            }}
-            onPress={() => {
-              navigation.navigate('FileDispute');
-            }}
-          />
         </Card>
-        {/* {Alert.alert(
-          'Attention Required',
-          'Last paid chatrel date not available. Please Contact CTA or file a dispute.',
-          [
-            {
-              text: 'File a Dispute',
-              onPress: () => {
-                setDisplayFileDispute(false);
-                navigation.navigate('FileDispute');
-              },
-              style: 'cancel',
-            },
-          ],
-          {cancelable: false},
-        )} */}
       </>
     );
   }
@@ -917,6 +1056,8 @@ export const Chatrel = (props) => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
+          keyboardShouldPersistTaps="always"
+          //scrollEnabled={bEnableScrollView}
           style={styles.mainContainer}>
           <Modal
             visible={bPaymentModal}
@@ -926,9 +1067,8 @@ export const Chatrel = (props) => {
               onNavigationStateChange={onNavigationStateChange}
               javaScriptEnabled={true}
               domStorageEnabled={true}
-              // injectedJavaScript={this.state.cookie}
               startInLoadingState={false}
-              //style={{marginTop: 20}}
+              style={{marginTop: hp(5)}}
             />
           </Modal>
           {successDiv && (
@@ -939,19 +1079,13 @@ export const Chatrel = (props) => {
                   marginHorizontal: 0,
                   width: wp(87.5),
                   backgroundColor: Colors.white,
-
                   //Border Stuff
                   borderRadius: 15,
-                  // borderColor: Colors.black,
-                  // borderStyle: 'solid',
-                  // borderWidth: 0.25,
-
                   //For iOS
                   shadowRadius: 15,
                   shadowColor: Colors.lightBlueChatrelWebsite,
                   shadowOffset: {width: 5, height: 5},
                   shadowOpacity: 1,
-
                   //For Android
                   elevation: 15,
                   overflow: 'visible',
@@ -985,7 +1119,6 @@ export const Chatrel = (props) => {
                     བོད་མིའི་སྒྲིག་འཛུགས་དཔལ་འབྱོར་ལས་ཁུངས་ནས།
                   </Text> */}
                   <Button
-                    //disabled={true}
                     title="DOWNLOAD RECEIPT"
                     titleStyle={{
                       fontStyle: 'normal',
@@ -1017,16 +1150,13 @@ export const Chatrel = (props) => {
                   marginHorizontal: 0,
                   width: wp(87.5),
                   backgroundColor: Colors.white,
-
                   //Border Stuff
                   borderRadius: 15,
-
                   //For iOS
                   shadowRadius: 15,
                   shadowColor: Colors.lightBlueChatrelWebsite,
                   shadowOffset: {width: 5, height: 5},
                   shadowOpacity: 1,
-
                   //For Android
                   elevation: 15,
                   overflow: 'visible',
@@ -1134,19 +1264,13 @@ export const Chatrel = (props) => {
                         marginHorizontal: 0,
                         width: wp(87.5),
                         backgroundColor: Colors.white,
-
                         //Border Stuff
                         borderRadius: 15,
-                        // borderColor: Colors.black,
-                        // borderStyle: 'solid',
-                        // borderWidth: 0.25,
-
                         //For iOS
                         shadowRadius: 15,
                         shadowColor: Colors.lightBlueChatrelWebsite,
                         shadowOffset: {width: 5, height: 5},
                         shadowOpacity: 1,
-
                         //For Android
                         elevation: 15,
                         overflow: 'visible',
@@ -1158,7 +1282,6 @@ export const Chatrel = (props) => {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             marginBottom: hp(1),
-                            // paddingTop:10
                           }}>
                           <Text style={styles.chatrelYearComponent}>
                             {year.nChatrelYear}
@@ -1168,7 +1291,6 @@ export const Chatrel = (props) => {
                               display: 'flex',
                               flexDirection: 'column',
                               justifyContent: 'center',
-                              //marginBottom: hp(2),
                             }}>
                             <Badge
                               //containerStyle={styles.badgeContainerStyle}
@@ -1177,8 +1299,9 @@ export const Chatrel = (props) => {
                                 backgroundColor:
                                   year.nChatrelLateFeesValue > 0
                                     ? Colors.red
-                                    : year.nChatrelLateFeesValue === 0
-                                    ? Colors.ChatrelYearGreen
+                                    : year.nChatrelLateFeesValue === 0 &&
+                                      year.nChatrelTotalAmount === 0
+                                    ? Colors.greenBG
                                     : Colors.buttonYellow,
                               }}
                               value={
@@ -1219,89 +1342,223 @@ export const Chatrel = (props) => {
                             display: 'flex',
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            //marginBottom: hp(1.25),
                           }}>
                           <View style={styles.authorityRegionContainer}>
                             <Text style={styles.textComponent}>
                               AUTHORITY REGION
                             </Text>
-                            {Platform.OS === 'android' && (
-                              <Picker
-                                enabled={outstanding}
-                                collapsable={true}
-                                mode={'dialog'}
-                                //prompt={'AUTHORITY REGION'}
-                                key={index}
-                                // itemStyle={{
-                                //   //height: 50,
-                                //   width: 20,
-                                // }}
-                                //
-                                //doesn't work for android
-                                //style={{ height: 75, width: 500 }}
-                                selectedValue={lAuthRegions.find(
-                                  (x) =>
-                                    x.id === aGBChatrels[index].nAuthRegionID,
-                                )}
-                                style={styles.pickerComponent}
-                                onValueChange={(itemValue, itemIndex) =>
-                                  updateAuthRegion(index, itemValue)
-                                }>
-                                {lAuthRegions.map((singleAuthregion, key) => (
-                                  <Picker.Item
-                                    label={singleAuthregion.sAuthRegion}
-                                    value={singleAuthregion}
-                                    key={key}
-                                  />
-                                ))}
-                              </Picker>
-                            )}
-
-                            {Platform.OS === 'ios' && (
+                            {
                               <View
-                                pointerEvents={outstanding ? 'auto' : 'none'}>
-                                <IOSPicker
-                                  //data={lAuthRegions}
-                                  mode={'modal'} //collapse
-                                  //key={index}
-                                  // itemStyle={{
-                                  //   height: 50,
-                                  //   width: 50,
-                                  //   fontFamily: sFontName,
-                                  // }}
-                                  //enabled={!outstanding}
-                                  selectedValue={
-                                    lAuthRegions.find(
-                                      (x) =>
-                                        x.id ===
-                                        aGBChatrels[index].nAuthRegionID,
-                                    ).sAuthRegion
-                                  }
-                                  itemStyle={{
-                                    borderColor: Colors.black,
-                                    borderWidth: 1,
-                                    borderRadius: 15,
-                                    borderStyle: 'solid',
+                                key={index}
+                                style={{
+                                  zIndex: 1,
+                                  flex: 1,
+                                  backgroundColor: Colors.white,
+                                  //paddingBottom: hp(1),
+                                }}>
+                                <Autocomplete
+                                  flatListProps={{
+                                    nestedScrollEnabled: true,
                                   }}
-                                  style={styles.pickerComponentIOS}
-                                  onValueChange={(itemValue, itemIndex) => {
-                                    //itemValue is data
-                                    //itemindex is index
-                                    console.log('Inchatrel');
-                                    updateAuthRegionIOS(index, itemValue);
-                                  }}>
-                                  {lAuthRegions.map(
-                                    (singleAuthregionIOS, authRegionIndex) => (
-                                      <Picker.Item
-                                        label={singleAuthregionIOS.sAuthRegion}
-                                        value={singleAuthregionIOS.sAuthRegion}
-                                        key={authRegionIndex}
+                                  editable={outstanding}
+                                  autoCapitalize="none"
+                                  autoCorrect={false}
+                                  inputContainerStyle={{
+                                    borderWidth: 0,
+                                    paddingHorizontal: 0,
+                                  }}
+                                  style={
+                                    {
+                                      // padding: hp(2.5),
+                                      // borderWidth:0,
+                                      // borderStyle:"dotted",
+                                      // borderColor:Colors.white,
+                                    }
+                                  }
+                                  containerStyle={{
+                                    paddingHorizontal: 0,
+                                  }}
+                                  data={
+                                    // index ? lFilteredAuthRegions[index] : []
+                                    // index===index ? lFilteredAuthRegions : []
+                                    lFilteredAuthRegions
+                                      ? lFilteredAuthRegions[index]
+                                      : []
+                                  }
+                                  // listContainerStyle={{
+                                  //   height:"100%"
+                                  // }}
+                                  listStyle={{
+                                    position: 'relative',
+                                    zIndex: 1,
+                                    elevation: 5,
+                                    maxHeight: 200,
+                                    backgroundColor: Colors.white,
+                                    borderLeftWidth: 0,
+                                    borderRightWidth: 0,
+                                    borderTopWidth: 1,
+                                    borderBottomWidth: 1,
+                                    borderTopColor: Colors.grey,
+                                    borderBottomColor: Colors.grey,
+                                    paddingHorizontal: wp(1),
+                                    marginHorizontal: 0,
+                                  }}
+                                  // Default value if you want to set something in input
+                                  defaultValue={
+                                    JSON.stringify(
+                                      lAuthRegions.find(
+                                        (x) =>
+                                          x.id ===
+                                          aGBChatrels[index].nAuthRegionID,
+                                      ),
+                                    ) === '{}'
+                                      ? ''
+                                      : lAuthRegions.find(
+                                          (x) =>
+                                            x.id ===
+                                            aGBChatrels[index].nAuthRegionID,
+                                        ).sAuthRegion
+                                  }
+                                  renderTextInput={(props) => (
+                                    <View key={index}>
+                                      <Controller
+                                        control={control}
+                                        render={({onChange, onBlur, value}) => (
+                                          <Input
+                                            // value={oSelectedAuthRegion.sAuthRegion}
+                                            {...props}
+                                            iconRight
+                                            icon={{
+                                              type: 'font-awesome',
+                                              name: 'chevron-down',
+                                              color: Colors.black,
+                                            }}
+                                            //key={index}
+                                            placeholderTextColor={Colors.grey}
+                                            style={{
+                                              fontSize: wp(4),
+                                              fontStyle: 'normal',
+                                              fontWeight: 'normal',
+                                              fontFamily: sFontName,
+                                            }}
+                                            onBlur={onBlur}
+                                            onChangeText={(text) => {
+                                              // setbValidateAutocomplete(true);
+                                              onChange(text);
+                                              findAuthRegion(text, index);
+                                            }}
+                                            inputContainerStyle={{
+                                              borderWidth: 0,
+                                              paddingHorizontal: 0,
+                                              paddingBottom: 0,
+                                              marginBottom: 0,
+                                            }}
+                                            containerStyle={{
+                                              paddingHorizontal: 0,
+                                              paddingBottom: 0,
+                                              marginBottom: 0,
+                                            }}
+                                          />
+                                        )}
+                                        name={`AC[${index}]`}
+                                        rules={{
+                                          required: true,
+                                        }}
+                                        defaultValue=""
                                       />
-                                    ),
+                                      {lBValidateAutocomplete[index] ===
+                                        false && (
+                                        <View
+                                          style={{
+                                            ...errorContainer,
+                                            marginHorizontal: wp(
+                                              Resolution.nWidthMarginValueScreen,
+                                            ),
+                                            zIndex: 1,
+                                            flex: 1,
+                                          }}>
+                                          <Text
+                                            style={{
+                                              ...errorComponent,
+                                              fontSize: wp(3.5),
+                                              paddingHorizontal: 0,
+                                              marginHorizontal: 0,
+                                            }}>
+                                            Please select an option.
+                                          </Text>
+                                        </View>
+                                      )}
+                                    </View>
                                   )}
-                                </IOSPicker>
+                                  placeholder="Enter Authority Region"
+                                  clearButtonMode={'while-editing'}
+                                  // renderSeparator={(sID,rID,adjRowHightlighted)=>{
+                                  //   return(
+                                  //   <View style={{
+                                  //     borderStyle:"solid",
+                                  //     borderBottomColor:Colors.black,
+                                  //     borderBottomWidth:1,
+                                  //     paddingVertical:hp(2)
+
+                                  //   }}>
+                                  //   </View>
+                                  //   )
+                                  // }}
+                                  renderItem={({
+                                    item,
+                                    indexForSuggestionItem,
+                                  }) => (
+                                    // For the suggestion view
+                                    <TouchableOpacity
+                                      style={{
+                                        paddingVertical: hp(1),
+                                        borderBottomColor: Colors.grey,
+                                        borderBottomWidth: 0.5,
+                                        borderTopColor: Colors.grey,
+                                        borderTopWidth: 0.5,
+                                      }}
+                                      key={indexForSuggestionItem}
+                                      onPress={() => {
+                                        //lFilteredAuthRegions[index] = [];
+                                        // setbValidateAutocomplete(false);
+                                        updateAuthRegionIOS(index, item);
+                                        let myTempAuthRegions = lFilteredAuthRegions;
+                                        let myTempAutocomplete = lBValidateAutocomplete;
+
+                                        // myTempBValidateArray[mainIndex] = false;
+
+                                        for (
+                                          var forIndex = index;
+                                          forIndex < myTempAutocomplete.length;
+                                          forIndex++
+                                        ) {
+                                          myTempAutocomplete[forIndex] = true;
+                                        }
+
+                                        myTempAuthRegions[index] = [];
+                                        // myTempAutocomplete[index] = true;
+                                        setlFilteredAuthRegions(
+                                          myTempAuthRegions,
+                                        );
+                                        setlBValidateAutocomplete(
+                                          myTempAutocomplete,
+                                        );
+                                        // setlFilteredAuthRegions([]);
+                                      }}>
+                                      <Text
+                                        style={{
+                                          fontSize: wp(4),
+                                          fontStyle: 'normal',
+                                          fontWeight: 'normal',
+                                          fontFamily: sFontName,
+                                        }}>
+                                        {item.sAuthRegion}
+                                      </Text>
+                                    </TouchableOpacity>
+                                  )}
+                                />
                               </View>
-                            )}
+                            }
                           </View>
                           <View>
                             {/* <Text
@@ -1321,13 +1578,15 @@ export const Chatrel = (props) => {
 
                             {year.sAuthRegionCurrency === 'INR' && (
                               <View
-                                style={
-                                  styles.employementStatusContainerForInput
-                                }>
+                                style={{
+                                  ...styles.employementStatusContainerForInput,
+                                }}>
                                 <Text
                                   style={{
                                     ...styles.textComponent,
                                     marginBottom: 0,
+                                    //marginTop: hp(1),
+                                    //marginTop:hp(1)
                                     // height: hp(5),
                                     // alignSelf: 'center',
                                     //marginRight: 2.5,
@@ -1339,38 +1598,50 @@ export const Chatrel = (props) => {
                                   {'EMPLOYED '}
                                 </Text>
                                 <View
-                                  style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'flex-start',
-                                    //marginBottom: hp(2),
-                                  }}>
+                                  style={
+                                    {
+                                      // display: 'flex',
+                                      // flexDirection: 'column',
+                                      // justifyContent: 'flex-end',
+                                    }
+                                  }>
                                   <Input
                                     disabled={
                                       basicResponse > 0
                                         ? true
                                         : false || year.isChild
                                     }
-                                    // label="Business Donation"
-                                    //placeholder="Business Donation"
+                                    disabledInputStyle={{
+                                      backgroundColor: Colors.grey,
+                                      margin: 0,
+                                      padding: 0,
+                                    }}
                                     inputContainerStyle={{
                                       //borderBottomWidth:0,
                                       //borderTopWidth:0,
                                       //width:wp(60),
                                       //align
                                       //padding:0
-                                      height: hp(2),
-                                      width: wp(10),
+
                                       margin: 0,
                                       padding: 0,
+                                      borderTopWidth: 0,
                                       borderRightWidth: 0,
                                       borderBottomWidth: 1,
+                                      borderBottomColor: Colors.black,
+                                      paddingBottom: 0,
+                                      marginBottom: 0,
                                     }}
                                     containerStyle={{
-                                      // height:hp(5),
                                       margin: 0,
                                       padding: 0,
                                       borderRightWidth: 0,
+                                      width: hp(7.5),
+                                      height: hp(0.25),
+                                      //marginBottom:hp(1)
+                                      // paddingBottom: 0,
+                                      // marginBottom: 0,
+                                      // height:hp(5),
                                       // borderBottomWidth: 1,
                                       // //height:hp(10)
                                       //paddingHorizontal:0,
@@ -1382,13 +1653,14 @@ export const Chatrel = (props) => {
                                       fontStyle: 'normal',
                                       fontWeight: 'normal',
                                       fontFamily: sFontName,
-                                      //width:wp(1)
+                                      //flex:1
                                     }}
                                     //placeholder={''}
                                     //placeholderTextColor={Colors.grey}
                                     autoCorrect={false}
                                     clearButtonMode={'never'}
-                                    keyboardType={'number-pad'}
+                                    returnKeyType={'done'}
+                                    keyboardType={'decimal-pad'}
                                     keyboardAppearance={'default'}
                                     disableFullscreenUI={false}
                                     onChangeText={(value) => {
@@ -1399,7 +1671,6 @@ export const Chatrel = (props) => {
                                         modify('0', index);
                                       }
                                     }}
-                                    //value={nBusinessDonation}
                                   />
                                 </View>
                               </View>
@@ -1425,7 +1696,6 @@ export const Chatrel = (props) => {
                                     justifyContent: 'flex-start',
                                     alignSelf: 'flex-start',
                                     alignItems: 'flex-start',
-                                    // marginBottom: hp(1),
                                   }}>
                                   <Switch
                                     //style={{marginBottom:hp(10)}}
@@ -1443,7 +1713,12 @@ export const Chatrel = (props) => {
                                     onValueChange={(value) => {
                                       modify(value, index);
                                     }}
-                                    value={year.nCurrentChatrelSalaryAmt > 0}
+                                    value={
+                                      year.nCurrentChatrelSalaryAmt > 0 ||
+                                      (year.nCurrentChatrelSalaryAmt ===
+                                        undefined &&
+                                        year.nChatrelTotalAmount === 0)
+                                    }
                                     disabled={
                                       basicResponse > 0
                                         ? true
@@ -1455,7 +1730,6 @@ export const Chatrel = (props) => {
                             )}
                           </View>
                         </View>
-
                         {/*<Card.Divider style={{
                       height: 0.75,
                       backgroundColor: Colors.greenBG,
@@ -1495,7 +1769,6 @@ export const Chatrel = (props) => {
                                 }}>
                                 MEAL
                               </Text>
-
                               <Text
                                 style={{
                                   ...styles.textComponentAPI,
@@ -1563,7 +1836,6 @@ export const Chatrel = (props) => {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             alignItems: 'center',
-
                             marginBottom: hp(1.25),
                           }}>
                           {year.sAuthRegionCurrency !== 'USD' && (
@@ -1572,13 +1844,12 @@ export const Chatrel = (props) => {
                                 display: 'flex',
                                 flexDirection: 'row',
                                 justifyContent: 'flex-start',
-                                //marginBottom: hp(1.25),
                               }}>
                               <Text
                                 style={{
                                   ...styles.textComponentAPI,
                                   textAlign: 'left',
-                                  color: Colors.grey,
+                                  color: Colors.darkGreyRate,
                                   fontStyle: 'italic',
                                   fontSize: wp(4),
                                 }}>
@@ -1594,34 +1865,34 @@ export const Chatrel = (props) => {
                             style={{
                               ...styles.textComponent,
                               //textAlign: 'left',
-                              fontSize: wp(5),
                               //fontStyle: 'normal',
                               //fontWeight: 'bold',
-                              color: Colors.blue,
+                              // marginLeft: wp(12.5),
+                              fontSize: wp(5),
+                              color: Colors.black,
                               fontWeight:
                                 Platform.OS === 'android' ? 'normal' : 'bold',
                               fontFamily:
                                 Platform.OS === 'android'
                                   ? sFontNameBold
                                   : sFontName,
-                              // marginLeft: wp(12.5),
                             }}>
                             TOTAL
                           </Text>
                           <Text
                             style={{
                               ...styles.textComponentAPI,
-                              textAlign: 'right',
                               //textAlign: 'center',
-                              fontSize: wp(5),
                               //fontStyle: 'normal',
+                              textAlign: 'right',
+                              fontSize: wp(5),
                               fontWeight:
                                 Platform.OS === 'android' ? 'normal' : 'bold',
                               fontFamily:
                                 Platform.OS === 'android'
                                   ? sFontNameBold
                                   : sFontName,
-                              color: Colors.blue,
+                              color: Colors.black,
                             }}>
                             ${year.nChatrelTotalAmount.toFixed(2)}
                           </Text>
@@ -1641,19 +1912,13 @@ export const Chatrel = (props) => {
                   marginHorizontal: 0,
                   width: wp(87.5),
                   backgroundColor: Colors.white,
-
                   //Border Stuff
                   borderRadius: 15,
-                  // borderColor: Colors.black,
-                  // borderStyle: 'solid',
-                  // borderWidth: 0.25,
-
                   //For iOS
                   shadowRadius: 15,
                   shadowColor: Colors.lightBlueChatrelWebsite,
                   shadowOffset: {width: 5, height: 5},
                   shadowOpacity: 1,
-
                   //For Android
                   elevation: 15,
                   overflow: 'visible',
@@ -1664,11 +1929,13 @@ export const Chatrel = (props) => {
                     badgeStyle={{
                       ...styles.badgeStyle,
                       alignSelf: 'flex-end',
-                      // height:hp(),
-                      //width: wp(45),
                     }}
                     value={
-                      <Text style={styles.labelComponent}>
+                      <Text
+                        style={{
+                          ...styles.labelComponent,
+                          paddingBottom: Platform.isPad ? hp(1.75) : hp(1.5),
+                        }}>
                         BUSINESS DONATION ($)
                       </Text>
                     }
@@ -1676,10 +1943,6 @@ export const Chatrel = (props) => {
                   <Input
                     style={{
                       textAlign: 'right',
-                      // fontSize:
-                      //   Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                      //     ? 10.5
-                      //     : 17.5,
                       fontStyle: 'normal',
                       fontWeight: 'normal',
                       fontFamily: sFontName,
@@ -1688,9 +1951,11 @@ export const Chatrel = (props) => {
                     placeholderTextColor={Colors.grey}
                     autoCorrect={false}
                     clearButtonMode={'while-editing'}
+                    returnKeyType={'done'}
                     keyboardType={'decimal-pad'}
                     keyboardAppearance={'default'}
                     disableFullscreenUI={true}
+                    value={nBusinessDonation}
                     onChangeText={(value) => {
                       if (value === '') {
                         calcTotal(aGBChatrels, nAdditionalDonation, 0);
@@ -1704,7 +1969,6 @@ export const Chatrel = (props) => {
                         setnBusinessDonation(parseFloat(value));
                       }
                     }}
-                    value={nBusinessDonation}
                   />
                 </View>
                 <View style={styles.additionalDonationContainer}>
@@ -1713,11 +1977,13 @@ export const Chatrel = (props) => {
                     badgeStyle={{
                       ...styles.badgeStyle,
                       alignSelf: 'flex-end',
-                      // height:hp(),
-                      //width: wp(45),
                     }}
                     value={
-                      <Text style={styles.labelComponent}>
+                      <Text
+                        style={{
+                          ...styles.labelComponent,
+                          paddingBottom: Platform.isPad ? hp(1.75) : hp(1.5),
+                        }}>
                         ADDITIONAL DONATION ($)
                       </Text>
                     }
@@ -1725,10 +1991,6 @@ export const Chatrel = (props) => {
                   <Input
                     style={{
                       textAlign: 'right',
-                      // fontSize:
-                      //   Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                      //     ? 10.5
-                      //     : 17.5,
                       fontStyle: 'normal',
                       fontWeight: 'normal',
                       fontFamily: sFontName,
@@ -1737,9 +1999,11 @@ export const Chatrel = (props) => {
                     placeholderTextColor={Colors.grey}
                     autoCorrect={false}
                     clearButtonMode={'while-editing'}
+                    returnKeyType={'done'}
                     keyboardType={'decimal-pad'}
                     keyboardAppearance={'default'}
                     disableFullscreenUI={true}
+                    value={nAdditionalDonation}
                     onChangeText={(value) => {
                       if (value === '') {
                         calcTotal(aGBChatrels, 0, nBusinessDonation);
@@ -1753,15 +2017,11 @@ export const Chatrel = (props) => {
                         setnAdditionalDonation(parseFloat(value));
                       }
                     }}
-                    value={nAdditionalDonation}
                   />
                 </View>
               </Card>
 
               <View style={styles.grandTotalContainer}>
-                {/* <Text style={styles.grandTotalComponent}>
-              {nGrandTotal.toFixed(2)}
-            </Text> */}
                 <PricingCard
                   color={Colors.buttonYellow}
                   title="Grand Total"
@@ -1803,66 +2063,12 @@ export const Chatrel = (props) => {
                       fontFamily:
                         Platform.OS === 'android' ? sFontNameBold : sFontName,
                     },
-                    disabled: nGrandTotal === 0 || nGrandTotal === 0.0,
+                    disabled:
+                      nGrandTotal === 0 ||
+                      nGrandTotal === 0.0 ||
+                      lBValidateAutocomplete.includes(false),
                     buttonStyle: styles.paypalButtonComponent,
                     onPress: () => {
-                      // // var qs = require('querystring');
-                      // // var http = require('https');
-
-                      // var options = {
-                      //   method: 'POST',
-                      //   hostname: 'api.sandbox.paypal.com',
-                      //   port: null,
-                      //   path: '/v1/oauth2/token',
-                      //   headers: {
-                      //     accept: 'application/json',
-                      //     'accept-language': 'en_US',
-                      //     'content-type': 'application/x-www-form-urlencoded',
-                      //     authorization:
-                      //       'basic ' +
-                      //       base64.encode(sPayPalClientID + ':' + sClientSecret),
-                      //   },
-                      // };
-
-                      // const rawResponse = fetch(
-                      //   'https://api.sandbox.paypal.com/v1/oauth2/token',
-                      //   {
-                      //     method: 'POST',
-                      //     headers: {
-                      //       'accept': 'application/json',
-                      //       'accept-language': 'en_US',
-                      //       'content-type': 'application/x-www-form-urlencoded',
-                      //       authorization:
-                      //         'basic ' +
-                      //         base64.encode(sPayPalClientID + ':' + sClientSecret),
-                      //     },
-                      //     body: JSON.stringify({grant_type: 'client_credentials'}),
-                      //   },
-                      // )
-                      //   .then((res) => res.json())
-                      //   .then((res) => console.log(res));
-                      // const content = rawResponse.json();
-
-                      // console.log(content);
-
-                      //axios.post();
-
-                      // var req = http.request(options, function (res) {
-                      //   var chunks = [];
-
-                      //   res.on('data', function (chunk) {
-                      //     chunks.push(chunk);
-                      //   });
-
-                      //   res.on('end', function () {
-                      //     var body = Buffer.concat(chunks);
-                      //     console.log(body.toString());
-                      //   });
-                      // });
-
-                      // req.write(qs.stringify({grant_type: 'client_credentials'}));
-                      // req.end();
-
                       setbLoader(true);
                       setbRender(false);
                       {
@@ -1893,81 +2099,9 @@ export const Chatrel = (props) => {
                       axios(stepOneConfig)
                         .then(function (response) {
                           setsAccessToken(response.data.access_token);
-                          // setsAccessToken = response.data.access_token;
-                          console.log(sAccessToken);
                           {
                             /*Step 2: Create Order*/
                           }
-                          // var dataDetail = JSON.stringify({
-                          //   intent: 'sale',
-                          //   payer: {
-                          //     payment_method: 'paypal',
-                          //   },
-                          //   transactions: [
-                          //     {
-                          //       amount: {
-                          //         total: nGrandTotal.toString(),
-                          //         currency: 'USD',
-                          //         // "details": {
-                          //         // "subtotal": "30.00",
-                          //         // "tax": "0.07",
-                          //         // "shipping": "0.03",
-                          //         // "handling_fee": "1.00",
-                          //         // "shipping_discount": "-1.00",
-                          //         // "insurance": "0.01"
-                          //         // }
-                          //       },
-                          //       description: 'CTA Chatrel',
-                          //       // "custom": "EBAY_EMS_90048630024435",
-                          //       // "invoice_number": "48787589672",
-                          //       payment_options: {
-                          //         allowed_payment_method:
-                          //           'INSTANT_FUNDING_SOURCE',
-                          //       },
-                          //       // "soft_descriptor": "ECHI5786786",
-                          //       // "item_list": {
-                          //       // "items": [
-                          //       // {
-                          //       // "name": "hat",
-                          //       // "description": "Brown hat.",
-                          //       // "quantity": "5",
-                          //       // "price": "3",
-                          //       // "tax": "0.01",
-                          //       // "sku": "1",
-                          //       // "currency": "USD"
-                          //       // },
-                          //       // {
-                          //       // "name": "handbag",
-                          //       // "description": "Black handbag.",
-                          //       // "quantity": "1",
-                          //       // "price": "15",
-                          //       // "tax": "0.02",
-                          //       // "sku": "product34",
-                          //       // "currency": "USD"
-                          //       // }
-                          //       //],
-                          //       // "shipping_address": {
-                          //       // "recipient_name":sName,
-                          //       // "line1": "4th Floor",
-                          //       // "line2": "Unit #34",
-                          //       // "city": "San Jose",
-                          //       // "country_code": "US",
-                          //       // "postal_code": "95131",
-                          //       // "phone": "011862212345678",
-                          //       // "state": "CA"
-                          //       // }
-                          //       // }
-                          //     },
-                          //   ],
-                          //   note_to_payer:
-                          //     'Contact us for any questions on your Chatrel.',
-                          //   redirect_urls: {
-                          //     return_url:
-                          //       'https://chatrel-webapp.azurewebsites.net/Success',
-                          //     cancel_url:
-                          //       'https://chatrel-webapp.azurewebsites.net/Failure',
-                          //   },
-                          // });
 
                           var dataDetail = {
                             intent: 'CAPTURE',
@@ -1976,7 +2110,7 @@ export const Chatrel = (props) => {
                                 reference_id: 'PUHF',
                                 amount: {
                                   currency_code: 'USD',
-                                  value: nGrandTotal.toString(),
+                                  value: nGrandTotal.toFixed(2).toString(),
                                 },
                               },
                             ],
@@ -2001,7 +2135,7 @@ export const Chatrel = (props) => {
                           };
                           axios(stepTwoConfig)
                             .then(function (response) {
-                              console.log(JSON.stringify(response.data));
+                              //console.log(JSON.stringify(response.data));
                               setpaymentID(response.data.id);
                               pingPong();
                               // paymentID = response.data.id;
@@ -2031,105 +2165,49 @@ export const Chatrel = (props) => {
                               setbPaymentModal(true);
                             })
                             .catch(function (error) {
+                              console.log(error);
                               setbLoader(false);
                               setbRender(true);
-                              Alert.alert(
-                                'Attention Required',
-                                'Cannot Connect to PayPal, Please try again later.',
-                                [
-                                  {
-                                    text: 'Ok',
-                                    onPress: () => true,
-                                    style: 'cancel',
-                                  },
-                                ],
-                              );
+                              setTimeout(() => {
+                                Alert.alert(
+                                  'Attention Required',
+                                  'Cannot Connect to PayPal, Please try again later.',
+                                  [
+                                    {
+                                      text: 'Ok',
+                                      onPress: () => true,
+                                      style: 'cancel',
+                                    },
+                                  ],
+                                );
+                              }, 1000);
                               console.log(error);
                             });
                         })
                         .catch(function (error) {
+                          console.log(error);
                           setbLoader(false);
                           setbRender(true);
-                          Alert.alert(
-                            'Attention Required',
-                            'Cannot Connect to PayPal, Please try again later.',
-                            [
-                              {
-                                text: 'Ok',
-                                onPress: () => true,
-                                style: 'cancel',
-                              },
-                            ],
-                            {cancelable: false},
-                          );
+                          setTimeout(() => {
+                            Alert.alert(
+                              'Attention Required',
+                              'Cannot Connect to PayPal, Please try again later.',
+                              [
+                                {
+                                  text: 'Ok',
+                                  onPress: () => true,
+                                  style: 'cancel',
+                                },
+                              ],
+                              {cancelable: false},
+                            );
+                          }, 1000);
                           console.log(error);
                         });
-                      // // Linking.openURL('https://5f99d5ac2fc8.ngrok.io/PaypalTest');
-                      // RNPaypal.paymentRequest({
-                      //   clientId: sPayPalClientID,
-                      //   environment: RNPaypal.ENVIRONMENT.NO_NETWORK,
-                      //   intent: RNPaypal.INTENT.ORDER,
-                      //   price: nGrandTotal,
-                      //   currency: 'USD',
-                      //   description: `GRAND TOTAL`,
-                      //   acceptCreditCards: true,
-                      // })
-                      //   .then((response) => {
-                      //     //setbLoader(true);
-                      //     //alert(response);
-                      //     console.log(response);
-                      //     //TODO: OUR CALLS
-                      //     //handleSubmitAfterPayPal(response);
-                      //   })
-                      //   .catch((err) => {
-                      //     console.log(err);
-                      //     if (err == RNPaypal.USER_CANCELLED) {
-                      //       // User didn't complete the payment
-                      //       console.info('User cancelled');
-                      //     } else if (err == RNPaypal.INVALID_CONFIG) {
-                      //       console.info('Invalid Details Sent to PayPal');
-                      //     }
-                      //   });
                     },
                   }}
                 />
               </View>
-              {/* <View style={styles.paypalButtonContainer}>
-            <Button
-              title="MAKE PAYMENT"
-              titleStyle={{
-                fontFamily: sFontName,
-              }}
-              type={'solid'}
-              onPress={() => {
-                RNPaypal.paymentRequest({
-                  clientId: sPayPalClientID,
-                  environment: RNPaypal.ENVIRONMENT.NO_NETWORK,
-                  intent: RNPaypal.INTENT.SALE,
-                  price: nGrandTotal,
-                  currency: 'USD',
-                  description: `CTA Chatrel`,
-                  acceptCreditCards: true,
-                })
-                  .then((response) => {
-                    //alert(response);
-                    //console.log(response);
-                    //TODO: OUR CALLS
-                    handleSubmitAfterPayPal(response);
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                    if (err == RNPaypal.USER_CANCELLED) {
-                      // User didn't complete the payment
-                      console.info('User cancelled');
-                    } else if (err == RNPaypal.INVALID_CONFIG) {
-                      console.info('Invalid Details Sent to PayPal');
-                    }
-                  });
-              }}
-              buttonStyle={styles.paypalButtonComponent}
-            />
-          </View> */}
             </View>
           )}
         </ScrollView>
@@ -2141,7 +2219,6 @@ export const Chatrel = (props) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    //margin: 15
   },
   headerComponent: {
     fontSize: wp(4),
@@ -2183,7 +2260,6 @@ const styles = StyleSheet.create({
   chatrelYearComponent: {
     // marginBottom: 15,
     fontSize: wp(7),
-
     fontStyle: 'normal',
     textAlign: 'left',
     color: Colors.ChatrelYearGreen,
@@ -2193,12 +2269,10 @@ const styles = StyleSheet.create({
   employementStatusContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // marginBottom: 10,
   },
   employementStatusContainerForInput: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // marginBottom: 10,
   },
   employementStatusComponent: {},
   authorityRegionContainer: {
@@ -2217,6 +2291,9 @@ const styles = StyleSheet.create({
   pickerComponentIOS: {
     height: 30,
     width: wp(35),
+    fontStyle: 'normal',
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
   yearContainer: {
     marginBottom: 5,
@@ -2287,11 +2364,9 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
-    paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+    paddingBottom: Platform.OS === 'ios' ? hp(1.5) : 0,
   },
   valueComponent: {
-    // width: '100%',
-    // height: '100%',
     textAlign: 'left',
     fontSize: wp(4.25),
     fontStyle: 'normal',
@@ -2324,7 +2399,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
-    paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+    paddingBottom: Platform.OS === 'ios' ? hp(1.5) : 0,
   },
   titleStyleView: {
     marginBottom: hp(5.5),
@@ -2343,17 +2418,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -55,
     // left:20,
-    //Border Stuff
     borderRadius: 10,
-    // borderColor: Colors.black,
-    // borderStyle: 'solid',
-    // borderWidth: 0.25,
-
-    //For iOS
-
-    //For Android
     elevation: 15,
-    // overflow: 'visible',
   },
   boldTextComponent: {
     fontSize: wp(6),

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, ScrollView, Platform, Alert} from 'react-native';
+import {StyleSheet, ScrollView, Platform, Alert, LogBox} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {MainNavigator} from './code/navigation/MainNavigator';
 import {store} from './code/store/configureStore';
@@ -164,7 +164,6 @@ const App = () => {
   //     return Promise.reject(error);
   //   },
   // );
-
   useEffect(() => {
     //Alert.alert("T","TS")
     SplashScreen.hide();

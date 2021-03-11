@@ -22,14 +22,12 @@ export const GLogin = (props) => {
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: sClientIDAndroid,
-      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-      forceCodeForRefreshToken: true, // [Android]
+      offlineAccess: true,
+      forceCodeForRefreshToken: true,
       iosClientId: sClientIDIOS, // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     });
 
     Platform.OS === 'android' ? isSignedIn() : null;
-
-    //Platform.OS === 'android' ? isSignedIn() : null;
 
     // getUserDataFromAsnycStorage().then(data => {
     //   //console.info(data);
@@ -56,14 +54,6 @@ export const GLogin = (props) => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-
-      // console.info(userInfo.user.email);
-      // console.info(userInfo.user.givenName);
-      // console.info(userInfo.user.familyName);
-      // console.info(userInfo.user.name);//full name by google api
-      // console.info(userInfo.user.photo);
-      //console.info(userInfo)
-
       //Store User Info
       setUser(userInfo);
       //Store Google Creds
@@ -120,19 +110,6 @@ export const GLogin = (props) => {
     }
   };
 
-  // const signOut = async () => {
-  //   try {
-  //     await GoogleSignin.revokeAccess();
-  //     await GoogleSignin.signOut();
-  //     setUser({}); // Remember to remove the user from your app's state as well
-  //     props.props.navigation.navigate({
-  //       routeName: 'Login'
-  //     });
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   return (
     <View style={styles.gSignInContainer}>
       <GoogleSigninButton
@@ -147,17 +124,17 @@ export const GLogin = (props) => {
 
 const styles = StyleSheet.create({
   gSignInContainer: {
+    marginVertical: hp(5),
+    // alignItems: 'center',
     // flex: 1,
     // justifyContent: 'center',
-    // alignItems: 'center',
-    marginVertical: hp(5),
   },
   gSignInComponent: {
-    // width: Platform.OS === 'android' ? wp(50) : wp(47.5),
     // height: Platform.OS === 'android' ? hp(5.75) : hp(4.75),
+    // width: Platform.OS === 'android' ? wp(50) : wp(47.5),
 
     //Values Coded
-    width: 192,
     height: 48,
+    width: 192,
   },
 });

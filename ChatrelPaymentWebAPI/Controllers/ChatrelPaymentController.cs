@@ -226,29 +226,34 @@ namespace ChatrelPaymentWebAPI.Controllers
             {
                 //string sGBIDf = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
                 Object chatrel = _chatrelPaymentRepository.DisplayChatrelPayment(sGBID);
+                string clientId = ChatrelConfigRepository.GetValueByKey("PayPalClientID").ToString();
+                string secret = ChatrelConfigRepository.GetValueByKey("PayPalSecret").ToString();
                 if (chatrel != null)
                 {
                     if (chatrel.ToString() == "Greenbook ID does not Exist.")
                     {
                         #region Information Logging 
-                        _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBID));
+                        _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called, JwT is: " + token, "", Convert.ToInt32(sGBID));
                         #endregion
                         return Ok(new { message = chatrel.ToString(), token });
                     }
                     if (chatrel.ToString() == "Paid Until Value not found")
                     {
                         #region Information Logging 
-                        _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBID));
+                        _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called, JwT is: " + token, "", Convert.ToInt32(sGBID));
                         #endregion
                         return Ok(new { message = "Paid Until Missing", token });
                     }
                     #region Information Logging 
-                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBID));
+                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called, JwT is: " + token, "", Convert.ToInt32(sGBID));
                     #endregion
-                    return Ok(new { chatrel, token });
+                    return Ok(new { chatrel, token, clientId, secret });
                 }
                 else
                 {
+                    #region Information Logging 
+                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called, JwT is: " + token, "", Convert.ToInt32(sGBID));
+                    #endregion
                     return Ok(new { message = "No Data", token });
                 }
             }
@@ -400,6 +405,9 @@ namespace ChatrelPaymentWebAPI.Controllers
             
 
             string sGBIDAuthorized = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
+
+
+            string sEmail = User.Claims.Where(claim => claim.Type == ClaimTypes.Email).Select(claim => claim.Value).FirstOrDefault().ToString();
             string token = BlockAndGenerateNewToken(Request, sGBIDAuthorized);
             //To do: Add attachment to the email.
             try
@@ -407,24 +415,29 @@ namespace ChatrelPaymentWebAPI.Controllers
 
                 var sGBID = dict["sGBID"].ToString();
                 var mailTextRaw = dict["description"].ToString();
-                //string attachment = dict["file"].ToString();
                 var sName = dict["sName"].ToString();
 
-                //var sFileName = dict["sTitle"].ToString();
-                //var sFileExtension = dict["sFileExtension"].ToString();
-                var emailFrom = "chatrelcta@gmail.com";
-                var emailTo = "chatrelcta@gmail.com";
+                
+                var emailFrom = ChatrelConfigRepository.GetValueByKey("ChatrelAdminEmail").ToString();
+                var emailTo = ChatrelConfigRepository.GetValueByKey("ChatrelAdminEmail").ToString();
+                var senderPassword = ChatrelConfigRepository.GetValueByKey("ChatrelAdminEmailPassword").ToString();
+                var server = ChatrelConfigRepository.GetValueByKey("ChatrelEmailRelayServer").ToString();
+                var port = Convert.ToInt32(ChatrelConfigRepository.GetValueByKey("ChatrelEmailServerPort"));
+                bool ssl = Convert.ToBoolean(ChatrelConfigRepository.GetValueByKey("ChatrelEmailUseSSL"));
+                
 
                 var mailText = String.Format("Name: {0}, GB ID: {1}, Description: {2}", sName, sGBID, mailTextRaw);
 
                 MimeMessage message = new MimeMessage();
-                MailboxAddress from = new MailboxAddress(sName, emailFrom);
+                MailboxAddress from = new MailboxAddress("CTA Team", emailFrom);
                 MailboxAddress to = new MailboxAddress("CTA Team", emailTo);
+                
 
                 BodyBuilder messageBody = new BodyBuilder();
                 messageBody.TextBody = mailText;
                 message.From.Add(from);
                 message.To.Add(to);
+                message.Cc.Add(new MailboxAddress(sName, sEmail));
                 message.Subject = String.Format("Dispute Raised: GB ID - {0}", sGBID);
                 message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
                 
@@ -467,8 +480,8 @@ namespace ChatrelPaymentWebAPI.Controllers
                 // Message ready. Now to use smtp client to despatch message
                 SmtpClient smtpClient = new SmtpClient();
                 smtpClient.AuthenticationMechanisms.Remove("XOAUTH2");
-                smtpClient.Connect("smtp.gmail.com", 465, true);
-                smtpClient.Authenticate("chatrelcta@gmail.com", "hjmzfrcillpuvsxv");
+                smtpClient.Connect(server, port, ssl);
+                smtpClient.Authenticate(emailFrom, senderPassword);
                 smtpClient.Send(message);
                 smtpClient.Disconnect(true);
                 smtpClient.Dispose();
@@ -648,6 +661,72 @@ namespace ChatrelPaymentWebAPI.Controllers
             return Ok(new { message = "Pong", token });
         }
 
+
+        #region
+        [AuthorizeToken]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetHomePageData()
+        {
+            string sHomePageImage = ChatrelConfigRepository.GetValueByKey("sHomePageMinisterImage").ToString();
+            string sHomePageMessage = ChatrelConfigRepository.GetValueByKey("sHomePageMessage").ToString();
+            string sHomePageName = ChatrelConfigRepository.GetValueByKey("sHomePageName").ToString();
+            string sHomePageDesignation = ChatrelConfigRepository.GetValueByKey("sHomePageDesignation").ToString();
+            string sFAQDocument = ChatrelConfigRepository.GetValueByKey("sFAQDocument").ToString();
+            string sGBID = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
+            string token = BlockAndGenerateNewToken(Request, sGBID);
+            /*object homeData =  new { sHomePageImage, sHomePageMessage, sHomePageName, sHomePageDesignation, sFAQDocument };*/
+            return Ok(new { sHomePageImage, sHomePageMessage, sHomePageName, sHomePageDesignation, sFAQDocument, token });
+        }
+        #endregion
+        #region
+        [AuthorizeToken]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetPayPalCredentials()
+        {
+            string clientId = ChatrelConfigRepository.GetValueByKey("PayPalClientID").ToString();
+            string secret = ChatrelConfigRepository.GetValueByKey("PayPalSecret").ToString();
+            string sGBID = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
+            string token = BlockAndGenerateNewToken(Request, sGBID);
+            return Ok(new { clientId, secret, token });
+        }
+        #endregion
+
+        #region
+        
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult GetGoogleCredentialsForMobile(string sMobilePassphrase)
+        {
+            string mobilePassphrase = ChatrelConfigRepository.GetValueByKey("sMobilePassphrase").ToString();
+            if(mobilePassphrase != sMobilePassphrase)
+            {
+                return BadRequest();
+            }
+            string sGoogleClientIDAndroid = ChatrelConfigRepository.GetValueByKey("sGoogleClientIDAndroid").ToString();
+            string sGoogleClientIDIOS = ChatrelConfigRepository.GetValueByKey("sGoogleClientIDIOS").ToString();
+            return Ok(new { sGoogleClientIDAndroid, sGoogleClientIDIOS });
+        }
+        #endregion
+
+
+        #region
+        
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult GetGoogleCredentialsForWebApp(string sWebAppPassphrase)
+        {
+            string webAppPassphrase = ChatrelConfigRepository.GetValueByKey("sWebAppPassphrase").ToString();
+            if(webAppPassphrase != sWebAppPassphrase)
+            {
+                return BadRequest();
+            }
+            string sGoogleClientIDWebApp = ChatrelConfigRepository.GetValueByKey("sGoogleClientIDWebApp").ToString();
+            return Ok(new { sGoogleClientIDWebApp });
+        }
+        #endregion
+
         [NonAction]
         private string BlockAndGenerateNewToken(HttpRequest request, string sGBID)
         {
@@ -657,6 +736,10 @@ namespace ChatrelPaymentWebAPI.Controllers
             Greenbook gb = _greenbookRepository.GetGreenbookByGBID(sGBID);
             UserVM user = new UserVM { User = gb, sJwtToken = String.Empty };
             user.sJwtToken = JwT.GenerateNewToken(user, _appSettings);
+            while (BlockedTokens.Tokens.Contains(user.sJwtToken))
+            {
+                user.sJwtToken = JwT.GenerateNewToken(user, _appSettings);
+            }
             return user.sJwtToken;
         }
     }

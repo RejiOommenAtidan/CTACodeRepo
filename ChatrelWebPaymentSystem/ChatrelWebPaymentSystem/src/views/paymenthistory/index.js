@@ -48,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff'
+  }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -144,7 +148,7 @@ export default function Family () {
   //     //imgData.save();
   //     const pdf = new jsPdf();
   //     pdf.addImage(imgData, "PNG",10,10);
-  //     pdf.save('eChatrel-Receipt.pdf');
+  //     pdf.save('Chatrel-Receipt.pdf');
   //   });
 
   // };
@@ -187,7 +191,7 @@ export default function Family () {
     <>
      { paymentHistory.length === 0 &&
 
-        <Alert className="alerts-alternate mb-4 w-50 mx-auto" severity="info">
+        <Alert className="alerts-alternate mb-4 w-50 mx-auto" severity="info" style={{margin:'30px'}}>
         <div className="d-flex align-items-center align-content-start">
             <span>
                 <strong className="d-block">CONTRIBUTION STATUS</strong> Please donate your outstanding Chatrel Amount or File a Dispute <Button className="p-0 btn-transparent btn-link btn-link-first" onClick={()=>{history.push('FileDispute')}}>here</Button>
@@ -196,7 +200,7 @@ export default function Family () {
         </Alert>
       }
       { paymentHistory.length > 0 &&
-     <Grid container spacing={1}>
+     <Grid container spacing={1} style={{margin:'30px'}}>
      <Grid item xs={12} sm={1} ></Grid>
      <Grid item xs={12} sm={10}>
      <Card className="card-box card-box-alt  mx-auto my-4 shadow-lg " style={{borderBottom: "10px solid #4191ff"}} >

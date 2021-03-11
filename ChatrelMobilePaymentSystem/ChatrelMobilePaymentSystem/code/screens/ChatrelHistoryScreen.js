@@ -6,12 +6,10 @@ import {
   ScrollView,
   Dimensions,
   PermissionsAndroid,
-  ToastAndroid,
   Alert,
   Platform,
-  ActivityIndicator,
 } from 'react-native';
-import {Card, Button} from 'react-native-elements';
+import {Card, Button, Icon} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {useSelector, useDispatch} from 'react-redux';
@@ -31,13 +29,12 @@ import {
   sFolderName,
   sReceiptDownloadMessageAndroid,
   sReceiptDownloadMessageIOS,
-  oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import RNFetchBlob from 'react-native-fetch-blob';
 import {storeJWTToken} from '../store/actions/GBDetailsAction';
 import Toast from 'react-native-root-toast';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+// import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 
 export const ChatrelHistoryScreen = (props) => {
   const dispatch = useDispatch();
@@ -49,6 +46,7 @@ export const ChatrelHistoryScreen = (props) => {
   );
 
   const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
+  const sPaidUntil = useSelector((state) => state.GBDetailsReducer.sPaidUntil);
   const sJwtToken = useSelector((state) => state.GBDetailsReducer.sJwtToken);
   const [paymentHistory, setPaymentHistory] = useState([]);
 
@@ -74,37 +72,8 @@ export const ChatrelHistoryScreen = (props) => {
     //console.log(singleHistory.sChatrelReceiptNumber);
     setbLoader(true);
 
-    // const {dirs} = RNFetchBlob.config({
-    //   addAndroidDownloads: {
-    //     useDownloadManager: true, // <-- this is the only thing required
-    //     // Optional, override notification setting (default to true)
-    //     notification: true,
-    //     // Optional, but recommended since android DownloadManager will fail when
-    //     // the url does not contains a file extension, by default the mime type will be text/plain
-    //     description: 'Chatrel Receipt Downloaded Successfully!',
-    //     title: `ChatrelReceipt-` + singleHistory.sChatrelReceiptNumber + `.pdf`,
-    //     path:
-    //       `
-    //       ${Platform.select({
-    //         ios: dirs.DocumentDir,
-    //         android: dirs.DownloadDir,
-    //       })}/${sFolderName}/ChatrelReceipt-` +
-    //       singleHistory.sChatrelReceiptNumber +
-    //       `.pdf`,
-    //   },
-    // }).fs;
-
     const {dirs} = RNFetchBlob.fs;
-    // const {dirs} = RNFetchBlob.config({
-    //   fileCache: true,
-    //   addAndroidDownloads: {
-    //     useDownloadManager: true,
-    //     notification: true,
-    //     mediaScannable: true,
-    //     title: `ChatrelReceipt-` + singleHistory.sChatrelReceiptNumber + `.pdf`,
-    //     path: `${dirs.DownloadDir}/Chatrel Receipt.pdf`,
-    //   },
-    // }).fs;
+
     axios
       .get(
         `/ChatrelPayment/GetReceipt/?sReceiptNumber=` +
@@ -143,46 +112,19 @@ export const ChatrelHistoryScreen = (props) => {
 
           setbLoader(false);
 
-          // let pdfLocation =
-          //   RNFetchBlob.fs.dirs.DownloadDir +
-          //   '/' +
-          //   'ChatrelReceipt' +
-          //   singleHistory.sChatrelReceiptNumber +
-          //   '.pdf';
-          // RNFetchBlob.fs.writeFile(
-          //   pdfLocation,
-          //   RNFetchBlob.base64.encode(
-          //     'data:application/pdf;base64,' + resp.data.receipt,
-          //   ),
-          //   'base64',
-          // );
-          //alert("File ALert");
-          Platform.OS === 'android'
-            ? ToastAndroid.show(
-                sReceiptDownloadMessageAndroid,
-                ToastAndroid.SHORT,
-                ToastAndroid.CENTER,
-              )
-            : Toast.show(sReceiptDownloadMessageIOS, {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.BOTTOM,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-                delay: 0,
-                // onShow: () => {
-                //     // calls on toast\`s appear animation start
-                // },
-                // onShown: () => {
-                //     // calls on toast\`s appear animation end.
-                // },
-                // onHide: () => {
-                //     // calls on toast\`s hide animation start.
-                // },
-                // onHidden: () => {
-                //     // calls on toast\`s hide animation end.
-                // }
-              });
+          Toast.show(
+            Platform.OS === 'android'
+              ? sReceiptDownloadMessageAndroid
+              : sReceiptDownloadMessageIOS,
+            {
+              duration: Toast.durations.LONG,
+              position: Toast.positions.BOTTOM,
+              shadow: true,
+              animation: true,
+              hideOnPress: true,
+              delay: 0,
+            },
+          );
         }
       })
       .catch((error) => {
@@ -196,15 +138,12 @@ export const ChatrelHistoryScreen = (props) => {
         } else {
         }
       })
-      .then((release) => {
-        //console.log(release); => udefined
-      });
+      .then((release) => {});
   };
 
   useEffect(() => {
     if (isFocused) {
       setbLoader(true);
-      //console.log('Chatrel History Called');
       getChatrelHistoryDetails();
     }
   }, [isFocused]);
@@ -221,10 +160,19 @@ export const ChatrelHistoryScreen = (props) => {
             bSession: true,
           };
           dispatch(storeJWTToken(oSession));
-          if (resp.data.message === 'Payment History Found') {
-            setPaymentHistory(resp.data.paymentHistory);
+          if (
+            resp.data.message === 'Payment History Found' &&
+            sPaidUntil !== null
+          ) {
+            // if (resp.data.paymentHistory.length === 0) {
+            //   setPaymentHistory([]);
+            // }
+            if (resp.data.paymentHistory.length > 0) {
+              setPaymentHistory(resp.data.paymentHistory);
+            }
           } else {
-            setPaymentHistory([]);
+            if (sPaidUntil === null) setPaymentHistory(null);
+            else setPaymentHistory([]);
           }
           setbLoader(false);
         }
@@ -238,7 +186,10 @@ export const ChatrelHistoryScreen = (props) => {
           // };
           // dispatch(storeJWTToken(oSession));
         } else {
-          Alert.alert('Something went wrong, please try again later.');
+          setTimeout(() => {
+            //TODO: Check for Breakage
+            Alert.alert('Something went wrong, please try again later.');
+          }, 1000);
         }
       });
   };
@@ -252,22 +203,165 @@ export const ChatrelHistoryScreen = (props) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
-        {(paymentHistory.length === 0 || paymentHistory === []) && !bLoader && (
+        {paymentHistory === null && !bLoader && (
           <View style={styles.zeroRecordContainer}>
-            <Text style={styles.zeroRecordComponent}>
-              There is no chatrel contribution record in the database. You are
-              requested to upload your two year chatrel receipt copy{' '}
-              <Text
-                style={styles.navigateToFileDisputeComponent}
-                onPress={() => {
-                  props.navigation.navigate('FileDispute');
+            <Card
+              title={
+                <View
+                  style={{
+                    marginBottom: hp(5.5),
+                    shadowRadius: 15,
+                    shadowColor: Colors.lightBlueChatrelWebsite,
+                    shadowOffset: {width: 5, height: 5},
+                    shadowOpacity: 1,
+                  }}>
+                  <Icon
+                    color={Colors.white}
+                    iconStyle={{
+                      backgroundColor: Colors.websiteLightBlueColor,
+                      margin: hp(2),
+                    }}
+                    iconProps={{}}
+                    backgroundColor={Colors.websiteLightBlueColor}
+                    size={40}
+                    type="simple-line-icon"
+                    name="envelope-letter"
+                    containerStyle={{
+                      alignSelf: 'flex-start',
+                      borderRadius: 10,
+                      position: 'absolute',
+                      top: -55,
+                      // left:20,
+                    }}
+                  />
+                </View>
+              }
+              titleStyle={{}}
+              containerStyle={{
+                width: wp(92.5),
+                backgroundColor: Colors.white,
+                marginTop: hp(5),
+
+                //Border Stuff
+                borderRadius: 15,
+                // borderColor: Colors.black,
+                // borderStyle: 'solid',
+                // borderWidth: 0.25,
+
+                //For iOS
+                shadowRadius: 15,
+                shadowColor: Colors.lightBlueChatrelWebsite,
+                shadowOffset: {width: 5, height: 5},
+                shadowOpacity: 1,
+
+                //For Android
+                elevation: 15,
+                overflow: 'visible',
+              }}>
+              <View
+                style={{
+                  marginBottom: hp(2),
                 }}>
-                here
-              </Text>
-            </Text>
+                <Text style={styles.zeroRecordComponent}>
+                  There is no chatrel contribution record in the database. You
+                  are requested to upload your two year chatrel receipt copy{' '}
+                  <Text
+                    style={styles.navigateToFileDisputeComponent}
+                    onPress={() => {
+                      props.navigation.navigate('FileDispute');
+                    }}>
+                    here
+                  </Text>
+                </Text>
+              </View>
+            </Card>
           </View>
         )}
-        {paymentHistory.length !== 0 &&
+
+        {paymentHistory !== null && paymentHistory.length === 0 && !bLoader && (
+          <View style={styles.zeroRecordContainer}>
+            <Card
+              title={
+                <View
+                  style={{
+                    marginBottom: hp(5.5),
+                    shadowRadius: 15,
+                    shadowColor: Colors.lightBlueChatrelWebsite,
+                    shadowOffset: {width: 5, height: 5},
+                    shadowOpacity: 1,
+                  }}>
+                  <Icon
+                    color={Colors.white}
+                    iconStyle={{
+                      backgroundColor: Colors.websiteLightBlueColor,
+                      margin: hp(2),
+                    }}
+                    iconProps={{}}
+                    backgroundColor={Colors.websiteLightBlueColor}
+                    size={40}
+                    type="simple-line-icon"
+                    name="envelope-letter"
+                    containerStyle={{
+                      alignSelf: 'flex-start',
+                      borderRadius: 10,
+                      position: 'absolute',
+                      top: -55,
+                      // left:20,
+                      //Border Stuff
+                    }}
+                  />
+                </View>
+              }
+              titleStyle={{}}
+              containerStyle={{
+                width: wp(92.5),
+                backgroundColor: Colors.white,
+                marginTop: hp(5),
+
+                //Border Stuff
+                borderRadius: 15,
+                // borderColor: Colors.black,
+                // borderStyle: 'solid',
+                // borderWidth: 0.25,
+
+                //For iOS
+                shadowRadius: 15,
+                shadowColor: Colors.lightBlueChatrelWebsite,
+                shadowOffset: {width: 5, height: 5},
+                shadowOpacity: 1,
+
+                //For Android
+                elevation: 15,
+                overflow: 'visible',
+              }}>
+              <View
+                style={{
+                  marginBottom: hp(2),
+                }}>
+                <Text
+                  style={{
+                    ...styles.navigateToFileDisputeComponent,
+                    textDecorationLine: 'none',
+                    color: Colors.black,
+                  }}>
+                  Contribution Status{'\n'}
+                  {'\n'}
+                  <Text
+                    style={{
+                      ...styles.zeroRecordComponent,
+                      textDecorationLine: 'none',
+                      color: Colors.black,
+                    }}>
+                    Please donate your outstanding Chatrel Amount
+                  </Text>
+                </Text>
+              </View>
+            </Card>
+          </View>
+        )}
+
+        {paymentHistory !== null &&
+          paymentHistory.length > 0 &&
           paymentHistory.map((singleHistory, index) => {
             return (
               <Card
@@ -351,7 +445,7 @@ export const ChatrelHistoryScreen = (props) => {
                   <View style={styles.labelContainer}>
                     <Text style={styles.labelComponent}>AMOUNT</Text>
                     <Text style={styles.valueComponent}>
-                      ${singleHistory.nChatrelTotalAmount}
+                      {singleHistory.nChatrelTotalAmount}
                     </Text>
                   </View>
 
@@ -421,7 +515,7 @@ export const ChatrelHistoryScreen = (props) => {
                 </View> */}
                 <View style={styles.downloadReceiptContainer}>
                   <Button
-                    //disabled={true}
+                    disabled={singleHistory.sPaymentMode !== 'Online'}
                     title={'DOWNLOAD RECEIPT'}
                     onPress={() => {
                       try {
@@ -523,9 +617,9 @@ const styles = StyleSheet.create({
     //letterSpacing: Resolution.nLetterSpacing,
   },
   zeroRecordContainer: {
-    marginHorizontal:
-      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     width: wp(92.5),
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
   },
   zeroRecordComponent: {
     color: Colors.blackText,

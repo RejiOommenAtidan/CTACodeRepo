@@ -161,11 +161,11 @@ useEffect(() => {
       <div className="app-sidebar-logo">
           <NavLink
             to="/Home"
-          //  title="eChatrel"
+          //  title="Chatrel"
             className="app-sidebar-logo">
             <div >
               <img
-                alt="eChatrel"
+                alt="Chatrel"
                 src={projectLogo}
                 width="60px"
               />
@@ -173,7 +173,7 @@ useEffect(() => {
             <div className="app-sidebar-logo--text" >
             
 
-              <b style={{color:'#1ab700',fontSize:"32px"}}>e</b><b style={{color:'#2a5cff',fontSize:"32px" }} >Chatrel</b>
+              <b style={{color:'#2a5cff',fontSize:"32px" }} >Chatrel</b>
 
           
             </div>

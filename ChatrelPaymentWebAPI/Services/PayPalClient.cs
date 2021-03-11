@@ -5,6 +5,7 @@ using PayPalHttp;
 using System.IO;
 using System.Text;
 using System.Runtime.Serialization.Json;
+using ChatrelDBL.BaseClassRepositories.Masters;
 
 namespace ChatrelPaymentWebAPI.Services
 {
@@ -16,7 +17,10 @@ namespace ChatrelPaymentWebAPI.Services
          */
         public static PayPalEnvironment environment()
         {
-            return new SandboxEnvironment("AdqxwGp5tKswa3OfXdw5dcCp5SQNtAEkDmPI9InDri3FcXnGCfWfpwhBsLRenYqMwrUrUTLLbnGTOM14", "ECrAFFlN_jB_Z62_rc9Ukt2Mv7Yeov2saaDbNCT3Ef_bP9JS2ke9y_G-8VGqQiTB7o3sGJRGFeBF-QKD");
+            string clientId = ChatrelConfigRepository.GetValueByKey("PayPalClientID").ToString();
+            string secret = ChatrelConfigRepository.GetValueByKey("PayPalSecret").ToString();
+            return new SandboxEnvironment(clientId, secret);
+            //return new SandboxEnvironment("AdqxwGp5tKswa3OfXdw5dcCp5SQNtAEkDmPI9InDri3FcXnGCfWfpwhBsLRenYqMwrUrUTLLbnGTOM14", "ECrAFFlN_jB_Z62_rc9Ukt2Mv7Yeov2saaDbNCT3Ef_bP9JS2ke9y_G-8VGqQiTB7o3sGJRGFeBF-QKD");
         }
 
         /**
