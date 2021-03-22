@@ -1256,7 +1256,7 @@ const close=(id)=>{
                     </ListItem>}
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 52)) !== undefined
                       &&
-                    <ListItem
+                   <> <ListItem
                       component="a"
                       button
                       href="/Chatrel/Report">
@@ -1267,7 +1267,22 @@ const close=(id)=>{
                         />
                       </div>
                       <span>Chatrel Report</span>
-                    </ListItem>}
+                    </ListItem>
+                    <ListItem
+                      component="a"
+                      button
+                      href="/Chatrel/ChatrelDefaulterReport">
+                      <div className="mr-2">
+                        <FontAwesomeIcon
+                          icon={['fas', 'chevron-right']}
+                          className="font-size-xs opacity-3"
+                        />
+                      </div>
+                      <span>Chatrel Defaulter Report</span>
+                    </ListItem>
+                    </>
+                    
+                    }
                  
                  
                 </List>

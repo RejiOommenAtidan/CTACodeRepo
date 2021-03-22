@@ -95,6 +95,7 @@ export const EditDialog = (props) => {
   const [rejectDate, setRejectDate] = useState(props.bookFullObj.dtReject ? (props.bookFullObj.dtReject).split('T')[0] : null);
   const [nIssuedOrNotID, setIssueAction] = React.useState(props.bookFullObj.nIssuedOrNotID);
   const [returnDate, setReturnDate] = React.useState(props.bookFullObj.dtReturnEmail ? (props.bookFullObj.dtReturnEmail).split('T')[0] : null);
+  const [dtEmailSend, setEmailSendDate] = React.useState(props.bookFullObj.dtEmailSend ? (props.bookFullObj.dtEmailSend).split('T')[0] : null);
   const [sMadebStatusRemark, setMadebStatusRemark] = React.useState(props.bookFullObj.sMadebStatusRemark);
   const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
 
@@ -116,6 +117,7 @@ export const EditDialog = (props) => {
     dtReject: Moment(rejectDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(rejectDate).format('YYYY-MM-DD') : null,
     nIssuedOrNotID: nIssuedOrNotID,
     dtReturnEmail: Moment(returnDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(returnDate).format('YYYY-MM-DD') : null,
+    dtEmailSend: Moment(dtEmailSend).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtEmailSend).format('YYYY-MM-DD') : null,
     nMadebStatusID,
     sMadebStatusRemark,
     nUpdatedBy: userId

@@ -54,11 +54,11 @@ namespace CTADBL.ViewModelsRepositories
                                             lnkgbrelation AS srel ON gb.sGBID = srel.sGBID
                                                 AND srel.nrelationid = 3
                                                 LEFT JOIN
-                                            lnkgbdocument AS fdoc ON frel.sGBIDRelation = fdoc.sGBId
+                                            lnkgbdocument AS fdoc ON frel.sGBIDRelation = fdoc.sGBId AND fdoc.sDocType = 'Photo Identity'
                                             LEFT JOIN
-                                            lnkgbdocument AS mdoc ON mrel.sGBIDRelation = mdoc.sGBId
+                                            lnkgbdocument AS mdoc ON mrel.sGBIDRelation = mdoc.sGBId AND mdoc.sDocType = 'Photo Identity'
                                             LEFT JOIN
-                                            lnkgbdocument AS sdoc ON srel.sGBIDRelation = sdoc.sGBId
+                                            lnkgbdocument AS sdoc ON srel.sGBIDRelation = sdoc.sGBId AND sdoc.sDocType = 'Photo Identity'
                                         WHERE gb.sGBId = @sGBID;");
 
             using (var command = new MySqlCommand(sql))

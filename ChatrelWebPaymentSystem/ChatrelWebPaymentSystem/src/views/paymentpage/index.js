@@ -68,7 +68,7 @@ import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import projectLogo from '../../assets/images/CTALogo.png';
 import { useMediaQuery } from 'react-responsive'
 
-import {sPayPal_ClientID} from '../../config/commonConfig';
+//import {sPayPal_ClientID} from '../../config/commonConfig';
 
 
 import { useDispatch } from 'react-redux';
@@ -228,7 +228,7 @@ export default function Chatrel(props) {
   const updateAuthRegion = (e, value) => {
     console.log('Auth region changed to ', value.id, 'at row ', e.target.id);
     console.log("test Auth2",value);
-    if(!popupOnce && value.sCurrencyCode==='INR'){
+    if(!popupOnce && value.sCurrencyCode==='INR' && !value.isChild){
       setPopup(true);
       setPopupOnce(true);
     }
@@ -238,6 +238,9 @@ export default function Chatrel(props) {
     const index = parseInt(e.target.id);
     let chatrelObj = [...paymentData];
     let tempAuthArray =[...authRegion];
+    if(value.sCurrencyCode === 'INR'){
+      console.log('test Auth2',true);
+    }
     for (var forIndex = index; forIndex < chatrelObj.length; forIndex++) {
        
    tempAuthArray[forIndex]=value;
@@ -253,8 +256,14 @@ export default function Chatrel(props) {
       value.sCurrencyCode === 'INR'
         ? chatrelObj[forIndex].nChatrelMealINR
         : chatrelObj[forIndex].nChatrelMealUSD;
-   // chatrelObj[forIndex].nCurrentChatrelSalaryAmt = 0;
-
+   // 
+      if(value.sCurrencyCode === 'INR'){
+        chatrelObj[forIndex].nCurrentChatrelSalaryAmt = 0;
+        
+      }
+      else{
+        chatrelObj[forIndex].nCurrentChatrelSalaryAmt = chatrelObj[forIndex].isChild?0:chatrelObj[forIndex].nSalaryUSD;
+      }
     setPaymentData(chatrelObj);
     calculate(forIndex);
     }
@@ -267,9 +276,10 @@ export default function Chatrel(props) {
     let index;
     if (target.type === 'text') {
       index = parseInt(target.id);
-      // payObj[index].nCurrentChatrelSalaryAmt = parseFloat(target.value)
-      //   ? parseFloat(target.value)
-      //   : 0;
+      payObj[index].nCurrentChatrelSalaryAmt = parseFloat(target.value)
+        ? parseFloat(target.value)
+        : 0;
+        calculate(index);
     } else {
       console.log(target.value);
       index = parseInt(target.value);
@@ -562,6 +572,12 @@ let textFieldDisabled=false;
         console.log(error.config);
         console.log(error.message);
         console.log(error.response);
+        if(error.response.status!==401){
+          setBackdrop(false);
+          setAlertMessage('Something went wrong, please try again later');
+          setAlertType('error');
+          snackbarOpen();
+        }
       });
   };
   const pingPong =() =>{
@@ -578,6 +594,12 @@ let textFieldDisabled=false;
     })
     .catch(error => {
       console.log("Error ", error.response);
+      if(error.response.status!==401){
+        setBackdrop(false);
+        setAlertMessage('Something went wrong, please try again later');
+        setAlertType('error');
+        snackbarOpen();
+      }
       if (error.response) {
         console.error(error.response);
       
@@ -627,6 +649,12 @@ let textFieldDisabled=false;
     })
     .catch(error => {
       console.log("Error ", error.response);
+      if(error.response.status!==401){
+        setBackdrop(false);
+        setAlertMessage('Something went wrong, please try again later');
+        setAlertType('error');
+        snackbarOpen();
+      }
       if (error.response) {
         console.error(error.response);
         console.error(error.response.data);
@@ -713,14 +741,15 @@ let textFieldDisabled=false;
                     //console.log('Salary amount',resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt);
                   }
                   else{
+                    if(resp.data.chatrel.gbChatrels[0].sAuthRegionCurrency!=='INR'){
                     for (var forIndex = 0; forIndex < resp.data.chatrel.gbChatrels.length; forIndex++) {
                       // console.log('test loop',payObj[forIndex].dtCurrentChatrelFrom);
-                      if( !resp.data.chatrel.gbChatrels[forIndex].isChild){
+                      if( !resp.data.chatrel.gbChatrels[forIndex].isChild ){
                         resp.data.chatrel.gbChatrels[forIndex].nCurrentChatrelSalaryAmt = resp.data.chatrel.gbChatrels[forIndex].nSalaryUSD;
                        // calculate(forIndex);
                       }
                       
-                    }
+                    }}
                   }
                   setSummaryData(resp.data.chatrel.chatrelPayment);
                  // let payObj = [...resp.data.chatrel.gbChatrels];
@@ -750,6 +779,12 @@ let textFieldDisabled=false;
               }
             })
             .catch((error) => {
+              if(error.response.status!==401){
+                setBackdrop(false);
+                setAlertMessage('Something went wrong, please try again later');
+                setAlertType('error');
+                snackbarOpen();
+              }
               console.log(error.message);
               console.log(error.config);
               //console.log(error.response.data);
@@ -757,6 +792,11 @@ let textFieldDisabled=false;
         }
       })
       .catch((error) => {
+        if(error.response.status!==401){
+          setAlertMessage('Something went wrong, please try again later');
+          setAlertType('error');
+          snackbarOpen();
+        }
         console.log(error.message);
         console.log(error.config);
       });
@@ -792,10 +832,12 @@ const runOnceAuthRegion=()=>{
    }
    setAuthRegion(tempAuthArray);
    console.log('test Auth',tempAuthArray[0]);
-   if(tempAuthArray[0].sCurrencyCode==='INR'?true:false)
+   console.log('test Chatrel',chatrelObj[0][0].nCurrentChatrelSalaryAmt===0 && tempAuthArray[0].sCurrencyCode==='INR' );
+   if(tempAuthArray[0].sCurrencyCode==='INR' && chatrelObj[0][0].nCurrentChatrelSalaryAmt===0)
    {
     setPopup(true);
-    setPopupOnce(true);
+
+    //setPopupOnce(true);
    }
    
 
@@ -832,7 +874,7 @@ const runOnceAuthRegion=()=>{
         <>
          {paymentDiv && < >
             {/*<Typography className="myfont" variant="h4" style={{textAlign:'center',color:'#000',fontFamily:fontName,fontWeight:"bold"}} gutterBottom>{pageFrom.toUpperCase()}</Typography>*/}
-            <Grid container spacing={1} style={{margin:'30px'}}>
+            <Grid container spacing={1} style={{marginTop:'30px'}}>
      <Grid item xs={12} sm={1} ></Grid>
      <Grid item xs={12} sm={10}>
      <Card className="card-box card-box-alt  mx-auto my-4 shadow-lg " style={{borderBottom: "10px solid #4191ff"}} >
@@ -853,32 +895,23 @@ const runOnceAuthRegion=()=>{
                     gutterBottom>
                     PERSONAL DETAILS
                   </Typography>
-
+                  <Grid container spacing={2} justify="center"  style={{
+                                
+                                color: '#000'
+                              }}>
+            <Grid item xs={12} sm={6} align="left">
+            <b>NAME: </b>{dataAPI.sName}
+            </Grid>
+            <Grid item xs={12} sm={6} align="left">
+            <b>PAID UNTIL: </b>{ Moment(dataAPI.nPaidUntil).format('DD-MM-YYYY')}
+            </Grid>
+            <Grid item xs={12} align="left">
+            <b>GREEN BOOK ID: </b>{dataAPI.sCountryID + dataAPI.chatrelPayment.sGBId}
+            </Grid>
+          </Grid>
                   {/* <Card
                     style={{  padding: 20,marginBottom:20,border:'1px solid grey'}} className="shadow-first shadow-xl"> */}
-                    <Grid container spacing={3} className="text-black">
-                      <Grid item xs={12} sm={6}>
                    
-                            {/* <div className="d-flex align-items-center justify-content-start">
-                              <div
-                                className="badge badge-first px-3"
-                                style={{ fontSize: '14px' }}>
-                                Name
-                              </div>
-                            </div> */}
-                            <div
-                              style={{
-                                marginTop: '7px',
-                                color: '#000'
-                              }} /*className="pb-3 d-flex justify-content-between"*/
-                            >
-                            <div> <b>NAME: </b>{dataAPI.sName}</div><br/>
-                            <div> <b>GREEN BOOK ID: </b>{dataAPI.sCountryID + dataAPI.chatrelPayment.sGBId}</div>
-
-
-                            </div>
-                     
-                      </Grid>
                       {/* <Grid item xs={12} sm={4}>
                         <Card className="card-box border-first">
                           <div className="card-indicator bg-success" />
@@ -901,18 +934,7 @@ const runOnceAuthRegion=()=>{
                           </CardContent>
                         </Card>
                       </Grid> */}
-                      <Grid item xs={12} sm={6} alignItems="flex-end">
-                
-                            <div
-                              style={{
-                                marginTop: '7px',
-                                color: '#000',textAlign:'right'
-                              }} /*className="pb-3 d-flex justify-content-between"*/
-                            >
-                            <b>PAID UNTIL: </b>{ Moment(dataAPI.nPaidUntil).format('DD-MM-YYYY')}
-                            </div>
-                      
-                      </Grid>
+              
                       {/* <Grid item xs={12} sm={3}>
                         <Card className="card-box border-first">
                           <div className="card-indicator bg-success" />
@@ -935,7 +957,7 @@ const runOnceAuthRegion=()=>{
                           </CardContent>
                         </Card>
                       </Grid> */}
-                    </Grid>
+                   
                   {/* </Card> */}
                   <br/>
                   <Typography
@@ -1058,11 +1080,16 @@ const runOnceAuthRegion=()=>{
                   type="checkbox"
                   disabled={row.isChild}
                 />*/}
-              <div className="m-2">
+             { !row.isChild && <div className="m-2">
                             <Switch id="employed" checked={row.nCurrentChatrelSalaryAmt>0} onChange={(e) => {
                               console.log('test',e);
-                              modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
-                        </div>
+                              modify(e.target);}} disabled={row.isChild}  value={index}  className="switch-small toggle-switch-first"/>
+                        </div>}
+                        { row.isChild && <div className="m-2">
+                            <Switch id="employed" checked={row.nCurrentChatrelSalaryAmt>0} onChange={(e) => {
+                              console.log('test',e);
+                              modify(e.target);}} style={{pointerEvents:'none'}}  value={index}  className="switch-small toggle-switch-first"/>
+                        </div>}
             </Td>
             )}
             {row.sAuthRegionCurrency === 'INR' && (
@@ -1070,6 +1097,7 @@ const runOnceAuthRegion=()=>{
               <input
                 id={index}
                 type="text"
+                disabled={row.isChild}
                 style={{
                   maxWidth: '100px',
                   border: 'none',
@@ -1486,152 +1514,173 @@ const runOnceAuthRegion=()=>{
        
       </Tbody>
     </Table>)}
-    <Grid
-                      container
-                      spacing={3}
-                      className="text-black"
-                      justify="center">
-                      <Grid item xs={12} sm={12} align="right" style={{marginRight:'50px'}}>
-                        
-                        <div
-                                className="badge badge-first px-3"
-                                style={{ fontSize: '14px',marginBottom:'15px',marginRight:'20px' }}>
-                                Business Donation
-                              </div>
-                        <div>
-                        <TextField
-                          className="h-50"
-                          value={bdonation}
-                         // variant="outlined"
-                         type='number'
-                          onChange={(e) => {
-                            if (e.target.value === '') {
-                              calcTotal(paymentData, adonation, 0);
-                              setBdonation(0);
-                            } else {
-                              calcTotal(
-                                paymentData,
-                                adonation,
-                                parseFloat(e.target.value)
-                              );
-                              setBdonation(parseFloat(e.target.value));
-                            }
-                          }}
-                          inputProps={{ min: 0 }}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                $
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                        
-                        </div>
-                      </Grid>
-                      <Grid item xs={12} sm={12} align="right" style={{marginRight:'50px'}}>
-                        <div
-                                className="badge badge-first px-3"
-                                style={{ fontSize: '14px',marginBottom:'15px',marginRight:'20px' }}>
-                                Additional Donation
-                              </div>
-                              <div>
-                        <TextField
-                         
-                          value={adonation}
-                          type='number'
-                          onChange={(e) => {
-                            if (e.target.value === '') {
-                              calcTotal(paymentData, 0, bdonation);
-                              setAdonation(0);
-                            } else {
-                              calcTotal(
-                                paymentData,
-                                parseFloat(e.target.value),
-                                bdonation
-                              );
-                              setAdonation(parseFloat(e.target.value));
-                            }
-                          }}
-                          inputProps={{ min: 0 }}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                $
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                        </div>
-                      </Grid>
-                    </Grid>
-                  <div style={{textAlign:'right',marginRight:'100px'}}>
-                    <div className="font-weight-bold text-black display-2 mt-4 mb-1">
-                      
-                      <CountUp
-                                    start={0}
-                                    end={total}
-                                    duration={1}
-                                    //deplay={2}
-                                    separator=""
-                                    decimals={2}
-                                    decimal="."
-                                    prefix="$ "
-                                    suffix=""
-                                />
+    <Grid container spacing={3}>
+                            <Grid item xs={12} sm={4}></Grid>
+                            <Grid item xs={12} sm={4}></Grid>
+                            <Grid item xs={12} sm={4}>
+                              <Grid container spacing={1} justify="center">
+                                <Grid item xs={12} align="center">
+                                  <div
+                                    className="badge badge-first px-3"
+                                    style={{
+                                      fontSize: '14px',
+                                      marginBottom: '15px',
+                                      marginRight: '20px'
+                                    }}>
+                                    Business Donation
+                                  </div>
+                                  <div>
+                                    <TextField
+                                      className="h-50"
+                                      value={bdonation}
+                                      // variant="outlined"
+                                      type="number"
+                                      onChange={(e) => {
+                                        if (e.target.value === '') {
+                                          calcTotal(paymentData, adonation, 0);
+                                          setBdonation(0);
+                                        } else {
+                                          calcTotal(
+                                            paymentData,
+                                            adonation,
+                                            parseFloat(e.target.value)
+                                          );
+                                          setBdonation(
+                                            parseFloat(e.target.value)
+                                          );
+                                        }
+                                      }}
+                                      inputProps={{ min: 0 }}
+                                      InputProps={{
+                                        startAdornment: (
+                                          <InputAdornment position="start">
+                                            $
+                                          </InputAdornment>
+                                        )
+                                      }}
+                                    />
+                                  </div>
+                                </Grid>
+                                <Grid item xs={12} align="center">
+                                  <div
+                                    className="badge badge-first px-3"
+                                    style={{
+                                      fontSize: '14px',
+                                      marginBottom: '15px',
+                                      marginRight: '20px'
+                                    }}>
+                                    Additional Donation
+                                  </div>
+                                  <div>
+                                    <TextField
+                                      value={adonation}
+                                      type="number"
+                                      onChange={(e) => {
+                                        if (e.target.value === '') {
+                                          calcTotal(paymentData, 0, bdonation);
+                                          setAdonation(0);
+                                        } else {
+                                          calcTotal(
+                                            paymentData,
+                                            parseFloat(e.target.value),
+                                            bdonation
+                                          );
+                                          setAdonation(
+                                            parseFloat(e.target.value)
+                                          );
+                                        }
+                                      }}
+                                      inputProps={{ min: 0 }}
+                                      InputProps={{
+                                        startAdornment: (
+                                          <InputAdornment position="start">
+                                            $
+                                          </InputAdornment>
+                                        )
+                                      }}
+                                    />
+                                  </div>
+                                </Grid>
+                                <Grid item xs={12} align="center">
+                                 
+                                    <div className="font-weight-bold text-black display-2 mt-4 mb-1">
+                                      <CountUp
+                                        start={0}
+                                        end={total}
+                                        duration={1}
+                                        //deplay={2}
+                                        separator=""
+                                        decimals={2}
+                                        decimal="."
+                                        prefix="$ "
+                                        suffix=""
+                                      />
+                                    </div>
+                                    <div className="font-size-xl text-dark opacity-8">
+                                      Grand Total
+                                    </div>
+                                  
+
+                                  {total.toFixed(2) != 0.0 && (
+                                    <div
+                                                                          className="">
+                                      <br />
+                                      <PayPalButton
+                                        amount={total.toFixed(2)}
+                                        style={{ label: 'pay' }}
+                                        options={{
+                                          clientId: paypalID,
+                                          currency: 'USD'
+                                        }}
+                                        shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                                        onSuccess={(details, data) => {
+                                          //setBackdrop(true);
+                                          //alert("Transaction completed by " + details.payer.name.given_name);
+                                          console.log('Details:', details);
+                                          console.log('Data', data);
+                                          setPaypalID(details.id);
+                                          setBackdrop(false);
+                                          setShowPaypalDetails(true);
+                                          submit(details);
+                                        }}
+                                        onError={(err) => {
+                                          console.log(err);
+                                          setAlertMessage(
+                                            'Chatrel donation failed.'
+                                          );
+                                          setAlertType('error');
+                                          snackbarOpen();
+                                        }}
+                                        onCancel={(data) => {
+                                          setBackdrop(false);
+                                        }}
+                                        createOrder={(data, actions) => {
+                                          setBackdrop(true);
+                                          pingPong();
+                                          return actions.order.create({
+                                            purchase_units: [
+                                              {
+                                                amount: {
+                                                  value: total.toFixed(2)
+                                                }
+                                              }
+                                            ]
+                                          });
+                                        }}
+                                        // onError={(details, data)=>{console.log(details);}}
+                                      />
+                                    </div>
+                                  )}
                                 
-                      </div>
-                      <div className="font-size-xl text-dark opacity-8">
-                        Grand Total
-                      </div>
-                   </div>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+    
                       
-                      {total.toFixed(2) != 0.0 && (
-                    <div
-                      style={{ textAlign: 'center',marginLeft:'75%' }}
-                      className="w-25 ">
-                      <br />
-                      <PayPalButton
-
-                    
-                        amount={total.toFixed(2)}
-                        style={{ label: 'pay' }}
-                        options={{
-                          clientId:paypalID,
-                          currency: 'USD'
-                        }}
-                        shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                        onSuccess={(details, data) => {
-                          //setBackdrop(true);
-                          //alert("Transaction completed by " + details.payer.name.given_name);
-                          console.log('Details:', details);
-                          console.log('Data', data);
-                          setPaypalID(details.id);
-                          setBackdrop(false);
-                          setShowPaypalDetails(true);
-                          submit(details);
-
-                         
-                        }}
-                        onError={(err) => {
-                          console.log(err);
-                          setAlertMessage('Chatrel donation failed.');
-                          setAlertType('error');
-                          snackbarOpen();
-                        }}
-                        onCancel={(data)=>{
-                          setBackdrop(false);
-                        }}
-                        createOrder={(data, actions)=> { 
-                          setBackdrop(true);
-                          pingPong();
-                          return actions.order.create({ purchase_units: [ { amount: { value: total.toFixed(2), }, }, ], }); 
-                        
-                        }}
-                        // onError={(details, data)=>{console.log(details);}}
-                      />
-                    </div>
-                  )}
+                     
+                 
+                  
                  </div>     
                   {/* </Card> */}
 
@@ -1836,624 +1885,14 @@ const runOnceAuthRegion=()=>{
                                 </Card>
                 </div>
               )}
-          <Dialog
-            open={open}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={handleClose}
-            // aria-labelledby="alert-dialog-slide-title"
-            //aria-describedby="alert-dialog-slide-description"
-          >
-            {/*<DialogTitle id="alert-dialog-slide-title">{}</DialogTitle>*/}
-            <DialogContent>
-              <DialogContentText>
-                {receiptData && (
-                  // <table
-                  //   /*ref={ref}*/ id="mytable"
-                  //   className="mytable"
-                  //   cellspacing="0"
-                  //   style={{
-                  //     border: '3px solid #000000',
-                  //     background: `linear-gradient(rgba(255,255,255,.9), rgba(255,255,255,.9)),url(${CTALogo}) no-repeat center `,
-                     
-                  //   }}>
-                  //   <tr>
-                  //     <td width="20"></td>
-                  //     <td width="200"></td>
-                  //     <td width="175"></td>
-                  //     <td width="175"></td>
-
-                  //     <td width="20"></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td width="20"></td>
-                  //     <td colSpan="2" height="35" align="left" valign="middle">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={5}
-                  //           color="#000000">
-                  //           ༄༅། །བཙན་བྱོལ་བོད་མིའི་དཔྱ་དངུལ་བྱུང་འཛིན་ཨང་།
-                  //         </font>
-                  //       </b>
-                  //     </td>
-
-                  //     <td align="right">
-                  //       <img
-                  //         width="75px"
-                  //         height="75px"
-                  //         src={'data:image/png;base64,' + receiptData.qrcode}
-                  //       />
-                  //     </td>
-                  //     <td width="20"></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td width="20"></td>
-                  //     <td colspan="2" height="28" align="left" valign="middle">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           མིང་།
-                  //         </font>
-                  //         <font size={4} color="#000000">
-                  //           {' '}
-                  //           {receiptData.receipt.sFirstName}
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td align="right" valign="middle">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           རང་ལོ། {receiptData.receipt.nAge}
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td width="20"></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td
-                  //       colspan="5"
-                  //       /* style={{borderRight:"3px solid #000000"}}*/ height="27"
-                  //       align="left"
-                  //       valign="top">
-                  //       <table>
-                  //         <tr>
-                  //           <td
-                  //             style={{
-                  //               width: '200px',
-                  //               paddingLeft: '20px',
-                  //               borderTop: '3px solid #000000'
-                  //             }}>
-                  //             <b>
-                  //               <font
-                  //                 face="Microsoft Himalaya"
-                  //                 size={4}
-                  //                 color="#000000">
-                  //                 {' '}
-                  //                 དཔྱ་དེབ་ཨང་།
-                  //               </font>
-                  //             </b>
-                  //           </td>
-                  //           <td
-                  //             align="center"
-                  //             style={{ border: '3px solid #000000' }}
-                  //             width="32">
-                  //             <b>
-                  //               <font size={4} color="#000000">
-                  //                 {receiptData.receipt.sCountryID.charAt(0)}
-                  //               </font>
-                  //             </b>
-                  //           </td>
-                  //           <td
-                  //             align="center"
-                  //             style={{
-                  //               borderTop: '3px solid #000000',
-                  //               borderBottom: '3px solid #000000',
-                  //               borderRight: '3px solid #000000'
-                  //             }}
-                  //             width="32">
-                  //             <b>
-                  //               <font size={4} color="#000000">
-                  //                 {receiptData.receipt.sCountryID.charAt(1)}
-                  //               </font>
-                  //             </b>
-                  //           </td>
-                  //           <td
-                  //             align="center"
-                  //             style={{
-                  //               borderTop: '3px solid #000000',
-                  //               borderBottom: '3px solid #000000',
-                  //               borderRight: '3px solid #000000'
-                  //             }}
-                  //             width="32">
-                  //             <b>
-                  //               <font size={4} color="#000000">
-                  //                 {receiptData.receipt.sGBID.charAt(0)}
-                  //               </font>
-                  //             </b>
-                  //           </td>
-                  //           <td
-                  //             align="center"
-                  //             style={{
-                  //               borderTop: '3px solid #000000',
-                  //               borderBottom: '3px solid #000000',
-                  //               borderRight: '3px solid #000000'
-                  //             }}
-                  //             width="32">
-                  //             <b>
-                  //               <font size={4} color="#000000">
-                  //                 {receiptData.receipt.sGBID.charAt(1)}
-                  //               </font>
-                  //             </b>
-                  //           </td>
-                  //           <td
-                  //             align="center"
-                  //             style={{
-                  //               borderTop: '3px solid #000000',
-                  //               borderBottom: '3px solid #000000',
-                  //               borderRight: '3px solid #000000'
-                  //             }}
-                  //             width="32">
-                  //             <b>
-                  //               <font size={4} color="#000000">
-                  //                 {receiptData.receipt.sGBID.charAt(2)}
-                  //               </font>
-                  //             </b>
-                  //           </td>
-                  //           <td
-                  //             align="center"
-                  //             style={{
-                  //               borderTop: '3px solid #000000',
-                  //               borderBottom: '3px solid #000000',
-                  //               borderRight: '3px solid #000000'
-                  //             }}
-                  //             width="32">
-                  //             <b>
-                  //               <font size={4} color="#000000">
-                  //                 {receiptData.receipt.sGBID.charAt(3)}
-                  //               </font>
-                  //             </b>
-                  //           </td>
-                  //           <td
-                  //             align="center"
-                  //             style={{
-                  //               borderTop: '3px solid #000000',
-                  //               borderBottom: '3px solid #000000',
-                  //               borderRight: '3px solid #000000'
-                  //             }}
-                  //             width="32">
-                  //             <b>
-                  //               <font size={4} color="#000000">
-                  //                 {receiptData.receipt.sGBID.charAt(4)}
-                  //               </font>
-                  //             </b>
-                  //           </td>
-                  //           <td
-                  //             align="center"
-                  //             style={{
-                  //               borderTop: '3px solid #000000',
-                  //               borderBottom: '3px solid #000000',
-                  //               borderRight: '3px solid #000000'
-                  //             }}
-                  //             width="32">
-                  //             <b>
-                  //               <font size={4} color="#000000">
-                  //                 {receiptData.receipt.sGBID.charAt(5)}
-                  //               </font>
-                  //             </b>
-                  //           </td>
-                  //           <td
-                  //             align="center"
-                  //             style={{
-                  //               borderTop: '3px solid #000000',
-                  //               borderBottom: '3px solid #000000',
-                  //               borderRight: '3px solid #000000'
-                  //             }}
-                  //             width="32">
-                  //             <b>
-                  //               <font size={4} color="#000000">
-                  //                 {receiptData.receipt.sGBID.charAt(6)}
-                  //               </font>
-                  //             </b>
-                  //           </td>
-                  //         </tr>
-                  //       </table>
-                  //     </td>
-                  //   </tr>
-
-                  //   <tr>
-                  //     <td width="20"></td>
-                  //     <td colSpan="3" height="7" align="left" valign="top">
-                  //       <font
-                  //         face="Microsoft Himalaya"
-                  //         size={4}
-                  //         color="#000000"></font>
-                  //     </td>
-                  //     <td width="20"></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td
-                  //       width="20"
-                  //       height="26"
-                  //       style={{ borderBottom: '1px solid #000000' }}></td>
-                  //     <td
-                  //       colspan="2"
-                  //       style={{ borderBottom: '1px solid #000000' }}
-                  //       align="left"
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           ༡། དཔྱ་དངུལ།
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td
-                  //       style={{ borderBottom: '2px solid #000000' }}
-                  //       align="left"
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           སྒོར།{' '}
-                  //           {receiptData.receipt.nChatrelAmount.toFixed(2)}
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td
-                  //       width="20"
-                  //       style={{ borderBottom: '2px solid #000000' }}></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td
-                  //       width="20"
-                  //       style={{ borderBottom: '1px solid #000000' }}
-                  //       height="26"></td>
-                  //     <td
-                  //       colspan="2"
-                  //       style={{ borderBottom: '1px solid #000000' }}
-                  //       align="left"
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           ༢། ཟས་བཅད་དོད།
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td
-                  //       style={{ borderBottom: '2px solid #000000' }}
-                  //       align="left"
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           སྒོར། {receiptData.receipt.nChatrelMeal.toFixed(2)}
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td
-                  //       width="20"
-                  //       style={{ borderBottom: '2px solid #000000' }}></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td
-                  //       width="20"
-                  //       style={{ borderBottom: '1px solid #000000' }}
-                  //       height="26"></td>
-                  //     <td
-                  //       colspan="2"
-                  //       style={{ borderBottom: '1px solid #000000' }}
-                  //       align="left"
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           ༣། ཕོགས་འབབ།
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td
-                  //       style={{ borderBottom: '2px solid #000000' }}
-                  //       align="left"
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           སྒོར།{' '}
-                  //           {receiptData.receipt.nCurrentChatrelSalaryAmt.toFixed(
-                  //             2
-                  //           )}
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td
-                  //       width="20"
-                  //       style={{ borderBottom: '2px solid #000000' }}></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td
-                  //       width="20"
-                  //       style={{ borderBottom: '1px solid #000000' }}
-                  //       height="26"></td>
-                  //     <td
-                  //       colspan="2"
-                  //       style={{ borderBottom: '1px solid #000000' }}
-                  //       align="left"
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           ༤། ཚོང་ཁེའི་བློས་བཅད་ཞལ་འདེབས།
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td
-                  //       style={{ borderBottom: '2px solid #000000' }}
-                  //       align="left"
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           སྒོར།{' '}
-                  //           {receiptData.receipt.nChatrelBusinessDonationAmt
-                  //             ? receiptData.receipt.nChatrelBusinessDonationAmt.toFixed(
-                  //                 2
-                  //               )
-                  //             : 0}
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td
-                  //       width="20"
-                  //       style={{ borderBottom: '2px solid #000000' }}></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td
-                  //       width="20"
-                  //       style={{ borderBottom: '1px solid #000000' }}
-                  //       height="26"></td>
-                  //     <td
-                  //       colspan="2"
-                  //       style={{ borderBottom: '1px solid #000000' }}
-                  //       align="left"
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           ༥། དཔྱ་དངུལ་འབུལ་ཆད་འབབ།
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td
-                  //       style={{ borderBottom: '2px solid #000000' }}
-                  //       align="left"
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           སྒོར།{' '}
-                  //           {(
-                  //             receiptData.receipt.nArrears +
-                  //             receiptData.receipt.nLateFees
-                  //           ).toFixed(2)}{' '}
-                  //           ({receiptData.receipt.dtArrearsFrom.split('-')[0]}-
-                  //           {receiptData.receipt.dtArrearsTo.split('-')[0]})
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td
-                  //       width="20"
-                  //       style={{ borderBottom: '2px solid #000000' }}></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td
-                  //       width="20"
-                  //       style={{ borderBottom: '1px solid #000000' }}
-                  //       height="26"></td>
-                  //     <td
-                  //       colspan="2"
-                  //       style={{ borderBottom: '1px solid #000000' }}
-                  //       align="left"
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           ༦། འཕར་འབུལ་ཞལ་འདེབས།
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td
-                  //       style={{ borderBottom: '2px solid #000000' }}
-                  //       align="left"
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           སྒོར།{' '}
-                  //           {receiptData.receipt.nChatrelAddtionalDonationAmt
-                  //             ? receiptData.receipt.nChatrelAddtionalDonationAmt.toFixed(
-                  //                 2
-                  //               )
-                  //             : 0}
-                  //         </font>
-                  //       </b>
-                  //     </td>
-                  //     <td
-                  //       width="20"
-                  //       style={{ borderBottom: '2px solid #000000' }}></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td width="20"></td>
-                  //     <td colSpan="3" height="10" align="left" valign="top">
-                  //       <font
-                  //         face="Microsoft Himalaya"
-                  //         size={4}
-                  //         color="#000000"></font>
-                  //     </td>
-                  //     <td width="20"></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td width="20" height="34"></td>
-                  //     <td colspan="2" align="left" valign="bottom">
-                  //       <font
-                  //         face="Microsoft Himalaya"
-                  //         size={4}
-                  //         color="#000000">
-                  //         <b>བཅས་བསྡོམས་</b>{' '}
-                  //         US$/CA$/AU$/NT$/CHF/EURO/GBP/YEN/RR/
-                  //       </font>
-                  //     </td>
-                  //     <td
-                  //       align="left"
-                  //       style={{ paddingLeft: '30px' }}
-                  //       valign="bottom">
-                  //       <b>
-                  //         <font
-                  //           face="Microsoft Himalaya"
-                  //           size={4}
-                  //           color="#000000">
-                  //           སྒོར{' '}
-                  //         </font>
-                  //         <font size={4} color="#000000">
-                  //           {(
-                  //             receiptData.receipt.nChatrelAmount +
-                  //             receiptData.receipt.nChatrelMeal +
-                  //             receiptData.receipt.nCurrentChatrelSalaryAmt +
-                  //             receiptData.receipt.nArrears +
-                  //             receiptData.receipt.nLateFees +
-                  //             receiptData.receipt.nChatrelAddtionalDonationAmt +
-                  //             receiptData.receipt.nChatrelBusinessDonationAmt
-                  //           ).toFixed(2)}
-                  //         </font>{' '}
-                  //       </b>
-                  //     </td>
-                  //     <td width="20"></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td width="20" height="31"></td>
-                  //     <td colspan="3" align="left" valign="middle">
-                  //       <font
-                  //         face="Microsoft Himalaya"
-                  //         size={4}
-                  //         color="#000000">
-                  //         <b>
-                  //           ཕྱི་ལོ་༌་་་་་་་་་་་་་་༌༌༌༌༌་་་་་་་་་་་་༌༌༌༌༌༌༌༌༌༌༌ལོའི་དཔྱ་དངུལ་འབུལ་འབབ་རྩིས་འབུལ་བྱུང་བའི་འཛིན་དུ།{' '}
-                  //         </b>
-                  //       </font>
-                  //     </td>
-                  //     <td width="20"></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td width="20"></td>
-                  //     <td colSpan="3" height="32" align="left" valign="top">
-                  //       <font
-                  //         face="Microsoft Himalaya"
-                  //         size={4}
-                  //         color="#000000"></font>
-                  //     </td>
-                  //     <td width="20"></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td width="20" height="33"></td>
-                  //     <td colspan="3" align="left" valign="middle">
-                  //       <font
-                  //         face="Microsoft Himalaya"
-                  //         size={4}
-                  //         color="#000000">
-                  //         <b>
-                  //           བོད་རིགས་སྤྱི་མཐུན་ཚོགས་པའམ་བོད་རིགས་ཚོགས་པའི་ལས་དམ་དང་མཚན་རྟགས།
-                  //           &nbsp;&nbsp;&nbsp; ཕྱི་ལོ༌
-                  //           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ཟླ་
-                  //           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ཚེས་
-                  //           &nbsp;&nbsp;&nbsp; ལ།
-                  //         </b>
-                  //       </font>
-                  //     </td>
-                  //     <td width="20"></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td width="20"></td>
-                  //     <td colSpan="3" height="16" align="left" valign="top">
-                  //       <font size={2} color="#000000">
-                  //         This is computer generated Chatrel receipt, no
-                  //         signature required.
-                  //       </font>
-                  //     </td>
-                  //     <td width="20"></td>
-                  //   </tr>
-                  //   <tr>
-                  //     <td width="20"></td>
-                  //     <td colSpan="3" height="16" align="left" valign="top">
-                  //       <font size={2} color="#000000">
-                  //         You are advised to update chatrel contribution on your
-                  //         Greenbook from Office of Tibet or concerned Tibetan Association/Tibetan Community.
-                  //       </font>
-                  //     </td>
-                  //     <td width="20"></td>
-                  //   </tr>
-                   
-                  //   <tr>
-                  //     <td width="20"></td>
-                  //     <td colSpan="3" height="16" align="left" valign="top">
-                  //       <font
-                  //         face="Microsoft Himalaya"
-                  //         size={4}
-                  //         color="#000000"></font>
-                  //     </td>
-                  //     <td width="20"></td>
-                  //   </tr>
-                  // </table>
-                  <></>
-                )}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={printPDF}
-                variant="contained"
-                style={{ paddingTop: '5px', paddingBottom: '5px' }}
-                color="primary">
-                Print
-              </Button>
-              <Button
-                onClick={handleClose}
-                variant="contained"
-                style={{ paddingTop: '5px', paddingBottom: '5px' }}
-                color="primary">
-                Close
-              </Button>
-            </DialogActions>
-          </Dialog>
+          
+          {snackbar && (
+            <Alerts
+              alertObj={alertObj}
+              snackbar={snackbar}
+              snackbarClose={snackbarClose}
+            />
+          )}
           <Dialog
         open={popup}
         onClose={()=>{setPopup(false);}}
@@ -2474,13 +1913,6 @@ const runOnceAuthRegion=()=>{
          
         </DialogActions>
       </Dialog>
-          {snackbar && (
-            <Alerts
-              alertObj={alertObj}
-              snackbar={snackbar}
-              snackbarClose={snackbarClose}
-            />
-          )}
           <Backdrop className={classes.backdrop} open={backdrop}>
          
             <CircularProgress color="inherit" />

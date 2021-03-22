@@ -42,7 +42,7 @@ const Page404 = lazy(() => import('./example-pages/PageError404/index.js'));
 const Profile = lazy(() => import("./views/profile/index.js"));
 const FileDispute = lazy(() => import("./views/filedispute/index.js"));
 const ContactUs = lazy(() => import("./views/Contact/index.js"));
-const PrivacyPolicy = lazy(() => import("./views/privacy-policy/index.js"));
+const Privacy = lazy(() => import("./views/privacy-policy/index.js"));
 
 const Family = lazy(() => import("./views/family"));
 const Friends = lazy(() => import("./views/friends"));
@@ -101,7 +101,8 @@ const Routes = () => {
       // //console.log(jwtObject.exp-Date.now()); 
       // console.log(Math.floor(Date.now() / 1000)-jwtObject.exp); 
       // console.log(Date.now() -(jwtObject.exp * 1000));
-      const timer = () => setTimeout(()=>{setSessionTimeout(true);},((jwtObject.exp * 1000)-Date.now()));
+      const timer = () => setTimeout(()=>{setSessionTimeoutTrue();},((jwtObject.exp * 1000)-Date.now()));
+    // const timer = () => setTimeout(()=>{setSessionTimeoutTrue();},1000*60);
       setTimerId(timer());
        
        
@@ -118,7 +119,14 @@ const Routes = () => {
     //    alert('logout');
     //    setSessionTimeout(false);
     // }
+   // console.log(window.location.pathname);
+    const setSessionTimeoutTrue =()=>{
+      console.log("Timeout");
+       if(window.location.pathname!=='/Login' && window.location.pathname!=='/Privacy'){
+        setSessionTimeout(true);
+       }
 
+    }
     axios.interceptors.response.use((response) => {
       // Any status code that lie within the range of 2xx cause this function to trigger
       // Do something with response data
@@ -243,7 +251,8 @@ const Routes = () => {
               '/PaypalTest',
               '/Failure',
               '/Success',
-              '/404'
+              '/404',
+              '/Privacy',
                
           
           
@@ -263,6 +272,11 @@ const Routes = () => {
                     <Route path="/Failure" component={Failure} ></Route>
                     <Route path="/Success" component={Success} ></Route>
                     <Route path="/404" component={Page404} ></Route>
+                    <Route
+                      path='/Privacy'
+                      component={Privacy}
+                    />
+
                   </motion.div>
                 </Switch>
               </PresentationLayout>
@@ -299,7 +313,7 @@ const Routes = () => {
                 '/SelfPayment',
                 '/Profile',
                 '/FileDispute',
-                '/PrivacyPolicy',
+                
                 '/ContactUs'
               ]}>
               <LeftSidebar>
@@ -349,10 +363,7 @@ const Routes = () => {
                       component={SelfPayment}
                     />           
 
-                      <Route
-                      path='/PrivacyPolicy'
-                      component={PrivacyPolicy}
-                    />
+                    
 
                     <Route
                       path='/ContactUs'

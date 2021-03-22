@@ -8,8 +8,9 @@ import {
   Alert,
   Dimensions,
   TouchableWithoutFeedback,
-  Linking,
   Platform,
+  PermissionsAndroid,
+  Linking,
   // ActivityIndicator,
   // TouchableOpacity,
   // Image,
@@ -26,6 +27,9 @@ import {
   sFontNameBold,
   sFAQURL,
   sHimalayaFontName,
+  sFAQFolder,
+  sFAQDownloadMessageAndroid,
+  sFAQDownloadMessageIOS,
   // oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 
@@ -33,7 +37,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
+import {Link, useNavigation} from '@react-navigation/native';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import {removeGoogleCreds} from '../store/actions/GLoginAction';
 import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
@@ -48,6 +52,8 @@ import {useIsFocused} from '@react-navigation/native';
 import {Icon} from 'react-native-elements';
 import {Loader} from '../components/Loader';
 import {useFocusEffect} from '@react-navigation/native';
+import RNFetchBlob from 'react-native-fetch-blob';
+import Toast from 'react-native-root-toast';
 
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 // import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -107,6 +113,12 @@ const HomeScreen = (props) => {
   const [thankYouMessageContent, setThankYouMessageContent] = useState('');
   const [empty, setEmpty] = useState(false);
 
+  const [sHomePageImage, setsHomePageImage] = useState(null);
+  const [sHomePageMessage, setsHomePageMessage] = useState(null);
+  const [sHomePageName, setsHomePageName] = useState(null);
+  const [sHomePageDesignation, setsHomePageDesignation] = useState(null);
+  const [sFAQDocument, setsFAQDocument] = useState(null);
+
   const isFocused = useIsFocused();
 
   const aCard = [
@@ -158,12 +170,71 @@ const HomeScreen = (props) => {
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
   let navigation = useNavigation();
 
+  // const downloadFAQFile = async () => {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       await handleFAQOnPress();
+  //     } else {
+  //       Alert.alert(
+  //         'Permission Denied!',
+  //         'You need to give storage permission to download the file',
+  //       );
+  //     }
+  //   } catch (err) {
+  //     console.warn(err);
+  //   }
+  // };
+
+  // const handleFAQOnPress = async () => {
+  //   setbLoader(true);
+  //   const {dirs} = RNFetchBlob.fs;
+  //   let fPath = Platform.select({
+  //     ios: dirs.DocumentDir,
+  //     android: dirs.DownloadDir,
+  //   });
+
+  //   fPath = fPath + '/' + sFAQFolder;
+
+  //   if (Platform.OS === 'ios') {
+  //     RNFetchBlob.fs.mkdir(fPath).catch((err) => {
+  //       console.log(err);
+  //     });
+  //   }
+
+  //   fPath = `${fPath}/ChatrelFAQ.pdf`;
+
+  //   if (Platform.OS === 'ios') {
+  //     RNFetchBlob.fs.createFile(fPath, sFAQDocument, 'base64');
+  //   } else {
+  //     RNFetchBlob.fs.writeFile(fPath, sFAQDocument, 'base64');
+  //   }
+
+  //   setbLoader(false);
+
+  //   Toast.show(
+  //     Platform.OS === 'android'
+  //       ? sFAQDownloadMessageAndroid
+  //       : sFAQDownloadMessageIOS,
+  //     {
+  //       duration: Toast.durations.SHORT,
+  //       position: Toast.positions.BOTTOM,
+  //       shadow: true,
+  //       animation: true,
+  //       hideOnPress: true,
+  //       delay: 0,
+  //     },
+  //   );
+  // };
+
   const removeCompleteDetailsAndNavigateToLogin = async () => {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      await AsyncStorage.multiRemove(keysToRemove, (err) => {
-        debugger;
+      //await AsyncStorage.multiRemove(keysToRemove, (err) => {
+        //debugger;
         axios
           .get(`/User/Logout`)
           .then((resp) => {
@@ -194,7 +265,7 @@ const HomeScreen = (props) => {
           .then((release) => {
             navigation.navigate('Login');
           });
-      });
+      //});
     } catch (error) {
       console.error(error);
       navigation.navigate('Login');
@@ -451,6 +522,11 @@ const HomeScreen = (props) => {
       setThankYouMsg(false);
       setThankYouMessageContent('');
       setactiveSections([0, 1]);
+      setsHomePageImage(null);
+      setsHomePageMessage(null);
+      setsHomePageName(null);
+      setsHomePageDesignation(null);
+      setsFAQDocument(null);
       //getChatrelDetails();
       axios
         .get(
@@ -459,8 +535,6 @@ const HomeScreen = (props) => {
         )
         .then((resp) => {
           if (resp.status === 200) {
-            debugger;
-            console.log('Self Chatrel Payment data:', resp.data);
             const oSession = {
               sJwtToken: resp.data.token,
               bSession: true,
@@ -510,11 +584,30 @@ const HomeScreen = (props) => {
               dispatch(storePaidUntil(null));
               setEmpty(true);
             }
-            setbLoader(false);
+            axios
+              .get(`/ChatrelPayment/GetHomePageData`)
+              .then((resp) => {
+                if (resp.status === 200) {
+                  const oSession = {
+                    sJwtToken: resp.data.token,
+                    bSession: true,
+                  };
+                  dispatch(storeJWTToken(oSession));
+                  setsHomePageImage(resp.data.sHomePageImage);
+                  setsHomePageMessage(resp.data.sHomePageMessage);
+                  setsHomePageName(resp.data.sHomePageName);
+                  setsHomePageDesignation(resp.data.sHomePageDesignation);
+                  setsFAQDocument(resp.data.sFAQDocument);
+                  setbLoader(false);
+                }
+              })
+              .catch((error) => {
+                console.log(error.message);
+                console.log(error.response.status);
+              });
           }
         })
         .catch((error) => {
-          debugger;
           setbLoader(false);
           if (error.response.status === 401) {
             // const oSession = {
@@ -777,105 +870,67 @@ const HomeScreen = (props) => {
           </View>
         )}
         {/*Chatrel President*/}
-        <Card
-          containerStyle={{
-            ...styles.presidentCardContainerStyle,
-            marginBottom: hp(1),
-            marginTop: hp(5),
-          }}
-          title={
-            <Avatar
-              // overlayContainerStyle={{
-              //   padding:0,
-              //   margin:0,
-              // }}
-              //   icon={()=>{
-              //     return(           <Badge
-              //     status="success"
-              //     containerStyle={{position: 'absolute', top: 0, right: 0}}
-              //   />)
-              //   }}
-              //icon={{name: 'user', type: 'font-awesome'}}
-              rounded
-              size="large"
-              containerStyle={styles.avatarContainerStyle}
-              // source={require('../assets/TPresident.jpeg')}
-              source={require('../assets/TFM.jpg')}
-            />
-          }
-          titleStyle={{}}>
-          {/*<Card.Divider style={styles.presidentCardDividerStyle} />*/}
-          <View style={{marginTop: hp(5)}}>
-            <View style={styles.viewMarginComponent}>
-              <Text
-                style={{
-                  ...styles.greyTextComponent,
-                  marginBottom: hp(1.25),
-                  fontSize: wp(4),
-                }}>
-                {/* This is a huge step for all the Tibetan people that the Chatrel
-                collection services are now Online. Power at your fingertips. */}
-                Tashi Delek
-              </Text>
-              <Text
-                style={{
-                  ...styles.greyTextComponent,
-                  marginBottom: hp(1.25),
-                  fontSize: wp(3.5),
-                }}>
-                I urge all the Tibetans to support this project by timely
-                contributing your yearly Chatrel online.
-              </Text>
-              <Text
-                style={{
-                  ...styles.greyTextComponent,
-                  marginBottom: hp(1.25),
-                  fontSize: wp(3.5),
-                }}>
-                Success of this pilot project solely depends on the
-                participation from Tibetans living in North America.
-              </Text>
-              <Text
-                style={{
-                  ...styles.greyTextComponent,
-                  marginBottom: hp(1.25),
-                  fontSize: wp(3.5),
-                }}>
-                Lastly, I thank each and every one of you, for making this
-                project functional.
-              </Text>
-              <Text
-                style={{
-                  ...styles.greyTextComponent,
-                  marginBottom: hp(1.25),
-                  fontSize: wp(3.5),
-                }}>
-                Based on the efficacy of the pilot initiative, we will gradually
-                expand the reach of the Chatrel online in other regions as well.
-              </Text>
-              <Text
-                style={{
-                  ...styles.greyTextComponent,
-                  marginBottom: hp(1.25),
-                  fontSize: wp(3.5),
-                }}>
-                Thank you Everyone!
-              </Text>
-            </View>
-            <View style={styles.viewMarginComponent}>
-              <Text style={styles.boldTextComponent}>Karma Yeshi</Text>
-            </View>
-            <View style={{...styles.viewMarginComponent, marginBottom: 0}}>
-              <Text
-                style={{
-                  ...styles.greyTextComponent,
-                  fontSize: wp(5),
-                }}>
-                Kalon, Department of Finance, CTA.
-              </Text>
-            </View>
-          </View>
-        </Card>
+        {sHomePageImage &&
+          sHomePageMessage &&
+          sHomePageName &&
+          sHomePageDesignation && (
+            <Card
+              containerStyle={{
+                ...styles.presidentCardContainerStyle,
+                marginBottom: hp(1),
+                marginTop: hp(5),
+              }}
+              title={
+                <Avatar
+                  // overlayContainerStyle={{
+                  //   padding:0,
+                  //   margin:0,
+                  // }}
+                  //   icon={()=>{
+                  //     return(           <Badge
+                  //     status="success"
+                  //     containerStyle={{position: 'absolute', top: 0, right: 0}}
+                  //   />)
+                  //   }}
+                  //icon={{name: 'user', type: 'font-awesome'}}
+                  rounded
+                  size="large"
+                  containerStyle={styles.avatarContainerStyle}
+                  // source={require('../assets/TPresident.jpeg')}
+                  // source={require('../assets/TFM.jpg')}
+                  source={{
+                    uri: sHomePageImage,
+                  }}
+                />
+              }
+              titleStyle={{}}>
+              {/*<Card.Divider style={styles.presidentCardDividerStyle} />*/}
+              <View style={{marginTop: hp(5)}}>
+                <View style={styles.viewMarginComponent}>
+                  <Text
+                    style={{
+                      ...styles.greyTextComponent,
+                      marginBottom: hp(1.25),
+                      fontSize: wp(4.75),
+                    }}>
+                    {sHomePageMessage}
+                  </Text>
+                </View>
+                <View style={styles.viewMarginComponent}>
+                  <Text style={styles.boldTextComponent}>{sHomePageName}</Text>
+                </View>
+                <View style={{...styles.viewMarginComponent, marginBottom: 0}}>
+                  <Text
+                    style={{
+                      ...styles.greyTextComponent,
+                      fontSize: wp(5),
+                    }}>
+                    {sHomePageDesignation}
+                  </Text>
+                </View>
+              </View>
+            </Card>
+          )}
         {/*Paid Until Missing*/}
         {/* {empty &&
           !bLoader &&
@@ -1179,8 +1234,15 @@ const HomeScreen = (props) => {
                   borderRadius: 15,
                 }}
                 onPress={() => {
-                  //TODO: Add FAQs to Display
                   Linking.openURL(sFAQURL);
+                  // try {
+                  //   Platform.OS === 'android'
+                  //     ? downloadFAQFile()
+                  //     : handleFAQOnPress();
+                  // } catch (error) {
+                  //   console.log(error);
+                  //   console.log(error.message);
+                  // }
                 }}>
                 READ FAQs
               </Button>

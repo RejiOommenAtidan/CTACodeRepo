@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { Card ,CardContent} from '@material-ui/core';
 import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -114,13 +114,48 @@ dispatch(storeSession(oSession));
           // }
           // console.log(error.message);
           // console.log(error);
-          setBackdrop(false);
+          if(error.response.status!==401){
+            setBackdrop(false);
+            setAlertMessage('Something went wrong, please try again later');
+            setAlertType('error');
+            snackbarOpen();
+            
+          }
+          
       });
     }
     else{
      setCheck(true);
   }
   };
+
+  useEffect(() => {
+    setBackdrop(true);
+    axios.get(`/ChatrelPayment/Ping`)
+    .then(resp => {
+      if (resp.status === 200) {
+        setBackdrop(false);
+        console.log(resp.data);
+        const oSession={
+          sJwtToken:resp.data.token,
+          bSession:true
+        }
+        dispatch(storeSession(oSession));
+      }
+    })
+    .catch(error => {
+      console.log("Error ", error.response);
+      if(error.response.status!==401){
+        setBackdrop(false);
+        setAlertMessage('Something went wrong, please try again later');
+        setAlertType('error');
+        snackbarOpen();
+      }
+    })
+    .then(release => {
+      //console.log(release); => udefined
+    });
+     }, []);
   return (
   <>
   

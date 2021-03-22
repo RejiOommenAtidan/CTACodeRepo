@@ -65,13 +65,14 @@ export const EditDialog = (props) => {
   const [sFathersName, setFname] = React.useState(props.abroadObj.sFathersName);
   const [nReceiptNo, setReceiptNo] = React.useState(props.abroadObj.nReceiptNo);
   const [nSaneyFormNo, setSaney] = React.useState(props.abroadObj.nSaneyFormNo);
-  //const [nCurrentGBSno, setCurrentGBSNo] = useState(props.abroadObj.nCurrentGBSno);
+  const [nCurrentGBSno, setCurrentGBSNo] = useState(props.abroadObj.nCurrentGBSno);
   const [nPreviousGBSno, setPreviousGBSNo] = useState(props.abroadObj.nPreviousGBSno);
   const [sApprovedReject, setApprovedReject] = useState(props.abroadObj.sApprovedReject);
   const [dtIssueAction, setIssueActionDate] = React.useState(props.abroadObj.dtIssueAction ? (props.abroadObj.dtIssueAction).split('T')[0] : null);
   const [dtReject, setRejectDate] = useState(props.abroadObj.dtReject ? (props.abroadObj.dtReject).split('T')[0] : null);
   const [nIssuedOrNotID, setIssueAction] = React.useState(props.abroadObj.nIssuedOrNotID);
   const [dtReturnEmail, setReturnDate] = React.useState(props.abroadObj.dtReturnEmail ? (props.abroadObj.dtReturnEmail).split('T')[0] : null);
+  const [dtEmailSend, setEmailSendDate] = React.useState(props.abroadObj.dtEmailSend ? (props.abroadObj.dtEmailSend).split('T')[0] : null);
   const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
   const [nMadebStatusID, setMadebStatusID] = React.useState(props.abroadObj.nMadebStatusID);
   const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);
@@ -92,7 +93,7 @@ export const EditDialog = (props) => {
     sFathersName,
     nReceiptNo,
     nSaneyFormNo,
-    //nCurrentGBSno,
+    nCurrentGBSno,
     nPreviousGBSno,
     sApprovedReject,
     dtIssueAction,
@@ -100,6 +101,7 @@ export const EditDialog = (props) => {
     //dtReject,
     nIssuedOrNotID,
     dtReturnEmail: Moment(dtReturnEmail).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReturnEmail).format('YYYY-MM-DD') : null,
+    dtEmailSend: Moment(dtEmailSend).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtEmailSend).format('YYYY-MM-DD') : null,
     //dtReturnEmail,
     nMadebStatusID,
     sMadebStatusRemark,

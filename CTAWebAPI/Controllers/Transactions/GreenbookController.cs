@@ -392,6 +392,33 @@ namespace CTAWebAPI.Controllers.Transactions
         }
         #endregion
 
+        #region Get Greenbooks for Edit Common Search Bar search
+        [AuthorizeRole(FeatureID = 16)]
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> SearchGreenBooksAlternate(string parameter)
+        {
+            if (String.IsNullOrEmpty(parameter))
+            {
+                return RedirectToAction("GetGreenbooks");
+                //return BadRequest("Search parameter not specified");
+            }
+            try
+            {
+                IEnumerable<object> result = await _greenBookVMRepository.SearchGreenBooksAlternate(parameter);
+                if (result != null && result.Count() > 0)
+                {
+                    return Ok(result);
+                }
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+        #endregion
+
         #region Add Call
         [AuthorizeRole(FeatureID = 10)]
         [HttpPost]

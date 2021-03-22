@@ -66,7 +66,7 @@ export const CustomSidebarMenu = (props) => {
       try {
         await GoogleSignin.revokeAccess();
         await GoogleSignin.signOut();
-        await AsyncStorage.multiRemove(keysToRemove, (err) => {
+        //await AsyncStorage.multiRemove(keysToRemove, (err) => {
           axios
             .get(`/User/Logout`)
             .then((resp) => {
@@ -96,7 +96,7 @@ export const CustomSidebarMenu = (props) => {
             .then((release) => {
               navigation.navigate('Login');
             });
-        });
+        //});
       } catch (error) {
         console.error(error);
         navigation.navigate('Login');

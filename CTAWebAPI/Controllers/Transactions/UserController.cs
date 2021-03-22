@@ -257,7 +257,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         {
                             return Problem(message, null, 403);
                         }
-                        User fetchedUser = _userRepository.GetUserById(Id);
+                        User fetchedUser = _userRepository.GetUserForUpdate(Id);
                         user.nEnteredBy = fetchedUser.nEnteredBy;
                         user.dtEntered = fetchedUser.dtEntered;
                         user.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
@@ -474,7 +474,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     if (string.IsNullOrEmpty(changePasswordVM.sConfirmNewPassword))
                         return BadRequest("Confirm New Password cannot be NULL OR Empty");
                     #endregion
-                    User fetchedFromDB = _userRepository.GetUserById(changePasswordVM.nUserId.ToString());
+                    User fetchedFromDB = _userRepository.GetUserForUpdate(changePasswordVM.nUserId.ToString());
                     if (fetchedFromDB == null)
                         return NotFound("User With Id: " + changePasswordVM.nUserId + " Not Found");
                     
@@ -531,8 +531,6 @@ namespace CTAWebAPI.Controllers.Transactions
         {
             try
             {
-                string userId = User.Claims.Where(claim => claim.Type == ClaimTypes.Name).Select(claim => claim.Value).FirstOrDefault();
-                User user = _userRepository.GetUserById(userId);
                 string jwt = Request.Headers["Authorization"].ToString().Substring(7);
                 BlockedTokens.Tokens.Add(jwt);
                 return Ok("Logged out successfully");

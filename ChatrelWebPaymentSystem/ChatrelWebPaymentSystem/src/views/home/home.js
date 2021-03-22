@@ -10,7 +10,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 //import projectLogo from '../../assets/images/ctalogo.png';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-
+import { Alerts } from '../alerts';
 import img from '../../assets/images/home_pending.jpg';
 import {useHistory} from 'react-router-dom';
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
@@ -47,6 +47,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   
+
+  const [alertMessage, setAlertMessage] = React.useState('');
+  const [alertType, setAlertType] = React.useState('');
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+  const [snackbar, setSnackbar] = React.useState(false);
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+
+
   const [backdrop, setBackdrop] = React.useState(true);
   const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   const sGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sGBID);
@@ -102,11 +118,18 @@ export default function Home() {
           setsHomePageMessage(resp.data.sHomePageMessage);
           setsHomePageName(resp.data.sHomePageName);
           setsHomePageDesignation(resp.data.sHomePageDesignation);
-          setsFAQDocument(resp.data.sFAQDocument);
+         // setsFAQDocument(resp.data.sFAQDocument);
                
         }
       })
       .catch(error => {
+        if(error.response.status!==401){
+          setBackdrop(false);
+          setAlertMessage('Something went wrong, please try again later');
+          setAlertType('error');
+          snackbarOpen();
+          
+        }
         console.log(error.message);
         console.log(error.response.status);
     
@@ -156,6 +179,12 @@ export default function Home() {
    
   })
   .catch(error => {
+    if(error.response.status!==401){
+      setBackdrop(false);
+      setAlertMessage('Something went wrong, please try again later');
+      setAlertType('error');
+      snackbarOpen();
+    }
     console.log(error.message);
     console.log(error.response.status);
 
@@ -169,17 +198,6 @@ export default function Home() {
  
   dispatch(storeCurrentGBDetails(obj));
   history.push('/Chatrel');
-}
-const openFAQ = ()=>{
-  var byteCharacters = atob(sFAQDocument);
-var byteNumbers = new Array(byteCharacters.length);
-for (var i = 0; i < byteCharacters.length; i++) {
-  byteNumbers[i] = byteCharacters.charCodeAt(i);
-}
-var byteArray = new Uint8Array(byteNumbers);
-var file = new Blob([byteArray], { type: 'application/pdf;base64' });
-var fileURL = URL.createObjectURL(file);
-window.open(fileURL);
 }
 
 
@@ -327,11 +345,12 @@ window.open(fileURL);
                                             </Card>}
       
         </Grid>
-        <Grid item xs={12} lg={6}>
-          <Grid container spacing={4}>
+        </Grid>
+        
+          <Grid container spacing={4} className="py-5">
 
-          <Grid item xs={12} sm={6} lg={6}>
-          <Card className="card-box card-box-alt  shadow-xxl  p-2 ">
+          <Grid item xs={12} sm={6} lg={4}>
+          <Card className="card-box card-box-alt  h-100 shadow-xxl  p-2 ">
                                 <div className="card-content-overlay text-center pb-4">
                                     <div className="d-50 mb-1 card-icon-wrapper   btn-icon mx-auto text-center">
                                     {sHomePageImage && <img src={sHomePageImage}  style={{ width: 100,borderRadius:'10px' }} alt="..." />}
@@ -350,7 +369,7 @@ window.open(fileURL);
 
 
 </Grid>
-          <Grid item xs={12} sm={6} lg={6}>
+          <Grid item xs={12} sm={6} lg={4}>
            { outstanding && 
           <Card className="card-box card-box-alt  shadow-xxl  p-2 ">
                                 <div className="card-content-overlay text-center pb-4">
@@ -386,7 +405,7 @@ window.open(fileURL);
 
                             </Card>}
                            { (!outstanding && !empty && !donationDiv )&&
-                            <Card className="card-box card-box-alt  shadow-xxl  p-2 ">
+                            <Card className="card-box card-box-alt  shadow-xxl  p-2  h-100">
                                 <div className="card-content-overlay text-center pb-4">
                                     <div className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-primary text-white btn-icon mx-auto text-center shadow-primary">
                                         <FontAwesomeIcon icon={['fas', 'briefcase']} className="display-3" />
@@ -450,26 +469,16 @@ window.open(fileURL);
           </Grid>
          
 
-          </Grid>
-
-          
-        </Grid>
-        <Grid item xs={12} lg={6}>
-        <Card className="card-box bg-composed-wrapper  border-0 text-center p-4 p-xl-5 shadow-xxl ">
+        
+        <Grid item xs={12} lg={4}>
+        <Card className="card-box bg-composed-wrapper  border-0 text-center p-4 p-xl-5 shadow-xxl h-100 ">
                                     <div className="bg-composed-img-4 bg-composed-wrapper--image rounded"/>
                                     <div className="bg-composed-wrapper--content text-black">
-                                        <h4 className="display-4 font-weight-bold mb-0 ">Goals and Needs of Chatrel</h4>
-                                        <p className="opacity-6 font-size-lg my-3">
+                                        <h4 className="display-5 font-weight-bold mb-0 ">Goals and Needs of Chatrel</h4>
+                                        <p className="opacity-6 font-size-md m-2">
                                          Chatrel symbolizes the Tibetan people’s recognition of CTA as their legitimate representative. Chatrel payment exhibits Tibetan people’s support for CTA’s financial needs until Tibet regains freedom. 
                                         </p>
-                                        <Button onClick={()=>{
-                                          //openFAQ();
-                                          
-                                          let a = document.createElement("a");
-                                          a.href = "data:application/octet-stream;base64,"+sFAQDocument;
-                                          a.download = "Chatrel-FAQ.pdf"
-                                          a.click();
-                                                }} className="btn-warning text-nowrap px-4  font-size-sm font-weight-bold">
+                                        <Button onClick={()=>{window.open('/ChatrelFAQ.pdf'); }} className="btn-warning text-nowrap px-4  font-size-sm font-weight-bold">
                                            READ FAQs
                                         </Button>
                                     </div>
@@ -478,6 +487,13 @@ window.open(fileURL);
         </Grid>
         {/*<Button onClick={()=>{history.push('/test')}}>Test</Button>*/}
       </Card>
+      {snackbar && (
+            <Alerts
+              alertObj={alertObj}
+              snackbar={snackbar}
+              snackbarClose={snackbarClose}
+            />
+          )}
       <Backdrop className={classes.backdrop} open={backdrop}>
             <CircularProgress color="inherit" />
           </Backdrop>

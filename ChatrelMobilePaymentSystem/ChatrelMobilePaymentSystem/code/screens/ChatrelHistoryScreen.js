@@ -8,6 +8,8 @@ import {
   PermissionsAndroid,
   Alert,
   Platform,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {Card, Button, Icon} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -29,6 +31,8 @@ import {
   sFolderName,
   sReceiptDownloadMessageAndroid,
   sReceiptDownloadMessageIOS,
+  nMaxBatchSize,
+  nInitialBatchSize,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -49,6 +53,33 @@ export const ChatrelHistoryScreen = (props) => {
   const sPaidUntil = useSelector((state) => state.GBDetailsReducer.sPaidUntil);
   const sJwtToken = useSelector((state) => state.GBDetailsReducer.sJwtToken);
   const [paymentHistory, setPaymentHistory] = useState([]);
+  // const [offset, setOffset] = useState(1);
+  // const [bFetchingStatus, setbFetchingStatus] = useState(false);
+  // const [bSetOnLoad, setbSetOnLoad] = useState(false);
+  // let onEndReached = false;
+  // let page = 0;
+
+  // const fakeApiCall = () => {
+  //   page = page + 1;
+  //   console.log(' *********** call ' + this.page);
+  //   setbFetchingStatus(true);
+  //   //  fetch('https://techup.co.in/paginationList.php?page=' + that.page)
+  //   //      .then((response) => response.json())
+  //   //      .then((responseJson) =>
+  //   //      {
+  //   //          that.setState({ responseList: [ ...this.state.responseList, ...responseJson ], isLoading: false,setOnLoad: true  });
+
+  //   //      })
+  //   //      .catch((error) =>
+  //   //      {
+  //   //          console.error(error);
+  //   //          that.setState({setOnLoad: false,fetchingStatus: false ,});
+  //   //      });
+  //   let responseJSON = paymentHistory.slice(page, 1);
+  //   setPaymentHistory(...paymentHistory, ...responseJSON);
+  //   setbLoader(false);
+  //   setbSetOnLoad(true);
+  // };
 
   const downloadFile = async (singleHistory) => {
     try {
@@ -168,7 +199,27 @@ export const ChatrelHistoryScreen = (props) => {
             //   setPaymentHistory([]);
             // }
             if (resp.data.paymentHistory.length > 0) {
-              setPaymentHistory(resp.data.paymentHistory);
+              let tempReversedArray = resp.data.paymentHistory;
+              tempReversedArray = tempReversedArray.reverse();
+              // let tempReversedArray = [];
+              // for (var counter = 0; counter < 100; counter++) {
+              //   tempReversedArray.push({
+              //     dtPayment: '2021-03-11T05:16:53',
+              //     sChatrelReceiptNumber: counter + 1,
+              //     sPaidByGBId: '9675',
+              //     sGBIDPaidFor: '9675',
+              //     sCountryIDPaidFor: 'NP',
+              //     sFirstName: 'Virrappan',
+              //     sLastName: 'Oxmkaa',
+              //     sRelation: 'Self',
+              //     sPaymentCurrency: 'USD',
+              //     nChatrelTotalAmount: 18.71,
+              //     sPaymentMode: 'Online',
+              //     sPaymentStatus: 'Success',
+              //   });
+              // }
+              // console.log(tempReversedArray.length);
+              setPaymentHistory(tempReversedArray);
             }
           } else {
             if (sPaidUntil === null) setPaymentHistory(null);
@@ -187,8 +238,18 @@ export const ChatrelHistoryScreen = (props) => {
           // dispatch(storeJWTToken(oSession));
         } else {
           setTimeout(() => {
-            //TODO: Check for Breakage
-            Alert.alert('Something went wrong, please try again later.');
+            Alert.alert(
+              'Attention Required',
+              'Something went wrong, please try again later',
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => true,
+                  style: 'cancel',
+                },
+              ],
+              {cancelable: true},
+            );
           }, 1000);
         }
       });
@@ -351,6 +412,7 @@ export const ChatrelHistoryScreen = (props) => {
                       ...styles.zeroRecordComponent,
                       textDecorationLine: 'none',
                       color: Colors.black,
+                      padding: wp(1),
                     }}>
                     Please donate your outstanding Chatrel Amount
                   </Text>
@@ -360,9 +422,50 @@ export const ChatrelHistoryScreen = (props) => {
           </View>
         )}
 
-        {paymentHistory !== null &&
+        {/* {paymentHistory !== null &&
           paymentHistory.length > 0 &&
           paymentHistory.map((singleHistory, index) => {
+            return ( */}
+        <FlatList
+          //horizontal={true}
+          //inverted={true}
+          //refreshing={}
+          // refreshing={bLoader}
+          // onRefresh={()=>{
+          //   getChatrelHistoryDetails()
+          // }}
+          // ListFooterComponent={() => {
+          //   return (
+          //     <View>
+          //       {true ? (
+          //         <ActivityIndicator
+          //           size="large"
+          //           color="#F44336"
+          //           style={{marginLeft: 6}}
+          //         />
+          //       ) : null}
+          //     </View>
+          //   );
+          // }}
+          pagingEnabled={true}
+          alwaysBounceVertical={true}
+          bounces={true}
+          onScrollEndDrag={() => console.log(' *********end')}
+          onScrollBeginDrag={() => console.log(' *******start')}
+          // onMomentumScrollBegin={() => {
+          //   onEndReached = false;
+          // }}
+          // onEndReached={({distanceFromEnd}) => {
+          //   if (onEndReached) {
+          //     fakeApiCall(); // on end reached
+          //     onEndReached = true;
+          //   }
+          // }}
+          // onEndReachedThreshold={0.1}
+          maxToRenderPerBatch={nMaxBatchSize}
+          data={paymentHistory}
+          initialNumToRender={nInitialBatchSize}
+          renderItem={({item, index}) => {
             return (
               <Card
                 key={index}
@@ -376,13 +479,9 @@ export const ChatrelHistoryScreen = (props) => {
                       marginBottom: hp(1),
                     }}>
                     <Text style={styles.cardHeaderComponent}>
-                      {(singleHistory.sFirstName
-                        ? singleHistory.sFirstName
-                        : '') +
+                      {(item.sFirstName ? item.sFirstName : '') +
                         ' ' +
-                        (singleHistory.sLastName
-                          ? singleHistory.sLastName
-                          : '')}
+                        (item.sLastName ? item.sLastName : '')}
                     </Text>
                     <View
                       style={{
@@ -392,14 +491,14 @@ export const ChatrelHistoryScreen = (props) => {
                         //marginBottom: hp(2),
                       }}>
                       <Text style={styles.relationComponent}>
-                        {singleHistory.sRelation}
+                        {item.sRelation}
                       </Text>
                     </View>
                   </View>
                 }
                 titleStyle={{}}>
                 {/*<Card.Title style={styles.cardHeaderComponent}>
-                  {singleHistory.sFirstName + ' ' + singleHistory.sLastName}
+                  {item.sFirstName + ' ' + item.sLastName}
             </Card.Title>*/}
                 {/*<Card.Image source={require('../assets/CTALogo.png')} />*/}
                 <Card.Divider style={styles.cardDividerComponent} />
@@ -413,7 +512,7 @@ export const ChatrelHistoryScreen = (props) => {
                   <View style={styles.labelContainer}>
                     <Text style={styles.labelComponent}>RECEIPT NUMBER</Text>
                     <Text style={styles.valueComponent}>
-                      {singleHistory.sChatrelReceiptNumber}
+                      {item.sChatrelReceiptNumber}
                     </Text>
                   </View>
 
@@ -427,7 +526,7 @@ export const ChatrelHistoryScreen = (props) => {
                     </Text>
                     <Text
                       style={{...styles.valueComponent, textAlign: 'right'}}>
-                      {Moment(singleHistory.dtPayment).format(sDateFormat)}
+                      {Moment(item.dtPayment).format(sDateFormat)}
                     </Text>
                   </View>
 
@@ -445,7 +544,8 @@ export const ChatrelHistoryScreen = (props) => {
                   <View style={styles.labelContainer}>
                     <Text style={styles.labelComponent}>AMOUNT</Text>
                     <Text style={styles.valueComponent}>
-                      {singleHistory.nChatrelTotalAmount}
+                      {item.sPaymentMode === 'Online' ? '$' : ''}
+                      {item.nChatrelTotalAmount}
                     </Text>
                   </View>
 
@@ -459,7 +559,7 @@ export const ChatrelHistoryScreen = (props) => {
                     </Text>
                     <Text
                       style={{...styles.valueComponent, textAlign: 'right'}}>
-                      {singleHistory.sPaymentMode}
+                      {item.sPaymentMode}
                     </Text>
                   </View>
 
@@ -477,9 +577,9 @@ export const ChatrelHistoryScreen = (props) => {
                   <View style={styles.labelContainer}>
                     <Text style={styles.labelComponent}>GREEN BOOK ID</Text>
                     <Text style={styles.valueComponent}>
-                      {singleHistory.sCountryIDPaidFor}
+                      {item.sCountryIDPaidFor}
                       {''}
-                      {singleHistory.sGBIDPaidFor}
+                      {item.sGBIDPaidFor}
                     </Text>
                   </View>
 
@@ -515,13 +615,13 @@ export const ChatrelHistoryScreen = (props) => {
                 </View> */}
                 <View style={styles.downloadReceiptContainer}>
                   <Button
-                    disabled={singleHistory.sPaymentMode !== 'Online'}
+                    disabled={item.sPaymentMode !== 'Online'}
                     title={'DOWNLOAD RECEIPT'}
                     onPress={() => {
                       try {
                         Platform.OS === 'android'
-                          ? downloadFile(singleHistory)
-                          : handleDownloadReceiptOnPress(singleHistory);
+                          ? downloadFile(item)
+                          : handleDownloadReceiptOnPress(item);
                       } catch (error) {
                         console.log(error);
                         console.log(error.message);
@@ -558,7 +658,10 @@ export const ChatrelHistoryScreen = (props) => {
                 </View>
               </Card>
             );
-          })}
+          }}></FlatList>
+
+        {/* );
+          })} */}
       </ScrollView>
     </View>
   );

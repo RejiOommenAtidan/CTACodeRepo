@@ -71,6 +71,7 @@ export const EditDialog = (props) => {
   const [id, setId] = React.useState(props.norchoeObj.id);
   const [formNumber, setFormNumber] = React.useState(props.norchoeObj.nFormNumber);
   const [nPreviousGBSno, setPreviousGBSNo] = useState(props.norchoeObj.nPreviousGBSno);
+  const [nCurrentGBSno, setCurrentGBSNo] = useState(props.norchoeObj.nCurrentGBSno);
   const [nAuthRegionID, setAuthRegionId] = React.useState(props.norchoeObj.nAuthRegionID);
   const [receivedDate, setReceivedDate] = React.useState(props.norchoeObj.dtReceived ? (props.norchoeObj.dtReceived).split('T')[0] : null);
   const [name, setName] = React.useState(props.norchoeObj.sName);
@@ -86,7 +87,37 @@ export const EditDialog = (props) => {
   const [returnDate, setReturnDate] = React.useState(props.norchoeObj.dtReturnEmail ? (props.norchoeObj.dtReturnEmail).split('T')[0] : null);
   //const [rejectDate, setRejectDate] = React.useState(props.norchoeObj.dtReject.split('T')[0]);
   const [rejectDate, setRejectDate] = React.useState(props.norchoeObj.dtReject ? (props.norchoeObj.dtReject).split('T')[0] : null);
+  const [dtEmailSend, setEmailSendDate] = React.useState(props.norchoeObj.dtEmailSend ? (props.norchoeObj.dtEmailSend).split('T')[0] : null);
   const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
+
+
+
+
+  const madeb = {
+    id: id,
+    nFormNumber: formNumber,
+    nMadebTypeID: madebType,
+    sName: name,
+    sGBID: sGBID,
+    sChangeField: sChangeField,
+    nPreviousGBSno,
+    nCurrentGBSNo: nCurrentGBSno,
+    nAuthRegionID: nAuthRegionID,
+    dtReceived: Moment(receivedDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(receivedDate).format('YYYY-MM-DD') : null,
+    nReceiptNo: receipt,
+    dtIssueAction: issueActionDate,
+    nIssuedOrNotID: issueAction,
+    sDocumentAttached: documents,
+    nMadebStatusID,
+    sMadebStatusRemark,
+    dtReturnEmail: Moment(returnDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(returnDate).format('YYYY-MM-DD') : null,
+    dtReject: Moment(rejectDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(rejectDate).format('YYYY-MM-DD') : null,
+    dtEmailSend: Moment(dtEmailSend).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtEmailSend).format('YYYY-MM-DD') : null,
+    nUpdatedBy: userId
+  };
+
+
+
   const formPopulate = (value) => {
     if (value === '') {
       setAlertMessage(`Please enter a valid number...`);
@@ -179,26 +210,7 @@ export const EditDialog = (props) => {
       });
   };
 
-  const madeb = {
-    id: id,
-    nFormNumber: formNumber,
-    nMadebTypeID: madebType,
-    sName: name,
-    sGBID: sGBID,
-    sChangeField: sChangeField,
-    nPreviousGBSno,
-    nAuthRegionID: nAuthRegionID,
-    dtReceived: Moment(receivedDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(receivedDate).format('YYYY-MM-DD') : null,
-    nReceiptNo: receipt,
-    dtIssueAction: issueActionDate,
-    nIssuedOrNotID: issueAction,
-    sDocumentAttached: documents,
-    nMadebStatusID,
-    sMadebStatusRemark,
-    dtReturnEmail: Moment(returnDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(returnDate).format('YYYY-MM-DD') : null,
-    dtReject: Moment(rejectDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(rejectDate).format('YYYY-MM-DD') : null,
-    nUpdatedBy: userId
-  }
+  
 
   const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
   let valueAuthRegion = [];
@@ -761,7 +773,7 @@ export const AddDialog = (props) => {
   const [nAuthRegionID, setAuthRegionId] = React.useState(null);
   const [receivedDate, setReceivedDate] = React.useState(null);
   const [sGBID, setGbId] = React.useState('');
-  const [receipt, setReceipt] = React.useState(0);
+  const [receipt, setReceipt] = React.useState(null);
   const [sChangeField, setChangeField] = React.useState('');
   const [name, setName] = React.useState('');
   const [nPreviousGBSno, setPreviousGBSNo] = useState();

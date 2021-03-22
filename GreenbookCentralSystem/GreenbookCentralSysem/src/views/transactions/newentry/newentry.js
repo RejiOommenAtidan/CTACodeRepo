@@ -1303,7 +1303,8 @@ placeholder="DD-MM-YYYY"
                         defaultValue={sFathersGBID}
                         inputRef={register({
                           //minLength: 7,
-                          maxLength: 7
+                          maxLength: 7,
+                          pattern: /^[1-9][0-9]+$/
                         })}
                       />
                       {/*{_.get("name_sFathersGBID.type", errors) === "minLength" && (
@@ -1311,6 +1312,12 @@ placeholder="DD-MM-YYYY"
                       )}*/}
                       {_.get("name_sFathersGBID.type", errors) === "maxLength" && (
                         <span style={{ color: 'red' }}>Father's GB ID cannot exceed 7 characters</span>
+                      )}
+                      {_.get("name_sFathersGBID.type", errors) ===
+                          "pattern" && (
+                            <span style={{ color: "red" }}>
+                              Only numbers allowed
+                            </span>
                       )}
                     </FormControl>
                   </Grid>
@@ -1419,7 +1426,8 @@ placeholder="DD-MM-YYYY"
                         defaultValue={sMothersGBID}
                         inputRef={register({
                           //minLength: 7,
-                          maxLength: 7
+                          maxLength: 7,
+                          pattern: /^[1-9][0-9]+$/
                         })}
                       />
                       {/*{_.get("name_sMothersGBID.type", errors) === "minLength" && (
@@ -1427,6 +1435,12 @@ placeholder="DD-MM-YYYY"
                       )}*/}
                       {_.get("name_sMothersGBID.type", errors) === "maxLength" && (
                         <span style={{ color: 'red' }}>Mother's GB ID cannot exceed 7 characters</span>
+                      )}
+                      {_.get("name_sMothersGBID.type", errors) ===
+                          "pattern" && (
+                            <span style={{ color: "red" }}>
+                              Only numbers allowed
+                            </span>
                       )}
                     </FormControl>
                   </Grid>

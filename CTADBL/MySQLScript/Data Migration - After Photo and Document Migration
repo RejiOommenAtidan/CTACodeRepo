@@ -1,4 +1,4 @@
-
+﻿
 use ctadb;
 -- SELECT @@GLOBAL.sql_mode global, @@SESSION.sql_mode session;
 
@@ -8,9 +8,11 @@ CREATE INDEX MDB_FORMNO ON tblmadeb(nFormNumber);
 CREATE INDEX SGBID_INDEX_AUDITLOG ON tblauditlog (sGBID);
 CREATE INDEX GB_DOC_SDOCTYPE ON lnkgbdocument (sDocType);
 
+
 UPDATE `lstchatrel` SET `nChatrelValue` = '3' WHERE (`Id` = '5');
 INSERT INTO `lstchatrel` (`sChatrelKey`, `nChatrelValue`, `dtChatrelFrom`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES 
 ('USDChildMonthChatrelAmount', '1', '2015-04-01', '2021-02-22 11:53:57', '1', '2021-02-22 11:53:57', '1');
+
 
 UPDATE `greenbookprime`.`list_authority` SET `CountryID` = 'CH' WHERE (`AuthRegionID` = '171');
 UPDATE `greenbookprime`.`list_authority` SET `CountryID` = 'NL' WHERE (`AuthRegionID` = '169');
@@ -22,14 +24,6 @@ UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Cancelled' WHERE (`Id` = '5');
 UPDATE `lstmadebstatus` SET `sMadebStatus` = 'Closed' WHERE (`Id` = '6');
 
 INSERT INTO `lstctaconfig` (`sKey`, `sValue`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES ('CTALastSyncDateTime', now(), now(), '1', now(), '1');
-
-INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES ('Liechtenstein', 'LTS', '2021-02-24 15:08:17', '1', '2021-02-24 15:08:17', '1');
-INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES ('New Zealand', 'NZL', '2021-02-24 15:08:17', '1', '2021-02-24 15:08:17', '1');
-
-ALTER TABLE tblmadeb DROP INDEX FORM_INDEX_MADEB;
-ALTER TABLE tblmadeb DROP INDEX MDB_FORMNO;
-
--- =========================================================================================================
 
 
 truncate table lstauthregion;
@@ -59,6 +53,9 @@ FROM `greenbookprime`.`list_authority`;
 -- truncate table lstregion;
 
 
+
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES ('Liechtenstein', 'LTS', '2021-02-24 15:08:17', '1', '2021-02-24 15:08:17', '1');
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES ('New Zealand', 'NZL', '2021-02-24 15:08:17', '1', '2021-02-24 15:08:17', '1');
 
 truncate table tblgreenbook;
 truncate table tblmadeb;
@@ -1115,3 +1112,75 @@ SET
 	d.nEnteredBy = g.nEnteredBy,
     d.nUpdatedBy =  g.nUpdatedBy
 WHERE  d.sDocType = 'Support Document';
+
+--- ======================================================================================= 12-03-2021
+-- To update the null with default dates like '2012-01-01' and '2005-01-01' in madebs
+SET SQL_SAFE_UPDATES=0;
+
+UPDATE tblmadeb SET dtReject = NULL WHERE dtReject = '2012-01-01' AND (nMadebTypeID = 4 OR nMadebTypeID = 5 OR nMadebTypeID = 6);
+UPDATE tblmadeb SET dtReturnEmail = NULL WHERE dtReturnEmail = '2012-01-01' AND (nMadebTypeID = 4 OR nMadebTypeID = 5 OR nMadebTypeID = 6);
+UPDATE tblmadeb SET dtReturnEmail = NULL WHERE dtReturnEmail = '2005-01-01' AND nMadebTypeID = 1;
+​UPDATE tblmadeb SET dtReturnEmail = NULL WHERE dtReject = '2005-01-01' AND nMadebTypeID = 1;
+
+-- SELECT count(*) FROM tblmadeb t2 WHERE dtReject = '2012-01-01' AND (nMadebTypeID = 4 OR nMadebTypeID = 5 OR nMadebTypeID = 6) ;
+-- SELECT count(*) FROM tblmadeb t2 WHERE dtReturnEmail = '2012-01-01' AND (nMadebTypeID = 4 OR nMadebTypeID = 5 OR nMadebTypeID = 6) ;
+-- SELECT * FROM tblmadeb t2 WHERE dtReturnEmail = '2005-01-01' AND nMadebTypeID = 1;
+-- SELECT count(*) FROM tblmadeb t2 WHERE dtReject = '2005-01-01' AND nMadebTypeID = 1;
+
+
+INSERT INTO lstctaconfig (sKey, sValue, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy) VALUES('ShouldCCEmail', 'false', '2021-03-03 17:42:06', 1, '2021-03-03 17:42:06', 1);
+
+-- SELECT * FROM tblgreenbook t2 WHERE (t2.nEnteredBy IS NULL OR t2.nEnteredBy = "" OR t2.nEnteredBy = 1) AND t2.dtEntered >= '2019-05-01' AND t2.dtEntered <= '2019-08-04';
+-- SELECT * FROM tblgreenbook t2 WHERE t2.dtEntered >= '2019-11-30' AND t2.nEnteredBy = 1;
+-- SELECT * FROM ctadb.tbluser where sUsername = 'pema';
+
+
+update tblgreenbook 
+set tblgreenbook.nEnteredBy = 4
+  WHERE (tblgreenbook.nEnteredBy IS NULL OR tblgreenbook.nEnteredBy = "" OR tblgreenbook.nEnteredBy = 1) AND tblgreenbook.dtEntered >= '2019-05-01' AND tblgreenbook.dtEntered <= '2019-08-04';
+  
+update tblgreenbook 
+set tblgreenbook.nEnteredBy = 4
+WHERE tblgreenbook.dtEntered >= '2019-11-30' AND tblgreenbook.nEnteredBy = 1;
+
+-- ========================================================================================== 16-03-2021
+
+SET SQL_SAFE_UPDATES=0;
+
+update `tblgreenbookserial` 
+set `dtdate` = null
+where `dtdate` like '0000%';
+
+update `tblgreenbookissued` 
+set `dtIssuedDate` = null
+where `dtIssuedDate` like '0000%';
+
+
+UPDATE tblmadeb t4 
+INNER JOIN (
+			SELECT 
+				t.sGBID, 
+				max(t2.nBookNo) AS nBookNo, 
+				t.nFormNumber 
+			FROM 
+				tblmadeb t 
+			INNER JOIN tblgreenbookserial t2 
+				ON t2.sGBID = t.sGBID 
+					AND t.dtReceived > t2.dtDate 
+					AND t2.sGBID IS NOT NULL 
+					AND t2.sGBID != '' 
+					AND t.nMadebTypeID > 1 
+			WHERE 
+				t2.dtDate NOT LIKE '0000%' 
+				AND t2.dtDate IS NOT NULL 
+				AND t.sGBID IS NOT NULL 
+				AND t.sGBID != '' 
+			GROUP BY 
+				t.nFormNumber) AS t5 
+	ON t4.sGBID = t5.sGBID 
+SET 
+	t4.nPreviousGBSno = t5.nBookNo 
+WHERE 
+	t4.nFormNumber = t5.nFormNumber 
+	AND t4.nMadebTypeID > 1;
+	

@@ -8,12 +8,14 @@ import {
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import MaterialTable from 'material-table';
+import MaterialTable, {MTableToolbar}  from 'material-table';
 import handleError from '../../../auth/_helpers/handleError';
 import IconButton from '@material-ui/core/IconButton';
 import { oOptions, oTableIcons, modifyHeaders, sButtonColor, sButtonSize } from "../../../config/commonConfig";
 import Moment from 'moment';
 import MyComp from '../../common/filtercomponent';
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles(() => ({
 }));
@@ -23,9 +25,26 @@ export default function GBList(props) {
   const classes = useStyles();
   let history = useHistory();
   const [dataAPI, setdataAPI] = useState([]);
-  const [isLoading, setisLoading] = React.useState(true);
+  //const [isLoading, setisLoading] = React.useState(true);
   const [filtering, setFiltering] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
   oOptions.filtering = filtering;
+
+//Alert
+const [alertMessage, setAlertMessage] = useState("");
+const [alertType, setAlertType] = useState("");
+const alertObj = {
+  alertMessage: alertMessage,
+  alertType: alertType
+}
+const [snackbar, setSnackbar] = React.useState(false);
+const snackbarOpen = () => {
+  console.log('alert');
+  setSnackbar(true);
+}
+const snackbarClose = () => {
+  setSnackbar(false);
+};
 
   // For Custom Filter
 
@@ -79,21 +98,21 @@ export default function GBList(props) {
         width: "10%"
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '5px',
         width: "10%",
         borderRight: '1px solid grey'
       },
-      filterComponent: () =>
-        <MyComp
-          field="sGBID"
-          name="GREEN BOOK ID"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"sGBID"}
-        />,
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="sGBID"
+      //     name="GREEN BOOK ID"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"sGBID"}
+      //   />,
       export: true,
       render: rowData => <Button
         className="m-2 btn-transparent btn-link btn-link-first"
@@ -114,23 +133,23 @@ export default function GBList(props) {
         width: "30%"
       },
       cellStyle: {
-        textAlign: "left",
+        textAlign: "center",
         padding: '5px',
         width: "30%",
         borderRight: '1px solid grey'
       },
       export: true,
       //render: rowData => (rowData["sFirstName"] === null ? "" : rowData["sFirstName"]) + " " + (rowData["sLastName"] === null ? "" : rowData["sLastName"]),
-      filterComponent: () =>
-        <MyComp
-          name="FIRST NAME"
-          field="sFirstName"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"sFirstName"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     name="FIRST NAME"
+      //     field="sFirstName"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"sFirstName"}
+      //   />
     },
     {
       field: "sLastName",
@@ -142,28 +161,28 @@ export default function GBList(props) {
         width: "30%"
       },
       cellStyle: {
-        textAlign: "left",
+        textAlign: "center",
         padding: '5px',
         width: "30%",
         borderRight: '1px solid grey'
       },
       export: true,
       //render: rowData => (rowData["sFirstName"] === null ? "" : rowData["sFirstName"]) + " " + (rowData["sLastName"] === null ? "" : rowData["sLastName"]),
-      filterComponent: () =>
-        <MyComp
-          name="LAST NAME"
-          field="sLastName"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"sLastName"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     name="LAST NAME"
+      //     field="sLastName"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"sLastName"}
+      //   />
     },
     {
       field: 'dtDOB',
       title: "AGE",
-      filtering: false,
+      //filtering: false,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -171,7 +190,7 @@ export default function GBList(props) {
         width: "5%"
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '5px',
         width: "5%",
         borderRight: '1px solid grey'
@@ -252,6 +271,7 @@ export default function GBList(props) {
     }
   }, [myarray]);
 
+  const tableRef = React.useRef();
 
   const editClick = (tableRowArray) => {
     history.push("/EditEntry/" + tableRowArray.sGBID, {Id: tableRowArray.id});
@@ -259,6 +279,7 @@ export default function GBList(props) {
 
   useEffect(() => {
     buildArray();
+    setBackdrop(true);
     axios.get(`/Greenbook/GetGreenbooks`)
       .then(resp => {
         if (resp.status === 200) {
@@ -268,7 +289,7 @@ export default function GBList(props) {
           });
           console.log(resp.data);
           setdataAPI(resp.data);
-          setisLoading(false);
+          setBackdrop(false);
           modifyHeaders();
         }
       })
@@ -279,6 +300,13 @@ export default function GBList(props) {
         //console.log(release); => udefined
       });
   }, []);
+
+  useEffect(() => {
+    const bar = document.getElementById("searchbar").getElementsByTagName('input');
+    if(bar){
+      bar[0].focus();
+    };
+  }, [dataAPI]);
 
   return (
     <Container maxWidth="lg" disableGutters={true}>
@@ -292,13 +320,48 @@ export default function GBList(props) {
       <Grid container className={classes.box} >
         <Grid item xs={12}>
           <MaterialTable
-            isLoading={isLoading}
+            //isLoading={isLoading}
+            tableRef={tableRef}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={oTableIcons}
-            title="Green Book"
+            title="Green Books"
             columns={columns}
             data={dataAPI}
             options={oOptions}
+            components={{
+              Toolbar: props => (<div id='searchbar'><MTableToolbar
+                        {...props}
+                        onSearchChanged={searchText => {
+                        console.log(searchText);
+                        
+                        axios.get(`Greenbook/SearchGreenBooksAlternate/?parameter=${searchText}`)
+                        .then(resp => {
+                          
+                          if(resp.status === 200){
+                            console.log("Search result", resp.data);
+                            resp.data.forEach((element) => {
+                              element.dtDOB = element.dtDOB ? Moment().diff(element.dtDOB, 'years') : null;
+                            });
+                            setdataAPI(resp.data);
+                          }
+                          if(resp.status === 204){
+                            console.log("Got 204, Empty result");
+                            setdataAPI([]);
+                          }
+                        })
+                        .catch(error =>{                         
+                          
+                          setAlertMessage("Error in searching...");
+                          setAlertType('error');
+                          snackbarOpen();
+                          
+                        });
+                        //commonSearch(searchText);
+                        //props.onSearchChanged(searchText);
+                        }}
+                    /></div>)
+          }}
+            
             actions={[
               {
                 icon: oTableIcons.Search,
@@ -308,6 +371,14 @@ export default function GBList(props) {
               }
             ]}
           />
+          {snackbar && <Alerts
+            alertObj={alertObj}
+            snackbar={snackbar}
+            snackbarClose={snackbarClose}
+          />}
+          {backdrop && <BackdropComponent
+            backdrop={backdrop}
+        />}
         </Grid>
       </Grid>
     </Container>

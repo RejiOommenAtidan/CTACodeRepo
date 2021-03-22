@@ -36,11 +36,13 @@ import Moment from 'moment';
 import { GoogleLogout } from 'react-google-login';
 //import { useDispatch } from 'react-redux';
 //import {  Button} from '@material-ui/core';
-import {sGoogleAuth_ClientID} from '../../../config/commonConfig'; 
+//import {sGoogleAuth_ClientID} from '../../../config/commonConfig'; 
 
 import Zoom from '@material-ui/core/Zoom';
-
+import AppleLogin from 'react-apple-login'
 import  {removeGoogleCreds} from '../../../actions/transactions/GLoginAction';
+
+import AppleSignin from 'react-apple-signin-auth';
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
@@ -174,7 +176,8 @@ const test =(e)=>{
       dtDOB:Moment(dtDob).format("YYYY-MM-DD"),
       //dtDOB:dtDob,
       code:sGoogleCode,
-      sEmail:sEmail
+      sEmail:sEmail,
+      sType:"Google"  
      
     }
     console.log(Obj);
@@ -222,7 +225,7 @@ const test =(e)=>{
       }
     })
     .catch(error => {
-      if (error.response) {
+      if (error.response.status!=401) {
            setBackdrop(false);
           setAlertMessage('Verification Failed');
           setAlertType('error');
@@ -231,12 +234,7 @@ const test =(e)=>{
         console.error(error.response.data);
         console.error(error.response.status);
         console.error(error.response.headers);
-      } else if (error.request) {
-        console.warn(error.request);
-      } else {
-        console.error('Error', error.message);
       }
-      console.log(error.config);
     })
     .then(release => {
       //console.log(release); => udefined
@@ -284,7 +282,31 @@ console.log(error);
   });
 
   }, [userObj]);*/
-
+  const [sClientIDGoogle, setsClientIDGoogle]= React.useState(null);
+  const sWebAppPassphrase = "RKb4q^!E-NS?wY4=W@`Bt`*H,";
+  useEffect(() => {
+    console.log('test');
+    axios
+      .post(`/ChatrelPayment/GetGoogleCredentialsForWebApp?sWebAppPassphrase=${sWebAppPassphrase}`)
+      .then((resp) => {
+        if (resp.status === 200) {
+          console.log('Login Ping Pong: ' + resp.data.sGoogleClientIDWebApp);
+          setsClientIDGoogle(resp.data.sGoogleClientIDWebApp);
+         
+        }
+      })
+      .catch((error) => {
+        if(error.response.status!==401){
+          setAlertMessage('Something went wrong, please try again later');
+          setAlertType('error');
+          snackbarOpen();
+        }
+        console.log('Error ', error.response);
+      })
+      .then((release) => {
+        //console.log(release); => udefined
+      });
+  }, []);
   return (
     <>
     <div className="app-wrapper min-vh-100 bg-white">
@@ -318,9 +340,48 @@ console.log(error);
                                                     
                                            {/* <h6 className="display-5 mb-1 text-black ">Your go-to resource for supporting the Tibetan Government</h6> */}
                                                     </div>
-                                                    { !login &&    
-                                                    <div className="text-center mb-3">
-                                                      <GoogleLoginPage  test={test} />
+                                                    { !login &&  <>  
+                                                    { sClientIDGoogle &&  <div className="text-center mb-3">
+                                                   <GoogleLoginPage  sClientIDGoogle={sClientIDGoogle} test={test} />
+                                                   {/* <AppleLogin 
+                                                    clientId="net.chatrel" 
+                                                   // redirectURI="https://chatrel.net/Login"
+                                                    usePopup={true}
+                                                    /> */}
+                                                    <AppleSignin
+    /** Auth options passed to AppleID.auth.init() */
+    authOptions={{
+      /** Client ID - eg: 'com.example.com' */
+      clientId: 'net.chatrel',
+      /** Requested scopes, seperated by spaces - eg: 'email name' */
+      scope: 'email name',
+      /** Apple's redirectURI - must be one of the URIs you added to the serviceID - the undocumented trick in apple docs is that you should call auth from a page that is listed as a redirectURI, localhost fails */
+      redirectURI:"https://chatrel-webapp.azurewebsites.net/Login",
+      /** State string that is returned with the apple response */
+      state: 'state',
+      /** Nonce */
+      nonce: 'nonce',
+      /** Uses popup auth instead of redirection */
+      usePopup:false
+    }} // REQUIRED
+    /** General props */
+    uiType="dark"
+    /** className */
+    className="apple-auth-btn"
+    /** Removes default style tag */
+    noDefaultStyle={false}
+    /** Extra controlling props */
+    /** Called upon signin success in case authOptions.usePopup = true -- which means auth is handled client side */
+    onSuccess={(response) => console.log(response)} // default = undefined
+    /** Called upon signin error */
+    onError={(error) => console.error(error)} // default = undefined
+    /** Skips loading the apple script if true */
+    skipScript={false} // default = undefined
+    /** Apple image props */
+    //iconProp={{ style: { marginTop: '10px' } }} // default = undefined
+    /** render function - called with all props - can be used to fully customize the UI by rendering your own component  */
+   // render={(props) => <button {...props}>My Custom Button</button>}
+  />
                                                      
                                                                     <Tooltip TransitionComponent={Zoom} title="Enable third-party cookies to login with Google">
                                                                     <Button className=" p-0 m-2" style={{backgroundColor:'#298851'}}>
@@ -330,23 +391,23 @@ console.log(error);
                                                                      </Button>
                                                                 </Tooltip>           
                                     
-                                                            </div  >
-                                                            
+                                                            </div  >}
+                                                            </>
                                                             }
                                                              { login && 
                                                      <div className="p-3">
                                                        <form onSubmit={(e) =>submit(e)}>
                                                
                                                      <div className="text-center text-white py-2 mb-4">
-                                                         Signed in with {sEmail}.
+                                                         Signed in with {sEmail}. 
                                                          <GoogleLogout
                             
-                                                            clientId={sGoogleAuth_ClientID}
+                                                            clientId={sClientIDGoogle}
                                                           // buttonText="Logout"
                                                             onLogoutSuccess={() => {logout()}}
                                                             //onLogoutSuccess={logout}
                                                       render={renderProps => (
-                                                           <Button  onClick={renderProps.onClick} className="p-0 btn-transparent btn-link btn-link-first"><span>Sign Out?</span></Button>      
+                                                           <Button  onClick={renderProps.onClick} className="p-0 btn-transparent btn-link btn-link-first"><span> Sign Out?</span></Button>      
                                                             )}
                                                             >       
                             </GoogleLogout>

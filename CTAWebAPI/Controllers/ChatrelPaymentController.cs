@@ -266,49 +266,9 @@ namespace CTAWebAPI.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("[action]")]
-        public IActionResult SubmitDispute(Dictionary<string, dynamic> dict)
-        {
-
-            //To do: Add attachment to the email.
-
-            var mailText = dict["description"].ToString();
-            string attachment = dict["file"].ToString();
-            var sName = dict["sName"].ToString();
-            var sGBID = dict["sGBID"].ToString();
-            var emailFrom = "rajen.parekh@outlook.com";
-            var emailTo = "rajen.parekh@gmail.com";
-
-            attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
-
-            byte[] attach = Convert.FromBase64String(attachment);
-
-            MimeMessage message = new MimeMessage();
-            MailboxAddress from = new MailboxAddress(sName, emailFrom);
-            MailboxAddress to = new MailboxAddress("CTA Team", emailTo);
-
-            BodyBuilder messageBody = new BodyBuilder();
-            messageBody.TextBody = mailText;
-            messageBody.Attachments.Add("Attachment File", attach);
+        // Method of SubmitDispute not in use in Admin Module, hence removed it from here.
 
 
-            message.From.Add(from);
-            message.To.Add(to);
-            message.Subject = String.Format("Email from {0}, GreenBook Id: {1}", sName, sGBID);
-
-            message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-            message.Body = messageBody.ToMessageBody();
-            // Message ready. Now to use smtp client to despatch message
-            SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Connect("smtp-mail.outlook.com", 25, false);
-            smtpClient.Authenticate("rajen.parekh@outlook.com", "");
-            smtpClient.Send(message);
-            smtpClient.Disconnect(true);
-            smtpClient.Dispose();
-            return Ok("Email sent successfully.");
-
-        }
         [AuthorizeRole(FeatureID = 50)]
         [HttpGet]
         [Route("[action]")]
@@ -480,6 +440,7 @@ namespace CTAWebAPI.Controllers
 
 
         #region UpdateGoogleAccount
+        [AuthorizeRole(FeatureID = 50)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult UpdateGoogleAccount(string sGBID,string sLoginGmail)
@@ -516,7 +477,43 @@ namespace CTAWebAPI.Controllers
 
             }
         }
+        #endregion
 
+        #region Chatrel Defaulter List
+        [AuthorizeRole(FeatureID = 50)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetDefaulterList(int? nAuthRegionID = null, string sCountryID = null)
+        {
+            try
+            {
+                string userId = User.Claims.Where(claim => claim.Type == ClaimTypes.Name).Select(claim => claim.Value).FirstOrDefault();
+                DateTime dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                string message = String.Empty;
+                var result = _greenBookRepository.GetDefaulterList(nAuthRegionID, sCountryID, out message);
+                //Object familyDetails = _chatrelPaymentRepository.GetFamilyDetails(sGBID);
+                if (result.Count() > 0)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok(new { result, message });
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+
+                _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
+            }
+        }
         #endregion
     }
 }

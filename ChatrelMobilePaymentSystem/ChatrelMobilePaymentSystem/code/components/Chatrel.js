@@ -30,6 +30,9 @@ import {
   sCopyPayPalTransactionID,
   sPayPalPaymentIDCopied,
   sPayPalTransactionIDCopied,
+  sContactEmail,
+  sAttentionRequired,
+  sPayPalUIErrorMessage,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import {Loader} from '../components/Loader';
@@ -49,11 +52,7 @@ import axios from 'axios';
 import Moment from 'moment';
 import Colors from '../constants/Colors';
 import {storeJWTToken} from '../store/actions/GBDetailsAction';
-import {
-  sPayPalClientID,
-  sClientSecret,
-  sHimalayaFontName,
-} from '../constants/CommonConfig';
+import {sHimalayaFontName} from '../constants/CommonConfig';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -61,13 +60,16 @@ import {
 import base64 from 'react-native-base64';
 import RNFetchBlob from 'react-native-fetch-blob';
 import Toast from 'react-native-root-toast';
-import Dialog from 'react-native-dialog';
 
 export const Chatrel = (props) => {
-  // const [
-  //   bTransactionIDDialogVisible,
-  //   setbTransactionIDDialogVisible,
-  // ] = useState(false);
+  // let bCallRunOnce = false;
+  const [bCallRunOnce, setbCallRunOnce] = useState(false);
+  const [
+    bDisplayAuthorityRegionOnceOnChange,
+    setbDisplayAuthorityRegionOnceOnChange,
+  ] = useState(true);
+  const [sPayPalClientIDAPI, setsPayPalClientIDAPI] = useState('');
+  const [sPayPalClientSecretAPI, setsPayPalClientSecretAPI] = useState('');
   const [bPaymentIDDialogVisible, setbPaymentIDDialogVisible] = useState(false);
   const {control, handleSubmit, errors} = useForm();
   //let validationForAutocomplete = true;
@@ -184,13 +186,6 @@ export const Chatrel = (props) => {
       })
       .catch((error) => {
         console.log('Error ', error.response);
-        if (error.response) {
-          console.error(error.response);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
         console.log(error.config);
       })
       .then((release) => {
@@ -243,16 +238,14 @@ export const Chatrel = (props) => {
   };
 
   const runOnce = () => {
+    debugger;
     if (aGBChatrels && dollarToRupees && shouldRun) {
       if (!outstanding) {
-        if (aGBChatrels[0].nCurrentChatrelSalaryAmt > 0) {
-          // const checkBox = document.getElementById('employed');
-          // const rateField = document.getElementById('rate');
-          // const totalField = document.getElementById('total');
-          //if (checkBox) {
-          // rateField.innerText = '';
-          // checkBox.checked = true;
-          // checkBox.disabled = true;
+        //for employment & donation issue
+        if (
+          aGBChatrels[0].nCurrentChatrelSalaryAmt === undefined &&
+          aGBChatrels[0].sAuthRegionCurrency === 'USD'
+        ) {
           setaGBChatrels(
             aGBChatrels.map((element) => {
               element.nChatrelTotalAmount = 0;
@@ -260,14 +253,49 @@ export const Chatrel = (props) => {
               return element;
             }),
           );
-
-          //totalField.innerText = '';
           setnGrandTotal(0.0);
           setGBChatrelsNull(true);
-          //}
         }
+        // //for switch employment
+        // if (
+        //   aGBChatrels[0].nCurrentChatrelSalaryAmt === undefined &&
+        //   aGBChatrels[0].sAuthRegionCurrency === 'USD'
+        // ) {
+        //   // setaGBChatrels(
+        //   //   aGBChatrels.map((element) => {
+        //   //     element.nChatrelTotalAmount = dataAPI.nSalaryUSD;
+        //   //     element.nCurrentChatrelSalaryAmt = dataAPI.nSalaryUSD;
+        //   //     return element;
+        //   //   }),
+        //   // );
+        //   // setnGrandTotal(dataAPI.nSalaryUSD);
+        //   // setGBChatrelsNull(true);
+        //   setaGBChatrels(
+        //     aGBChatrels.map((element) => {
+        //       element.nChatrelTotalAmount = dataAPI.nSalaryUSD;
+        //       element.nCurrentChatrelSalaryAmt = dataAPI.nSalaryUSD;
+        //       return element;
+        //     }),
+        //   );
+        //   setnGrandTotal(dataAPI.nSalaryUSD);
+        //   setGBChatrelsNull(true);
+        // }
       } else {
         const len = aGBChatrels.length;
+        // if (
+        //   len === 1 &&
+        //   aGBChatrels[0].nCurrentChatrelSalaryAmt === undefined && aGBChatrels[0].sAuthRegionCurrency === "USD"
+        // ) {
+        //   setaGBChatrels(
+        //     aGBChatrels.map((element) => {
+        //       element.nChatrelTotalAmount = 0;
+        //       element.nCurrentChatrelSalaryAmt = 0;
+        //       return element;
+        //     }),
+        //   );
+        //   setnGrandTotal(0);
+        //   setGBChatrelsNull(true);
+        // }
         for (var i = 0; i < len; i++) {
           calculateMethod(i);
         }
@@ -276,26 +304,10 @@ export const Chatrel = (props) => {
     }
   };
 
-  const updateAuthRegionIOS = (index, value) => {
+  const updateAuthRegion = (index, value) => {
     let chatrelObj = [...aGBChatrels];
     let value1 = lAuthRegions.find((x) => x.id === value.id);
-
-    if (value1.sCurrencyCode === 'INR' && !chatrelObj[index].isChild) {
-      setTimeout(() => {
-        Alert.alert(
-          '',
-          sINRAuthRegionHelpMessage,
-          [
-            {
-              text: 'Ok',
-              onPress: () => true,
-              style: 'cancel',
-            },
-          ],
-          {cancelable: true},
-        );
-      }, 500);
-    }
+    //console.log(bDisplayAuthorityRegionOnceOnChange);
 
     for (var forIndex = index; forIndex < chatrelObj.length; forIndex++) {
       chatrelObj[forIndex].nAuthRegionID = value1.id;
@@ -319,6 +331,27 @@ export const Chatrel = (props) => {
       setaGBChatrels(chatrelObj);
       calculateMethod(forIndex);
     }
+    if (
+      value1.sCurrencyCode === 'INR' &&
+      !chatrelObj[index].isChild &&
+      bDisplayAuthorityRegionOnceOnChange
+    ) {
+      setbDisplayAuthorityRegionOnceOnChange(false);
+      setTimeout(() => {
+        Alert.alert(
+          '',
+          sINRAuthRegionHelpMessage,
+          [
+            {
+              text: 'Ok',
+              onPress: () => true,
+              style: 'cancel',
+            },
+          ],
+          {cancelable: true},
+        );
+      }, 1000);
+    }
   };
 
   const calculateMethod = (index) => {
@@ -330,7 +363,7 @@ export const Chatrel = (props) => {
           oPayment[index].nChatrelMeal +
           oPayment[index].nCurrentChatrelSalaryAmt) *
         (oPayment[index].nChatrelLateFeesPercentage / 100);
-      //Rmoved as per website
+      //Removed as per website
       // nChatrelLateFeesPercentage;
       oPayment[index].nArrearsAmount =
         oPayment[index].nChatrelAmount +
@@ -348,7 +381,6 @@ export const Chatrel = (props) => {
       (dollarToRupees && oPayment[index].sAuthRegionCurrency === 'INR'
         ? dollarToRupees.toFixed(4)
         : 1);
-    //console.log(oPayment[index].nChatrelTotalAmount);
     oPayment[index].nConversionRate =
       oPayment[index].sAuthRegionCurrency === 'USD'
         ? 1.0
@@ -457,7 +489,7 @@ export const Chatrel = (props) => {
     setbRender(false);
 
     axios
-      .post(`/ChtrelPayment/AddNewChatrelPayment`, finalObj)
+      .post(`/ChatrelPayment/AddNewChatrelPayment`, finalObj)
       .then((resp) => {
         if (resp.status === 200) {
           const oSession = {
@@ -485,10 +517,11 @@ export const Chatrel = (props) => {
           //setbTransactionIDDialogVisible(true);
           setTimeout(() => {
             Alert.alert(
-              'Attention Required',
+              sAttentionRequired,
               'Cannot Connect to Server, Please save PayPal Transaction ID: ' +
                 paypalObj.id +
-                '\nand Contact CTA',
+                '\nand contact CTA at ' +
+                sContactEmail,
               [
                 {
                   text: sCopyPayPalTransactionID,
@@ -570,6 +603,7 @@ export const Chatrel = (props) => {
       setOutstanding(true);
       setBasicResponse(0);
       getChatrelDetails();
+      setbDisplayAuthorityRegionOnceOnChange(true);
       //setShouldRun(true);
     }
   }, [isFocused]);
@@ -601,6 +635,10 @@ export const Chatrel = (props) => {
                   setDisplayFileDispute(true);
                 } else {
                   console.log(resp.data);
+                  console.log('Client ID: ' + resp.data.clientId);
+                  console.log('Client Secret: ' + resp.data.secret);
+                  setsPayPalClientIDAPI(resp.data.clientId);
+                  setsPayPalClientSecretAPI(resp.data.secret);
                   setsCountryID(resp.data?.chatrel?.sCountryID);
                   if (
                     resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0
@@ -626,8 +664,6 @@ export const Chatrel = (props) => {
                     },
                   );
                   setaGBChatrels(aGBChatrelsUSDEnabled);
-                  // console.log(resp.data.chatrel.gbChatrels);
-                  // console.log(aGBChatrelsUSDEnabled);
                   let tempFilteredAuthRegions = [];
                   let tempBValidateAutocomplete = [];
                   resp.data.chatrel.gbChatrels.forEach((chatrelRecord) => {
@@ -636,8 +672,6 @@ export const Chatrel = (props) => {
                   resp.data.chatrel.gbChatrels.forEach((chatrelRecord) => {
                     tempBValidateAutocomplete.push(true);
                   });
-                  //console.log(tempFilteredAuthRegions);
-                  //console.log(tempBValidateAutocomplete);
                   setlFilteredAuthRegions(tempFilteredAuthRegions);
                   setlBValidateAutocomplete(tempBValidateAutocomplete);
                   setsName(resp.data.chatrel.sName);
@@ -652,10 +686,48 @@ export const Chatrel = (props) => {
                     ),
                   );
                   calcTotal(
-                    resp.data.chatrel.gbChatrels,
+                    aGBChatrelsUSDEnabled,
                     nAdditionalDonation,
                     nBusinessDonation,
                   );
+
+                  debugger;
+                  console.log(aGBChatrelsUSDEnabled);
+                  console.log(
+                    resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt,
+                  );
+                  if (
+                    aGBChatrelsUSDEnabled &&
+                    resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt > 0
+                  ) {
+                    if (
+                      resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0
+                    ) {
+                      //for employment & donation switch issue for undefined
+
+                      if (
+                        aGBChatrelsUSDEnabled.length === 1 &&
+                        aGBChatrelsUSDEnabled[0].sAuthRegionCurrency ===
+                          'USD' &&
+                        aGBChatrelsUSDEnabled[0].nCurrentChatrelSalaryAmt ===
+                          undefined
+                      ) {
+                        setaGBChatrels(
+                          aGBChatrelsUSDEnabled.map((element) => {
+                            element.nChatrelTotalAmount =
+                              resp.data.chatrel.nSalaryUSD;
+                            element.nCurrentChatrelSalaryAmt =
+                              resp.data.chatrel.nSalaryUSD;
+                            return element;
+                          }),
+                        );
+                        setnGrandTotal(resp.data.chatrel.nSalaryUSD);
+                        setGBChatrelsNull(true);
+                        //setbCallRunOnce(true);
+                      }
+                    }
+                  }
+                  setbCallRunOnce(true);
                   setbLoader(false);
                   setbRender(true);
 
@@ -671,7 +743,7 @@ export const Chatrel = (props) => {
                       if (myINRAuthRegion.sCurrencyCode === 'INR') {
                         setTimeout(() => {
                           Alert.alert(
-                            '',
+                            sAttentionRequired,
                             sINRAuthRegionHelpMessage,
                             [
                               {
@@ -680,9 +752,9 @@ export const Chatrel = (props) => {
                                 style: 'cancel',
                               },
                             ],
-                            {cancelable: true},
+                            {cancelable: false},
                           );
-                        }, 500);
+                        }, 1000);
                       }
                     });
                 }
@@ -697,7 +769,20 @@ export const Chatrel = (props) => {
                 // };
                 // dispatch(storeJWTToken(oSession));
               } else {
-                alert('Something went wrong, please try again later');
+                setTimeout(() => {
+                  Alert.alert(
+                    sAttentionRequired,
+                    'Something went wrong, please try again later',
+                    [
+                      {
+                        text: 'Ok',
+                        onPress: () => true,
+                        style: 'cancel',
+                      },
+                    ],
+                    {cancelable: true},
+                  );
+                }, 1000);
               }
             });
         }
@@ -711,16 +796,29 @@ export const Chatrel = (props) => {
           // };
           // dispatch(storeJWTToken(oSession));
         } else {
-          alert('Something went wrong, please try again later');
+          setTimeout(() => {
+            Alert.alert(
+              sAttentionRequired,
+              'Something went wrong, please try again later',
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => true,
+                  style: 'cancel',
+                },
+              ],
+              {cancelable: true},
+            );
+          }, 1000);
         }
       });
   };
 
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && bCallRunOnce) {
       runOnce();
     }
-  }, [dollarToRupees, isFocused]);
+  }, [dollarToRupees, isFocused, bCallRunOnce]);
 
   useEffect(() => {
     if (isFocused) {
@@ -775,7 +873,7 @@ export const Chatrel = (props) => {
       var axios = require('axios');
       var dataFourth = JSON.stringify({payer_id: params.PayerID});
 
-      debugger;
+      //debugger;
       var fourthConfig = {
         baseURL: sPayPalBASEURL,
         method: 'post',
@@ -786,7 +884,7 @@ export const Chatrel = (props) => {
         },
         data: dataFourth,
       };
-      debugger;
+      //debugger;
       axios(fourthConfig)
         .then(function (response) {
           {
@@ -811,10 +909,11 @@ export const Chatrel = (props) => {
               console.error('Caught in Step 5: ' + error);
               setTimeout(() => {
                 Alert.alert(
-                  'Attention Required',
+                  sAttentionRequired,
                   'Cannot verify contribution from PayPal, Please save PayPal Payment ID: ' +
                     paymentID +
-                    '\nand Contact CTA',
+                    '\nand contact CTA at ' +
+                    sContactEmail,
                   [
                     {
                       text: sCopyPayPalPaymentID,
@@ -851,10 +950,11 @@ export const Chatrel = (props) => {
           console.error('Caught in Step 4: ' + error);
           setTimeout(() => {
             Alert.alert(
-              'Attention Required',
+              sAttentionRequired,
               'Cannot verify contribution from PayPal, Please save PayPal Payment ID: ' +
                 paymentID +
-                '\nand Contact CTA',
+                '\nand contact CTA at ' +
+                sContactEmail,
               [
                 {
                   text: sCopyPayPalPaymentID,
@@ -1427,6 +1527,12 @@ export const Chatrel = (props) => {
                                           <Input
                                             // value={oSelectedAuthRegion.sAuthRegion}
                                             {...props}
+                                            disabled={!outstanding}
+                                            disabledInputStyle={{
+                                              backgroundColor: Colors.grey,
+                                              margin: 0,
+                                              padding: 0,
+                                            }}
                                             iconRight
                                             icon={{
                                               type: 'font-awesome',
@@ -1521,7 +1627,7 @@ export const Chatrel = (props) => {
                                       onPress={() => {
                                         //lFilteredAuthRegions[index] = [];
                                         // setbValidateAutocomplete(false);
-                                        updateAuthRegionIOS(index, item);
+                                        updateAuthRegion(index, item);
                                         let myTempAuthRegions = lFilteredAuthRegions;
                                         let myTempAutocomplete = lBValidateAutocomplete;
 
@@ -1701,15 +1807,15 @@ export const Chatrel = (props) => {
                                     //style={{marginBottom:hp(10)}}
                                     key={year.nChatrelYear}
                                     trackColor={{
-                                      false: '#767577',
-                                      true: Colors.grey,
+                                      true: Colors.websiteLightBlueColor,
+                                      false: Colors.white,
                                     }}
                                     thumbColor={
                                       year.nCurrentChatrelSalaryAmt === 0
-                                        ? '#f4f3f4'
-                                        : Colors.blue
+                                        ? Colors.websiteLightBlueColor
+                                        : Colors.white
                                     }
-                                    ios_backgroundColor="#3e3e3e"
+                                    ios_backgroundColor={Colors.white}
                                     onValueChange={(value) => {
                                       modify(value, index);
                                     }}
@@ -2090,7 +2196,7 @@ export const Chatrel = (props) => {
                           Authorization:
                             'Basic ' +
                             base64.encode(
-                              sPayPalClientID + ':' + sClientSecret,
+                              sPayPalClientIDAPI + ':' + sPayPalClientSecretAPI,
                             ),
                         },
                         data: data,
@@ -2104,7 +2210,22 @@ export const Chatrel = (props) => {
                           }
 
                           var dataDetail = {
+                            // intent: 'CAPTURE',
+                            // payer: {
+                            //   payment_method: 'paypal',
+                            // },
                             intent: 'CAPTURE',
+                            // payer: {
+                            //   payment_method: 'paypal',
+                            // },
+                            // payment_method: {
+                            //   payee_preferred: 'UNRESTRICTED',
+                            // },
+                            // payee: {
+                            //   //email: 'ctadummy101@gmail.com',
+                            //   merchant_id: 'NFANBVBZ4RSE2',
+                            //   // payment_method: "paypal"
+                            // },
                             purchase_units: [
                               {
                                 reference_id: 'PUHF',
@@ -2165,13 +2286,15 @@ export const Chatrel = (props) => {
                               setbPaymentModal(true);
                             })
                             .catch(function (error) {
-                              console.log(error);
+                              //debugger;
+                              console.log('step 3');
+                              console.error(error.response);
                               setbLoader(false);
                               setbRender(true);
                               setTimeout(() => {
                                 Alert.alert(
-                                  'Attention Required',
-                                  'Cannot Connect to PayPal, Please try again later.',
+                                  sAttentionRequired,
+                                  sPayPalUIErrorMessage,
                                   [
                                     {
                                       text: 'Ok',
@@ -2185,13 +2308,14 @@ export const Chatrel = (props) => {
                             });
                         })
                         .catch(function (error) {
-                          console.log(error);
+                          //debugger;
+                          console.error(error);
                           setbLoader(false);
                           setbRender(true);
                           setTimeout(() => {
                             Alert.alert(
-                              'Attention Required',
-                              'Cannot Connect to PayPal, Please try again later.',
+                              sAttentionRequired,
+                              sPayPalUIErrorMessage,
                               [
                                 {
                                   text: 'Ok',

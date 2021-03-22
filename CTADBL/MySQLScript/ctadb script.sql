@@ -1909,10 +1909,7 @@ CREATE PROCEDURE spReportGreenBookIssuedOverAll
     ,IN sOrderBy varchar(255)
 )
 BEGIN
-
     declare SQLText varchar(5000);
-	SET session sql_mode = '';
-	SET session group_concat_max_len=1024000;
     SET @SQLText = CONCAT('select 
      ',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion.sAuthRegion", "distinct lstcountry.sCountry" ),' as IndividualPlace ,  
     count(tblgreenbookissued.nGBId) as nCount 
@@ -3087,10 +3084,11 @@ CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
 CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);
 CREATE INDEX GBID_RELATION ON lnkgbrelation(sgbidrelation, nrelationid);
 CREATE INDEX GB_DOC_GBID ON lnkgbdocument (sGBID);
+CREATE INDEX FORM_INDEX_MADEB ON tblmadeb(nFormNumber);
 CREATE INDEX FORM_INDEX_GBSERIAL ON tblgreenbookserial(nFormNumber);
 CREATE INDEX BOOK_NUMBER ON tblgreenbookserial(nBookNo);
+CREATE INDEX MDB_FORMNO ON tblmadeb(nFormNumber);
 CREATE INDEX GB_DOC_SDOCTYPE ON lnkgbdocument (sDocType);
-CREATE INDEX MADEBTYPE_FORMNO_INX_MADEB ON tblmadeb(nMadebTypeID,nFormNumber);
 
 
 UPDATE `lstchatrel` SET `nChatrelValue` = '3' WHERE (`Id` = '5');

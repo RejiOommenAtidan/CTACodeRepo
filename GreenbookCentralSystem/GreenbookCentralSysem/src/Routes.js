@@ -29,6 +29,8 @@ const PageError505 = lazy(() => import('./example-pages/PageError505'));
 //My pages
 const Home = lazy(() => import('./views/home'));
 
+//Test
+const Test = lazy(() => import('./views/test2/index.js'));
 //Master Pages
 const Country = lazy(() => import('./views/master/country'));
 const Qualification = lazy(() => import('./views/master/qualification'));
@@ -92,8 +94,9 @@ const ChatrelReceipt = lazy(() => import('./views/chatrelpay/chatrelreceipt'));
 const ChatrelBulkUpload = lazy(() => import('./views/chatrelhome/bulkupload'));
 const ChatrelReport = lazy(() => import('./views/chatrelhome/reports'));
 const ChatrelAddSingle = lazy(() => import('./views/chatrelhome/addchatrel'));
+const ChatrelDefaulterList = lazy(() => import('./views/chatrelhome/defaulterlist'));
 const ChatrelListSearch = lazy(() => import('./views/chatrelpay/chatrel_list/chatrel_list_with_search'));
-
+   
 //Report
 
 const ReportIssuedOverAll = lazy(() =>
@@ -144,7 +147,7 @@ const Routes = () => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     console.log("path",window.location.pathname);
-
+    console.log("response error: ", error);
     if(error.response.status === 401 && window.location.pathname!=='/Login' && window.location.pathname!=='/login'){
       console.log("we hit 401");
       //history.go(0);
@@ -246,7 +249,8 @@ const Routes = () => {
                 '/PageError404',
                 '/PageError500',
                 '/PageError505',
-                '/PrintPage'
+                '/PrintPage',
+                '/test'
               ]}>
               <MinimalLayout>
                 <Switch location={location} key={location.pathname}>
@@ -261,6 +265,7 @@ const Routes = () => {
                     <Route path="/PageError404" component={PageError404} />
                     <Route path="/PageError500" component={PageError500} />
                     <Route path="/PageError505" component={PageError505} />
+                    <Route path="/test" component={Test} />
                   </motion.div>
                 </Switch>
               </MinimalLayout>
@@ -303,13 +308,14 @@ const Routes = () => {
                 '/Print',
                 '/FeatureRights',
                 '/Search',
-                '/ChatrelPay',
-                '/ChatrelPay/MainPage',
-                '/ChatrelPay/PaymentPage',
+                // '/ChatrelPay',
+                // '/ChatrelPay/MainPage',
+                // '/ChatrelPay/PaymentPage',
                 '/Chatrel/ChatrelList',
                 '/Chatrel/ChatrelListSearch',
                 '/Chatrel/ChatrelReceipt',
-                '/Chatrel',
+                // '/Chatrel',
+                '/Chatrel/ChatrelDefaulterReport',
                 '/Chatrel/SearchUsers',
                 '/Chatrel/BulkImport',
                 '/Chatrel/Report',
@@ -624,8 +630,15 @@ const Routes = () => {
                       component={ChatrelReport}
                       exact
                     />
-                    <Route path="/Chatrel" component={Chatrel} exact />
-                    <Route path="/ChatrelPay" component={ChatrelPay} exact />
+                    {/* <Route path="/Chatrel" component={Chatrel} exact /> */}
+                    {/* <Route path="/Chatrel/ChatrelDefaulterReport" component={ChatrelDefaulterList} exact /> */}
+                    <PrivateRoute
+                      path="/Chatrel/ChatrelDefaulterReport"
+                      feature={52}
+                      component={ChatrelDefaulterList}
+                      exact
+                    />
+                    {/* <Route path="/ChatrelPay" component={ChatrelPay} exact />
                     <Route
                       path="/ChatrelPay/MainPage"
                       component={MainPage}
@@ -635,7 +648,7 @@ const Routes = () => {
                       path="/ChatrelPay/PaymentPage"
                       component={PaymentPage}
                       exact
-                    />
+                    /> */}
                   </motion.div>
                 </Switch>
               </LeftSidebar>

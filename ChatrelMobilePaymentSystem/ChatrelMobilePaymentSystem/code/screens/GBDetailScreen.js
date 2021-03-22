@@ -157,6 +157,7 @@ export const GBDetailScreen = (props) => {
   const isFocused = useIsFocused();
   const {control, handleSubmit, errors} = useForm();
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
+  const sType = useSelector((state) => state.SignInTypeReducer.sType);
   const dispatch = useDispatch();
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
   const [sGBID, setsGBID] = useState('');
@@ -168,13 +169,13 @@ export const GBDetailScreen = (props) => {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      await AsyncStorage.multiRemove(keysToRemove, (err) => {
+      //await AsyncStorage.multiRemove(keysToRemove, (err) => {
         dispatch(removeGoogleCreds);
         dispatch(removeGBDetails);
         dispatch(removeJWTToken);
         dispatch(removeCurrentGBDetails);
         props.navigation.navigate('Login');
-      });
+      //});
     } catch (error) {
       props.navigation.navigate('Login');
     }
@@ -182,20 +183,24 @@ export const GBDetailScreen = (props) => {
   const handleVerifyDetailsPress = async () => {
     setbLoader(true);
     let oAPI = {
-      sGBID: sGBID,
       // dtDOB: dtDOB,
-      dtDOB: Moment(dtDOB, sDateFormat).format(sISODateFormat),
       // sFirstName: oGoogle.user?.givenName,
       // sLastName: oGoogle.user?.familyName,
+      sGBID: sGBID,
+      dtDOB: Moment(dtDOB, sDateFormat).format(sISODateFormat),
       sEmail: oGoogle.user?.email,
       code: oGoogle.idToken,
+      sType: sType,
     };
 
-    //console.log(oAPI);
+    console.log(oAPI);
+
+    // setbLoader(false);
 
     axios
       .post('User/AuthenticateGBID', oAPI)
       .then((response) => {
+        debugger;
         if (response.status === 200) {
           {
             /*Using here word "sJWTToken" rest places "token" word*/
@@ -258,6 +263,7 @@ export const GBDetailScreen = (props) => {
           // };
           // dispatch(storeJWTToken(oSession));
         } else {
+          debugger;
           Alert.alert(
             sVerificationFailedMessage,
             "The entered details didn't match our database. Please try again.",
@@ -346,7 +352,8 @@ export const GBDetailScreen = (props) => {
       <View style={styles.mainContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerComponent}>
-            Great! Thanks for logging in through Google.{'\n'}Just one more step
+            Great! Thanks for logging in through{' '}
+            {sType === 'Google' ? 'Google' : 'Apple'}.{'\n'}Just one more step
             now.
           </Text>
         </View>

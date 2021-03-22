@@ -589,11 +589,11 @@ namespace CTAWebAPI.Controllers.Transactions
                         int nPort = Convert.ToInt32(CTAConfigRepository.GetValueByKey("CTAEmailServerPort"));
                         bool bUseSSL = Convert.ToBoolean(CTAConfigRepository.GetValueByKey("CTAEmailUseSSL"));
                         string sEmailFrom = CTAConfigRepository.GetValueByKey("CTAAdminEmail");
-
+                        bool shouldSendCC = Convert.ToBoolean(CTAConfigRepository.GetValueByKey("ShouldCCEmail"));
                         MimeMessage message = new MimeMessage();
                         MailboxAddress from = new MailboxAddress("Paljor Dataunit", sEmailFrom);
                         MailboxAddress to = new MailboxAddress(email.sName, email.sReceiver);
-                        if (!String.IsNullOrEmpty(sEmailCC))
+                        if ( shouldSendCC && !String.IsNullOrWhiteSpace(sEmailCC))
                         {
                             //CC Section
                             MailboxAddress toCC = new MailboxAddress("CTA Team CC", sEmailCC);
@@ -603,13 +603,13 @@ namespace CTAWebAPI.Controllers.Transactions
                         BodyBuilder messageBody = new BodyBuilder();
 
                         //Regex.IsMatch(email.sBody, @"[\u0F00-\u0FFF]");
-                        var result = Regex.Matches(email.sBody, @"[\u0F00-\u0FFF]");
-                        var final = result.Distinct();
-                        email.sBody = email.sBody.Replace("\n", "<br />");
-                        foreach(var item in final)
-                        {
-                            email.sBody = email.sBody.Replace(item.Value, @$"<span style='font-size:1.7rem; font-weight:600;'>{item}</span>");
-                        }
+                        //var result = Regex.Matches(email.sBody, @"[\u0F00-\u0FFF]");
+                        //var final = result.Distinct();
+                        //email.sBody = email.sBody.Replace("\n", "<br />");
+                        //foreach(var item in final)
+                        //{
+                        //    email.sBody = email.sBody.Replace(item.Value, @$"<span style='font-size:1.7rem; font-weight:600;'>{item}</span>");
+                        //}
                         messageBody.HtmlBody = email.sBody;
                         //messageBody.TextBody = email.sBody;
 
@@ -633,7 +633,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         smtpClient.Disconnect(true);
                         smtpClient.Dispose();
                         Madeb madeb = _madebRepository.GetMadebByFormNumber(email.nFormNumber, email.nMadebTypeId);
-                        madeb.dtReject = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                        //madeb.dtReject = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                         madeb.dtEmailSend = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                         _madebRepository.Update(madeb);
                         return Ok("Email sent successfully.");

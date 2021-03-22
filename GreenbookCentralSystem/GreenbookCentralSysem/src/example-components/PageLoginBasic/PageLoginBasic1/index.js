@@ -45,9 +45,10 @@ export default function LogingPage(props) {
   useEffect(() => {
     // console.log('Props:',props);
 
-
+    var cookie = document.cookie;
+  
     // Redirect to Home if Data Present in Redux
-    if(LoggedInOrNot !== null){
+    if(LoggedInOrNot !== null && cookie.includes('session=Active')){
       var u = LoggedInOrNot.lFeatureUserrights.find((x) => x.nFeatureID === 2);
       if(u) {
         history.push("/Search");
@@ -76,6 +77,7 @@ export default function LogingPage(props) {
         // },user.nTimeoutInDays*3600);
         //history.push('/Home');
         //Using Window.location.reload to /Home for refersh and read proper value from LS
+        document.cookie = "session=Active;";
         console.log("Feature rights:", user.lFeatureUserrights[1]);
         var u = user.lFeatureUserrights.find((x) => x.nFeatureID === 2);
         console.log("user", u);

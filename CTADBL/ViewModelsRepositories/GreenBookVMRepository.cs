@@ -1,4 +1,5 @@
 ﻿using CTADBL.BaseClasses.Transactions;
+using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.QueryBuilder;
 using CTADBL.Repository;
@@ -386,6 +387,55 @@ namespace CTADBL.ViewModelsRepositories
             }
 
 
+        }
+        #endregion
+
+        #region
+        public async Task<IEnumerable<object>> SearchGreenBooksAlternate(string a)
+        {
+            string addToSql = String.Empty;
+
+            using (var command = new MySqlCommand())
+            {
+                string sql = @"SELECT Id, CAST(sGBID AS UNSIGNED) AS sGBID, sFirstName, sLastName, IF (dtDeceased is null,CAST(year(curdate()) - year(dtDOB) AS UNSIGNED), CAST(year(dtDeceased) - year(dtDOB) AS UNSIGNED)) as nAge, dtDOB FROM tblgreenbook WHERE (";
+
+                var properties = typeof(Greenbook).GetProperties();
+                foreach (var property in properties)
+                {
+                   
+                    //if (property.Name != "dtEntered" && property.Name != "nEnteredBy" && property.Name != "dtUpdated" && property.Name != "nUpdatedBy" && property.Name != "Id" && property.Name != "_id" && property.Name != "nAuthRegionID" && property.Name != "nChildrenM" && property.Name != "nChildrenF" && property.Name != "sPCode" && property.Name != "sFax" && property.Name != "dtDeceased" && property.Name != "sBookIssued" && property.Name != "dtValidityDate" && property.Name != "sPaidUntil" && property.Name != "TibetanName" && property.Name != "TBUPlaceOfBirth" && property.Name != "TBUOriginVillage" && property.Name != "TBUFathersName" && property.Name != "TBUMothersName" && property.Name != "TBUSpouseName" && property.Name != "sLoginGmail" && property.Name != "dtLastSuccessfullLogin" && property.Name != "sEnteredDateTime" && property.Name != "sBirthCountryID" && property.Name != "sOriginProvinceID" && property.Name != "sQualificationID" && property.Name != "sOccupationID" && property.Name != "sGender" && property.Name != "sDOBApprox")
+                    if(property.Name == "sGBID" || property.Name == "sFirstName" || property.Name == "sLastName")
+                    {
+                        addToSql += property.Name + " LIKE @" + property.Name + " OR ";
+                        command.Parameters.AddWithValue(property.Name, '%' + a + '%');
+                    }
+                }
+                addToSql += " IF(dtDeceased is null,CAST(year(curdate()) - year(dtDOB) AS UNSIGNED), CAST(year(dtDeceased) - year(dtDOB) AS UNSIGNED)) LIKE @nAge) LIMIT @limit;";
+                command.Parameters.AddWithValue("nAge", '%' + a + '%');
+                //addToSql = addToSql.Substring(0, (addToSql.Length - 3));
+                sql += addToSql;
+                int limit = Convert.ToInt32(CTAConfigRepository.GetValueByKey("MadebLoadSearchRecordsNumber"));
+                command.Parameters.AddWithValue("limit", limit);
+
+                command.CommandText = sql;
+                command.Connection = _connection;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                await mySqlDataAdapter.FillAsync(ds);
+                DataTableCollection tables = ds.Tables;
+                IEnumerable<object> result = tables[0].AsEnumerable().Select(row => new
+                {
+                    Id = row.Field<int>("Id"),
+                    sGBID = row.Field<System.UInt64>("sGBID").ToString(),
+                    sFirstName = row.Field<string>("sFirstName"),
+                    sLastName = row.Field<string>("sLastName"),
+                    dtDOB = row.Field<DateTime>("dtDOB"),
+                });
+                //int records = ds.Tables[0].Rows.Count;
+                //command.Parameters.AddWithValue("limit", Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount")));
+                return result;
+                //return GetRecords(command);
+            }
         }
         #endregion
 

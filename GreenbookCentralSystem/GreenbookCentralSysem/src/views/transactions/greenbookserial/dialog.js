@@ -87,7 +87,14 @@ export const EditDialog = (props) => {
     setRemarks("BOOK MARKED DAMAGED");
     setDamaged(true);
   };
-
+  let valueMadebTypes = [];
+  console.log(nMadebTypeId);
+  madebTypes.forEach(element => {
+    if (element.id === nMadebTypeId) {
+      valueMadebTypes = element;
+      console.log(valueMadebTypes);
+    }
+  });
 
   const gbSerialObj = {
     id,
@@ -97,6 +104,7 @@ export const EditDialog = (props) => {
     dtDate: Moment(dtDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDate).format('YYYY-MM-DD') : null,
     //dtDate,
     //sName,
+    sMadebType: valueMadebTypes.sMadebType,
     sCountryID,
     nMadebTypeId,
     nFormNumber,
@@ -113,13 +121,7 @@ export const EditDialog = (props) => {
     }
   });
 
-  let valueMadebTypes = [];
-  console.log(nMadebTypeId);
-  madebTypes.forEach(element => {
-    if (element.id === nMadebTypeId) {
-      valueMadebTypes = element;
-    }
-  });
+  
 
   let valueCountryName = [];
   console.log("Country list\n", countries);

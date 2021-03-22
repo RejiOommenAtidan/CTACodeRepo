@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useRef} from 'react';
 import {
   Grid,
   Button,
@@ -19,6 +19,7 @@ import { BackdropComponent } from '../../backdrop';
 import { sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import Editor from '../email/editor';
 
 export const EmailDialog = (props) => {
   let history = useHistory();
@@ -43,7 +44,13 @@ export const EmailDialog = (props) => {
   const [recipient, setRecipient] = React.useState('');
   const [sender, setSender] = React.useState("");
   const [subject, setSubject] = React.useState(madebName + ' case no: ' + formNumber.toString() + '  Name: ' + name);
-  const [body, setBody] = React.useState(madebName + ' case no:' + formNumber.toString() + ' \nName: ' + name + '\nPostal Address:');
+ const [body, setBody] = React.useState(''+madebName + ' case no:' + formNumber.toString() + ' <br/>Name: ' + name + '<br/>Postal Address:');
+ /*const [body, setBody] = React.useState(`1st Line <br/>
+ 2ndLine
+ 3rdLine
+ `);*/
+  
+  
   const [backdrop, setBackdrop] = React.useState(false);
 
   console.log(props.emailInObj);
@@ -71,7 +78,7 @@ export const EmailDialog = (props) => {
           setAlertType('success');
           snackbarOpen();
           setBackdrop(false);
-          setTimeout(() => { props.handleEmailClickClose() }, 3000);
+          setTimeout(() => { props.handleEmailClickClose(true) }, 3000);
         }
       })
       .catch(error => {
@@ -98,9 +105,25 @@ export const EmailDialog = (props) => {
         //console.log(release); => udefined
       });
   }, []);
+  
+
+
+  // useEffect(() => {
+  //   //console.log(editor);
+  //  //var x = document.getElementsByTagName('textarea');
+  //  var x = document.getElementsByClassName('jodit-wysiwyg');
+  //  if(x.length>0  ){
+  //    console.log(x);
+  //   x[0].focus();
+  //  }
+   
+   
+  //  }, [content]);
+
+
 
   return (
-    <Dialog open={props.emailModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.emailModal} fullWidth={true} maxWidth={"lg"} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Email {madebName} Madeb</DialogTitle>
       <form onSubmit={handleSubmit(SendEmail)}>
         <DialogContent>
@@ -163,14 +186,15 @@ export const EmailDialog = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                   <FormControl className={props.classes.formControl}>
-                    <TextField
+                  <Editor  content={body} setContent={setBody} />
+                    {/* <TextField
                       id="message"
                       name="name_message"
                       label={<>Message<span style={{ color: 'red' }}> *</span></>}
                       //required={true}
                       multiline
-                      rows={7}
-                      rowsMax={5}
+                      rows={15}
+                      rowsMax={13}
                       value={body}
                       onChange={(e) => { setBody(e.target.value) }}
                       inputRef={register({
@@ -183,7 +207,7 @@ export const EmailDialog = (props) => {
                     />
                     {_.get("name_message.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                    )} */}
                   </FormControl>
                 </Grid>
               </Grid>
@@ -209,6 +233,8 @@ export const EmailDialog = (props) => {
             variant={sButtonVariant}
             size={sButtonSize}
           >Send</Button>
+          
+          
         </DialogActions>
         {snackbar && <Alerts
           alertObj={alertObj}

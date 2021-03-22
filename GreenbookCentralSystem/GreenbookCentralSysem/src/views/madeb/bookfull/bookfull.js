@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Grid,
-  Typography,
-  Breadcrumbs,
-  Link,
-  Button
-} from '@material-ui/core';
+import {  Grid, TextField,  Typography,  Paper,  Button } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,7 +13,13 @@ import { EmailDialog } from '../email';
 import { Alerts } from '../../alerts';
 import { AddDialog, EditDialog } from './dialog';
 import { ViewDialog } from '../../search/dialog';
-import { oOptions, oTableIcons, sDateFormat, modifyHeaders } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, modifyHeaders, sISODateFormat, sDateFormatMUIDatepicker, sDDMMYYYYRegex } from '../../../config/commonConfig';
+
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 import MyComp from '../../common/filtercomponent';
 import { BackdropComponent } from '../../backdrop/index';
 
@@ -85,10 +86,18 @@ export default function EnhancedTable() {
   const [emailModal, setEmailModal] = React.useState(false);
 
   const [id, setId] = React.useState('');
-  const [formNumber, setFormNumber] = React.useState(0);
-  const [receivedDate, setReceivedDate] = React.useState('');
+  //const [formNumber, setFormNumber] = React.useState(0);
+  //const [receivedDate, setReceivedDate] = React.useState('');
   const [authority, setAuthority] = React.useState(0);
-  const [name, setName] = React.useState('');
+  //const [name, setName] = React.useState('');
+
+  const [nFormNumber, setFormNumber] = React.useState(null);
+  const [sAuthRegion, setAuthRegion] = React.useState(null);
+  const [authRegions, setAuthRegionsList] = React.useState([]);
+  const [dtReceived, setReceivedDate] = React.useState(null);
+  const [sName, setName] = React.useState(null);
+  const [sGBIDForSearch, setGBIDForSearch] = React.useState(null);
+  const [sFathersName, setFathersName] = React.useState(null);
 
   const [gbId, setGbId] = React.useState('');
   const [fname, setFname] = React.useState('');
@@ -103,7 +112,7 @@ export default function EnhancedTable() {
   const [emailInObj, setEmailInObj] = useState({});
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
-  const [isLoading, setisLoading] = React.useState(true);
+  //const [isLoading, setisLoading] = React.useState(true);
   const [backdrop, setBackdrop] = React.useState(false);
 
 
@@ -178,8 +187,12 @@ export default function EnhancedTable() {
     setSnackbar(false);
   };
 
-  const handleEmailClickClose = () => {
+  const handleEmailClickClose = (shouldReload) => {
     setEmailModal(false);
+    if(shouldReload){
+      searchFunction(nFormNumber, dtReceived, sAuthRegion, sName,  sFathersName, sGBIDForSearch);
+    }
+    
   };
 
   const handleEditClickClose = () => {
@@ -802,7 +815,7 @@ export default function EnhancedTable() {
       console.log("Should search:", shouldSearch);
       console.log("Search Object: Inside useEffect", searchObj);
       if (shouldSearch) {
-        setisLoading(true);
+        setBackdrop(true);
         axios.post(`/MadebAuthRegionVM/ColumnSearchMadeb/madebType=5`, searchObj)
           .then(resp => {
             if (resp.status === 200) {
@@ -810,19 +823,19 @@ export default function EnhancedTable() {
               console.log("Got filter Data");
               setdataAPI([...resp.data]);
               setSearching(false);
-              setisLoading(false);
+              setBackdrop(false);
               //setTimeout(() => ele.focus(), 2000);
 
             }
             if (resp.status === 204) {
               console.log("Got  Empty data set");
-              setisLoading(false);
+              setBackdrop(false);
               setdataAPI([...resp.data]);
               setSearching(false);
             }
           })
           .catch(error => {
-            setisLoading(false);
+            setBackdrop(false);
             console.log(error.message);
             //handleError(error, history);
           })
@@ -833,15 +846,15 @@ export default function EnhancedTable() {
 
   const emailClick = (tableRowArray) => {
 
-    setId(tableRowArray['madeb']['id']);
-    setFormNumber(tableRowArray['madeb']['nFormNumber']);
-    setName(tableRowArray['madeb']['sName']);
+    //setId(tableRowArray['madeb']['id']);
+    //setFormNumber(tableRowArray['madeb']['nFormNumber']);
+    //setName(tableRowArray['madeb']['sName']);
 
     setEmailInObj({
       id: tableRowArray['madeb']['id'],
       nFormNumber: tableRowArray['madeb']['nFormNumber'],
       sName: tableRowArray['madeb']['sName'],
-      madebName: 'Brief GreenBook',
+      madebName: 'BookFull GreenBook',
       nMadebTypeId: 5
     });
 
@@ -880,6 +893,7 @@ export default function EnhancedTable() {
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
       dtReject: tableRowArray['madeb']['dtReject'],
       dtReturnEmail: tableRowArray['madeb']['dtReturnEmail'],
+      dtEmailSend: tableRowArray['madeb']['dtEmailSend'],
       nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
       sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });
@@ -900,31 +914,32 @@ export default function EnhancedTable() {
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
           snackbarOpen();
-          axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
-            .then(resp => {
-              if (resp.status === 200) {
-                resp.data.forEach((element) => {
-                  element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
-                  element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
-                  element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
-                  element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
-                  element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
-                })
-                setdataAPI(resp.data);
-                selectDatafunction();
-              }
-            })
-            .catch(error => {
-              setBackdrop(false);
-              console.log(error.config);
-              console.log(error.message);
-            })
+          // axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
+          //   .then(resp => {
+          //     if (resp.status === 200) {
+          //       resp.data.forEach((element) => {
+          //         element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
+          //         element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
+          //         element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
+          //         element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
+          //         element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
+          //       })
+          //       setdataAPI(resp.data);
+          //       selectDatafunction();
+          //     }
+          //   })
+          //   .catch(error => {
+          //     setBackdrop(false);
+          //     console.log(error.config);
+          //     console.log(error.message);
+          //   })
+          //loadData();
+          searchFunction(nFormNumber, dtReceived, sAuthRegion, sName, sFathersName, sGBIDForSearch );
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
-        setAlertMessage(`Record updation failed. \nError:${error.message}.`);
+        console.log("Error", error.message);
+        setAlertMessage(`Error editing record`);
         setAlertType('error');
         snackbarOpen();
         setBackdrop(false);
@@ -937,6 +952,7 @@ export default function EnhancedTable() {
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
+          setAuthRegionsList(resp.data.authRegions);
           setBackdrop(false);
         }
       })
@@ -966,31 +982,32 @@ export default function EnhancedTable() {
           setAlertMessage('Created new record successfully.');
           setAlertType('success');
           snackbarOpen();
-          axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
-            .then(resp => {
-              if (resp.status === 200) {
-                resp.data.forEach((element) => {
-                  element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
-                  element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
-                  element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
-                  element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
-                  element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
-                })
-                setdataAPI(resp.data);
-                selectDatafunction();
-              }
-            })
-            .catch(error => {
-              setBackdrop(false);
-              console.log(error.message);
-              console.log(error.config);
-            })
+          // axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
+          //   .then(resp => {
+          //     if (resp.status === 200) {
+          //       resp.data.forEach((element) => {
+          //         element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
+          //         element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
+          //         element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
+          //         element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
+          //         element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
+          //       })
+          //       setdataAPI(resp.data);
+          //       selectDatafunction();
+          //     }
+          //   })
+          //   .catch(error => {
+          //     setBackdrop(false);
+          //     console.log(error.message);
+          //     console.log(error.config);
+          //   })
+          //loadData();
+          searchFunction(nFormNumber, dtReceived, sAuthRegion, sName, sFathersName, sGBIDForSearch );
         }
       })
       .catch(error => {
         console.log(error.message);
-        console.log(error.config);
-        setAlertMessage(`Record creation failed. \nError:${error.message}.`);
+        setAlertMessage(`Error adding record`);
         setAlertType('error');
         snackbarOpen();
         setBackdrop(false);
@@ -1001,58 +1018,297 @@ export default function EnhancedTable() {
     setDeleteModal(false);
   };
 
+  const tableRef = React.useRef();
+
+  const loadData = () => {
+    setBackdrop(true);
+    let text = tableRef.current.dataManager.searchText;
+    axios.get(`/MadebAuthRegionVM/SearchMadebsAlternate?parameter=${text}&madebType=5`)
+    .then(resp => {
+      if (resp.status === 200) {
+        resp.data.forEach((element) => {
+          element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
+          element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
+          element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
+          element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
+          element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
+        })
+        setdataAPI(resp.data);
+        setBackdrop(false);
+        modifyHeaders();
+        selectDatafunction();
+      }
+    })
+    .catch(error => {
+      setBackdrop(false);
+      if (error.response) {
+        console.error(error.response.data);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+
+      } else if (error.request) {
+        console.warn(error.request);
+
+      } else {
+        console.error('Error', error.message);
+
+      }
+      console.log(error.config);
+    })
+    .then(release => {
+      //console.log(release); => udefined
+    });
+  };
+
   useEffect(() => {
-    buildArray();
-    axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
-      .then(resp => {
-        if (resp.status === 200) {
-          resp.data.forEach((element) => {
-            element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
-            element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
-            element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
-            element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
-            element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
-          })
-          setdataAPI(resp.data);
-          setisLoading(false);
-          modifyHeaders();
-          selectDatafunction();
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-
-        } else if (error.request) {
-          console.warn(error.request);
-
-        } else {
-          console.error('Error', error.message);
-
-        }
-        console.log(error.config);
-        setisLoading(false);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
+    //buildArray();
+    loadData();    
   }, []);
 
-  useEffect(() => {
-    const bar = document.getElementById("searchbar").getElementsByTagName('input');
-    if(bar){
-      bar[0].focus();
-    };
-  }, [dataAPI]);
+  // useEffect(() => {
+  //   const bar = document.getElementById("searchbar").getElementsByTagName('input');
+  //   if(bar){
+  //     bar[0].focus();
+  //   };
+  // }, [dataAPI]);
+  const searchFunction = (form, date, region, name, fname, sgbid) => {
+    const searchObj = {
+      nFormNumber: form ? form : null,
+      dtReceived: date ? date : null,
+      sAuthRegion: region ? region : null,
+      sName: name ? name : null,
+      sGBID: sgbid ? sgbid : null,
+      sFathersName: fname ? fname : null
+    }
+    console.log("Search Object", searchObj);
+    //setBackdrop(true);
+    axios.post(`/MadebAuthRegionVM/ColumnSearchMadeb/madebType=5`, searchObj)
+    .then(resp => {
+      setBackdrop(false);
+      if(resp.status === 200){
+        console.log("Search result", resp.data);
+        resp.data.forEach((element) => {
+          element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
+          element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
+          element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
+          element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
+          element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
+        });
+        setdataAPI(resp.data);
+      }
+      if(resp.status === 204){
+        console.log("Got 204, Empty result");
+        setdataAPI([]);
+        setAlertMessage("No Data Found...");
+        setAlertType('info');
+        snackbarOpen();
+      }
+    })
+    .catch(error =>{
+      setBackdrop(false);
+      setAlertMessage("Error in searching...");
+      setAlertType('error');
+      snackbarOpen();
+    });
+  };
 
   return (
     <>
+    <Paper style={{borderRadius: '10px'}}>
+        <Grid container spacing={1} alignContent='flex-start' style={{paddingLeft: '20px', maxWidth: '70%'}} >
+
+
+        
+
+          <Grid item xs={1} lg={1} style={{paddingTop: '9px'}}>
+            <TextField label={'Form No'} onChange={(e) => {
+            if(e.target.value){
+              setFormNumber(parseInt(e.target.value)); 
+              searchFunction(parseInt(e.target.value), dtReceived, sAuthRegion, sName, sFathersName, sGBIDForSearch);
+            }
+            if(e.target.value === ''){
+              setFormNumber(null);
+              searchFunction(null, dtReceived, sAuthRegion, sName, sFathersName,sGBIDForSearch);
+            }
+            
+          }
+
+          } />
+          </Grid>
+
+          <Grid item xs={2} lg={2} style={{paddingTop: '9px'}}>
+            <Autocomplete
+              openOnFocus
+              clearOnEscape
+              autoComplete={true}
+              autoHighlight={true}
+              onChange={
+                (e, value) => {
+                  if (value !== null) {
+                    setAuthRegion(value.sAuthRegion);
+                    searchFunction(nFormNumber, dtReceived, value.sAuthRegion, sName, sFathersName, sGBIDForSearch);
+                  }
+                  else {
+                    setAuthRegion(null);
+                    searchFunction(nFormNumber, dtReceived, null, sName,sFathersName,  sGBIDForSearch);
+                  }
+                }
+              }
+              //style={{ width: 180 }}
+              //value={valueAuthRegion}
+              id="id_nAuthorityId"
+              options={authRegions}
+              getOptionLabel={(option) => option.sAuthRegion}
+              renderOption={(option) => (
+                <React.Fragment>
+                  <span>{option.sAuthRegion}</span>
+                </React.Fragment>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Authority Region"
+                  variant="standard"
+                  inputProps={{
+                    ...params.inputProps,
+                    autoComplete: 'off', // disable autocomplete and autofill
+                  }}
+                />
+              )}
+            />
+            {/* <TextField
+              label={'Authority '}
+              onChange={(e) => {
+                setAuthRegion(e.target.value);
+                searchFunction(nFormNumber, dtReceived, e.target.value, sName, sFathersName);
+              }}
+            /> */}
+          </Grid>
+
+          <Grid item xs={2} lg={2} style={{paddingTop: '9px'}}>
+            <TextField 
+              label={'Name'} 
+              onChange={(e) => {
+                if(e.target.value){
+                  setName(e.target.value); 
+                  searchFunction(nFormNumber, dtReceived, sAuthRegion, e.target.value,sFathersName, sGBIDForSearch); 
+                }
+                if(e.target.value === ''){
+                  setName(null); 
+                  searchFunction(nFormNumber, dtReceived, sAuthRegion, null,sFathersName, sGBIDForSearch); 
+                }
+                }} 
+            />
+          </Grid>
+          <Grid item xs={2} lg={2} style={{paddingTop: '9px'}}>
+            <TextField 
+            label={"Father's Name"} 
+            onChange={(e) => {
+              if(e.target.value){
+                setFathersName(e.target.value); 
+                searchFunction(nFormNumber, dtReceived, sAuthRegion, sName, e.target.value, sGBIDForSearch);
+              }
+              
+              if(e.target.value === ''){
+                setFathersName(null); 
+                searchFunction(nFormNumber, dtReceived, sAuthRegion, sName, null, sGBIDForSearch); 
+              }
+               }}
+            />
+          </Grid>
+          <Grid item xs={2} lg={2} style={{paddingTop: '9px'}}>
+            <TextField 
+            label={"Greenbook ID"} 
+            onChange={(e) => {
+              if(e.target.value){
+                setGBIDForSearch(e.target.value); 
+                searchFunction(nFormNumber, dtReceived, sAuthRegion, sName,sFathersName, e.target.value);
+              }
+              
+              if(e.target.value === ''){
+                setGBIDForSearch(null); 
+                searchFunction(nFormNumber, dtReceived, sAuthRegion, sName,sFathersName, null); 
+              }
+               }}
+            />
+          </Grid>
+          <Grid item xs={2} lg={2} >
+            
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    placeholder="DD-MM-YYYY"
+                    variant="dialog"
+                    margin="dense"
+                    id="dtReceived"
+                    name="dtReceived"
+                    autoOk
+                    label='Received Date'
+                    format={sDateFormatMUIDatepicker}
+                    returnMoment={true}
+                    onChange={(date) => {
+                      console.log("Date object", date);
+                      if (Moment(date, true).isValid()) {
+                        console.log("Valid Date", date);
+                        setReceivedDate(Moment(date, true).format(sISODateFormat));
+                        searchFunction(nFormNumber, Moment(date, true).format(sISODateFormat), sAuthRegion, sName, sFathersName, sGBIDForSearch);
+                      }
+                      if(date === null){
+                        console.log("Empty Date", date);
+                        setReceivedDate(null);
+                        searchFunction(nFormNumber, null, sAuthRegion, sName, sFathersName, sGBIDForSearch);    
+                      }
+                      // if (date) {
+                      //   setStartDate(date);
+                      //   setValue('startDate', date, { shouldValidate: true });
+                      // };
+                    }}
+                    value={dtReceived}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                    
+                    // fullWidth
+                    //className={classes.dateField}
+                    // inputRef={register({
+                    //   required: true,
+                    //   pattern:
+                    //   {
+                    //     value: new RegExp(sDDMMYYYYRegex),
+                    //     message: "Invalid Date"
+                    //   }
+                    // })}
+                  />
+                </MuiPickersUtilsProvider>
+              
+              
+              {/* <TextField
+                label={'Received Date'}
+                onChange={(e) => {
+                  if (Moment(e.target.value, 'DD-MM-YYYY', true).isValid()) {
+                    console.log("Valid Date", e.target.value);
+                    setReceivedDate(Moment(e.target.value, 'DD-MM-YYYY', true).format(sISODateFormat));
+                    searchFunction(nFormNumber, Moment(e.target.value, 'DD-MM-YYYY', true).format(sISODateFormat), sAuthRegion, sName, sFathersName);
+                  }
+                  if (e.target.value === '') {
+                    searchFunction(nFormNumber, null, sAuthRegion, sName, sFathersName);
+                  }
+  
+                }}
+              /> */}
+            </Grid>
+        </Grid>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px',fontSize:'1rem',color:'#000000',fontWeight:'bold' }}
-            isLoading={isLoading}
+          <MaterialTable 
+          style={{ 
+            padding: '10px', 
+            width: '100%', 
+            boxShadow: 'none',
+            fontSize:'1rem',
+            color:'#000000',
+            fontWeight:'bold' }}
+            //isLoading={isLoading}
+            tableRef={tableRef}
             icons={oTableIcons}
             title="Book Full Madeb"
             columns={columns}
@@ -1061,43 +1317,43 @@ export default function EnhancedTable() {
               ...oOptions, 
               //tableLayout: "fixed",
               exportFileName: 'Book Full Madeb',
-              //search: false
+              search: false
              }}
-             components={{
-              Toolbar: props => (<div id='searchbar'><MTableToolbar
-                          {...props}
-                          onSearchChanged={searchText => {
-                          console.log(searchText);
-                          axios.get(`/MadebAuthRegionVM/SearchMadebsAlternate?parameter=${searchText}&madebType=5`)
-                          .then(resp => {
-                            setisLoading(false);
-                            if(resp.status === 200){
-                              console.log("Search result", resp.data);
-                              resp.data.forEach((element) => {
-                                element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
-                                element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
-                                element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
-                                element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
-                                element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
-                              });
-                              setdataAPI(resp.data);
-                            }
-                            if(resp.status === 204){
-                              console.log("Got 204, Empty result");
-                              setdataAPI([]);
-                            }
-                          })
-                          .catch(error =>{
-                            setisLoading(false);
-                            setAlertMessage("Error in searching...");
-                            setAlertType('error');
-                            snackbarOpen();
-                          });
-                          //commonSearch(searchText);
-                          //props.onSearchChanged(searchText);
-                          }}
-                      /></div>)
-            }}
+            //  components={{
+            //   Toolbar: props => (<div id='searchbar'><MTableToolbar
+            //               {...props}
+            //               onSearchChanged={searchText => {
+            //               console.log(searchText);
+            //               axios.get(`/MadebAuthRegionVM/SearchMadebsAlternate?parameter=${searchText}&madebType=5`)
+            //               .then(resp => {
+            //                 setBackdrop(false);
+            //                 if(resp.status === 200){
+            //                   console.log("Search result", resp.data);
+            //                   resp.data.forEach((element) => {
+            //                     element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
+            //                     element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
+            //                     element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
+            //                     element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
+            //                     element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
+            //                   });
+            //                   setdataAPI(resp.data);
+            //                 }
+            //                 if(resp.status === 204){
+            //                   console.log("Got 204, Empty result");
+            //                   setdataAPI([]);
+            //                 }
+            //               })
+            //               .catch(error =>{
+            //                 setBackdrop(false);
+            //                 setAlertMessage("Error in searching...");
+            //                 setAlertType('error');
+            //                 snackbarOpen();
+            //               });
+            //               //commonSearch(searchText);
+            //               //props.onSearchChanged(searchText);
+            //               }}
+            //           /></div>)
+            // }}
             actions={[
               {
                 icon: oTableIcons.Add,
@@ -1154,6 +1410,7 @@ export default function EnhancedTable() {
           />}
         </Grid>
       </Grid>
+      </Paper>
     </>
   );
 }

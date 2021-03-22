@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -90,6 +90,28 @@ const selfPayment=() => {
     
 
 }
+
+  const [sClientIDGoogle, setsClientIDGoogle]= React.useState(null);
+  const sWebAppPassphrase = "RKb4q^!E-NS?wY4=W@`Bt`*H,";
+  useEffect(() => {
+    console.log('test');
+    axios
+      .post(`/ChatrelPayment/GetGoogleCredentialsForWebApp?sWebAppPassphrase=${sWebAppPassphrase}`)
+      .then((resp) => {
+        if (resp.status === 200) {
+          console.log('Login Ping Pong: ' + resp.data.sGoogleClientIDWebApp);
+          setsClientIDGoogle(resp.data.sGoogleClientIDWebApp);
+         
+        }
+      })
+      .catch((error) => {
+        console.log('Error ', error.response);
+      })
+      .then((release) => {
+        //console.log(release); => udefined
+      });
+  }, []);
+
 
   return (
     <>
@@ -203,7 +225,7 @@ const selfPayment=() => {
                                             Yes
                                         </span>
                                     </Button> */}
-                                    <GoogleLogoutButton/>
+                                    <GoogleLogoutButton sClientIDGoogle={sClientIDGoogle}/>
                                 </div>
                             </div>
                         </Dialog>

@@ -344,7 +344,7 @@ export const SaveDialog = (props) => {
 	const [madebType, setMadebType] = React.useState(props.saveObj['nMadebTypeID']);
 	const [authorityId, setAuthorityId] = React.useState(props.saveObj['nAuthRegionID']);
   //const [receivedDate, setReceivedDate] = React.useState(props.saveObj.dtReceived ? (props.saveObj.dtReceived).split('T')[0] : undefined);
-  const [receivedDate, setReceivedDate] = React.useState((madebType === 2 || madebType === 3) ? props.issuedDate : new Date());
+  const [receivedDate, setReceivedDate] = React.useState((madebType === 2 || madebType === 3) ? props.issuedDate : null);
 	const [gbId, setGbId] = React.useState(parseInt(props.saveObj['sGBID']));
 	const [issuedOrNotId, setIssuedOrNotId] = React.useState(2);
 
@@ -432,6 +432,8 @@ placeholder="DD-MM-YYYY"
 												margin="dense"
 												id="id_dtIssueDate"
 												name="name_dtIssueDate"
+                        autoOk
+                        autoFocus
 												label={<>Issued Date<span style={{ color: "red" }}> *</span></>}
 												format={sDateFormatMUIDatepicker}
 												returnMoment={true}

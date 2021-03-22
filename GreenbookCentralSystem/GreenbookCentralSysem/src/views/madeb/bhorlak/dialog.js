@@ -69,6 +69,7 @@ export const EditDialog = (props) => {
   const [sApprovedReject, setApprovedReject] = useState(props.bhorlakObj.sApprovedReject);
   const [dtIssueAction, setIssueActionDate] = React.useState(props.bhorlakObj.dtIssueAction ? (props.bhorlakObj.dtIssueAction).split('T')[0] : undefined);
   const [dtReject, setRejectDate] = useState(props.bhorlakObj.dtReject ? (props.bhorlakObj.dtReject).split('T')[0] : null);
+  const [dtEmailSend, setEmailSendDate] = React.useState(props.bhorlakObj.dtEmailSend ? (props.bhorlakObj.dtEmailSend).split('T')[0] : null);
   const [nIssuedOrNotID, setIssueAction] = React.useState(props.bhorlakObj.nIssuedOrNotID);
   const [dtReturnEmail, setReturnDate] = React.useState(props.bhorlakObj.dtReturnEmail ? (props.bhorlakObj.dtReturnEmail).split('T')[0] : null);
 
@@ -85,7 +86,7 @@ export const EditDialog = (props) => {
     sDocumentAttached,
     nReceiptNo,
     nMadebStatusID,
-    //nCurrentGBSno,
+    nCurrentGBSno: nCurrentGBSno,
     nPreviousGBSno,
     sMadebStatusRemark,
     sApprovedReject,
@@ -93,6 +94,7 @@ export const EditDialog = (props) => {
     dtReject: Moment(dtReject).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReject).format('YYYY-MM-DD') : null,
     nIssuedOrNotID,
     dtReturnEmail: Moment(dtReturnEmail).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReturnEmail).format('YYYY-MM-DD') : null,
+    dtEmailSend: Moment(dtEmailSend).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtEmailSend).format('YYYY-MM-DD') : null,
     nUpdatedBy: userId
   }
   console.log("Madeb Edit Object received in dialog", madeb);

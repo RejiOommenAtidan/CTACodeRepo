@@ -3,8 +3,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-// import {Dimensions, Platform} from 'react-native';
-// import Resolution from './ResolutionBreakpoint';
 
 ////Local Windows
 // export const sAPIBASEURL = "http://10.0.2.2:49700/api";
@@ -13,7 +11,7 @@ import {
 // export const sAPIBASEURL = "http://10.0.2.2:5000/api";
 
 ////QA
-export const sAPIBASEURL = 'https://chatrel-webapi.azurewebsites.net/api';
+// export const sAPIBASEURL = 'https://chatrel-webapi.azurewebsites.net/api';
 
 ////UAT
 // export const sAPIBASEURL = 'https://chatrel-webapi-uat.azurewebsites.net/api';
@@ -22,7 +20,7 @@ export const sAPIBASEURL = 'https://chatrel-webapi.azurewebsites.net/api';
 // export const sAPIBASEURL = 'https://chatrel-webapi-dev.azurewebsites.net/api';
 
 ////PROD URL
-// export const sAPIBASEURL = "https://chatrelapi.azurewebsites.net/api";
+export const sAPIBASEURL = "https://chatrelapi.azurewebsites.net/api";
 
 export const sFolderName = 'Chatrel Receipts';
 export const sReceiptDownloadMessageAndroid =
@@ -33,21 +31,14 @@ export const sReceiptDownloadMessageIOS =
 export const sINRAuthRegionHelpMessage =
   'Please enter Employment Contribution manually for your Authority Region';
 
-export const sAdminEmail = 'admin@CTA.com';
 export const sSnackbarAddMessage = 'Record Added successfully';
 export const sSnackbarUpdateMessage = 'Record Updated successfully';
 export const sDateFormat = 'DD-MM-YYYY';
 export const sDateFormatDatePicker = 'MM/DD/YYYY';
 export const sISODateFormat = 'YYYY-MM-DD';
-export const sClientIDAndroid =
-  '805523212166-j3oa67dcgkkff0pps9qp779ecmsp1c5o.apps.googleusercontent.com';
-export const sClientIDIOS =
-  '805523212166-osj9e06odhct70cen9n028ri06q4o2av.apps.googleusercontent.com';
+
 export const sPayPalBASEURL = 'https://api.sandbox.paypal.com';
-export const sPayPalClientID =
-  'AdqxwGp5tKswa3OfXdw5dcCp5SQNtAEkDmPI9InDri3FcXnGCfWfpwhBsLRenYqMwrUrUTLLbnGTOM14';
-export const sClientSecret =
-  'ECrAFFlN_jB_Z62_rc9Ukt2Mv7Yeov2saaDbNCT3Ef_bP9JS2ke9y_G-8VGqQiTB7o3sGJRGFeBF-QKD';
+// export const sPayPalBASEURL = 'https://api.paypal.com';
 
 //Add "-uat" after webapp for UAT deployment
 export const sSuccessPayPalWebPageURL =
@@ -97,8 +88,7 @@ export const oRequiredStyles = {
 export const sMappingURL =
   'https://docs.google.com/forms/d/e/1FAIpQLSdEfQ4CZU16qOMtYSfRnlFiHMXJ4AuG0i4q7JHWsWJVyMFdzQ/viewform';
 
-export const sFAQURL =
-  'https://chatrel-webapp.azurewebsites.net/FAQChatrel.pdf';
+export const sFAQURL = 'https://chatrel.net/ChatrelFAQ.pdf';
 
 export const sChatrelNetURL = 'www.chatrel.net';
 
@@ -111,3 +101,38 @@ export const sPayPalPaymentIDCopied = 'PayPal Payment ID Copied';
 
 export const sCopyPayPalTransactionID = 'Copy PayPal Transaction ID';
 export const sCopyPayPalPaymentID = 'Copy PayPal Payment ID';
+
+export const sFAQFolder = 'Chatrel FAQ';
+
+export const sFAQDownloadMessageAndroid =
+  'Chatrel FAQ downloaded successfully in Download > Chatrel FAQ folder';
+export const sFAQDownloadMessageIOS =
+  'Chatrel FAQ downloaded successfully in Document: Files > On My Device > Documents > Chatrel > Chatrel FAQ';
+
+export const sMobilePassphrase = 'HHBawq>%6%?_/7}nz{C`94@f[';
+
+export const sContactEmail = 'chatrelonline@tibet.net';
+
+export const nMaxBatchSize = 5;
+
+export const nInitialBatchSize = 10;
+
+export const sAttentionRequired = 'Attention Required';
+
+export const sSomethingWentWrongPleaseTryAgainLater =
+  'Something went wrong, Please try again later';
+
+export const sPayPalUIErrorMessage =
+  'Cannot Connect to PayPal, Please try again later';
+
+export const sContributionUnsuccessful = 'Contribution Unsuccessful';
+
+export const sDummyPhotoForiOS =
+  'https://icon-library.net/images/avatar-png-icon/avatar-png-icon-9.jpg';
+
+export const sRequestAccessForEmailID =
+  'Please remove App from Apple ID in Settings';
+
+export const sSignTypeApple = 'Apple';
+
+export const sSignTypeGoogle = 'Google';

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React ,{useEffect}from 'react';
 import { Card } from '@material-ui/core';
 import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -227,15 +227,44 @@ dispatch(storeSession(oSession));
   })
   .catch((error) => {
      // alert('error on submission.') ;
-     setBackdrop(false);
-      setAlertMessage('error on submission.');
+     if(error.response.status!==401){
+      setBackdrop(false);
+      setAlertMessage('Something went wrong, please try again later');
       setAlertType('error');
       snackbarOpen();
-      console.log(error.message);
+    }
       
   });
 }
  };
+
+ useEffect(() => {
+  setBackdrop(true);
+  axios.get(`/ChatrelPayment/Ping`)
+  .then(resp => {
+    if (resp.status === 200) {
+      setBackdrop(false);
+      console.log(resp.data);
+      const oSession={
+        sJwtToken:resp.data.token,
+        bSession:true
+      }
+      dispatch(storeSession(oSession));
+    }
+  })
+  .catch(error => {
+    console.log("Error ", error.response);
+    if(error.response.status!==401){
+      setBackdrop(false);
+      setAlertMessage('Something went wrong, please try again later');
+      setAlertType('error');
+      snackbarOpen();
+    }
+  })
+  .then(release => {
+    //console.log(release); => udefined
+  });
+   }, []);
   return (
     <> 
     <div style={{background:`url(${BackGroundImage}) no-repeat center`,backgroundSize:'auto'}}>

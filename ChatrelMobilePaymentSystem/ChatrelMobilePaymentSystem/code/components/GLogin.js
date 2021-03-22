@@ -5,7 +5,6 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-community/google-signin';
-import {sClientIDAndroid, sClientIDIOS} from '../constants/CommonConfig';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeGoogleCreds} from '../store/actions/GLoginAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,19 +12,54 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import axios from 'axios';
+import {sMobilePassphrase} from '../constants/CommonConfig';
+import {useIsFocused} from '@react-navigation/native';
+import {Button} from 'react-native-elements';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import Colors from '../constants/Colors';
+// import {sClientIDAndroid, sClientIDIOS} from '../constants/CommonConfig';
 
 export const GLogin = (props) => {
+  // const [sClientIDAndroidAPI, setsClientIDAndroidAPI] = useState('');
+  // const [sClientIDIOSAPI, setsClientIDIOSAPI] = useState('');
   const dispatch = useDispatch();
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const [user, setUser] = useState({});
+  let sClientIDAndroidAPI = '';
+  let sClientIDIOSAPI = '';
+  const [bGoogleButton, setbGoogleButton] = useState(true);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: sClientIDAndroid,
-      offlineAccess: true,
-      forceCodeForRefreshToken: true,
-      iosClientId: sClientIDIOS, // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-    });
+    axios
+      .post(
+        `/ChatrelPayment/GetGoogleCredentialsForMobile?sMobilePassphrase=${sMobilePassphrase}`,
+      )
+      .then((resp) => {
+        if (resp.status === 200) {
+          console.log(
+            'Login Ping Pong Android: ' + resp.data.sGoogleClientIDAndroid,
+          );
+          console.log('Login Ping Pong iOS: ' + resp.data.sGoogleClientIDIOS);
+          sClientIDAndroidAPI = resp.data.sGoogleClientIDAndroid;
+          sClientIDIOSAPI = resp.data.sGoogleClientIDIOS;
+          setbGoogleButton(false);
+          GoogleSignin.configure({
+            webClientId: sClientIDAndroidAPI,
+            offlineAccess: true,
+            forceCodeForRefreshToken: true,
+            iosClientId: sClientIDIOSAPI,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log('Error ', error.response);
+        console.log('Error Config', error.config);
+      })
+      .then((release) => {
+        //console.log(release); => udefined
+      });
 
     Platform.OS === 'android' ? isSignedIn() : null;
 
@@ -38,7 +72,7 @@ export const GLogin = (props) => {
     //     props.props.navigation.navigate("GBDetail");
     //   }
     // });
-  }, []);
+  }, [isFocused]);
 
   // const getUserDataFromAsnycStorage = async () => {
   //   try {
@@ -52,6 +86,7 @@ export const GLogin = (props) => {
 
   const signIn = async () => {
     try {
+      debugger;
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       //Store User Info
@@ -110,16 +145,41 @@ export const GLogin = (props) => {
     }
   };
 
-  return (
-    <View style={styles.gSignInContainer}>
-      <GoogleSigninButton
-        style={styles.gSignInComponent}
-        size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
-        onPress={signIn}
-      />
-    </View>
-  );
+  if (Platform.OS === 'android') {
+    return (
+      <View style={styles.gSignInContainer}>
+        <GoogleSigninButton
+          style={styles.gSignInComponent}
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={signIn}
+          disabled={bGoogleButton}
+        />
+      </View>
+    );
+  }
+
+  if (Platform.OS === 'ios') {
+    return (
+      <View style={styles.gSignInContainer}>
+        <Button
+          disabled={bGoogleButton}
+          title="Verify Your Identity"
+          titleStyle={{
+            fontStyle: 'normal',
+            fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+            fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+            fontSize: wp(4),
+            padding: hp(4),
+            color: Colors.black,
+          }}
+          type={'solid'}
+          onPress={signIn}
+          buttonStyle={styles.iOsVerifyButtonComponent}
+        />
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -136,5 +196,11 @@ const styles = StyleSheet.create({
     //Values Coded
     height: 48,
     width: 192,
+  },
+  iOsVerifyButtonComponent: {
+    backgroundColor: Colors.buttonYellow,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: Colors.buttonYellow,
   },
 });

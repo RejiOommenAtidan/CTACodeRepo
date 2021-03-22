@@ -27,7 +27,11 @@ namespace CTADBL.Repository
         {
             var list = new List<T>();
             command.Connection = _connection;
-            _connection.Open();
+            if(command.Connection.State == ConnectionState.Closed)
+            {
+                _connection.Open();
+            }
+            
             try
             {
                 var reader = command.ExecuteReader();

@@ -365,6 +365,60 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
         #endregion
 
+
+        #region Chatrel Defaulter List
+
+        public IEnumerable<object> GetDefaulterList(int? nAuthRegionID, string? sCountryID, out string message)
+        {
+
+            
+            
+            string sql = String.Empty;
+            
+            using (var command = new MySqlCommand())
+            {
+                if (nAuthRegionID != null)
+                {
+                    sql = @"SELECT t.sGBID, t.sFirstName, t.sLastName, t.sLoginGmail, t.sPaidUntil, null as sAuthRegion, null as sCountry, null as nTotal FROM tblgreenbook t INNER JOIN lstauthregion l2 ON l2.id = t.nAuthRegionID WHERE t.nAuthRegionID = @nAuthRegionID AND (t.sPaidUntil < (IF(MONTH(current_date()) > 3 , (YEAR(current_date()) - 1), (YEAR(current_date()) - 2))) OR t.sPaidUntil IS NULL OR t.sPaidUntil = '');";
+                    command.Parameters.AddWithValue("nAuthRegionID", nAuthRegionID);
+                    message = "Region";
+                }
+                else if (sCountryID != null)
+                {
+                    sql = @"SET SESSION sql_mode = '';SELECT null as sGBID, null as sFirstName, null as sLastName, null as sLoginGmail, null as sPaidUntil, null as sCountry, l2.sAuthRegion, CAST(count(l2.ID) as UNSIGNED) AS nTotal FROM tblgreenbook t inner JOIN lstauthregion l2 ON l2.id = t.nAuthRegionID AND l2.sCountryID=@sCountryID WHERE t.sPaidUntil < (IF(MONTH(current_date()) > 3 , (YEAR(current_date()) - 1), (YEAR(current_date()) - 2))) OR t.sPaidUntil IS NULL OR t.sPaidUntil = '' GROUP BY t.nAuthRegionID;";
+                    command.Parameters.AddWithValue("sCountryID", sCountryID);
+                    message = "Country";
+                }
+                else
+                {
+                    sql = @"SET SESSION sql_mode = '';SELECT null as sGBID, null as sFirstName, null as sLastName, null as sLoginGmail, null as sPaidUntil, null as sAuthRegion, l2.sCountry, CAST(count(l2.sCountryID) AS UNSIGNED) AS nTotal FROM tblgreenbook t inner JOIN lstauthregion l ON l.id = t.nAuthRegionID INNER JOIN lstcountry l2 ON l.sCountryID = l2.sCountryID WHERE t.sPaidUntil < (IF(MONTH(current_date()) > 3 , (YEAR(current_date()) - 1), (YEAR(current_date()) - 2))) OR t.sPaidUntil IS NULL OR t.sPaidUntil = '' GROUP BY l2.sCountryID;";
+                    message = "All Countries";
+                }
+                command.CommandText = sql;
+                command.Connection = _connection;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var result = tables[0].AsEnumerable().Select(row => new
+                {
+                    sGBID = row.Field<string?>("sGBID"),
+                    sFirstName = row.Field<string?>("sFirstName"),
+                    sLastName = row.Field<string?>("sLastName"),
+                    sLoginGmail = row.Field<string?>("sLoginGmail"),
+                    sPaidUntil = row.Field<string?>("sPaidUntil"),
+                    sCountry = row.Field<string?>("sCountry"),
+                    sAuthRegion = row.Field<string?>("sAuthRegion"),
+                    nTotal = row.Field<System.UInt64?>("nTotal"),
+
+                });
+                return result;
+            }
+
+
+        }
+        #endregion
+
         #region Populate Greenbook Records
         public override Greenbook PopulateRecord(MySqlDataReader reader)
         {

@@ -261,7 +261,7 @@ namespace CTADataSyncMySQL
             string queryLabelTableName = "tblgreenbook";
             string queryLabelColumnNames = "`tblgreenbook`.`Id`,`tblgreenbook`.`sGBID`,`tblgreenbook`.`nAuthRegionID`,`tblgreenbook`.`sFirstName`,`tblgreenbook`.`sLastName`," +
                 "`tblgreenbook`.`dtDOB`,`tblgreenbook`.`sEmail`,`tblgreenbook`.`sPhone`,`tblgreenbook`.`dtDeceased`,`tblgreenbook`.`sCountryID`," +
-                "`tblgreenbook`.`sLoginGmail`,`tblgreenbook`.`dtLastSuccessfullLogin`,`tblgreenbook`.`dtEntered`,`tblgreenbook`.`nEnteredBy`,`tblgreenbook`.`dtUpdated`," +
+                "`tblgreenbook`.`sLoginGmail`,`tblgreenbook`.`dtEntered`,`tblgreenbook`.`nEnteredBy`,`tblgreenbook`.`dtUpdated`," +
                 "`tblgreenbook`.`nUpdatedBy`";
             string changeGBIds = GetLastUpdatedRecordsIDs(cnnDB1, "tblgreenbook", "sGBId");
             string strWhereclause = string.Empty;

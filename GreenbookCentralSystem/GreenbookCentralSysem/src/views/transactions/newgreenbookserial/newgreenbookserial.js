@@ -118,7 +118,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '5px',
         borderRight: '1px solid grey'
       }
@@ -132,7 +132,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '5px',
         borderRight: '1px solid grey'
       }
@@ -148,7 +148,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '5px',
         borderRight: '1px solid grey'
       },
@@ -175,7 +175,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "left",
+        textAlign: "center",
         padding: '5px',
         borderRight: '1px solid grey'
       }
@@ -189,7 +189,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "left",
+        textAlign: "center",
         padding: '5px',
         borderRight: '1px solid grey'
       }
@@ -203,7 +203,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "left",
+        textAlign: "center",
         padding: '5px',
         borderRight: '1px solid grey'
       }

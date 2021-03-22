@@ -72,11 +72,12 @@ export const EditDialog = (props) => {
   const [sFathersName, setFname] = React.useState(props.briefGBObj.sFathersName);
   const [nReceiptNo, setReceiptNo] = React.useState(props.briefGBObj.nReceiptNo);
   const [nSaneyFormNo, setSaney] = React.useState(props.briefGBObj.nSaneyFormNo);
-  //const [nCurrentGBSno, setCurrentGBSNo] = useState(props.briefGBObj.nCurrentGBSno);
+  const [nCurrentGBSno, setCurrentGBSNo] = useState(props.briefGBObj.nCurrentGBSno);
   const [nPreviousGBSno, setPreviousGBSNo] = useState(props.briefGBObj.nPreviousGBSno);
   const [sApprovedReject, setApprovedReject] = useState(props.briefGBObj.sApprovedReject);
   const [dtIssueAction, setIssueActionDate] = React.useState(props.briefGBObj.dtIssueAction ? (props.briefGBObj.dtIssueAction).split('T')[0] : null);
   const [dtReject, setRejectDate] = useState(props.briefGBObj.dtReject ? (props.briefGBObj.dtReject).split('T')[0] : null);
+  const [dtEmailSend, setEmailSendDate] = React.useState(props.briefGBObj.dtEmailSend ? (props.briefGBObj.dtEmailSend).split('T')[0] : null);
   const [nIssuedOrNotID, setIssueAction] = React.useState(props.briefGBObj.nIssuedOrNotID);
   const [dtReturnEmail, setReturnDate] = React.useState(props.briefGBObj.dtReturnEmail ? (props.briefGBObj.dtReturnEmail).split('T')[0] : null);
   const [sMadebStatusRemark, setMadebStatusRemark] = React.useState(props.briefGBObj.sMadebStatusRemark);
@@ -116,13 +117,14 @@ export const EditDialog = (props) => {
     sFathersName,
     nReceiptNo,
     nSaneyFormNo,
-    //nCurrentGBSno,
+    nCurrentGBSno,
     nPreviousGBSno,
     dtIssueAction,
     dtReject: Moment(dtReject).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReject).format('YYYY-MM-DD') : null,
     //dtReject,
     nIssuedOrNotID,
     dtReturnEmail: Moment(dtReturnEmail).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReturnEmail).format('YYYY-MM-DD') : null,
+    dtEmailSend: Moment(dtEmailSend).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtEmailSend).format('YYYY-MM-DD') : null,
     //dtReturnEmail,
     nMadebStatusID,
     sMadebStatusRemark,

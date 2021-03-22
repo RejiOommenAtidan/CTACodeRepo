@@ -1,7 +1,7 @@
 import React from 'react';
 import Test from './test.js';
 import { PayPalButton } from 'react-paypal-button-v2';
-import {sPayPal_ClientID} from '../../config/commonConfig';
+//import {sPayPal_ClientID} from '../../config/commonConfig';
 export default function CoverHome() {
   return (
     <>
@@ -9,7 +9,7 @@ export default function CoverHome() {
             amount={100}
             style={{ label: 'pay' }}
             options={{
-            clientId:sPayPal_ClientID,
+            //clientId:sPayPal_ClientID,
             currency: 'USD'
             }}
             shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"

@@ -72,7 +72,7 @@ export default function LivePreviewExample() {
                           </span>
                         </Button>
                       </Tooltip>
-                      <Tooltip title="Google" arrow>
+                      <Tooltip title="Youtube" arrow>
                         <Button
                           className="btn-link font-size-lg rounded-sm d-40 btn-icon text-google btn-animated-icon"
                           //href="#/"

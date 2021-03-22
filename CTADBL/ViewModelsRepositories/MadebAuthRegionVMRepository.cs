@@ -332,7 +332,7 @@ namespace CTADBL.ViewModelsRepositories
                         if (item.Value.GetType() == typeof(Int32) || item.Value.GetType() == typeof(Int64))
                         {
                             addToSql += String.Format(@"{0} LIKE @{1} AND ", item.Key, item.Key);
-                            command.Parameters.AddWithValue(item.Key.ToString(), item.Value + '%');
+                            command.Parameters.AddWithValue(item.Key.ToString(), item.Value.ToString() + '%');
                         }
 
                         if (item.Value.GetType() == typeof(string))
@@ -402,7 +402,7 @@ namespace CTADBL.ViewModelsRepositories
                              @limit;", addToSql);
                 command.CommandText = sql;
                 command.Parameters.AddWithValue("madebType", madebType);
-                command.Parameters.AddWithValue("limit", Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount")));
+                command.Parameters.AddWithValue("limit", Convert.ToInt32(CTAConfigRepository.GetValueByKey("MadebLoadSearchRecordsNumber")));
                 return GetRecords(command);
 
             }

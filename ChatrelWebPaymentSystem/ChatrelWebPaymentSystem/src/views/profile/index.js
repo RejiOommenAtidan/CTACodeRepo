@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React,{useEffect} from 'react';
 import { Card } from '@material-ui/core';
 import {Link, Box, Container, Grid, Button,CardContent,Tooltip, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -21,9 +21,14 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
 import Moment from 'moment';
-import avatar1 from '../../assets/images/avatars/avatar1.jpg';
 
+import avatar1 from '../../assets/images/avatars/avatar1.jpg';
+import axios from 'axios';
+import { Alerts } from '../alerts';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import stock3 from '../../assets/images/stock-photos/stock-3.jpg';
+import {storeSession} from '../../actions/transactions/SessionAction';
 import BackGroundImage from '../../assets/images/potala-profile.jpg';
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,14 +53,56 @@ export default function Friends () {
   const [sLastName,setLastName]=React.useState("");
   const [sGBID,setGBID]=React.useState("");
   const [dtDob,setDOB]=React.useState("");
-  
+  const dispatch = useDispatch();
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = React.useState('');
+  const [alertType, setAlertType] = React.useState('');
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+  const [snackbar, setSnackbar] = React.useState(false);
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
 
- 
   
 const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
 console.log("UserObj",userObj);
 console.log("UserGBObj",userGBObj);
+
+useEffect(() => {
+    setBackdrop(true);
+    axios.get(`/ChatrelPayment/Ping`)
+    .then(resp => {
+      if (resp.status === 200) {
+	setBackdrop(false);
+        console.log(resp.data);
+        const oSession={
+          sJwtToken:resp.data.token,
+          bSession:true
+        }
+        dispatch(storeSession(oSession));
+      }
+    })
+    .catch(error => {
+      console.log("Error ", error.response);
+      if(error.response.status!==401){
+        setBackdrop(false);
+        setAlertMessage('Something went wrong, please try again later');
+        setAlertType('error');
+        snackbarOpen();
+      }
+    })
+    .then(release => {
+      //console.log(release); => udefined
+    });
+     }, []);
+
   return (
     <>
     <div style={{background:`url(${BackGroundImage}) no-repeat center`,backgroundSize:'auto'}}>
@@ -128,6 +175,19 @@ console.log("UserGBObj",userGBObj);
                             </Grid>
                         
                             </div>
+
+                            {snackbar && (
+            <Alerts
+              alertObj={alertObj}
+              snackbar={snackbar}
+              snackbarClose={snackbarClose}
+            />
+            
+          )}
+               <Backdrop className={classes.backdrop} open={backdrop}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+
     </>
   );
 }

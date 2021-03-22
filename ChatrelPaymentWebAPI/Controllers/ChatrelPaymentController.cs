@@ -669,9 +669,9 @@ namespace ChatrelPaymentWebAPI.Controllers
         public IActionResult GetHomePageData()
         {
             string sHomePageImage = ChatrelConfigRepository.GetValueByKey("sHomePageMinisterImage").ToString();
-            string sHomePageMessage = ChatrelConfigRepository.GetValueByKey("sHomePageMessage").ToString();
-            string sHomePageName = ChatrelConfigRepository.GetValueByKey("sHomePageName").ToString();
-            string sHomePageDesignation = ChatrelConfigRepository.GetValueByKey("sHomePageDesignation").ToString();
+            string sHomePageMessage = ChatrelConfigRepository.GetValueByKey("sHomePageMinisterMessage").ToString();
+            string sHomePageName = ChatrelConfigRepository.GetValueByKey("sHomePageMinisterName").ToString();
+            string sHomePageDesignation = ChatrelConfigRepository.GetValueByKey("sHomePageMinisterDesignation").ToString();
             string sFAQDocument = ChatrelConfigRepository.GetValueByKey("sFAQDocument").ToString();
             string sGBID = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
             string token = BlockAndGenerateNewToken(Request, sGBID);

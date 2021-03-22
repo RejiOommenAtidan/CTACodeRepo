@@ -77,13 +77,13 @@ export const LoginScreen = (props) => {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      await AsyncStorage.multiRemove(keysToRemove, (err) => {
+      //await AsyncStorage.multiRemove(keysToRemove, (err) => {
         dispatch(removeGoogleCreds);
         dispatch(removeGBDetails);
         dispatch(removeJWTToken);
         dispatch(removeCurrentGBDetails);
         props.navigation.navigate('Login');
-      });
+      //});
     } catch (error) {
       props.navigation.navigate('Login');
     }

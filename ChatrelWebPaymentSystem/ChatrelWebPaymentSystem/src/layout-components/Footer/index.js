@@ -67,9 +67,9 @@ const Footer = (props) => {
                       />
                       
                       <div className="app-nav-logo--text">
-                        <span>CTA</span>
+                        {/* <span>CTA</span> */}
 
-                        <b style={{textTransform:'none'}}>Chatrel</b>
+                        <b style={{textTransform:'none',color:'rgb(42, 92, 255)',fontSize:'30px'}}>Chatrel</b>
                       </div>
                     </a>
                   </div>
@@ -204,7 +204,8 @@ const Footer = (props) => {
                         <ListItem
                           component="a"
                           button
-                          href="/PrivacyPolicy"
+                          //href="/Privacy"
+                          onClick={()=>{window.open('/Privacy')}}
                          // onClick={(e) => e.preventDefault()}
                           className="px-0 d-block d-xl-flex py-1">
                           Privacy Policy
@@ -256,7 +257,7 @@ const Footer = (props) => {
             </Grid>
             <div className="divider border-1 d-none d-md-block rounded-circle border-dark bg-dark opacity-2 mx-auto my-4 my-lg-5 w-25" />
             <small className="text-center d-block text-black-50">
-              Copyright &copy; 2021 - Chatrel   {/*-    <a href="/PrivacyPolicy">Privacy Policy </a>  */}
+              Copyright &copy; 2021 - Chatrel   -    <a /*href="/Privacy"*/ style={{cursor: 'pointer'}} onClick={()=>{window.open('/Privacy')}} className='text-black-50'>Privacy Policy </a> 
             </small>
 
             

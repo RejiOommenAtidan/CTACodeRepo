@@ -67,7 +67,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
 
-        public User GetUserById(string Id)
+        public User GetUserForUpdate(string Id)
         {
             string sql = @"SELECT `Id`,
                             `_Id`,
@@ -76,6 +76,30 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sOffice`,
                             `sPassword`,
 	                        `sSalt`,
+                            `nUserRightsId`,
+                            `bActive`,
+                            `dtEntered`,
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
+                        FROM `tbluser`
+                        WHERE Id = @Id";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("Id", Id);
+                return GetRecord(command);
+            }
+        }
+
+        public User GetUserById(string Id)
+        {
+            string sql = @"SELECT `Id`,
+                            `_Id`,
+                            `sUsername`,
+                            `sFullName`,
+                            `sOffice`,
+                            NULL AS `sPassword`,
+	                        NULL AS `sSalt`,
                             `nUserRightsId`,
                             `bActive`,
                             `dtEntered`,

@@ -26,13 +26,13 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         //}
         //#endregion
 
-        //#region Update Green Book
-        //public void Update(Greenbook greenbook)
-        //{
-        //    var builder = new SqlQueryBuilder<Greenbook>(greenbook);
-        //    ExecuteCommand(builder.GetUpdateCommand());
-        //}
-        //#endregion
+        #region Update Green Book
+        public void Update(Greenbook greenbook)
+        {
+            var builder = new SqlQueryBuilder<Greenbook>(greenbook);
+            ExecuteCommand(builder.GetUpdateCommand());
+        }
+        #endregion
 
         //#region Delete Green Book
         //public void Delete(Greenbook greenbook)
@@ -43,7 +43,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         //#endregion
 
 
-        
+
         //#region Delete Green Book Stored Procedure
         //public int DeleteGreenBook(string sGBID)
         //{
@@ -72,7 +72,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         //    #endregion
         //}
         //#endregion
-        
+
 
         //#region Get Green Book/Books
         //public IEnumerable<Greenbook> GetAllGreenBooks(int records)
@@ -86,10 +86,10 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         //                    `sFamilyName`,
         //                    `sGender`,
         //                    `dtDOB`,
-                            
+
         //                    `sEmail`,
         //                    `sPhone`,
-                            
+
         //                    `dtDeceased`,
         //                    `sCountryID`,
         //                    `sPaidUntil`,
@@ -123,7 +123,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         //                    `dtDOB`,
         //                    `sEmail`,
         //                    `sPhone`,
-                            
+
         //                    `dtDeceased`,
         //                    `sCountryID`,
         //                    `sPaidUntil`,

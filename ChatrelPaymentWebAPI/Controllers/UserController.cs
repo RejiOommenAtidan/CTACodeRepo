@@ -20,6 +20,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using TimeZoneConverter;
 
 namespace ChatrelPaymentWebAPI.Controllers
 {
@@ -112,6 +113,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             string sEmail = dict.ContainsKey("sEmail") ? dict["sEmail"] : "";
             string sGToken = dict.ContainsKey("code") ? dict["code"] : "";
             DateTime? dtDOB = dict.ContainsKey("dtDOB") ? (DateTime?)DateTime.Parse(dict["dtDOB"]) : null;
+            string sType = dict.ContainsKey("sType") ? dict["sType"] : "";
 
             if (String.IsNullOrEmpty(sGBID.Trim()) || String.IsNullOrEmpty(sEmail.Trim()) || dtDOB == null || String.IsNullOrEmpty(sGToken.Trim()))
             {
@@ -121,9 +123,20 @@ namespace ChatrelPaymentWebAPI.Controllers
             {
                 try
                 {
-                    var payload = await ValidateGoogle(sGToken);
-                    string payloadEmail = payload.Email;
-                    bool emailVerified = payload.EmailVerified;
+                    string payloadEmail = String.Empty;
+                    bool emailVerified = false;
+                    
+                    if(sType == "Apple")
+                    {
+                        payloadEmail = sEmail;
+                        emailVerified = true;
+                    }
+                    if (sType == "Google")
+                    {
+                        var payload = await ValidateGoogle(sGToken);
+                        payloadEmail = payload.Email;
+                        emailVerified = payload.EmailVerified;
+                    }
 
                     if (emailVerified && payloadEmail == sEmail)
                     {
@@ -144,7 +157,14 @@ namespace ChatrelPaymentWebAPI.Controllers
                                 user.sJwtToken = JwT.GenerateNewToken(user, _appSettings);
                             }
 
+
+
                             //   userVMFromDB.nTimeoutInDays = dTimeout;
+                            #endregion
+
+                            #region Update Last Successful Login Date
+                            greenbook.dtLastSuccessfullLogin = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time")); ;
+                            _greenbookRepository.Update(greenbook);
                             #endregion
 
                             // should we set a cookie or a token?

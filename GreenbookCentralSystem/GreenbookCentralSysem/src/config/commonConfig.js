@@ -24,7 +24,7 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 export const sAPIBASEURL = "https://cta-portal-webapi.azurewebsites.net/api";
 
 //UAT
-// export const sAPIBASEURL = "https://cta-portal-webapi-uat.azurewebsites.net/api";
+//export const sAPIBASEURL = "https://cta-portal-webapi-uat.azurewebsites.net/api";
 
 export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record added successfully";

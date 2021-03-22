@@ -98,7 +98,7 @@ export default function SarsoNewGBEntry() {
         width: "10%"
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '5px',
         width: "10%"
       },
@@ -114,7 +114,7 @@ export default function SarsoNewGBEntry() {
         width: "10%"
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '5px',
         width: "10%"
       }
@@ -130,7 +130,7 @@ export default function SarsoNewGBEntry() {
         width: "10%"
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '5px',
         width: "10%"
       },

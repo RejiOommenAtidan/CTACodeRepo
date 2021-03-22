@@ -153,7 +153,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '5px',
         borderRight: '1px solid grey'
       },
@@ -181,7 +181,7 @@ export default () => {
         width: "12%"
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '5px',
         width: "12%",
         borderRight: '1px solid grey'
@@ -197,7 +197,7 @@ export default () => {
         width: "12%"
       },
       cellStyle: {
-        textAlign: "left",
+        textAlign: "center",
         padding: '5px',
         width: "12%",
         borderRight: '1px solid grey'
@@ -213,7 +213,7 @@ export default () => {
         width: "2%"
       },
       cellStyle: {
-        textAlign: "left",
+        textAlign: "center",
         padding: '5px',
         width: "2%",
         borderRight: '1px solid grey'
@@ -228,7 +228,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '5px',
         borderRight: '1px solid grey'
       }
@@ -242,7 +242,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "left",
+        textAlign: "center",
         padding: '5px',
         borderRight: '1px solid grey'
       }
@@ -257,7 +257,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "left",
+        textAlign: "center",
         padding: '5px',
         borderRight: '1px solid grey'
       }
@@ -271,7 +271,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "left",
+        textAlign: "center",
         padding: '5px',
         borderRight: '1px solid grey'
       }
@@ -285,7 +285,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "left",
+        textAlign: "center",
         padding: '5px',
         borderRight: '1px solid grey'
       }

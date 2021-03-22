@@ -67,6 +67,8 @@ export const EditDialog = (props) => {
     const [returnDate, setReturnDate] = React.useState(props.sarsoObj.dtReturnEmail ? (props.sarsoObj.dtReturnEmail).split('T')[0] : null);
     //const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject.split('T')[0]);
     const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject ? (props.sarsoObj.dtReject).split('T')[0] : null);
+    const [dtEmailSend, setEmailSendDate] = React.useState(props.sarsoObj.dtEmailSend ? (props.sarsoObj.dtEmailSend).split('T')[0] : null);
+    const [nCurrentGBSno, setCurrentGBSNo] = useState(props.sarsoObj.nCurrentGBSno);
     const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
     const [nMadebStatusID, setMadebStatusID] = React.useState(props.sarsoObj.nMadebStatusID);
     const [sMadebStatusRemark, setMadebStatusRemark] = React.useState(props.sarsoObj.sMadebStatusRemark);
@@ -93,6 +95,8 @@ export const EditDialog = (props) => {
         nSaneyFormNo: saney,
         dtReturnEmail: Moment(returnDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(returnDate).format('YYYY-MM-DD') : null,
         dtReject: Moment(rejectDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(rejectDate).format('YYYY-MM-DD') : null,
+        dtEmailSend: Moment(dtEmailSend).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtEmailSend).format('YYYY-MM-DD') : null,
+        nCurrentGBSNo: nCurrentGBSno,
         nUpdatedBy: userId
     }
     let valueAuthRegion = [];
@@ -596,7 +600,8 @@ placeholder="DD-MM-YYYY"
                                                 margin="dense"
                                                 id="id_dtDate"
                                                 name="name_dtDate"
-
+                                                autoFocus
+                                                autoOk
                                                 label={<> Received Date<span style={{ color: 'red' }}> *</span></>}
                                                 format={sDateFormatMUIDatepicker}
                                                 returnMoment={true}

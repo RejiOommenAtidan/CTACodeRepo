@@ -333,6 +333,8 @@ export const ViewDialog = (props) => {
   //  return new Blob(byteArrays);
   }
   let count = 0;
+  const tfontsize = '1.5rem';
+  const efontsize = '1.0rem';
   return (
     <>
       {data.length == 0 && <Dialog open={true}
@@ -389,7 +391,7 @@ export const ViewDialog = (props) => {
                          <strong> Father's Name:</strong> {data.relations.sFathersName}
                         </Grid>
                         <Grid item sm={6}>
-                        <strong>DOB:</strong> {data.greenBook.dtDOB ? Moment(data.greenBook.dtDOB).format(sDateFormat) : ''}
+                        <strong>DOB:</strong> {`${data.greenBook.sDOBApprox === 'Y' ? Moment(data.greenBook.dtDOB).year() : data.greenBook.sDOBApprox === 'M' ? (((Moment(data.greenBook.dtDOB).month() + 1) < 10 ? '0' + (Moment(data.greenBook.dtDOB).month() + 1) : (Moment(data.greenBook.dtDOB).month() + 1))   + '/' + Moment(data.greenBook.dtDOB).year()) : Moment(data.greenBook.dtDOB).format(sDateFormat)}`}&nbsp;&nbsp;{`(${data.greenBook.sDOBApprox === 'Y' ? 'Year Only' : data.greenBook.sDOBApprox === 'M' ? 'Month/Year Exact' : data.greenBook.sDOBApprox === 'D' ? 'Day Approx' : 'Exact DOB'})`}
                         </Grid>
                         <Grid item sm={6}>
                         <strong> Mother's Name:</strong> {data.relations.sMothersName}
@@ -415,11 +417,11 @@ export const ViewDialog = (props) => {
                         </Grid>
                         <Grid item sm={6}>
                           {/* Edited By: {data.sUpdatedBy} */}
-                          <strong>  Entered On:</strong> {data.greenBook.dtEntered ? Moment(data.greenBook.dtEntered).format('DD-MM-YYYY HH:m:s a') : ''}
+                          <strong>  Entered On:</strong> {data.greenBook.dtEntered ? Moment(data.greenBook.dtEntered).format('DD-MM-YYYY HH:m:s') : ''}
                         </Grid>
                       </Grid>
                       <div className="divider my-4" />
-                      {data.relations.sFathersGBID != null && data.relations.sMothersGBID != null && data.relations.sSpouseGBID != null &&
+                      {(data.relations.sFathersGBID || data.relations.sMothersGBID || data.relations.sSpouseGBID) &&
                         <div className="font-weight-bold text-uppercase text-black-50 text-center mb-3">
                           Family members
                                     </div>
@@ -427,29 +429,29 @@ export const ViewDialog = (props) => {
                       }
                       <div className="avatar-wrapper-overlap d-flex justify-content-center mb-3">
 
-                        {data.relations.sFathersGBID != null &&
+                        {data.relations.sFathersGBID &&
                           <a disabled="disabled" style={{ cursor: 'pointer' }} onClick={() => props.openRelationGB(data.relations.sFathersGBID)} >
                             <Tooltip title={data.relations.sFathersGBID + ' (Father)'} classes={{ tooltip: "tooltip-danger" }} arrow>
                               <div className="avatar-icon-wrapper">
                                 <div className="avatar-icon">
-                                  {data.relations.sFathersPhoto != null &&
+                                  {data.relations.sFathersPhoto &&
                                     <img alt="..." src={`data:image/gif;base64,${data.relations.sFathersPhoto}`} />}
-                                  {data.relations.sFathersPhoto == null &&
+                                  {!data.relations.sFathersPhoto &&
                                     <img alt="..." className="img-fluid" style={{ width: '100px' }} src={stock} />}
                                 </div>
                               </div>
                             </Tooltip>
                           </a>
                         }
-                        {data.relations.sMothersGBID != null &&
+                        {data.relations.sMothersGBID &&
                           <a disabled="disabled" style={{ cursor: 'pointer' }} onClick={() => props.openRelationGB(data.relations.sMothersGBID)} >
                             <Tooltip title={data.relations.sMothersGBID + ' (Mother)'} classes={{ tooltip: "tooltip-first" }} arrow>
                               <div className="avatar-icon-wrapper">
 
                                 <div className="avatar-icon">
-                                  {data.relations.sMothersPhoto != null &&
+                                  {data.relations.sMothersPhoto &&
                                     <img alt="..." src={`data:image/gif;base64,${data.relations.sMothersPhoto}`} />}
-                                  {data.relations.sMothersPhoto == null &&
+                                  {!data.relations.sMothersPhoto &&
                                     <img alt="..." className="img-fluid" style={{ width: '100px' }} src={stock} />}
 
                                 </div>
@@ -458,14 +460,14 @@ export const ViewDialog = (props) => {
 
                             </Tooltip>
                           </a>}
-                        {data.relations.sSpouseGBID != null &&
+                        {data.relations.sSpouseGBID &&
                           <a disabled="disabled" style={{ cursor: 'pointer' }} onClick={() => props.openRelationGB(data.relations.sSpouseGBID)} >
                             <Tooltip title={data.relations.sSpouseGBID + ' (Spouse)'} classes={{ tooltip: "tooltip-first" }} arrow>
                               <div className="avatar-icon-wrapper">
                                 <div className="avatar-icon">
-                                  {data.relations.sSpousePhoto != null &&
+                                  {data.relations.sSpousePhoto &&
                                     <img alt="..." src={`data:image/gif;base64,${data.relations.sSpousePhoto}`} />}
-                                  {data.relations.sSpousePhoto == null &&
+                                  {!data.relations.sSpousePhoto &&
                                     <img alt="..." className="img-fluid" style={{ width: '100px' }} src={stock} />}
 
                                 </div>
@@ -873,13 +875,13 @@ export const ViewDialog = (props) => {
                                        {JSON.parse(row1.auditLog.sFieldValuesOld).map((row2, j) => (
                                       <tr style={{borderColor: 'black'}}>
 
-                                        <td style={{ padding: '0px', borderColor: 'black' }} scope='row' className={props.classes.mytable} >{++count}</td>{/* Uncomment above and Change i to j if grouping required*/}
-                                        <td style={{ padding: '0px', borderColor: 'black' }} >{row2.Field}</td>
-                                        <td style={{ padding: '0px', borderColor: 'black' }}>{row2.PreviousValue}</td>
-                                        <td style={{ padding: '0px', borderColor: 'black' }}>{row2.NewValue}</td>
-                                        <td style={{ padding: '0px', borderColor: 'black' }}>{row1.sEnteredBy}</td>
-                                        <td style={{ padding: '0px', borderColor: 'black' }}>{row1.sOffice}</td>
-                                        <td style={{ padding: '0px', borderColor: 'black' }}>{row1.auditLog.dtEntered ? Moment(row1.auditLog.dtEntered).format('DD-MM-YYYY HH:mm:ss') : ''}</td>
+                                        <td style={{ padding: '0px', borderColor: 'black', textAlign: 'center'}} scope='row' className={props.classes.mytable} >{++count}</td>{/* Uncomment above and Change i to j if grouping required*/}
+                                        <td style={{ padding: '0px', borderColor: 'black', textAlign: 'center', color: 'black'}} >{row2.Field}</td>
+                                        <td style={{ padding: '0px', borderColor: 'black', textAlign: 'center', color: 'black', fontSize: row2.PreviousValue?.charCodeAt(0) > 255 ? '1.5rem' : '1rem'  }}>{row2.PreviousValue}</td>
+                                        <td style={{ padding: '0px', borderColor: 'black', textAlign: 'center', color: 'black', fontSize: row2.NewValue?.charCodeAt(0) > 255 ? '1.5rem' : '1rem' }}>{row2.NewValue}</td>
+                                        <td style={{ padding: '0px', borderColor: 'black', textAlign: 'center', color: 'black' }}>{row1.sEnteredBy}</td>
+                                        <td style={{ padding: '0px', borderColor: 'black', textAlign: 'center', color: 'black'}}>{row1.sOffice}</td>
+                                        <td style={{ padding: '0px', borderColor: 'black', textAlign: 'center', color: 'black'}}>{row1.auditLog.dtEntered ? Moment(row1.auditLog.dtEntered).format('DD-MM-YYYY HH:mm:ss') : ''}</td>
                                       </tr>
 
                                        ))}

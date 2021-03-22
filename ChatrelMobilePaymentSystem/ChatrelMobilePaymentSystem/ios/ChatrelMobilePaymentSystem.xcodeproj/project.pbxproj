@@ -843,7 +843,7 @@
 				CODE_SIGN_ENTITLEMENTS = ChatrelMobilePaymentSystem/ChatrelMobilePaymentSystem.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = X4T7928XHG;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
@@ -928,7 +928,7 @@
 				CODE_SIGN_ENTITLEMENTS = ChatrelMobilePaymentSystem/ChatrelMobilePaymentSystem.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = X4T7928XHG;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
