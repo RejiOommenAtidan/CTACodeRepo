@@ -4,23 +4,15 @@ import {Alert} from '@material-ui/lab';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from 'react-responsive'
 
-import PersonIcon from '@material-ui/icons/Person';
-import GroupIcon from '@material-ui/icons/Group';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-//import projectLogo from '../../assets/images/ctalogo.png';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { Alerts } from '../alerts';
 import img from '../../assets/images/home_pending.jpg';
 import {useHistory} from 'react-router-dom';
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
-import {storeGBDetails} from '../../actions/transactions/GBDetailsAction';
+
 import {storeSession} from '../../actions/transactions/SessionAction';
-import logo1 from '../../assets/images/stock-logos/discord-icon.svg';
 
-import logo2 from '../../assets/images/stock-logos/google-icon.svg';
-
-//import people1 from '../../assets/images/DIR_9758.JPG';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CountUp from 'react-countup';
@@ -66,8 +58,7 @@ export default function Home() {
   const [backdrop, setBackdrop] = React.useState(true);
   const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   const sGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sGBID);
-  //const pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
-  //const payingFor=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sName);
+
   const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
   const paidByName= useSelector(state => state.GBDetailsReducer.oGBDetails.sName);
   const oGBDetails = useSelector(state => state.GBDetailsReducer.oGBDetails);
@@ -134,16 +125,27 @@ export default function Home() {
         console.log(error.response.status);
     
       });
-     //const x =               
-      //oGBDetails.sAuthRegion=resp.data.chatrel.authRegionProfile;
-      //dispatch(storeGBDetails({...oGBDetails,sAuthRegion:resp.data.chatrel.authRegionProfile}));
-     //console.log('x',x,oGBDetails);
+   
       if(resp.data.message!=="Paid Until Missing")
       {
       if(resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0){
-        setChatrelPending('0');
+        setChatrelPending(0);
         setThankYouMsg(true);
-        setThankYouMsgFY(resp.data.chatrel.chatrelFrom+'-'+resp.data.chatrel.chatrelTo);
+        //setThankYouMsgFY(resp.data.chatrel.chatrelFrom+'-'+resp.data.chatrel.chatrelTo);
+        if (resp.data.chatrel.chatrelFrom === resp.data.chatrel.chatrelTo ) {
+          setThankYouMsgFY(resp.data.chatrel.chatrelFrom +' - ' +(resp.data.chatrel.chatrelTo +1).toString().slice(-2));
+          }
+        else {
+          setThankYouMsgFY(
+          resp.data.chatrel.chatrelFrom +
+          ' - ' +
+          (resp.data.chatrel.chatrelFrom + 1).toString().slice(-2) +
+          ' to ' +
+          resp.data.chatrel.chatrelTo +
+          ' - ' +
+          (resp.data.chatrel.chatrelTo + 1).toString().slice(-2),
+          );
+          }
         if(resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt===0){
           setOutstanding(false);
         }
@@ -151,9 +153,7 @@ export default function Home() {
           setDonationDiv(true);
         }
         
-        // setCurrencySymbol(resp.data.currency === 'INR' ? '₹' : '$' );
-        // element.disabled = false;
-        // return;
+      
       }
       else{
         setChatrelPending(resp.data.chatrel.chatrelPayment.nChatrelTotalAmount);
@@ -205,7 +205,7 @@ export default function Home() {
     <>
    
       <Card className="card-box mb-spacing-6-x2" style={{  padding: 50,margin:'30px' }} >
-   {/*     <h4>QUICK ACTIONS</h4>  */}
+   
       
       <Grid container spacing={8}>
     
@@ -251,9 +251,12 @@ export default function Home() {
                                                         </div>
                                                        { !empty && <div className="ml-auto">
 
-                                                            <div className="badge badge-neutral-success text-success font-size-xs font-weight-normal py-1 h-auto px-3 badge-pill">
+                                                        {paymentData && <div>
+                                                              <div className="badge badge-neutral-success text-success font-size-xs font-weight-normal py-1 h-auto px-3 badge-pill">
                                                              {chatrelPending>0  ? currencySymbol + chatrelPending : "PAID"}
+                                                             
                                                             </div>
+                                                          </div>}
                                                         </div>}
                                                     </ListItem>
                                                     <ListItem component="a" button  onClick={()=>{history.push('/Friends')}} className="d-flex align-items-center py-3">
@@ -303,12 +306,7 @@ export default function Home() {
                                                                 
                                                             </div>
                                                         </div>
-                                                       {/*  <div className="ml-auto">
-
-                                                            <div className="badge badge-neutral-success text-success font-size-xs font-weight-normal py-1 h-auto px-3 badge-pill">
-                                                             {chatrelPending>0  ? currencySymbol + chatrelPending : "PAID"}
-                                                            </div>
-                                                        </div>*/} 
+                                                    
                                                     </ListItem>
                                                     <ListItem component="a" button href="/Friends" onClick={()=>{history.push('/Friends')}} className="d-flex align-items-center py-3">
                                                         <div className="d-flex align-items-center">
@@ -319,7 +317,7 @@ export default function Home() {
                                                                 <div className="font-weight-bold text-black">
                                                                    Friends & Family Chatrel
                                                                 </div>
-                                                                {/* <div className="text-black-50">Pay Instantly for all of your Friends & Family</div> */}
+                                                              
                                                                 
                                                             </div>
                                                         </div>
@@ -334,7 +332,7 @@ export default function Home() {
                                                                 <div className="font-weight-bold text-black">
                                                                     Chatrel History
                                                                 </div>
-                                                                {/* <div className="text-black-50">Check your previous Chatrel donations</div> */}
+                                                               
                                                                 
                                                             </div>
                                                         </div>
@@ -350,7 +348,7 @@ export default function Home() {
           <Grid container spacing={4} className="py-5">
 
           <Grid item xs={12} sm={6} lg={4}>
-          <Card className="card-box card-box-alt  h-100 shadow-xxl  p-2 ">
+        {sHomePageMessage &&  <Card className="card-box card-box-alt  h-100 shadow-xxl  p-2 ">
                                 <div className="card-content-overlay text-center pb-4">
                                     <div className="d-50 mb-1 card-icon-wrapper   btn-icon mx-auto text-center">
                                     {sHomePageImage && <img src={sHomePageImage}  style={{ width: 100,borderRadius:'10px' }} alt="..." />}
@@ -364,7 +362,7 @@ export default function Home() {
                                           <small className="text-black-50 pl-2">{sHomePageDesignation}</small>
                                       </div>}
                                 </div>
-                            </Card>
+                            </Card>}
 
 
 
@@ -382,7 +380,7 @@ export default function Home() {
                                     start={0}
                                     end={parseFloat(chatrelPending)}
                                     duration={1}
-                                    //deplay={2}
+                                    
                                     separator=" "
                                     decimals
                                     decimal="."
@@ -452,7 +450,7 @@ export default function Home() {
                                     </div>
                                    
                                     <div className="font-weight-bold text-black display-5 mt-4 mb-1">
-                                    There is no chatrel contribution record in the database. You are requested to upload your two year chatrel receipt  
+                                    There is no chatrel contribution record in the database. You are requested to upload your two year chatrel receipt.  
                                     </div>
                                     <div className="font-size-lg text-dark opacity-8">Please Contact CTA or file a dispute.</div>
                                     <div className="divider mx-4 my-4" />
@@ -485,7 +483,7 @@ export default function Home() {
                                 </Card>
         </Grid>
         </Grid>
-        {/*<Button onClick={()=>{history.push('/test')}}>Test</Button>*/}
+      
       </Card>
       {snackbar && (
             <Alerts

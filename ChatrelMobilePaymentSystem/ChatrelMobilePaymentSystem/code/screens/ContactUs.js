@@ -1,12 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  Linking,
-} from 'react-native';
+import {Text, View, StyleSheet, Dimensions, ScrollView} from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Card, Icon} from 'react-native-elements';
@@ -59,12 +52,6 @@ export const ContactUsScreen = () => {
           titleStyle={{}}
           containerStyle={styles.cardContainerStyle}>
           <View style={styles.contactUsPlaceholderView}>
-            {/* <Text style={{
-                ...styles.contactUsTextComponent,
-                fontSize:wp(4),
-                fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
-            }}>CONTACT US</Text> */}
             <Text style={styles.contactUsTextColonComponent}>
               Postal Address:
             </Text>
@@ -89,21 +76,7 @@ export const ContactUsScreen = () => {
             </Text>
             <Text style={styles.contactUsTextColonComponent}>
               Website:{' '}
-              <Text
-                style={{
-                  ...styles.contactUsTextComponent,
-                  //   color: Colors.ChatrelInfoBlue,
-                  //   fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                  //   fontFamily:
-                  //     Platform.OS === 'android' ? sFontNameBold : sFontName,
-                  //   textDecorationColor: Colors.ChatrelInfoBlue,
-                  //   textDecorationLine: 'underline',
-                  //   textAlign: 'center',
-                }}
-                // onPress={() => {
-                //   Linking.openURL(sChatrelNetURL);
-                // }}
-              >
+              <Text style={styles.contactUsTextComponent}>
                 {sChatrelNetURL}
               </Text>
             </Text>
@@ -138,7 +111,6 @@ export const ContactUsScreenOptions = (navData) => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
-          //iconName={Platform.OS === 'android' ? 'menu' : 'md-menu'}
           iconName={'menu'}
           onPress={() => {
             navData.navigation.toggleDrawer();
@@ -146,7 +118,6 @@ export const ContactUsScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    // headerRight: CustomHeaderRightButton,
     cardStyle: {backgroundColor: Colors.white, shadowColor: 'transparent'},
   };
 };

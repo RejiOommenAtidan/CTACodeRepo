@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Text,
   Alert,
@@ -7,8 +7,6 @@ import {
   Platform,
   BackHandler,
   Linking,
-  // Modal,
-  // ActivityIndicator,
 } from 'react-native';
 import {GLogin} from '../components/GLogin';
 import Colors from '../constants/Colors';
@@ -18,16 +16,18 @@ import {
 } from 'react-native-responsive-screen';
 import ResponsiveImage from 'react-native-responsive-image';
 import {
+  sExitApp,
+  sExitConfirmation,
   sFontName,
   sFontNameBold,
   sHimalayaFontName,
   sMappingURL,
-  // oActivityIndicatorStyle,
+  sSessionExpireLoginAgain,
+  sSessionTimeout,
 } from '../constants/CommonConfig';
 import axios from 'axios';
 import {useDispatch} from 'react-redux';
 import {GoogleSignin} from '@react-native-community/google-signin';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {removeGoogleCreds} from '../store/actions/GLoginAction';
 import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
 import {useFocusEffect} from '@react-navigation/native';
@@ -36,17 +36,15 @@ import {
   removeJWTToken,
 } from '../store/actions/GBDetailsAction';
 import Resolution from '../constants/ResolutionBreakpoint';
-// import {WebView} from 'react-native-webview';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const LoginScreen = (props) => {
-  // const [bShowWebView, setbShowWebView] = useState(false);
-  // const [bLogoLoaded, setbLogoLoaded] = useState(false);
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
         Alert.alert(
-          'Exit App',
-          'Do you want to exit?',
+          sExitApp,
+          sExitConfirmation,
           [
             {
               text: 'No',
@@ -78,11 +76,11 @@ export const LoginScreen = (props) => {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
       //await AsyncStorage.multiRemove(keysToRemove, (err) => {
-        dispatch(removeGoogleCreds);
-        dispatch(removeGBDetails);
-        dispatch(removeJWTToken);
-        dispatch(removeCurrentGBDetails);
-        props.navigation.navigate('Login');
+      dispatch(removeGoogleCreds);
+      dispatch(removeGBDetails);
+      dispatch(removeJWTToken);
+      dispatch(removeCurrentGBDetails);
+      props.navigation.navigate('Login');
       //});
     } catch (error) {
       props.navigation.navigate('Login');
@@ -91,12 +89,6 @@ export const LoginScreen = (props) => {
 
   axios.interceptors.response.use(
     (response) => {
-      //if (response.data.sJwtToken) {
-      //console.log('Token inside 200 sJWT: ' + response.data.sJwtToken);
-      //}
-      //if (response.data.token) {
-      //console.log('Token inside 200 Token: ' + response.data.token);
-      //}
       return response;
     },
     (error) => {
@@ -104,10 +96,11 @@ export const LoginScreen = (props) => {
         //console.log(
         //'Token inside 401: ' + axios.defaults.headers.common['Authorization'],
         //);
+
         setTimeout(() => {
           Alert.alert(
-            'Session Timeout',
-            'Your session has expired. Please login again.',
+            sSessionTimeout,
+            sSessionExpireLoginAgain,
             [
               {
                 text: 'Logout',
@@ -126,28 +119,6 @@ export const LoginScreen = (props) => {
 
   return (
     <View style={styles.mainContainer}>
-      {/*<Modal
-        visible={bShowWebView}
-        onRequestClose={() => setbShowWebView(false)}>
-        <WebView
-          cacheEnabled={false}
-          pullToRefreshEnabled={true}
-          source={{uri: sMappingURL}}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          startInLoadingState={false}
-          style={{marginTop: hp(3.5)}}
-          renderLoading={() => (
-            <ActivityIndicator
-              size={Platform.OS === 'ios' ? 0 : 'large'}
-              color={Colors.spinnerColor}
-              animating={true}
-              //hidesWhenStopped={true}
-              style={oActivityIndicatorStyle}
-            />
-          )}
-        />
-          </Modal>*/}
       <View style={styles.imgContainer}>
         {/*Values Coded*/}
         <ResponsiveImage
@@ -174,16 +145,6 @@ export const LoginScreen = (props) => {
       </View> */}
       <GLogin props={props}></GLogin>
       <View style={styles.textContainer}>
-        {/* <Text
-          style={{
-            ...styles.textComponent,
-            fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-            fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
-            fontSize: wp(4.75),
-            marginBottom: hp(1.25),
-          }}>
-          Map Google Account with Green Book
-        </Text> */}
         <Text
           style={{
             textAlign: 'center',
@@ -206,7 +167,6 @@ export const LoginScreen = (props) => {
               textDecorationColor: Colors.darkYellowFamilyPage,
             }}
             onPress={() => {
-              //setbShowWebView(true);
               Linking.openURL(sMappingURL);
             }}>
             this form
@@ -240,16 +200,13 @@ export const LoginScreenOptions = (navData) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignSelf: 'center',
     alignItems: 'center',
     flexGrow: 1,
     marginHorizontal: wp(Resolution.nWidthMarginValueScreen),
     marginVertical: hp(Resolution.nHeightMarginValueScreen),
   },
   imgContainer: {
-    marginVertical: hp(1.25),
+    marginVertical: hp(1.5),
   },
   tibetanTextContainer: {
     marginVertical: hp(1.25),

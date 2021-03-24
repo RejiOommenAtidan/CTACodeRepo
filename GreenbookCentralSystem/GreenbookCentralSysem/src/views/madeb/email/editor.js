@@ -10,8 +10,8 @@ const  Editor = (props) => {
     showXPathInStatusbar: false,
     minHeight: 500,
     askBeforePasteHTML: false,
-  defaultActionOnPaste: "insert_only_text",
- style: { fontSize: "20px",color:'black' }
+    defaultActionOnPaste: "insert_only_text",
+    style: { fontSize: "24px",color:'black' }
   };
 
  return useMemo( () => ( 

@@ -269,7 +269,7 @@ namespace CTADBL.ViewModelsRepositories
                             {
                                 int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).Year - Convert.ToInt32(item.Value);
                                 addToSql += @$"year(gb.dtDOB) <= @{item.Key} and ";
-                                command.Parameters.AddWithValue(item.Key, Convert.ToInt32(item.Value));
+                                command.Parameters.AddWithValue(item.Key, year);
                             }
 
                         }
@@ -279,7 +279,7 @@ namespace CTADBL.ViewModelsRepositories
                             {
                                 int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).Year - Convert.ToInt32(item.Value);
                                 addToSql += @$"year(gb.dtDOB) >= @{item.Key} and ";
-                                command.Parameters.AddWithValue(item.Key, Convert.ToInt32(item.Value));
+                                command.Parameters.AddWithValue(item.Key, year);
                             }
 
                         }

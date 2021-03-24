@@ -9,13 +9,9 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Platform,
-  PermissionsAndroid,
   Linking,
-  // ActivityIndicator,
-  // TouchableOpacity,
-  // Image,
 } from 'react-native';
-import {Card, Button, Avatar, Badge} from 'react-native-elements';
+import {Card, Button, Avatar} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {useSelector, useDispatch} from 'react-redux';
@@ -27,17 +23,15 @@ import {
   sFontNameBold,
   sFAQURL,
   sHimalayaFontName,
-  sFAQFolder,
-  sFAQDownloadMessageAndroid,
-  sFAQDownloadMessageIOS,
-  // oActivityIndicatorStyle,
+  sLogoutConfirmation,
+  sInvalidDetailsForChatrel,
+  sPleaseContactCTA,
 } from '../constants/CommonConfig';
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {Link, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import {removeGoogleCreds} from '../store/actions/GLoginAction';
 import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
@@ -47,22 +41,10 @@ import {
   storeJWTToken,
   storePaidUntil,
 } from '../store/actions/GBDetailsAction';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
 import {Icon} from 'react-native-elements';
 import {Loader} from '../components/Loader';
 import {useFocusEffect} from '@react-navigation/native';
-import RNFetchBlob from 'react-native-fetch-blob';
-import Toast from 'react-native-root-toast';
-
-// import Ionicons from 'react-native-vector-icons/Ionicons';
-// import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-// import { withNavigationFocus } from 'react-navigation';
-
-// import Accordion from 'react-native-collapsible/Accordion';
-// import {useCollapsibleHeader} from 'react-navigation-collapsible';
-// import {CustomHeaderRightButton} from '../components/HeaderRightButton';
-// import CustomHeaderButton from '../components/HeaderButton';
 
 const HomeScreen = (props) => {
   useFocusEffect(
@@ -70,7 +52,7 @@ const HomeScreen = (props) => {
       const onBackPress = () => {
         Alert.alert(
           'Logout',
-          'Are you sure you want to logout?',
+          sLogoutConfirmation,
           [
             {
               text: 'No',
@@ -95,15 +77,9 @@ const HomeScreen = (props) => {
     }, []),
   );
 
-  // const [paidUnitlMissing, setpaidUntilMissing] = useState(false);
-  // const [nChatrelTotalAmount, setnChatrelTotalAmount] = useState(0);
-  // const [nCurrentChatrelSalaryAmt, setnCurrentChatrelSalaryAmt] = useState(0);
-  // const [sCurrencySign, setsCurrencySign] = useState('USD');
-
   const [bLoader, setbLoader] = useState(true);
   const [dollarToRupees, setDollarToRupees] = React.useState(0.0);
   const [activeSections, setactiveSections] = useState([]);
-
   const [chatrelPending, setChatrelPending] = React.useState(null);
   const [currencySymbol, setCurrencySymbol] = React.useState();
   const [paymentData, setPaymentData] = React.useState();
@@ -112,54 +88,26 @@ const HomeScreen = (props) => {
   const [thankYouMsg, setThankYouMsg] = useState(false);
   const [thankYouMessageContent, setThankYouMessageContent] = useState('');
   const [empty, setEmpty] = useState(false);
-
   const [sHomePageImage, setsHomePageImage] = useState(null);
   const [sHomePageMessage, setsHomePageMessage] = useState(null);
   const [sHomePageName, setsHomePageName] = useState(null);
   const [sHomePageDesignation, setsHomePageDesignation] = useState(null);
   const [sFAQDocument, setsFAQDocument] = useState(null);
-
   const isFocused = useIsFocused();
 
   const aCard = [
     {
       id: 1,
-      sHeader: 'Self Chatrel',
-      // sContent: 'Make Chatrel Payments for yourself online!!',
       sContent: 'Contribute Now!',
-      sLabel: `Self\nChatrel`,
-      sImagePath: require('../assets/CTALogo.png'),
       sRouteName: 'SelfChatrel',
-      sBGColor: Colors.buttonYellow,
-      sTextColor: Colors.greenBG,
       sIconName: 'donate',
-      sIconColor: Colors.greenBG,
     },
     {
       id: 2,
-      sHeader: 'Friends & Family Chatrel',
-      // sContent: 'Pay Instantly for all of your Friends & Family', //46
-      sContent: 'Contribute for Family & Friends!', //46
-      sLabel: `Friends & Family Chatrel`,
-      sImagePath: require('../assets/CTALogo.png'),
+      sContent: 'Contribute for Family & Friends!',
       sRouteName: 'FriendChatrelIntermediate',
-      sBGColor: Colors.greenBG,
-      sTextColor: Colors.buttonYellow,
       sIconName: 'leaf',
-      sIconColor: Colors.buttonYellow,
     },
-    // {
-    //   id: 3,
-    //   sHeader: 'Friend Chatrel',
-    //   sContent: 'Get payments of your friends done too',
-    //   sLabel: `Friend\nChatrel`,
-    //   sImagePath: require('../assets/CTALogo.png'),
-    //   sRouteName: 'FriendChatrelIntermediate',
-    //   sBGColor: Colors.blueCardColor,
-    //   sTextColor: Colors.primary,
-    //   sIconName: 'users',
-    //   sIconColor: Colors.blue,
-    // },
   ];
 
   const oCurrentGBDetails = useSelector(
@@ -170,101 +118,34 @@ const HomeScreen = (props) => {
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
   let navigation = useNavigation();
 
-  // const downloadFAQFile = async () => {
-  //   try {
-  //     const granted = await PermissionsAndroid.request(
-  //       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-  //     );
-  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-  //       await handleFAQOnPress();
-  //     } else {
-  //       Alert.alert(
-  //         'Permission Denied!',
-  //         'You need to give storage permission to download the file',
-  //       );
-  //     }
-  //   } catch (err) {
-  //     console.warn(err);
-  //   }
-  // };
-
-  // const handleFAQOnPress = async () => {
-  //   setbLoader(true);
-  //   const {dirs} = RNFetchBlob.fs;
-  //   let fPath = Platform.select({
-  //     ios: dirs.DocumentDir,
-  //     android: dirs.DownloadDir,
-  //   });
-
-  //   fPath = fPath + '/' + sFAQFolder;
-
-  //   if (Platform.OS === 'ios') {
-  //     RNFetchBlob.fs.mkdir(fPath).catch((err) => {
-  //       console.log(err);
-  //     });
-  //   }
-
-  //   fPath = `${fPath}/ChatrelFAQ.pdf`;
-
-  //   if (Platform.OS === 'ios') {
-  //     RNFetchBlob.fs.createFile(fPath, sFAQDocument, 'base64');
-  //   } else {
-  //     RNFetchBlob.fs.writeFile(fPath, sFAQDocument, 'base64');
-  //   }
-
-  //   setbLoader(false);
-
-  //   Toast.show(
-  //     Platform.OS === 'android'
-  //       ? sFAQDownloadMessageAndroid
-  //       : sFAQDownloadMessageIOS,
-  //     {
-  //       duration: Toast.durations.SHORT,
-  //       position: Toast.positions.BOTTOM,
-  //       shadow: true,
-  //       animation: true,
-  //       hideOnPress: true,
-  //       delay: 0,
-  //     },
-  //   );
-  // };
-
   const removeCompleteDetailsAndNavigateToLogin = async () => {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
       //await AsyncStorage.multiRemove(keysToRemove, (err) => {
-        //debugger;
-        axios
-          .get(`/User/Logout`)
-          .then((resp) => {
-            if (
-              resp.status === 200 &&
-              resp.data.message === 'Logged Out successfully'
-            ) {
-              console.log(resp.data);
-              dispatch(removeGoogleCreds);
-              dispatch(removeGBDetails);
-              dispatch(removeJWTToken);
-              dispatch(removeCurrentGBDetails);
-              axios.defaults.headers.common['Authorization'] = undefined;
-              navigation.navigate('Login');
-            }
-          })
-          .catch((error) => {
-            console.log('Error ', error.response);
-            if (error.response) {
-              console.error(error.response);
-            } else if (error.request) {
-              console.warn(error.request);
-            } else {
-              console.error('Error', error.message);
-            }
-            console.log(error.config);
-          })
-          .then((release) => {
+      axios
+        .get(`/User/Logout`)
+        .then((resp) => {
+          if (
+            resp.status === 200 &&
+            resp.data.message === 'Logged Out successfully'
+          ) {
+            //console.log(resp.data);
+            dispatch(removeGoogleCreds);
+            dispatch(removeGBDetails);
+            dispatch(removeJWTToken);
+            dispatch(removeCurrentGBDetails);
+            axios.defaults.headers.common['Authorization'] = undefined;
             navigation.navigate('Login');
-          });
+          }
+        })
+        .catch((error) => {
+          console.log('Error ', error.response);
+          navigation.navigate('Login');
+        })
+        .then((release) => {
+          navigation.navigate('Login');
+        });
       //});
     } catch (error) {
       console.error(error);
@@ -272,176 +153,16 @@ const HomeScreen = (props) => {
     }
   };
 
-  //const getChatrelDetails = () => {
-  // axios
-  //   .get(
-  //     `/ChatrelPayment/DisplayChatrelPayment/?sGBID=` +
-  //       oCurrentGBDetails.sGBID,
-  //   )
-  //   .then((resp) => {
-  //     // if (resp.status === 200) {
-  //     //   const oSession = {
-  //     //     sJwtToken: resp.data.token,
-  //     //     bSession: true,
-  //     //   };
-  //     //   dispatch(storeJWTToken(oSession));
-  //     //   console.log(resp.data);
-  //     //   if (resp.data.chatrel.chatrelPayment) {
-  //     //     if (resp.data.chatrel.message === 'Paid Until Missing') {
-  //     //       setpaidUntilMissing(true);
-  //     //     }
-  //     //     fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
-  //     //       .then((response) => response.json())
-  //     //       .then((data) => {
-  //     //         setDollarToRupees(data.rates.USD);
-  //     //       });
-
-  //     //     // resp.data.chatrel.chatrelPayment.nChatrelTotalAmount*parseFloat(dollarToRupees.toFixed(4))
-  //     //     setnChatrelTotalAmount(
-  //     //       resp.data.chatrel.chatrelPayment.nChatrelTotalAmount,
-  //     //     );
-  //     //     setnCurrentChatrelSalaryAmt(
-  //     //       resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt,
-  //     //     );
-
-  //     //     if (resp.data.chatrel.gbChatrels[0].sAuthRegionCurrency === 'USD') {
-  //     //       setsCurrencySign('$');
-  //     //     } else {
-  //     //       setsCurrencySign('₹');
-  //     //     }
-  //     //     setactiveSections([0, 1]);
-  //     //   }
-  //     // }
-  //     // setbLoader(false);
-
-  //     if (resp.status === 200) {
-  //       debugger;
-  //       console.log('Self Chatrel Payment data:', resp.data);
-  //       setbLoader(false);
-  //       const oSession = {
-  //         sJwtToken: resp.data.token,
-  //         bSession: true,
-  //       };
-  //       dispatch(storeJWTToken(oSession));
-  //       fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
-  //         .then((response) => response.json())
-  //         .then((data) => {
-  //           setDollarToRupees(data.rates.USD);
-  //         });
-  //       if (resp.data.message !== 'Paid Until Missing') {
-  //         if (resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0) {
-  //           setChatrelPending('0');
-  //           setThankYouMsg(true);
-  //           if (
-  //             resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt === 0
-  //           ) {
-  //             setOutstanding(false);
-  //           } else {
-  //             setDonationDiv(true);
-  //           }
-  //         } else {
-  //           setChatrelPending(
-  //             resp.data.chatrel.chatrelPayment.nChatrelTotalAmount,
-  //           );
-  //           setOutstanding(true);
-  //         }
-  //         setPaymentData(resp.data.chatrel);
-  //         console.log(resp.data.chatrel);
-
-  //         if (resp.data.chatrel.gbChatrels[0].sAuthRegionCurrency === 'USD') {
-  //           setCurrencySymbol('$');
-  //         } else {
-  //           setCurrencySymbol('₹');
-  //         }
-  //       } else {
-  //         //debugger;
-  //         setEmpty(true);
-  //       }
-  //     }
-  //     //console.log('Data fetched...', resp.data);
-  //   })
-  //   .catch((error) => {
-  //     setbLoader(false);
-  //     if (error.response.status === 401) {
-  //       // const oSession = {
-  //       //   sJwtToken: '',
-  //       //   bSession: false,
-  //       // };
-  //       // dispatch(storeJWTToken(oSession));
-  //     } else {
-  //       console.log(error.response);
-  //       Alert.alert(
-  //         'Invalid details for Chatrel',
-  //         'Please Contact CTA',
-  //         [
-  //           {
-  //             text: 'Logout',
-  //             onPress: () => removeCompleteDetailsAndNavigateToLogin(),
-  //           },
-  //         ],
-  //         {cancelable: false},
-  //       );
-  //     }
-  //   });
-  //};
-
-  // const renderSectionTitle = (section) => {
-  //   return (
-  //     <View style={styles.content}>
-  //       <Text>{section.content}</Text>
-  //     </View>
-  //   );
-  // };
-
-  // const renderHeader = (section, index, expanded) => {
-  //   return (
-  //     <View style={styles.accordionListHeader}>
-  //       <Text style={styles.accodrionHeaderText}>{section.sHeader}</Text>
-  //       {expanded ? (
-  //         <Icon
-  //           style={{fontSize: 20}}
-  //           name="remove-circle"
-  //           color={Colors.white}
-  //         />
-  //       ) : (
-  //         <Icon style={{fontSize: 20}} name="add-circle" color={Colors.white} />
-  //       )}
-  //     </View>
-  //   );
-  // };
-  {
-    /*<View style={styles.accordionListContent}>*/
-  }
-  {
-    /* </View> */
-  }
-
   const renderContent = (section, index) => {
     return (
       <View
         key={index}
         style={{
-          // alignContent: 'center',
-          // alignItems: 'center',
-          widht: '100%',
           alignSelf: 'center',
-          // marginVertical: 5,
           paddingHorizontal: 10,
           paddingVertical: 10,
+          widht: '100%',
         }}>
-        {/* <TouchableWithoutFeedback
-            onPress={() => {
-              props.navigation.navigate(section.sRouteName);
-            }}> */}
-        {/* <Badge
-              containerStyle={styles.badgeContainerStyle}
-              badgeStyle={{...styles.badgeStyle,padding:20}}
-              value={
-                <Text style={styles.accodrionContextText}>
-                  {section.sContent}
-                </Text>
-              }
-            /> */}
         <Button
           TouchableComponent={TouchableWithoutFeedback}
           title={section.sContent}
@@ -456,19 +177,6 @@ const HomeScreen = (props) => {
             color: Colors.greenBG,
           }}
           type="outline"
-          // titleStyle={{
-          //   color: Colors.white,
-          //   fontStyle: 'normal',
-          //   fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-          //   fontFamily:
-          //     Platform.OS === 'android' ? sFontNameBold : sFontName,
-          //   fontSize: wp(4),
-          // }}
-          // containerStyle={{
-          //   alignContent:"center",
-          //   alignItems:"center",
-          //   alignSelf:"center",
-          // }}
           buttonStyle={{
             width: '100%',
             backgroundColor: Colors.buttonYellow,
@@ -487,27 +195,9 @@ const HomeScreen = (props) => {
             overflow: 'visible',
           }}
         />
-        {/* </TouchableWithoutFeedback> */}
-
-        {/*<FontAwesome5
-            onPress={() => {
-              //console.log(section.sRouteName)
-              props.navigation.navigate(section.sRouteName);
-            }}
-            color={section.sIconColor}
-            name={section.sIconName}
-            adjustsFontSizeToFit={true}
-            size={18}
-          //size={size}
-          //color={focused ? Colors.black : Colors.black}
-          />*/}
       </View>
     );
   };
-
-  // const updateSections = (activeSections) => {
-  //   setactiveSections(activeSections);
-  // };
 
   useEffect(() => {
     if (isFocused) {
@@ -527,7 +217,6 @@ const HomeScreen = (props) => {
       setsHomePageName(null);
       setsHomePageDesignation(null);
       setsFAQDocument(null);
-      //getChatrelDetails();
       axios
         .get(
           `/ChatrelPayment/DisplayChatrelPayment/?sGBID=` +
@@ -550,13 +239,25 @@ const HomeScreen = (props) => {
               if (resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0) {
                 setChatrelPending('0');
                 setThankYouMsg(true);
-                setThankYouMessageContent(
-                  resp.data.chatrel.chatrelFrom +
-                    ' - ' +
-                    resp.data.chatrel.chatrelTo,
-
-                  // '2016 - 2020',
-                );
+                if (
+                  resp.data.chatrel.chatrelFrom === resp.data.chatrel.chatrelTo
+                ) {
+                  setThankYouMessageContent(
+                    resp.data.chatrel.chatrelFrom +
+                      ' - ' +
+                      (resp.data.chatrel.chatrelTo + 1).toString().slice(-2),
+                  );
+                } else {
+                  setThankYouMessageContent(
+                    resp.data.chatrel.chatrelFrom +
+                      ' - ' +
+                      (resp.data.chatrel.chatrelFrom + 1).toString().slice(-2) +
+                      ' to ' +
+                      resp.data.chatrel.chatrelTo +
+                      ' - ' +
+                      (resp.data.chatrel.chatrelTo + 1).toString().slice(-2),
+                  );
+                }
                 if (
                   resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt === 0
                 ) {
@@ -571,7 +272,6 @@ const HomeScreen = (props) => {
                 setOutstanding(true);
               }
               setPaymentData(resp.data.chatrel);
-              //console.log(resp.data.chatrel);
 
               if (
                 resp.data.chatrel.gbChatrels[0].sAuthRegionCurrency === 'USD'
@@ -619,8 +319,8 @@ const HomeScreen = (props) => {
             console.log(error.response);
             setTimeout(() => {
               Alert.alert(
-                'Invalid details for Chatrel',
-                'Please Contact CTA',
+                sInvalidDetailsForChatrel,
+                sPleaseContactCTA,
                 [
                   {
                     text: 'Logout',
@@ -635,135 +335,12 @@ const HomeScreen = (props) => {
     }
   }, [isFocused]);
 
-  // useEffect(() => {
-  //   //getChatrelDetails();
-  //   // BackHandler.addEventListener('hardwareBackPress', () => true);
-  //   // return () => {
-  //   //   BackHandler.removeEventListener('hardwareBackPress', () => true);
-  //   // };
-  // }, []);
-
-  // const {
-  //   onScroll /* Event handler */,
-  //   onScrollWithListener /* Event handler creator */,
-  //   containerPaddingTop /* number */,
-  //   scrollIndicatorInsetTop /* number */,
-  //   /* Animated.AnimatedInterpolation by scrolling */
-  //   translateY /* 0.0 ~ -headerHeight */,
-  //   progress /* 0.0 ~ 1.0 */,
-  //   opacity /* 1.0 ~ 0.0 */,
-  // } = useCollapsibleHeader(HomeScreenOptions);
-
-  // if (empty) {
-  //   //debugger;
-  //   return (
-  //     <>
-  //       {Alert.alert(
-  //         'Attention Required',
-  //         'Last paid chatrel date not available. Please Contact CTA or file a dispute.',
-  //         [
-  //           {
-  //             text: 'File a Dispute',
-  //             onPress: () => {
-  //               setEmpty(false);
-  //               props.navigation.navigate('FileDispute');
-  //             },
-  //             style: 'cancel',
-  //           },
-  //         ],
-  //         {cancelable: false},
-  //       )}
-  //     </>
-  //   );
-  // }
-
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}>
       <View style={styles.mainContainer}>
         <Loader loading={bLoader} />
-        {/* <Animated.FlatList
-       onScroll={onScroll}
-         contentContainerStyle={{ paddingTop: containerPaddingTop }}
-         scrollIndicatorInsets={{ top: scrollIndicatorInsetTop }}
-       /> */}
-        {/*<View style={styles.headerContainer}>
-            <Text style={styles.headerComponent}>Quick Actions</Text>
-          </View>*/}
-        {/*<View style={styles.cardContainer}>
-            {aCard.map((card, index) => {
-              return (
-                <View key={index} style={styles.singleCardContainer}>
-                  <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => {
-                      setbLoader(true);
-                      props.navigation.navigate(card.sRouteName);
-                      //console.log(card);
-                    }}>
-                    <Card
-                      containerStyle={{
-                        ...styles.singleCardComponent,
-                        backgroundColor: card.sBGColor,
-                        borderRadius:
-                          Dimensions.get('window').width <
-                          Resolution.nWidthBreakpoint
-                            ? 9
-                            : 15,
-                      }}
-                      title={
-                        <View
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-evenly',
-                          }}>
-                          <Text
-                            style={{
-                              color: card.sTextColor,
-                              fontSize: wp(4.25),
-                              fontStyle: 'normal',
-                              fontWeight: 'normal',
-                              lineHeight: hp(3.5),
-                              // letterSpacing: Resolution.nLetterSpacing / 2,
-                              fontFamily: sFontName,
-                            }}>
-                            {card.sLabel}
-                          </Text>
-                          <View style={{flexGrow: 1}} />
-                          <FontAwesome5
-                            color={card.sIconColor}
-                            name={card.sIconName}
-                            //adjustsFontSizeToFit={true}
-                            size={20}
-                            //size={size}
-                            //color={focused ? Colors.black : Colors.black}
-                          />
-                        </View>
-                      }
-                      titleStyle={{}}>
-                      {/*<Card.Title
-                        style={{
-                          color: card.sTextColor,
-                          fontSize: wp(3.2),
-                          fontStyle: 'normal',
-                          fontWeight: 'bold',
-                          //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-                          letterSpacing: Resolution.nLetterSpacing / 2,
-                          fontFamily: sFontName,
-                        }}>
-                        {card.sLabel}
-                      </Card.Title>
-                      <Card.Divider />
-                      <Card.Image source={card.sImagePath} />
-                      <Text>{card.sLabel}</Text>
-                    </Card>
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          </View>*/}
         {/*Thank You Condition*/}
         {thankYouMsg && !bLoader && (
           <View
@@ -791,33 +368,7 @@ const HomeScreen = (props) => {
                   name="check"
                   //containerStyle={styles.iconContainerStyles}
                 />
-
                 <View>
-                  {/* <Text
-                    style={{
-                      ...styles.boldTextComponent,
-                      textAlign: 'left',
-                      color: Colors.greenBG,
-                      // fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                      // fontFamily:
-                      //   Platform.OS === 'android' ? sFontNameBold : sFontName,
-                      // fontSize: wp(5),
-                    }}>
-                    Thank You!
-                  </Text> */}
-                  {/* <Text
-                    style={{
-                      ...styles.greyTextComponent,
-                      color: Colors.greenBG,
-                      textAlign: 'left',
-                      fontSize: wp(4),
-                      // fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                      // fontFamily:
-                      //   Platform.OS === 'android' ? sFontNameBold : sFontName,
-                    }}>
-                    This year's Chatrel has been Contributed!
-                  </Text> */}
-
                   <Text>
                     <Text
                       style={{
@@ -827,9 +378,6 @@ const HomeScreen = (props) => {
                         fontSize: wp(6),
                         lineHeight: Platform.isPad ? hp(0) : hp(3.5),
                         fontFamily: sHimalayaFontName,
-                        // fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                        // fontFamily:
-                        //   Platform.OS === 'android' ? sFontNameBold : sFontName,
                       }}>
                       རྩིས་ལོ་
                     </Text>
@@ -857,10 +405,6 @@ const HomeScreen = (props) => {
                       fontSize: wp(6),
                       lineHeight: Platform.isPad ? hp(0) : hp(3.5),
                       fontFamily: sHimalayaFontName,
-                      // lineHeight: Platform.isPad ? hp(2) : hp(3.5),
-                      // fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                      // fontFamily:
-                      //   Platform.OS === 'android' ? sFontNameBold : sFontName,
                     }}>
                     ལོའི་དྭང་བླངས་དཔྱ་དངུལ་འབུལ་འབབ་གཙང་འབུལ་ཟིན།
                   </Text>
@@ -882,22 +426,9 @@ const HomeScreen = (props) => {
               }}
               title={
                 <Avatar
-                  // overlayContainerStyle={{
-                  //   padding:0,
-                  //   margin:0,
-                  // }}
-                  //   icon={()=>{
-                  //     return(           <Badge
-                  //     status="success"
-                  //     containerStyle={{position: 'absolute', top: 0, right: 0}}
-                  //   />)
-                  //   }}
-                  //icon={{name: 'user', type: 'font-awesome'}}
                   rounded
                   size="large"
                   containerStyle={styles.avatarContainerStyle}
-                  // source={require('../assets/TPresident.jpeg')}
-                  // source={require('../assets/TFM.jpg')}
                   source={{
                     uri: sHomePageImage,
                   }}
@@ -932,23 +463,6 @@ const HomeScreen = (props) => {
             </Card>
           )}
         {/*Paid Until Missing*/}
-        {/* {empty &&
-          !bLoader &&
-          Alert.alert(
-            'Attention Required',
-            'Last paid chatrel date not available. Please Contact CTA or file a dispute.',
-            [
-              {
-                text: 'File a Dispute',
-                onPress: () => {
-                  setEmpty(false);
-                  props.navigation.navigate('FileDispute');
-                },
-                style: 'cancel',
-              },
-            ],
-            {cancelable: false},
-          )} */}
         {empty && !bLoader && (
           <Card
             title={
@@ -992,30 +506,9 @@ const HomeScreen = (props) => {
                 </Text>
               </Text>
             </View>
-            {/* <View style={styles.viewMarginComponent}> */}
-            {/* </View> */}
-            {/* <Button
-              title="FILE A DISPUTE"
-              titleStyle={{
-                color: Colors.white,
-                textAlign: 'center',
-                fontStyle: 'normal',
-                fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                fontFamily:
-                  Platform.OS === 'android' ? sFontNameBold : sFontName,
-              }}
-              buttonStyle={{
-                backgroundColor: Colors.websiteLightBlueColor,
-                borderRadius: 15,
-              }}
-              onPress={() => {
-                //setbLoader(true);
-                navigation.navigate('FileDispute');
-              }}
-            /> */}
           </Card>
         )}
-        {/*Accordions*/}
+        {/* 2 Buttons Render*/}
         <View
           style={{
             ...styles.viewMarginComponent,
@@ -1025,23 +518,7 @@ const HomeScreen = (props) => {
           {aCard.map((card, index) => {
             return renderContent(card, index);
           })}
-          {/* <Accordion
-            align={'center'}
-            containerStyle={{width: '100%'}}
-            expandMultiple={true}
-            // touchableComponent={TouchableOpacity}
-            underlayColor={Colors.white}
-            // sectionContainerStyle={{backgroundColor:Colors.white}}
-            sections={aCard}
-            activeSections={activeSections}
-            // renderSectionTitle={renderSectionTitle}
-            duration={500}
-            renderHeader={renderHeader}
-            renderContent={renderContent}
-            onChange={updateSections}
-          /> */}
         </View>
-
         {/*First Condition*/}
         {outstanding && !bLoader && (
           <View
@@ -1085,7 +562,6 @@ const HomeScreen = (props) => {
                 }}
                 title="CONTRIBUTE NOW"
                 onPress={() => {
-                  //setbLoader(true);
                   navigation.navigate('SelfChatrel');
                 }}
               />
@@ -1101,7 +577,6 @@ const HomeScreen = (props) => {
                   color={Colors.white}
                   iconStyle={styles.iconStyles}
                   iconProps={{}}
-                  //underlayColor={Colors.websiteLightBlueColor}
                   backgroundColor={Colors.websiteLightBlueColor}
                   size={40}
                   type="font-awesome-5"
@@ -1138,7 +613,6 @@ const HomeScreen = (props) => {
                 borderRadius: 15,
               }}
               onPress={() => {
-                //setbLoader(true);
                 navigation.navigate('SelfChatrel');
               }}
             />
@@ -1190,7 +664,6 @@ const HomeScreen = (props) => {
                 borderRadius: 15,
               }}
               onPress={() => {
-                //setbLoader(true);
                 navigation.navigate('SelfChatrel');
               }}
             />
@@ -1235,14 +708,6 @@ const HomeScreen = (props) => {
                 }}
                 onPress={() => {
                   Linking.openURL(sFAQURL);
-                  // try {
-                  //   Platform.OS === 'android'
-                  //     ? downloadFAQFile()
-                  //     : handleFAQOnPress();
-                  // } catch (error) {
-                  //   console.log(error);
-                  //   console.log(error.message);
-                  // }
                 }}>
                 READ FAQs
               </Button>
@@ -1252,19 +717,6 @@ const HomeScreen = (props) => {
       </View>
     </ScrollView>
   );
-  // if (bLoader) {
-  //   return (
-  //     bLoader && (
-  //       <ActivityIndicator
-  //         size={Platform.OS === 'ios' ? 0 : 'large'}
-  //         color={Colors.spinnerColor}
-  //         animating={true}
-  //         //hidesWhenStopped={true}
-  //         style={oActivityIndicatorStyle}
-  //       />
-  //     )
-  //   )
-  // };
 };
 
 export const HomeScreenOptions = (navData) => {
@@ -1553,7 +1005,5 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
 });
-
-//export default withNavigationFocus(HomeScreen);
 
 export default HomeScreen;

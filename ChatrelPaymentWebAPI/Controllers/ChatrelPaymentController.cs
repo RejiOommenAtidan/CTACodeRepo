@@ -20,7 +20,7 @@ using MimeKit;
 using Newtonsoft.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
+using System.Net;
 using PayPalCheckoutSdk.Core;
 using PayPalCheckoutSdk.Orders;
 using System.Text;
@@ -227,7 +227,8 @@ namespace ChatrelPaymentWebAPI.Controllers
                 //string sGBIDf = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
                 Object chatrel = _chatrelPaymentRepository.DisplayChatrelPayment(sGBID);
                 string clientId = ChatrelConfigRepository.GetValueByKey("PayPalClientID").ToString();
-                string secret = ChatrelConfigRepository.GetValueByKey("PayPalSecret").ToString();
+                string PayPalAuthURL = ChatrelConfigRepository.GetValueByKey("PayPalAuthURL").ToString();
+                //string secret = ChatrelConfigRepository.GetValueByKey("PayPalSecret").ToString();
                 if (chatrel != null)
                 {
                     if (chatrel.ToString() == "Greenbook ID does not Exist.")
@@ -247,7 +248,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                     #region Information Logging 
                     _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called, JwT is: " + token, "", Convert.ToInt32(sGBID));
                     #endregion
-                    return Ok(new { chatrel, token, clientId, secret });
+                    return Ok(new { chatrel, token, clientId, PayPalAuthURL });
                 }
                 else
                 {
@@ -327,16 +328,17 @@ namespace ChatrelPaymentWebAPI.Controllers
             try
             {
                 Object paymentHistory = _chatrelPaymentRepository.GetPaymentHistory(sGBIDAuthorized);
+                Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBIDAuthorized);
                 if (paymentHistory != null)
                 {
                     #region Information Logging 
                     _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBIDAuthorized));
                     #endregion
-                    return Ok(new { message = "Payment History Found", paymentHistory, token });
+                    return Ok(new { message = "Payment History Found",greenbook.sPaidUntil, paymentHistory, token });
                 }
                 else
                 {
-                    return Ok(new { message = "No Payment History Found", token });
+                    return Ok(new { message = "No Payment History Found", greenbook.sPaidUntil, token });
                 }
             }
             catch (Exception ex)
@@ -408,14 +410,16 @@ namespace ChatrelPaymentWebAPI.Controllers
 
 
             string sEmail = User.Claims.Where(claim => claim.Type == ClaimTypes.Email).Select(claim => claim.Value).FirstOrDefault().ToString();
+            string sName = User.Claims.Where(claim => claim.Type == ClaimTypes.Name).Select(claim => claim.Value).FirstOrDefault().ToString();
             string token = BlockAndGenerateNewToken(Request, sGBIDAuthorized);
+
             //To do: Add attachment to the email.
             try
             {
 
-                var sGBID = dict["sGBID"].ToString();
+                //var sGBID = dict["sGBID"].ToString();
                 var mailTextRaw = dict["description"].ToString();
-                var sName = dict["sName"].ToString();
+                //var sName = dict["sName"].ToString();
 
                 
                 var emailFrom = ChatrelConfigRepository.GetValueByKey("ChatrelAdminEmail").ToString();
@@ -426,7 +430,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                 bool ssl = Convert.ToBoolean(ChatrelConfigRepository.GetValueByKey("ChatrelEmailUseSSL"));
                 
 
-                var mailText = String.Format("Name: {0}, GB ID: {1}, Description: {2}", sName, sGBID, mailTextRaw);
+                var mailText = String.Format("Name: {0}, GB ID: {1}, Description: {2}", sName, sGBIDAuthorized, mailTextRaw);
 
                 MimeMessage message = new MimeMessage();
                 MailboxAddress from = new MailboxAddress("CTA Team", emailFrom);
@@ -438,7 +442,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                 message.From.Add(from);
                 message.To.Add(to);
                 message.Cc.Add(new MailboxAddress(sName, sEmail));
-                message.Subject = String.Format("Dispute Raised: GB ID - {0}", sGBID);
+                message.Subject = String.Format("Dispute Raised: GB ID - {0}", sGBIDAuthorized);
                 message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
                 
                 //messageBody.Attachments.Add(sFileName2 + "." + sFileExtension2, attach2);
@@ -651,6 +655,7 @@ namespace ChatrelPaymentWebAPI.Controllers
         #endregion
 
 
+        #region Ping-Pong to extend session time
         [AuthorizeToken]
         [HttpGet]
         [Route("[action]")]
@@ -660,9 +665,9 @@ namespace ChatrelPaymentWebAPI.Controllers
             string token = BlockAndGenerateNewToken(Request, sGBID);
             return Ok(new { message = "Pong", token });
         }
+        #endregion
 
-
-        #region
+        #region Get Home Page Data
         [AuthorizeToken]
         [HttpGet]
         [Route("[action]")]
@@ -679,7 +684,8 @@ namespace ChatrelPaymentWebAPI.Controllers
             return Ok(new { sHomePageImage, sHomePageMessage, sHomePageName, sHomePageDesignation, sFAQDocument, token });
         }
         #endregion
-        #region
+        
+        #region Get PayPal Credentials
         [AuthorizeToken]
         [HttpGet]
         [Route("[action]")]
@@ -693,7 +699,7 @@ namespace ChatrelPaymentWebAPI.Controllers
         }
         #endregion
 
-        #region
+        #region Get Google Credentials for Mobile
         
         [HttpPost]
         [Route("[action]")]
@@ -711,7 +717,7 @@ namespace ChatrelPaymentWebAPI.Controllers
         #endregion
 
 
-        #region
+        #region Get Google Credentials For Web App
         
         [HttpPost]
         [Route("[action]")]
@@ -727,6 +733,7 @@ namespace ChatrelPaymentWebAPI.Controllers
         }
         #endregion
 
+        #region Block and Generate new Token
         [NonAction]
         private string BlockAndGenerateNewToken(HttpRequest request, string sGBID)
         {
@@ -742,6 +749,41 @@ namespace ChatrelPaymentWebAPI.Controllers
             }
             return user.sJwtToken;
         }
+        #endregion
+
+        #region Get PayPal Access Token
+        [AuthorizeToken]
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetPayPalAccessToken()
+        {
+            
+            try
+            {
+                var client = new WebClient();
+                string clientId = ChatrelConfigRepository.GetValueByKey("PayPalClientID").ToString();
+                string secret = ChatrelConfigRepository.GetValueByKey("PayPalSecret").ToString();
+                string url = ChatrelConfigRepository.GetValueByKey("PayPalAuthURL").ToString();
+                string auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{secret}"));
+                client.Headers.Add("authorization", "basic "+auth);
+                client.Headers.Add("content-type", "application/x-www-form-urlencoded");
+                client.Headers.Add("accept-language", "en_US");
+                client.Headers.Add("accept", "application/json");
+                var body = "grant_type=client_credentials";
+                var response = await client.UploadStringTaskAsync(url, "POST", body);
+                var anonObj = new { scope = "", access_token = "", token_type = "", app_id = "", expires_in = "", nonce = "" };
+                var responseObj = JsonConvert.DeserializeAnonymousType(response.ToString(), anonObj);
+                
+                
+                return Ok(new { responseObj.access_token });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion
     }
 
 }

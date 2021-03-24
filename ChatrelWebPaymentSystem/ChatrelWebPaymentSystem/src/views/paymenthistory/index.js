@@ -1,44 +1,28 @@
 
 import React,{useState,useEffect} from 'react';
 import { Card } from '@material-ui/core';
-import {Link, Box, Container, Grid, Button,Select, Typography,IconButton, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
-import PropTypes from 'prop-types';
+import {Grid, Button,IconButton} from '@material-ui/core';
+
 import Alert from '@material-ui/lab/Alert';
 import axios from 'axios';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import { TableBodyRow } from 'mui-datatables';
-//import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+
 import Moment from 'moment';
 import { useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import html2canvas from 'html2canvas';
-import jsPdf from 'jspdf';
-import CTALogo from '../../assets/images/CTABackgroundLogo.PNG';
+
 import { useMediaQuery } from 'react-responsive'
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+
 import Slide from '@material-ui/core/Slide';
 import {storeSession} from '../../actions/transactions/SessionAction';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import Flag from 'react-flagkit';
 import { useDispatch } from 'react-redux';
-import Pagination from '@material-ui/lab/Pagination';
+
 import { Alerts } from '../alerts';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -68,6 +52,7 @@ export default function Family () {
   const sGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
   const sCountryID=useSelector(state => state.GBDetailsReducer.oGBDetails.sCountryID);
   const [paymentHistory,setPaymentHistory]=React.useState();
+  const [sPaidUntil,setsPaidUntil]=React.useState();
   const [backdrop,setBackdrop]=React.useState(true);
   const classes = useStyles();
   const theme = useTheme();
@@ -113,21 +98,14 @@ export default function Family () {
         }
         dispatch(storeSession(oSession));
         setBackdrop(false);
- //       const url = window.URL.createObjectURL(base64);
+
         const url = `data:application/pdf;base64,${resp.data.receipt}`;
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", "ChatrelReceipt-"+sChatrelReceiptNumber+".pdf");
         document.body.appendChild(link);
         link.click();
-      //  console.log(resp.data);
-      //   resp.data.receipt.sGBID ='0'.repeat(7 - resp.data.receipt.sGBID.length) +
-      //       resp.data.receipt.sGBID;
-      //  setReceiptData(resp.data);
-       
-      //  setBackdrop(false);
-      //  handleClickOpen();
-       //printPDF();
+
       }
     })
     .catch(error => {
@@ -156,28 +134,7 @@ export default function Family () {
 
   }
 
-  // const printPDF = () => {
-  //   const domElement = document.getElementById("mytable");
-  //   html2canvas(domElement,{
-  //     allowTaint: true,
-  //     scrollX: 0,
-  //     scrollY: -window.scrollY,
-  //    /* onclone: (clonedDomElement)=> {
 
-  //       // I made the div hidden and here I am changing it to visible
-  //       clonedDomElement.getElementById('mytable').style.display = 'block';
-  //     //  clonedDomElement.getElementById('mytable').style.visibility = 'visible';
-  //    }*/
-  //   }).then(canvas => {
-  //     const imgData = canvas.toDataURL("image/png");
-  //     console.log(imgData);
-  //     //imgData.save();
-  //     const pdf = new jsPdf();
-  //     pdf.addImage(imgData, "PNG",10,10);
-  //     pdf.save('Chatrel-Receipt.pdf');
-  //   });
-
-  // };
   const [result,setResult]=React.useState(null);
   const [page,setPage]=React.useState(1);
   const pageSize = 10;
@@ -190,6 +147,7 @@ export default function Family () {
           const oSession={ sJwtToken:resp.data.token,bSession:true }
           dispatch(storeSession(oSession));
          setPaymentHistory(resp.data.paymentHistory);
+         setsPaidUntil(resp.data.sPaidUntil);
          let tempPaymentHistory=[...resp.data.paymentHistory.reverse()];
          const result = new Array(Math.ceil(tempPaymentHistory.length / pageSize))
           .fill()
@@ -235,7 +193,9 @@ export default function Family () {
         <Alert className="alerts-alternate mb-4 w-50 mx-auto" severity="info" style={{margin:'30px'}}>
         <div className="d-flex align-items-center align-content-start">
             <span>
-                <strong className="d-block">CONTRIBUTION STATUS</strong> Please donate your outstanding Chatrel Amount or File a Dispute <Button className="p-0 btn-transparent btn-link btn-link-first" onClick={()=>{history.push('FileDispute')}}>here</Button>
+                {/* <strong className="d-block">CONTRIBUTION STATUS</strong> Please donate your outstanding Chatrel Amount or File a Dispute <Button className="p-0 btn-transparent btn-link btn-link-first" onClick={()=>{history.push('FileDispute')}}>here</Button> */}
+                { sPaidUntil && <><strong className="d-block">CONTRIBUTION STATUS</strong> Please donate your outstanding Chatrel Amount. </>}
+               { !sPaidUntil && <><strong className="d-block">CONTRIBUTION STATUS</strong> There is no chatrel contribution record in the database. You are requested to upload your two year chatrel receipt <Button className="p-0 btn-transparent btn-link btn-link-first" onClick={()=>{history.push('FileDispute')}}>here</Button></>}
         </span>
         </div>
         </Alert>
@@ -304,18 +264,7 @@ export default function Family () {
      <Grid container spacing={0}>
       
         <Grid item xs={12} align="right">
-        {/* <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={pageSize}
-          onChange={(e)=>{onPageSizeChange(e.target.value);}}
-        >
-          <MenuItem value={2}>2</MenuItem>
-          <MenuItem value={5}>5</MenuItem>
-          <MenuItem value={10}>10</MenuItem>
-          <MenuItem value={20}>20</MenuItem>
-          <MenuItem value={50}>50</MenuItem>
-        </Select> */}
+        
         <IconButton aria-label="previous" disabled={page===1} onClick={()=>{setPage(page-1);}}>
             <ChevronLeftIcon />
         </IconButton>
@@ -344,7 +293,7 @@ export default function Family () {
           <Th style={{textAlign:'center'}}>GB ID</Th>
           <Th style={{textAlign:'center'}}>PAID BY</Th>
           <Th style={{textAlign:'center'}}>NAME</Th>
-          {/* <Th style={{textAlign:'center'}}>RELATION</Th> */}
+         
           <Th style={{textAlign:'center'}}>CURRENCY</Th>
           <Th style={{textAlign:'center'}}>AMOUNT</Th>
           <Th style={{textAlign:'center'}}>MODE</Th>
@@ -360,7 +309,7 @@ export default function Family () {
           <Td align="center">{row.sGBIDPaidFor}</Td>
           <Td align="center">{row.sPaidByGBId}</Td>
           <Td align="center">{row.sFirstName + ' ' + row.sLastName}</Td>
-          {/* <Td align="center">{row.sRelation}</Td> */}
+         
           <Td align="center">{row.sPaymentCurrency} {row.sPaymentMode=="Online" && <Flag country={row.sPaymentCurrency==="USD"?"US":"IN"} size={20} />}</Td>
           <Td align="center" > <b style={{color:'#29cf00'}}>{row.sPaymentMode=="Online"?(row.sPaymentCurrency==="USD"?"$":"₹"):'' }{row.nChatrelTotalAmount}</b></Td>
           <Td align="center"><div className="m-1 text-second badge badge-neutral-second">{row.sPaymentMode}</div></Td>
@@ -382,11 +331,7 @@ export default function Family () {
     </Table>
     { result && 
      <Grid container spacing={0}>
-       <Grid item xs={12} align="left">
-      
-     <Pagination    count={result.length} page={page} onChange={(event,val)=> {setPage(val);}}  hideNextButton hidePrevButton />
-      
-        </Grid>
+       
         <Grid item xs={12} align="right">
         <IconButton aria-label="previous" disabled={page===1} onClick={()=>{setPage(page-1);}}>
             <ChevronLeftIcon />

@@ -9,8 +9,6 @@ namespace CTADataSyncAzureMySQL
     class Program
     {
        
-
-
         static void Main(string[] args)
         {
             string strDB1AdminConnection = string.Empty;
@@ -76,10 +74,13 @@ namespace CTADataSyncAzureMySQL
 
      class DataSyncOperation
     {
-        const string insertString = "INSERT INTO `queryLabelTableName` ( queryLabelColumnNames ) SELECT queryLabelColumnNames FROM `queryLabelDBName`.`queryLabelTableName` WHERE `Id` in ( queryLabelIdValue ); ";
+        //const string insertString = "INSERT INTO `queryLabelTableName` ( queryLabelColumnNames ) SELECT queryLabelColumnNames FROM `queryLabelDBName`.`queryLabelTableName` WHERE `Id` in ( queryLabelIdValue ); ";
         //const string updateString = "UPDATE `queryLabelTableName` SET queryLabelColumnNames WHERE `Id` = queryLabelIdValue";
-        const string updateString = "UPDATE `queryLabelTableName` as `dest`, ( SELECT queryLabelColumnNames FROM `queryLabelDBName`. `queryLabelTableName` WHERE `id` = queryLabelIdValue ) AS `src` SET queryLabelUpdateColumnNames WHERE `dest`.`id` = queryLabelIdValue ; ";
+        //const string updateString = "UPDATE `queryLabelTableName` as `dest`, ( SELECT queryLabelColumnNames FROM `queryLabelDBName`. `queryLabelTableName` WHERE `id` = queryLabelIdValue ) AS `src` SET queryLabelUpdateColumnNames WHERE `dest`.`id` = queryLabelIdValue ; ";
         const string deleteString = "DELETE FROM `queryLabelTableName` WHERE `id` = queryLabelIdValue; ";
+
+        const string insertString = "INSERT INTO `queryLabelTableName` ( queryLabelColumnNames ) VALUES ";
+        const string updateString = "UPDATE `queryLabelTableName` as `dest` SET queryLabelUpdateColumnNames WHERE `dest`.`id` = queryLabelIdValue ; ";
 
 
         public static void DataSyncDB(string strDB1AdminConnection, string strDB2ChatrelConnection, string strAdminDBName, string strChatrelDBName, string strLogPath)
@@ -135,7 +136,7 @@ namespace CTADataSyncAzureMySQL
 
 
                 stringBuilderAudit.Append(Environment.NewLine + "tblGreenbook - Syncing Process....");
-                //5. Sync Datatable - tblGreenbook
+                //4. Sync Datatable - tblGreenbook
                 strQuery = Sync_tblGreenbook_Table(cnnDB1, cnnDB2, DB1Name, DB2Name);
                 if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
                 strQuery = string.Empty;
@@ -143,7 +144,7 @@ namespace CTADataSyncAzureMySQL
 
 
                 stringBuilderAudit.Append(Environment.NewLine + "lnkGBChatrel - Syncing Process....");
-                //8. Sync Datatable - lnkGBChatrel
+                //5. Sync Datatable - lnkGBChatrel
                 strQuery = Sync_lnkGBChatrel_Table(cnnDB1, cnnDB2, DB1Name, DB2Name, "Offline");
                 if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
                 strQuery = string.Empty;
@@ -152,7 +153,7 @@ namespace CTADataSyncAzureMySQL
                 strQuery = string.Empty;
 
                 stringBuilderAudit.Append(Environment.NewLine + "lnkGBChatrelDonation - Syncing Process....");
-                //9. Sync Datatable - lnkGBChatrelDonation
+                //6. Sync Datatable - lnkGBChatrelDonation
                 strQuery = Sync_lnkGBChatrelDonation_Table(cnnDB1, cnnDB2, DB1Name, DB2Name, "Offline");
                 if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
                 strQuery = string.Empty;
@@ -162,14 +163,14 @@ namespace CTADataSyncAzureMySQL
 
 
                 stringBuilderAudit.Append(Environment.NewLine + "tblChatrelPayment - Syncing Process....");
-                //10. Sync Datatable - tblChatrelPayment
+                //7. Sync Datatable - tblChatrelPayment
                 strQuery = Sync_tblChatrelPayment_Table(cnnDB1, cnnDB2, DB1Name, DB2Name, "Offline");
                 if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
                 strQuery = string.Empty;
                 strQuery = Sync_tblChatrelPayment_Table(cnnDB2, cnnDB1, DB2Name, DB1Name, "Online");
                 if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
                 strQuery = string.Empty;
-                
+
 
 
                 //Updating the DB CTALastSyncDateTime value to now 
@@ -193,8 +194,8 @@ namespace CTADataSyncAzureMySQL
             catch (Exception ex)
             {
                 stringBuilderAudit.Append(ex.ToString());
-                stringBuilderQuery.AppendLine(strQuery);
-                stringBuilderQuery.AppendLine(ex.Message);
+                stringBuilderQuery.Append(strQuery);
+                stringBuilderQuery.Append(ex.Message);
                 File.AppendAllText(sLogFolderPath + "log-" + Guid.NewGuid().ToString() + ".txt", stringBuilderQuery.ToString());
                 File.AppendAllText(sLogFolderPath + "Audit-" + Guid.NewGuid().ToString() + ".txt", stringBuilderAudit.ToString());
                 stringBuilderQuery.Clear();
@@ -243,15 +244,15 @@ namespace CTADataSyncAzureMySQL
         #endregion
 
         #region Sync lstRelation
-        public static string Sync_lstRelation_Table(MySqlConnection cnnDB1, MySqlConnection cnnDB2, string db1Name, string db2Name)
-        {
-            string queryLabelTableName = "lstrelation";
-            string queryLabelColumnNames = "`lstrelation`.`Id`,`lstrelation`.`sRelation`,`lstrelation`.`dtEntered`,`lstrelation`.`nEnteredBy`,`lstrelation`.`dtUpdated`,`lstrelation`.`nUpdatedBy`";
+        //public static string Sync_lstRelation_Table(MySqlConnection cnnDB1, MySqlConnection cnnDB2, string db1Name, string db2Name)
+        //{
+        //    string queryLabelTableName = "lstrelation";
+        //    string queryLabelColumnNames = "`lstrelation`.`Id`,`lstrelation`.`sRelation`,`lstrelation`.`dtEntered`,`lstrelation`.`nEnteredBy`,`lstrelation`.`dtUpdated`,`lstrelation`.`nUpdatedBy`";
 
-            //GenerateQueryAndExecute
-            return GenerateQueryAndExecute(cnnDB1, cnnDB2, queryLabelColumnNames, queryLabelTableName, db1Name, db2Name);
+        //    //GenerateQueryAndExecute
+        //    return GenerateQueryAndExecute(cnnDB1, cnnDB2, queryLabelColumnNames, queryLabelTableName, db1Name, db2Name);
 
-        }
+        //}
         #endregion
 
         #region Sync tblGreenbook
@@ -290,33 +291,33 @@ namespace CTADataSyncAzureMySQL
         #endregion
 
         #region Sync lnkGBChildren
-        public static string Sync_lnkGBChildren_Table(MySqlConnection cnnDB1, MySqlConnection cnnDB2, string db1Name, string db2Name)
-        {
-            string queryLabelTableName = "lnkgbchildren";
-            string queryLabelColumnNames = "`lnkgbchildren`.`Id`,`lnkgbchildren`.`sGBIDParent`,`lnkgbchildren`.`sName`,`lnkgbchildren`.`dtDOB`,`lnkgbchildren`.`sGender`,`lnkgbchildren`.`sChildID`,`lnkgbchildren`.`sGBIDChild`,"
-                    + "`lnkgbchildren`.`dtEntered`,`lnkgbchildren`.`nEnteredBy`,`lnkgbchildren`.`dtUpdated`,`lnkgbchildren`.`nUpdatedBy`";
+        //public static string Sync_lnkGBChildren_Table(MySqlConnection cnnDB1, MySqlConnection cnnDB2, string db1Name, string db2Name)
+        //{
+        //    string queryLabelTableName = "lnkgbchildren";
+        //    string queryLabelColumnNames = "`lnkgbchildren`.`Id`,`lnkgbchildren`.`sGBIDParent`,`lnkgbchildren`.`sName`,`lnkgbchildren`.`dtDOB`,`lnkgbchildren`.`sGender`,`lnkgbchildren`.`sChildID`,`lnkgbchildren`.`sGBIDChild`,"
+        //            + "`lnkgbchildren`.`dtEntered`,`lnkgbchildren`.`nEnteredBy`,`lnkgbchildren`.`dtUpdated`,`lnkgbchildren`.`nUpdatedBy`";
 
-            //GenerateQueryAndExecute
-            return GenerateQueryAndExecute(cnnDB1, cnnDB2, queryLabelColumnNames, queryLabelTableName, db1Name, db2Name);
+        //    //GenerateQueryAndExecute
+        //    return GenerateQueryAndExecute(cnnDB1, cnnDB2, queryLabelColumnNames, queryLabelTableName, db1Name, db2Name);
 
 
-        }
+        //}
         #endregion
 
         #region Sync lnkGBFileDispute  (N/A)
         #endregion
 
         #region Sync lnkGBRelation
-        public static string Sync_lnkGBRelation_Table(MySqlConnection cnnDB1, MySqlConnection cnnDB2, string db1Name, string db2Name)
-        {
-            string queryLabelTableName = "lnkgbrelation";
-            string queryLabelColumnNames = "`lnkgbrelation`.`Id`,`lnkgbrelation`.`sGBID`,`lnkgbrelation`.`sGBIDRelation`,`lnkgbrelation`.`nRelationID`,`lnkgbrelation`.`dtEntered`,`lnkgbrelation`.`nEnteredBy`,"
-                    + "`lnkgbrelation`.`dtUpdated`,`lnkgbrelation`.`nUpdatedBy`";
+        //public static string Sync_lnkGBRelation_Table(MySqlConnection cnnDB1, MySqlConnection cnnDB2, string db1Name, string db2Name)
+        //{
+        //    string queryLabelTableName = "lnkgbrelation";
+        //    string queryLabelColumnNames = "`lnkgbrelation`.`Id`,`lnkgbrelation`.`sGBID`,`lnkgbrelation`.`sGBIDRelation`,`lnkgbrelation`.`nRelationID`,`lnkgbrelation`.`dtEntered`,`lnkgbrelation`.`nEnteredBy`,"
+        //            + "`lnkgbrelation`.`dtUpdated`,`lnkgbrelation`.`nUpdatedBy`";
 
-            //GenerateQueryAndExecute
-            return GenerateQueryAndExecute(cnnDB1, cnnDB2, queryLabelColumnNames, queryLabelTableName, db1Name, db2Name);
+        //    //GenerateQueryAndExecute
+        //    return GenerateQueryAndExecute(cnnDB1, cnnDB2, queryLabelColumnNames, queryLabelTableName, db1Name, db2Name);
 
-        }
+        //}
         #endregion
 
         #region Sync tblactionlogger (N/A)
@@ -505,7 +506,7 @@ namespace CTADataSyncAzureMySQL
                 //Execute Database Script
                 if (insertIdsCommaSeperated != string.Empty)
                 {
-                    strQuerys += executeInsertQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, db1Name, insertIdsCommaSeperated);
+                    strQuerys += executeInsertQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, db1Name, insertIdsCommaSeperated, dtDB1);
                 }
 
 
@@ -568,12 +569,12 @@ namespace CTADataSyncAzureMySQL
                 //Execute Database Script
                 if (insertIdsCommaSeperated != string.Empty)
                 {
-                    strQuerys += executeInsertQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, db1Name, insertIdsCommaSeperated);
+                    strQuerys += executeInsertQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, db1Name, insertIdsCommaSeperated, dtDB1);
 
                 }
                 if (updateIdsCommaSeperated != string.Empty)
                 {
-                    strQuerys += executeUpdateQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, db1Name, updateIdsCommaSeperated);
+                    strQuerys += executeUpdateQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, db1Name, updateIdsCommaSeperated, dtDB1);
                 }
                 if (deleteIdsCommaSeperated != string.Empty)
                 {
@@ -681,25 +682,119 @@ namespace CTADataSyncAzureMySQL
                                             , string queryLabelColumnNames
                                             , string queryLabelDBName
                                             , string queryLabelIdValue
+                                            , DataTable db1tbl
                                         )
         {
             string strInsertString = insertString;
             strInsertString = strInsertString.Replace("queryLabelTableName", queryLabelTableName);
             strInsertString = strInsertString.Replace("queryLabelColumnNames", queryLabelColumnNames);
+
             strInsertString = strInsertString.Replace("queryLabelDBName", queryLabelDBName);
             strInsertString = strInsertString.Replace("queryLabelIdValue", queryLabelIdValue);
+            strInsertString += generateInsertValuesFromQueryString( queryLabelColumnNames,  queryLabelIdValue,  db1tbl);
 
             executeQueryInDB(cnnDB, strInsertString);
             return strInsertString;
         }
 
+        public static string generateInsertValuesFromQueryString(string queryLabelColumnNames, string queryLabelIdValue , DataTable db1tbl)
+        {
+            string[] strAColumns = queryLabelColumnNames.Split(',');
+            string[] strIdValues = queryLabelIdValue.Split(',');
+            string insertValues = string.Empty;
+            DateTime dtResult;
 
+            foreach (string item in strIdValues)
+            {
+                string expression = "Id =" + item.Trim();
+                DataRow[] selectedRows = db1tbl.Select(expression);
+                string insertTempValues = string.Empty;
+                if (insertValues == string.Empty)
+                {
+                    insertValues = "("; 
+                }
+                else
+                {
+                    insertValues += ",(";
+                }
+
+                foreach (DataColumn strColumn in db1tbl.Columns)
+                {
+                    // insertValues += selectedRows[strColumn].ToString();
+                    //string strColumnname = strColumn;
+                    //strColumnname = strColumnname.Replace(db1tbl)
+
+
+                    if (strColumn.ColumnName.StartsWith("dt"))
+                    {
+                        if (DateTime.TryParse(selectedRows[0][strColumn.ColumnName].ToString(), out dtResult))
+                        {
+                            insertTempValues = dtResult.ToString("yyyy-MM-dd HH:mm:ss");
+                        }
+                        else
+                        {
+                            insertTempValues = "";
+                        }
+
+                    }
+                    else
+                    {
+                        insertTempValues = selectedRows[0][strColumn.ColumnName].ToString();
+                    }
+
+
+                    if (strColumn.ColumnName.StartsWith("s") || strColumn.ColumnName.StartsWith("dt"))
+                    {
+                        //if ColumnName is sFirstName Or sLastName then replace the insertTempValues with encrypted data
+                        if (strColumn.ColumnName.Trim() == "sFirstName" || strColumn.ColumnName.Trim() == "sLastName")
+                        {
+                            insertTempValues = getEncryptedValuesByActualData(insertTempValues);
+                        }
+
+                        if (insertTempValues != "")
+                        {
+                            insertValues += "'" + insertTempValues + "'";
+                        }
+                        else
+                        {
+                            insertValues += "null";
+                        }
+                    }
+                    else
+                    {
+                        
+                        if (insertTempValues != "")
+                        {
+                            insertValues += insertTempValues;
+                        }
+                        else
+                        {
+                            insertValues += "null";
+                        }
+                    }
+                    insertValues += ",";
+                }
+                insertValues = insertValues.Substring(0, insertValues.Length - 1);
+                insertValues += ")";
+            }
+            insertValues += ";";
+
+
+
+            return insertValues;
+        }
+
+        private static string getEncryptedValuesByActualData(string insertTempValues)
+        {
+            return insertTempValues;
+        }
 
         public static string executeUpdateQueryByIds(MySqlConnection cnnDB
                                             , string queryLabelTableName
                                             , string queryLabelColumnNames
                                             , string queryLabelDBName
                                             , string queryLabelIdValue
+                                            , DataTable db1tbl
                                         )
         {
             string updatecols = string.Empty;
@@ -707,24 +802,82 @@ namespace CTADataSyncAzureMySQL
             string strUpdateQuery = updateString;
             string[] strAColumns = queryLabelColumnNames.Split(',');
             string[] strIdValues = queryLabelIdValue.Split(',');
+            DateTime dtResult;
+            string updateValue = string.Empty;
+
             foreach (var Ids in strIdValues)
             {
-                foreach (var col in strAColumns)
+                string expression = "Id =" + Ids.Trim();
+                DataRow[] selectedRows = db1tbl.Select(expression);
+                string updateTempValues = string.Empty;
+
+                foreach (DataColumn strColumn in db1tbl.Columns)
                 {
-                    if (updatecols == string.Empty)
+                    if (strColumn.ColumnName.StartsWith("dt"))
                     {
-                        updatecols = col.Replace(queryLabelTableName, "dest") + " = " + col.Replace(queryLabelTableName, "src");
+                        if (DateTime.TryParse(selectedRows[0][strColumn.ColumnName].ToString(), out dtResult))
+                        {
+                            updateTempValues = dtResult.ToString("yyyy-MM-dd HH:mm:ss");
+                        }
+                        else
+                        {
+                            updateTempValues = "";
+                        }
+
                     }
                     else
                     {
-                        updatecols += ", " + col.Replace(queryLabelTableName, "dest") + " = " + col.Replace(queryLabelTableName, "src");
+                        updateTempValues = selectedRows[0][strColumn.ColumnName].ToString();
                     }
+
+                    if (strColumn.ColumnName.StartsWith("s") || strColumn.ColumnName.StartsWith("dt"))
+                    {
+                        if (updateTempValues != "" )
+                        {
+                            updateValue = "'" + updateTempValues + "'";
+                        }
+                        else
+                        {
+                            updateValue = "null";
+                        }
+                    }
+                    else
+                    {
+                        if (updateTempValues != "")
+                        {
+                            updateValue = updateTempValues; 
+                        }
+                        else
+                        {
+                            updateValue = "null";
+                        }
+                    }
+
+                    if (updatecols == string.Empty)
+                    {
+                        updatecols = "`dest`.`" + strColumn.ColumnName + "` = " + updateValue;
+                    }
+                    else
+                    {
+                        updatecols += ", `dest`.`" + strColumn.ColumnName + "` = " + updateValue;
+                    }
+
+
+                    //if (updatecols == string.Empty)
+                    //{
+                    //    updatecols = col.Replace(queryLabelTableName, "dest") + " = " + col.Replace(queryLabelTableName, "src");
+                    //}
+                    //else
+                    //{
+                    //    updatecols += ", " + col.Replace(queryLabelTableName, "dest") + " = " + col.Replace(queryLabelTableName, "src");
+                    //}
+
                 }
 
                 strUpdateQuery = updateString.Replace("queryLabelTableName", queryLabelTableName);
                 strUpdateQuery = strUpdateQuery.Replace("queryLabelColumnNames", queryLabelColumnNames);
                 strUpdateQuery = strUpdateQuery.Replace("queryLabelUpdateColumnNames", updatecols);
-                strUpdateQuery = strUpdateQuery.Replace("queryLabelDBName", queryLabelDBName);
+                //strUpdateQuery = strUpdateQuery.Replace("queryLabelDBName", queryLabelDBName);
                 strUpdateQuery = strUpdateQuery.Replace("queryLabelIdValue", Ids);
 
                 executeQueryInDB(cnnDB, strUpdateQuery);
@@ -984,7 +1137,7 @@ namespace CTADataSyncAzureMySQL
 
                 if (updateIdsCommaSeperated != string.Empty)
                 {
-                    strQuerys += executeUpdateQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, db1Name, updateIdsCommaSeperated);
+                    strQuerys += executeUpdateQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, db1Name, updateIdsCommaSeperated, dtDB1);
                 }
 
             }

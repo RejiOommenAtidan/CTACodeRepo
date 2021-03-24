@@ -39,10 +39,10 @@ import { GoogleLogout } from 'react-google-login';
 //import {sGoogleAuth_ClientID} from '../../../config/commonConfig'; 
 
 import Zoom from '@material-ui/core/Zoom';
-import AppleLogin from 'react-apple-login'
+
 import  {removeGoogleCreds} from '../../../actions/transactions/GLoginAction';
 
-import AppleSignin from 'react-apple-signin-auth';
+
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
@@ -176,8 +176,8 @@ const test =(e)=>{
       dtDOB:Moment(dtDob).format("YYYY-MM-DD"),
       //dtDOB:dtDob,
       code:sGoogleCode,
-      sEmail:sEmail,
-      sType:"Google"  
+      sEmail:sEmail
+     // sType:"Google"  
      
     }
     console.log(Obj);
@@ -218,6 +218,7 @@ const test =(e)=>{
           console.log(resp.data);
           setBackdrop(false);
           setAlertMessage('Your details could not be verified, please try again.');
+         // setAlertMessage(" The entered details didn't match our database. Please try again.");
           setAlertType('info');
           snackbarOpen();
           setSubmitBtn(true);
@@ -227,7 +228,9 @@ const test =(e)=>{
     .catch(error => {
       if (error.response.status!=401) {
            setBackdrop(false);
-          setAlertMessage('Verification Failed');
+          setAlertMessage('Something went wrong, Please try again later');
+         
+         
           setAlertType('error');
           snackbarOpen();
           setSubmitBtn(true);
@@ -252,7 +255,14 @@ const test =(e)=>{
   var testCookie=document.cookie;
   console.log("Test Cookie",testCookie);*/
 //  cookie();
-
+var x ="eyJraWQiOiJlWGF1bm1MIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoibmV0LmNoYXRyZWwiLCJleHAiOjE2MTYyNTM2MDUsImlhdCI6MTYxNjE2NzIwNSwic3ViIjoiMDAwODE4LmQxZjM4ZDA2MDcyZjRlNTdhNDk2ZmFmYTdlMzQ2OThkLjA4MzkiLCJjX2hhc2giOiJPbUN1bW9UZTZERE5TV0gzUFZMblZnIiwiZW1haWwiOiJhYXl1c2gucGFuZHlhQGF0aWRhbi5jb20iLCJlbWFpbF92ZXJpZmllZCI6InRydWUiLCJhdXRoX3RpbWUiOjE2MTYxNjcyMDUsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.PtB-cVy4LZZQ16Vu0LYxsryo1Bvo9t33m5zTsaq3lR4xuBQAg5UWwwmoN6uKSN7bErzSMjBigqnl1q3ReK9JNL__csvkNVBjyTt_u6J6Joqe1M7sH_v0tqjfuYTJE9xKC3It69ApI5ontSRcd8zJo0tUZYEfwVhNlYm4Lbcb2XEpiBWUXMOm9XSQDTZn9wXkjLazkGJIQw4Nz7AnFUiF7bjtY_5hXQCxZS41GUIwzLBYDy4C2Z9_-2kSHNIJ0eu7r-kgMWW97fPCKcsx10EPsTtD3ebU-S8qUwSysJNDz3UKcjRHPMkfVNbaApcGvYuVOPeswD5mWR_NHmIm0Lw5LA";
+        var base64Url = x.split('.')[1];
+          var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          }).join(''));
+          const jwtObject=JSON.parse(jsonPayload);
+         console.log(jwtObject);
  },[]);
  /*  useEffect(() => {
     
@@ -348,40 +358,7 @@ console.log(error);
                                                    // redirectURI="https://chatrel.net/Login"
                                                     usePopup={true}
                                                     /> */}
-                                                    <AppleSignin
-    /** Auth options passed to AppleID.auth.init() */
-    authOptions={{
-      /** Client ID - eg: 'com.example.com' */
-      clientId: 'net.chatrel',
-      /** Requested scopes, seperated by spaces - eg: 'email name' */
-      scope: 'email name',
-      /** Apple's redirectURI - must be one of the URIs you added to the serviceID - the undocumented trick in apple docs is that you should call auth from a page that is listed as a redirectURI, localhost fails */
-      redirectURI:"https://chatrel-webapp.azurewebsites.net/Login",
-      /** State string that is returned with the apple response */
-      state: 'state',
-      /** Nonce */
-      nonce: 'nonce',
-      /** Uses popup auth instead of redirection */
-      usePopup:false
-    }} // REQUIRED
-    /** General props */
-    uiType="dark"
-    /** className */
-    className="apple-auth-btn"
-    /** Removes default style tag */
-    noDefaultStyle={false}
-    /** Extra controlling props */
-    /** Called upon signin success in case authOptions.usePopup = true -- which means auth is handled client side */
-    onSuccess={(response) => console.log(response)} // default = undefined
-    /** Called upon signin error */
-    onError={(error) => console.error(error)} // default = undefined
-    /** Skips loading the apple script if true */
-    skipScript={false} // default = undefined
-    /** Apple image props */
-    //iconProp={{ style: { marginTop: '10px' } }} // default = undefined
-    /** render function - called with all props - can be used to fully customize the UI by rendering your own component  */
-   // render={(props) => <button {...props}>My Custom Button</button>}
-  />
+                                                 
                                                      
                                                                     <Tooltip TransitionComponent={Zoom} title="Enable third-party cookies to login with Google">
                                                                     <Button className=" p-0 m-2" style={{backgroundColor:'#298851'}}>

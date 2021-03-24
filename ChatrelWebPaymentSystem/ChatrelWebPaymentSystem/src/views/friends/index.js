@@ -105,15 +105,7 @@ dispatch(storeSession(oSession));
       
       })
       .catch(error => {
-          // if(error.response.status === 400){
-          // //  alert("Missing Parameters...");
-          //   setBackdrop(false);
-          //   setAlertMessage('Please try again');
-          //   setAlertType('danger');
-          //   snackbarOpen();
-          // }
-          // console.log(error.message);
-          // console.log(error);
+       
           if(error.response.status!==401){
             setBackdrop(false);
             setAlertMessage('Something went wrong, please try again later');
@@ -228,7 +220,7 @@ dispatch(storeSession(oSession));
               <div>Verify & Contribute</div>
               <FontAwesomeIcon icon={['fas', 'chevron-right']}/>
           </a>
-    {/*    <Button variant="outlined" color="primary" type="submit" >Verify &amp; Pay</Button>*/}
+   
                             </Card>
 
      

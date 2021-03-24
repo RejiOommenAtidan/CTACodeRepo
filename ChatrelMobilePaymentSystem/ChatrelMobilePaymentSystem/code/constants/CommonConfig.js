@@ -7,11 +7,11 @@ import {
 ////Local Windows
 // export const sAPIBASEURL = "http://10.0.2.2:49700/api";
 
-////Local mac
+////Local Mac Mini
 // export const sAPIBASEURL = "http://10.0.2.2:5000/api";
 
 ////QA
-// export const sAPIBASEURL = 'https://chatrel-webapi.azurewebsites.net/api';
+export const sAPIBASEURL = 'https://chatrel-webapi.azurewebsites.net/api';
 
 ////UAT
 // export const sAPIBASEURL = 'https://chatrel-webapi-uat.azurewebsites.net/api';
@@ -20,11 +20,13 @@ import {
 // export const sAPIBASEURL = 'https://chatrel-webapi-dev.azurewebsites.net/api';
 
 ////PROD URL
-export const sAPIBASEURL = "https://chatrelapi.azurewebsites.net/api";
+// export const sAPIBASEURL = "https://chatrelapi.azurewebsites.net/api";
 
 export const sFolderName = 'Chatrel Receipts';
+
 export const sReceiptDownloadMessageAndroid =
   'Chatrel receipts downloaded successfully in Download > Chatrel Receipts folder';
+
 export const sReceiptDownloadMessageIOS =
   'Chatrel receipts downloaded successfully in Document: Files > On My Device > Documents > Chatrel > Chatrel Receipts';
 
@@ -32,27 +34,47 @@ export const sINRAuthRegionHelpMessage =
   'Please enter Employment Contribution manually for your Authority Region';
 
 export const sSnackbarAddMessage = 'Record Added successfully';
+
 export const sSnackbarUpdateMessage = 'Record Updated successfully';
+
 export const sDateFormat = 'DD-MM-YYYY';
+
 export const sDateFormatDatePicker = 'MM/DD/YYYY';
+
 export const sISODateFormat = 'YYYY-MM-DD';
 
-export const sPayPalBASEURL = 'https://api.sandbox.paypal.com';
-// export const sPayPalBASEURL = 'https://api.paypal.com';
-
-//Add "-uat" after webapp for UAT deployment
+////QA Success
 export const sSuccessPayPalWebPageURL =
-  'https://chatrel-webapp-uat.azurewebsites.net/Success';
+  'https://chatrel-webapp.azurewebsites.net/Success';
 
-//Add "-uat" after webapp for UAT deployment
+////QA Failure
 export const sFailurePayPalWebPageURL =
-  'https://chatrel-webapp-uat.azurewebsites.net/Failure';
+  'https://chatrel-webapp.azurewebsites.net/Failure';
+
+////UAT Success
+// export const sSuccessPayPalWebPageURL =
+//   'https://chatrel-webapp-uat.azurewebsites.net/Success';
+
+////UAT Failure
+// export const sFailurePayPalWebPageURL =
+//   'https://chatrel-webapp-uat.azurewebsites.net/Failure';
+
+////Live Success
+// export const sSuccessPayPalWebPageURL = 'https://chatrel.net/Success';
+
+////Live Failure
+// export const sFailurePayPalWebPageURL = 'https://chatrel.net/Failure';
+
 export const sFontName = 'JosefinSans-Regular';
+
 export const sFontNameBold = 'JosefinSans-Bold';
+
 export const sHimalayaFontName = 'MicrosoftHimalaya';
+
 export const errorContainer = {
   marginBottom: hp(1),
 };
+
 export const errorComponent = {
   color: Colors.red,
   fontSize: wp(4.25),
@@ -73,8 +95,6 @@ export const oActivityIndicatorStyle = {
   right: 0,
   top: 0,
   zIndex: 3,
-  // backsgroundColor: Colors.black,
-  // elevation: 3,
 };
 
 export const oRequiredStyles = {
@@ -82,7 +102,6 @@ export const oRequiredStyles = {
   fontSize: hp(2.5),
   textAlign: 'center',
   textAlignVertical: 'top',
-  // lineHeight:hp(5)
 };
 
 export const sMappingURL =
@@ -101,13 +120,6 @@ export const sPayPalPaymentIDCopied = 'PayPal Payment ID Copied';
 
 export const sCopyPayPalTransactionID = 'Copy PayPal Transaction ID';
 export const sCopyPayPalPaymentID = 'Copy PayPal Payment ID';
-
-export const sFAQFolder = 'Chatrel FAQ';
-
-export const sFAQDownloadMessageAndroid =
-  'Chatrel FAQ downloaded successfully in Download > Chatrel FAQ folder';
-export const sFAQDownloadMessageIOS =
-  'Chatrel FAQ downloaded successfully in Document: Files > On My Device > Documents > Chatrel > Chatrel FAQ';
 
 export const sMobilePassphrase = 'HHBawq>%6%?_/7}nz{C`94@f[';
 
@@ -136,3 +148,24 @@ export const sRequestAccessForEmailID =
 export const sSignTypeApple = 'Apple';
 
 export const sSignTypeGoogle = 'Google';
+
+export const sLogoutConfirmation = 'Are you sure you want to logout?';
+
+export const sSessionExpireLoginAgain =
+  'Your session has expired. Please login again.';
+
+export const sSessionTimeout = 'Session Timeout';
+
+export const sExitApp = 'Exit App';
+
+export const sExitConfirmation = 'Do you want to exit?';
+
+export const sEnteredDetailsDidntMatchDB =
+  "The entered details didn't match our database. Please try again.";
+
+export const sPleaseContactCTA = 'Please Contact CTA';
+
+export const sInvalidDetailsForChatrel = 'Invalid details for Chatrel';
+
+export const sFileDisputeSubmitSuccessMessage =
+  'Thanks for uploading. Your details are sent to the CTA Team & they shall get in touch with you soon.';

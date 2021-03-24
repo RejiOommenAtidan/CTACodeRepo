@@ -3,15 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>c51a83ce-a8cf-4a68-8656-c4d2a2c78237</UserSecretsId>
+    <Nullable>annotations</Nullable>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="libwkhtmltox.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="libwkhtmltox.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>1</WarningLevel>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DinkToPdf" Version="1.0.8" />
     <PackageReference Include="Google.Apis.Auth" Version="1.49.0" />
@@ -24,5 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChatrelDBL\ChatrelDBL.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="libwkhtmltox.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="libwkhtmltox.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="libwkhtmltox.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

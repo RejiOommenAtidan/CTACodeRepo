@@ -9,7 +9,6 @@ import {
   Alert,
   Platform,
   FlatList,
-  ActivityIndicator,
 } from 'react-native';
 import {Card, Button, Icon} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -33,12 +32,13 @@ import {
   sReceiptDownloadMessageIOS,
   nMaxBatchSize,
   nInitialBatchSize,
+  sAttentionRequired,
+  sSomethingWentWrongPleaseTryAgainLater,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import RNFetchBlob from 'react-native-fetch-blob';
 import {storeJWTToken} from '../store/actions/GBDetailsAction';
 import Toast from 'react-native-root-toast';
-// import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 
 export const ChatrelHistoryScreen = (props) => {
   const dispatch = useDispatch();
@@ -53,33 +53,6 @@ export const ChatrelHistoryScreen = (props) => {
   const sPaidUntil = useSelector((state) => state.GBDetailsReducer.sPaidUntil);
   const sJwtToken = useSelector((state) => state.GBDetailsReducer.sJwtToken);
   const [paymentHistory, setPaymentHistory] = useState([]);
-  // const [offset, setOffset] = useState(1);
-  // const [bFetchingStatus, setbFetchingStatus] = useState(false);
-  // const [bSetOnLoad, setbSetOnLoad] = useState(false);
-  // let onEndReached = false;
-  // let page = 0;
-
-  // const fakeApiCall = () => {
-  //   page = page + 1;
-  //   console.log(' *********** call ' + this.page);
-  //   setbFetchingStatus(true);
-  //   //  fetch('https://techup.co.in/paginationList.php?page=' + that.page)
-  //   //      .then((response) => response.json())
-  //   //      .then((responseJson) =>
-  //   //      {
-  //   //          that.setState({ responseList: [ ...this.state.responseList, ...responseJson ], isLoading: false,setOnLoad: true  });
-
-  //   //      })
-  //   //      .catch((error) =>
-  //   //      {
-  //   //          console.error(error);
-  //   //          that.setState({setOnLoad: false,fetchingStatus: false ,});
-  //   //      });
-  //   let responseJSON = paymentHistory.slice(page, 1);
-  //   setPaymentHistory(...paymentHistory, ...responseJSON);
-  //   setbLoader(false);
-  //   setbSetOnLoad(true);
-  // };
 
   const downloadFile = async (singleHistory) => {
     try {
@@ -167,6 +140,20 @@ export const ChatrelHistoryScreen = (props) => {
           // };
           // dispatch(storeJWTToken(oSession));
         } else {
+          setTimeout(() => {
+            Alert.alert(
+              sAttentionRequired,
+              sSomethingWentWrongPleaseTryAgainLater,
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => true,
+                  style: 'cancel',
+                },
+              ],
+              {cancelable: true},
+            );
+          }, 1000);
         }
       })
       .then((release) => {});
@@ -195,30 +182,9 @@ export const ChatrelHistoryScreen = (props) => {
             resp.data.message === 'Payment History Found' &&
             sPaidUntil !== null
           ) {
-            // if (resp.data.paymentHistory.length === 0) {
-            //   setPaymentHistory([]);
-            // }
             if (resp.data.paymentHistory.length > 0) {
               let tempReversedArray = resp.data.paymentHistory;
               tempReversedArray = tempReversedArray.reverse();
-              // let tempReversedArray = [];
-              // for (var counter = 0; counter < 100; counter++) {
-              //   tempReversedArray.push({
-              //     dtPayment: '2021-03-11T05:16:53',
-              //     sChatrelReceiptNumber: counter + 1,
-              //     sPaidByGBId: '9675',
-              //     sGBIDPaidFor: '9675',
-              //     sCountryIDPaidFor: 'NP',
-              //     sFirstName: 'Virrappan',
-              //     sLastName: 'Oxmkaa',
-              //     sRelation: 'Self',
-              //     sPaymentCurrency: 'USD',
-              //     nChatrelTotalAmount: 18.71,
-              //     sPaymentMode: 'Online',
-              //     sPaymentStatus: 'Success',
-              //   });
-              // }
-              // console.log(tempReversedArray.length);
               setPaymentHistory(tempReversedArray);
             }
           } else {
@@ -239,8 +205,8 @@ export const ChatrelHistoryScreen = (props) => {
         } else {
           setTimeout(() => {
             Alert.alert(
-              'Attention Required',
-              'Something went wrong, please try again later',
+              sAttentionRequired,
+              sSomethingWentWrongPleaseTryAgainLater,
               [
                 {
                   text: 'Ok',
@@ -258,9 +224,6 @@ export const ChatrelHistoryScreen = (props) => {
   return (
     <View style={styles.mainContainer}>
       <Loader loading={bLoader} />
-      {/*<View style={styles.headingContainer}>
-        <Text style={styles.headingComponent}>CHATREL HISTORY</Text>
-  </View>*/}
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
@@ -422,46 +385,10 @@ export const ChatrelHistoryScreen = (props) => {
           </View>
         )}
 
-        {/* {paymentHistory !== null &&
-          paymentHistory.length > 0 &&
-          paymentHistory.map((singleHistory, index) => {
-            return ( */}
         <FlatList
-          //horizontal={true}
-          //inverted={true}
-          //refreshing={}
-          // refreshing={bLoader}
-          // onRefresh={()=>{
-          //   getChatrelHistoryDetails()
-          // }}
-          // ListFooterComponent={() => {
-          //   return (
-          //     <View>
-          //       {true ? (
-          //         <ActivityIndicator
-          //           size="large"
-          //           color="#F44336"
-          //           style={{marginLeft: 6}}
-          //         />
-          //       ) : null}
-          //     </View>
-          //   );
-          // }}
           pagingEnabled={true}
           alwaysBounceVertical={true}
           bounces={true}
-          onScrollEndDrag={() => console.log(' *********end')}
-          onScrollBeginDrag={() => console.log(' *******start')}
-          // onMomentumScrollBegin={() => {
-          //   onEndReached = false;
-          // }}
-          // onEndReached={({distanceFromEnd}) => {
-          //   if (onEndReached) {
-          //     fakeApiCall(); // on end reached
-          //     onEndReached = true;
-          //   }
-          // }}
-          // onEndReachedThreshold={0.1}
           maxToRenderPerBatch={nMaxBatchSize}
           data={paymentHistory}
           initialNumToRender={nInitialBatchSize}
@@ -500,7 +427,6 @@ export const ChatrelHistoryScreen = (props) => {
                 {/*<Card.Title style={styles.cardHeaderComponent}>
                   {item.sFirstName + ' ' + item.sLastName}
             </Card.Title>*/}
-                {/*<Card.Image source={require('../assets/CTALogo.png')} />*/}
                 <Card.Divider style={styles.cardDividerComponent} />
                 <View
                   style={{
@@ -598,21 +524,7 @@ export const ChatrelHistoryScreen = (props) => {
                       {oGBDetails.sGBID}
                     </Text>
                   </View>
-
-                  {/* <View style={styles.chatrelStatusValueContainer}>
-                </View> */}
                 </View>
-
-                {/* <View style={styles.chatrelModeLabelContainer}>
-                  <Text style={styles.chatrelModeLabelComponent}>
-                    PAYMENT MODE
-                  </Text>
-                </View>
-                <View style={styles.chatrelModeValueContainer}>
-                  <Text style={styles.chatrelModeValueComponent}>
-                    {singleHistory.sPaymentMode}
-                  </Text>
-                </View> */}
                 <View style={styles.downloadReceiptContainer}>
                   <Button
                     disabled={item.sPaymentMode !== 'Online'}
@@ -647,21 +559,12 @@ export const ChatrelHistoryScreen = (props) => {
                       borderRadius: 20,
                       borderWidth: 1,
                       borderColor: Colors.buttonYellow,
-                      // height: hp(5),
-                      // marginBottom:
-                      //   Dimensions.get('window').height <
-                      //   Resolution.nHeightBreakpoint
-                      //     ? 3
-                      //     : 5,
                     }}
                   />
                 </View>
               </Card>
             );
           }}></FlatList>
-
-        {/* );
-          })} */}
       </ScrollView>
     </View>
   );
@@ -677,7 +580,6 @@ export const ChatrelHistoryScreenOptions = (navData) => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
-          //iconName={Platform.OS === 'android' ? 'menu' : 'md-menu'}
           iconName={'menu'}
           onPress={() => {
             navData.navigation.toggleDrawer();
@@ -685,7 +587,6 @@ export const ChatrelHistoryScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    // headerRight: CustomHeaderRightButton,
     cardStyle: {backgroundColor: Colors.white},
   };
 };
@@ -695,10 +596,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
-    //flexDirection: "column",
-    // marginHorizontal:
-    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
-    //alignItems: "flex-start"
   },
   headingContainer: {
     height: hp(4),
@@ -716,13 +613,9 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     width: '100%',
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
   },
   zeroRecordContainer: {
     width: wp(92.5),
-    // marginHorizontal:
-    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
   },
   zeroRecordComponent: {
     color: Colors.blackText,
@@ -785,13 +678,8 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontFamily: sFontName,
     textAlign: 'left',
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
   },
-  receiptNumberLabelContainer: {
-    // marginBottom:
-    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
-  },
+  receiptNumberLabelContainer: {},
   receiptNumberLabelComponent: {
     color: Colors.blackText,
     fontSize:
@@ -800,8 +688,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontFamily: sFontName,
     textAlign: 'left',
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
   },
   receiptNumberValueContainer: {
     marginBottom:
@@ -815,14 +701,8 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontFamily: sFontName,
     textAlign: 'left',
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
   },
-
-  dateLabelContainer: {
-    // marginBottom:
-    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
-  },
+  dateLabelContainer: {},
   dateLabelComponent: {
     color: Colors.blackText,
     fontSize:
@@ -831,8 +711,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontFamily: sFontName,
     textAlign: 'right',
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
   },
   dateValueContainer: {
     marginBottom:
@@ -846,13 +724,8 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontFamily: sFontName,
     textAlign: 'left',
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
   },
-  totalChatrelLabelContainer: {
-    // marginBottom:
-    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
-  },
+  totalChatrelLabelContainer: {},
   totalChatrelLabelComponent: {
     color: Colors.blackText,
     fontSize:
@@ -861,8 +734,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontFamily: sFontName,
     textAlign: 'left',
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
   },
   totalChatrelValueContainer: {
     marginBottom:
@@ -875,8 +746,6 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontFamily: sFontName,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
     textAlign: 'left',
   },
 
@@ -892,8 +761,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontFamily: sFontName,
     textAlign: 'left',
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
   },
   chatrelModeValueContainer: {
     marginBottom:
@@ -907,14 +774,8 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontFamily: sFontName,
     textAlign: 'right',
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
   },
-
-  chatrelStatusLabelContainer: {
-    // marginBottom:
-    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
-  },
+  chatrelStatusLabelContainer: {},
   chatrelStatusLabelComponent: {
     color: Colors.blackText,
     fontSize:
@@ -923,8 +784,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontFamily: sFontName,
     textAlign: 'left',
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
   },
   chatrelStatusValueContainer: {
     marginBottom:
@@ -938,14 +797,8 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontFamily: sFontName,
     textAlign: 'right',
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
   },
-  relationContainer: {
-    //flexGrow: 1,
-    //marginBottom:
-    //Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
-  },
+  relationContainer: {},
   relationComponent: {
     color: Colors.buttonYellow,
     fontSize: wp(5.5),

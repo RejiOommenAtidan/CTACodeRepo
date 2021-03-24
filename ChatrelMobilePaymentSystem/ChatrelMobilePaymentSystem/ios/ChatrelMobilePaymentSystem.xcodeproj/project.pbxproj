@@ -9,11 +9,9 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ChatrelMobilePaymentSystemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChatrelMobilePaymentSystemTests.m */; };
 		0BFF9A9D69EAE92278DB6F65 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 946E7D738566C3553C66E797 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a */; };
-		0FABE4B5667446278E11CA8C /* SF Pro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D75BF48495144774979759C4 /* SF Pro.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		15A96D986F224B0485A35958 /* Oxygen-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FDFAEC995F6474AAD3B6893 /* Oxygen-Regular.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -21,14 +19,11 @@
 		438526DFFB4D43B99B444299 /* MicrosoftHimalaya.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 80A7BFCE3348450DBD4AB42D /* MicrosoftHimalaya.ttf */; };
 		6B19BC3444A649188F235864 /* libPods-ChatrelMobilePaymentSystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6102C9CCC66779CB2063F33D /* libPods-ChatrelMobilePaymentSystem.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		9CF562CA878D4EC3A0F7FDD1 /* Cairo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 983C7858A7184A669CA72AF7 /* Cairo-Regular.ttf */; };
 		C39CBD2316000E2B744A5E5C /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9769228F034D7DC46BCFA25F /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */; };
 		D9420E2925ADD99C00B379B4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D9420E2825ADD99C00B379B4 /* GoogleService-Info.plist */; };
 		D96B5F6025E53A5A0067E877 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D96B5F5F25E53A5A0067E877 /* UserNotifications.framework */; };
 		D96B5F6225E53A940067E877 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D96B5F6125E53A940067E877 /* libRNFirebase.a */; };
-		D99CBFF425A43C9800D92A65 /* Kanit-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC7E5F4676924E4C8F87C39C /* Kanit-Regular.ttf */; };
 		DA277F5029BB23994C476D77 /* libPods-ChatrelMobilePaymentSystem-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29F4C0E188EDDF3B779A3E2B /* libPods-ChatrelMobilePaymentSystem-tvOS.a */; };
-		DFF6347A81334CDDA2DED5D2 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62328917392B4500AF908815 /* Poppins-Regular.ttf */; };
 		E1D300F5FED845E684113D06 /* JosefinSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 47BC2B204C75499ABE9DE727 /* JosefinSans-Bold.ttf */; };
 		FC358B10EFB340A1A230308C /* JosefinSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 167CEB9EA7E149B3944E3CC1 /* JosefinSans-Regular.ttf */; };
 /* End PBXBuildFile section */
@@ -74,14 +69,12 @@
 		334EBA09579FE92DD8AC9F38 /* Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-tvOS/Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		35BC319AEEE04076BCB6AFA7 /* Microsoft Himalaya.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Microsoft Himalaya.ttf"; path = "../code/assets/fonts/Microsoft Himalaya.ttf"; sourceTree = "<group>"; };
 		3DE321D67C1A41D8BC2D763A /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		3FDFAEC995F6474AAD3B6893 /* Oxygen-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oxygen-Regular.ttf"; path = "../code/assets/fonts/Oxygen-Regular.ttf"; sourceTree = "<group>"; };
 		40A3D592C5C3471F97BE7792 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		42E473228BEC701AA86935DC /* Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-tvOSTests/Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		47BC2B204C75499ABE9DE727 /* JosefinSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "JosefinSans-Bold.ttf"; path = "../code/assets/fonts/JosefinSans-Bold.ttf"; sourceTree = "<group>"; };
 		4E65774534B54B808A4F3D18 /* Kanit-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-BlackItalic.ttf"; path = "../code/assets/fonts/Kanit-BlackItalic.ttf"; sourceTree = "<group>"; };
 		5FE66082C02C4091A10AB72A /* Kanit-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-BoldItalic.ttf"; path = "../code/assets/fonts/Kanit-BoldItalic.ttf"; sourceTree = "<group>"; };
 		6102C9CCC66779CB2063F33D /* libPods-ChatrelMobilePaymentSystem.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		62328917392B4500AF908815 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../code/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		635B2A4E4E814B8FB7DB85E5 /* Kanit-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-MediumItalic.ttf"; path = "../code/assets/fonts/Kanit-MediumItalic.ttf"; sourceTree = "<group>"; };
 		66971CFE27344491BDA5900B /* Kanit-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Medium.ttf"; path = "../code/assets/fonts/Kanit-Medium.ttf"; sourceTree = "<group>"; };
 		767F527E26E84E28B3B3EDB2 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -93,7 +86,6 @@
 		93B97AE0B910639A2B7FE441 /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig"; sourceTree = "<group>"; };
 		946E7D738566C3553C66E797 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9769228F034D7DC46BCFA25F /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		983C7858A7184A669CA72AF7 /* Cairo-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Cairo-Regular.ttf"; path = "../code/assets/fonts/Cairo-Regular.ttf"; sourceTree = "<group>"; };
 		9B8BF06C112C4667850CD04C /* Kanit-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Thin.ttf"; path = "../code/assets/fonts/Kanit-Thin.ttf"; sourceTree = "<group>"; };
 		9C601274195747F99288E405 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		9F36FC5276B84302A9939492 /* Kanit-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Bold.ttf"; path = "../code/assets/fonts/Kanit-Bold.ttf"; sourceTree = "<group>"; };
@@ -102,12 +94,10 @@
 		A3317D9C5E67481DBDF784A2 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		A8F6146B24F044F1AA6EAE1B /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		ACEFF53567F948A981F59EC5 /* Kanit-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Black.ttf"; path = "../code/assets/fonts/Kanit-Black.ttf"; sourceTree = "<group>"; };
-		CC7E5F4676924E4C8F87C39C /* Kanit-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Regular.ttf"; path = "../code/assets/fonts/Kanit-Regular.ttf"; sourceTree = "<group>"; };
 		CE488632C9754B0185C4E5D6 /* Kanit-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Italic.ttf"; path = "../code/assets/fonts/Kanit-Italic.ttf"; sourceTree = "<group>"; };
 		D334837244184698A3DB2809 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		D68954EA9D044EE58D3CFEDD /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		D701B750E5D34B1D872CFE9F /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
-		D75BF48495144774979759C4 /* SF Pro.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF Pro.ttf"; path = "../code/assets/fonts/SF Pro.ttf"; sourceTree = "<group>"; };
 		D9420E2825ADD99C00B379B4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D96B5F5F25E53A5A0067E877 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		D96B5F6125E53A940067E877 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNFirebase.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -277,7 +267,6 @@
 				A8F6146B24F044F1AA6EAE1B /* Octicons.ttf */,
 				F4F4E96EE0C24CAF82AF05D2 /* SimpleLineIcons.ttf */,
 				1D2974F779A44A07AA6A8A52 /* Zocial.ttf */,
-				CC7E5F4676924E4C8F87C39C /* Kanit-Regular.ttf */,
 				ACEFF53567F948A981F59EC5 /* Kanit-Black.ttf */,
 				4E65774534B54B808A4F3D18 /* Kanit-BlackItalic.ttf */,
 				9F36FC5276B84302A9939492 /* Kanit-Bold.ttf */,
@@ -293,10 +282,6 @@
 				9B8BF06C112C4667850CD04C /* Kanit-Thin.ttf */,
 				8EBF4792830E4AC1849511CB /* Kanit-ThinItalic.ttf */,
 				35BC319AEEE04076BCB6AFA7 /* Microsoft Himalaya.ttf */,
-				62328917392B4500AF908815 /* Poppins-Regular.ttf */,
-				983C7858A7184A669CA72AF7 /* Cairo-Regular.ttf */,
-				3FDFAEC995F6474AAD3B6893 /* Oxygen-Regular.ttf */,
-				D75BF48495144774979759C4 /* SF Pro.ttf */,
 				47BC2B204C75499ABE9DE727 /* JosefinSans-Bold.ttf */,
 				167CEB9EA7E149B3944E3CC1 /* JosefinSans-Regular.ttf */,
 				80A7BFCE3348450DBD4AB42D /* MicrosoftHimalaya.ttf */,
@@ -448,14 +433,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D99CBFF425A43C9800D92A65 /* Kanit-Regular.ttf in Resources */,
 				D9420E2925ADD99C00B379B4 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				DFF6347A81334CDDA2DED5D2 /* Poppins-Regular.ttf in Resources */,
-				9CF562CA878D4EC3A0F7FDD1 /* Cairo-Regular.ttf in Resources */,
-				15A96D986F224B0485A35958 /* Oxygen-Regular.ttf in Resources */,
-				0FABE4B5667446278E11CA8C /* SF Pro.ttf in Resources */,
 				E1D300F5FED845E684113D06 /* JosefinSans-Bold.ttf in Resources */,
 				FC358B10EFB340A1A230308C /* JosefinSans-Regular.ttf in Resources */,
 				438526DFFB4D43B99B444299 /* MicrosoftHimalaya.ttf in Resources */,
@@ -843,7 +823,7 @@
 				CODE_SIGN_ENTITLEMENTS = ChatrelMobilePaymentSystem/ChatrelMobilePaymentSystem.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X4T7928XHG;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
@@ -903,7 +883,9 @@
 					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
 				);
 				INFOPLIST_FILE = ChatrelMobilePaymentSystem/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -928,7 +910,7 @@
 				CODE_SIGN_ENTITLEMENTS = ChatrelMobilePaymentSystem/ChatrelMobilePaymentSystem.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X4T7928XHG;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
@@ -988,7 +970,9 @@
 					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
 				);
 				INFOPLIST_FILE = ChatrelMobilePaymentSystem/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

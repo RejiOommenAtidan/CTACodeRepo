@@ -7,6 +7,7 @@ import {
   Platform,
 } from 'react-native';
 import Colors from '../constants/Colors';
+
 export const Loader = (props) => {
   const {loading, ...attributes} = props;
   return (
@@ -24,6 +25,7 @@ export const Loader = (props) => {
     </Modal>
   );
 };
+
 const styles = StyleSheet.create({
   modalBackground: {
     alignItems: 'center',

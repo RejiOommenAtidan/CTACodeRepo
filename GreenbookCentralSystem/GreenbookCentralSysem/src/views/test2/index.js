@@ -1,55 +1,24 @@
-//Hi
-import React from 'react';
-import {
-  Container,
-  Typography,
-  makeStyles,
-  Breadcrumbs,
-  Link,
-  Button
-} from '@material-ui/core';
+import React, { useRef, useState, useMemo } from 'react'
+import JoditEditor from 'jodit-react'
+import Editor from '../test2/country';
+import { ContactSupportOutlined } from '@material-ui/icons';
+import { template } from 'lodash';
+const Test = () => {
+// const [data,setData]=React.useState();
+  //  return (
+  //    <>
+  //   <Editor setData={setData} temp={'hi'} />
+  //   <textarea value={data}></textarea>
+  //   </>
+  //  )
+  const [content, setContent] = useState('hello world');
+ 
+   return(
+     <>
+    <Editor  content={content} setContent={setContent} />
+    <textarea value={content}></textarea>
+    </>
+   )
+}
 
-import {Alerts} from '../alerts';
-
-import Country from './country';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.dark,
-    minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
-  }
-}));
-
-const Dashboard = () => {
-  const classes = useStyles();
-  
-  
-  const alertObj={
-    alertMessage:'Record Successfully Edited',
-    alertType:'success'
-  }
-  const [snackbar,setSnackbar]=React.useState(false);
-  const snackbarOpen = () => {
-    console.log('alert');
-    setSnackbar(true);
-  }
-  const snackbarClose = () => {
-    setSnackbar(false);
-  };
-  return (
-   
-      <Container maxWidth={false}>
-        <Button  type='submit' onClick={snackbarOpen} color="primary">Save</Button> 
-       { snackbar && <Alerts
-       alertObj={alertObj}
-       snackbar={snackbar}
-       snackbarClose={snackbarClose}
-       /> }
-      </Container>
-
-  );
-};
-
-export default Dashboard;
+export default Test

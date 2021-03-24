@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Platform, Alert} from 'react-native';
+import {StyleSheet, View, Platform} from 'react-native';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -14,31 +14,16 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import axios from 'axios';
-import {
-  sAttentionRequired,
-  sDummyPhotoForiOS,
-  sMobilePassphrase,
-  sRequestAccessForEmailID,
-  sSignTypeApple,
-  sSignTypeGoogle,
-} from '../constants/CommonConfig';
+import {sMobilePassphrase, sSignTypeGoogle} from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
-// import jwt_decode from "jwt-decode";
-// import {sFontName, sFontNameBold} from '../constants/CommonConfig';
-// import Colors from '../constants/Colors';
-// import {Button} from 'react-native-elements';
-// import {sClientIDAndroid, sClientIDIOS} from '../constants/CommonConfig';
 
 export const GLogin = (props) => {
-  // const [sClientIDAndroidAPI, setsClientIDAndroidAPI] = useState('');
-  // const [sClientIDIOSAPI, setsClientIDIOSAPI] = useState('');
   const dispatch = useDispatch();
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const [user, setUser] = useState({});
   let sClientIDAndroidAPI = '';
   let sClientIDIOSAPI = '';
   const [bGoogleButton, setbGoogleButton] = useState(true);
-//   const [bRenderAppleButton, setbRenderAppleButton] = useState(false);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -48,10 +33,10 @@ export const GLogin = (props) => {
       )
       .then((resp) => {
         if (resp.status === 200) {
-          console.log(
-            'Login Ping Pong Android: ' + resp.data.sGoogleClientIDAndroid,
-          );
-          console.log('Login Ping Pong iOS: ' + resp.data.sGoogleClientIDIOS);
+          // console.log(
+          //   'Login Ping Pong Android: ' + resp.data.sGoogleClientIDAndroid,
+          // );
+          // console.log('Login Ping Pong iOS: ' + resp.data.sGoogleClientIDIOS);
           sClientIDAndroidAPI = resp.data.sGoogleClientIDAndroid;
           sClientIDIOSAPI = resp.data.sGoogleClientIDIOS;
           setbGoogleButton(false);
@@ -72,130 +57,12 @@ export const GLogin = (props) => {
       });
 
     Platform.OS === 'android' ? isSignedIn() : null;
-
-    // appleAuth.isSupported
-    //   ? setbRenderAppleButton(true)
-    //   : setbRenderAppleButton(false);
-
-    // getUserDataFromAsnycStorage().then(data => {
-    //   //console.info(data);
-    //   let userInfo = data;
-    //   if (userInfo) {
-    //     setUser(userInfo);
-    //     dispatch(storeGoogleCreds(userInfo));
-    //     props.props.navigation.navigate("GBDetail");
-    //   }
-    // });
   }, [isFocused]);
-
-  // const getUserDataFromAsnycStorage = async () => {
-  //   try {
-  //     const jsonValue = await AsyncStorage.getItem('oUserInfo');
-  //     console.info(jsonValue);
-  //     return jsonValue != null ? JSON.parse(jsonValue) : null;
-  //   } catch (e) {
-  //     console.info(e);
-  //   }
-  // };
-
-//   useEffect(() => {
-//     // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
-//     return appleAuth.onCredentialRevoked(async () => {
-//       console.warn(
-//         'If this function executes, User Credentials have been Revoked',
-//       );
-//     });
-//   }, [isFocused]);
-
-//   const onAppleButtonPress = async () => {
-//     try {
-//       //debugger;
-//       // performs login request
-//       const appleAuthRequestResponse = await appleAuth.performRequest({
-//         requestedOperation: appleAuth.Operation.LOGIN,
-//         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-//       });
-
-//       // const {
-//       //   email,
-//       //   // email_verified,
-//       //   // is_private_email,
-//       //   // sub,
-//       // } = jwt_decode(appleAuthRequestResponse.identityToken);
-
-//       // const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
-
-//       // Alert.alert("Credential State",JSON.stringify(credentialState));
-//       // get current authentication state for user
-//       // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
-//       // const credentialState = await appleAuth.getCredentialStateForUser(
-//       //   appleAuthRequestResponse.user,
-//       // );
-
-//       // use credentialState response to ensure the user is authenticated
-//       //if (credentialState === appleAuth.State.AUTHORIZED) {
-//       // user is authenticated
-//       // Alert.alert(
-//       //   appleAuthRequestResponse.user,
-//       //   appleAuthRequestResponse.authorizationCode,
-//       // );
-//       // console.log(
-//       //   'Authorization Code: ' + appleAuthRequestResponse.authorizationCode,
-//       // );
-//       // console.log(
-//       //   'Authorization Scopes: ' + appleAuthRequestResponse.authorizedScopes,
-//       // );
-//       // console.log(
-//       //   'Full Name: ' + JSON.stringify(appleAuthRequestResponse.fullName),
-//       // );
-//       // console.log('Identity Token: ' + appleAuthRequestResponse.identityToken);
-//       // console.log('Nonce: ' + appleAuthRequestResponse.nonce);
-//       // console.log(
-//       //   'Real User Status: ' + appleAuthRequestResponse.realUserStatus,
-//       // );
-//       // console.log('State: ' + appleAuthRequestResponse.state);
-//       // console.log('User: ' + appleAuthRequestResponse.user);
-//       // console.log('Email: ' + appleAuthRequestResponse.email);
-//       if (appleAuthRequestResponse.email === null) {
-//         Alert.alert(sAttentionRequired, sRequestAccessForEmailID);
-//         return;
-//       }
-//       let iOSUserInfo = {
-//         idToken: appleAuthRequestResponse.identityToken,
-//         serverAuthCode: '',
-//         scopes: [],
-//         user: {
-//           photo: sDummyPhotoForiOS,
-//           givenName: appleAuthRequestResponse.fullName.givenName,
-//           familyName: appleAuthRequestResponse.fullName.familyName,
-//           name:
-//             appleAuthRequestResponse.fullName.givenName +
-//             ' ' +
-//             appleAuthRequestResponse.fullName.familyName,
-//           email: appleAuthRequestResponse.email,
-//           id: '',
-//         },
-//       };
-//       setUser(iOSUserInfo);
-//       //Store Google Creds
-//       dispatch(storeGoogleCreds(iOSUserInfo));
-//       dispatch(storeSignInType(sSignTypeApple));
-//       const jsonUserInfoValue = JSON.stringify(iOSUserInfo);
-//       await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
-//       props.props.navigation.navigate('GBDetail');
-//       // console.log(iOSUserInfo);
-//     } catch (err) {
-//       console.error(JSON.stringify(err));
-//       // Alert.alert('In Error', JSON.stringify(err));
-//     }
-//   };
 
   const signIn = async () => {
     try {
-      // debugger;
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      // console.log(JSON.stringify(userInfo));
       //Store User Info
       setUser(userInfo);
       //Store Google Creds
@@ -269,9 +136,6 @@ export const GLogin = (props) => {
 const styles = StyleSheet.create({
   gSignInContainer: {
     marginVertical: hp(5),
-    // alignItems: 'center',
-    // flex: 1,
-    // justifyContent: 'center',
   },
   gSignInComponent: {
     // height: Platform.OS === 'android' ? hp(5.75) : hp(4.75),
@@ -281,11 +145,4 @@ const styles = StyleSheet.create({
     height: 48,
     width: 192,
   },
-//   appleSignInContainer: {
-//     marginVertical: hp(2.5),
-//   },
-//   appleSignInComponent: {
-//     width: 192,
-//     height: 48,
-//   },
 });

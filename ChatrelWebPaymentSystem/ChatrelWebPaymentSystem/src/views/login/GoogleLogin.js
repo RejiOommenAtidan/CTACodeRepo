@@ -1,78 +1,41 @@
 import React,{useEffect} from 'react';
 import GoogleLogin from 'react-google-login';
 import { Button } from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
-import { storeGoogleCreds } from '../../actions/transactions/GLoginAction';
+import { useDispatch } from 'react-redux';
+
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-//import { sGoogleAuth_ClientID } from '../../config/commonConfig';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Axios from 'axios';
+
 const GoogleLoginPage = (props) => {
-  // console.log("PROPS",props);
-  //console.log("Cookies enabled: " + navigator.cookieEnabled);
 
   let history = useHistory();
   const save = (response) => {
     console.log('Login Successful: ', response);
-    //debugger
+  
     const token = response.tokenId;
 
     props.test(response);
-    /*  axios.get(`/User/ValidateGoogleToken/?code=${token}&email=${response.profileObj.email}`)
-        .then(resp => {
-          if(resp.status === 200){
-            if(resp.data){
-                dispatch(storeGoogleCreds(response.profileObj));
-            }
-            else{
-              alert(`Verification Failed for ${response.profileObj.email}`);  
-            }
-            //console.log("Auth",resp.data);
-          }
-        })*/
-
-    // history.push('/paymentpage');
+   
   };
   const dispatch = useDispatch();
   const check = (e) => {
     console.log(e.data);
   };
-  // const [sClientIDGoogle, setsClientIDGoogle]= React.useState(null);
-  // const sWebAppPassphrase = "RKb4q^!E-NS?wY4=W@`Bt`*H,";
-  // useEffect(() => {
-  //   axios
-  //     .post(`/ChatrelPayment/GetGoogleCredentialsForWebApp?sWebAppPassphrase=${sWebAppPassphrase}`)
-  //     .then((resp) => {
-  //       if (resp.status === 200) {
-  //         console.log('Login Ping Pong: ' + resp.data.sGoogleClientIDWebApp);
-  //         setsClientIDGoogle(resp.data.sGoogleClientIDWebApp);
-         
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log('Error ', error.response);
-  //     })
-  //     .then((release) => {
-  //       //console.log(release); => udefined
-  //     });
-  // }, []);
+
   return (
     <>
- {//sClientIDGoogle && 
+ {
  <GoogleLogin
       clientId={props.sClientIDGoogle}
-    // clientId={sGoogleAuth_ClientID}
+   
       onSuccess={(response) => {
         console.log('login, onSuccess');
         save(response);
       }}
       onFailure={(response) => {}}
       cookiePolicy={'single_host_origin'}
-      //isSignedIn={true}
+    
       prompt={'select_account'}
-      // uxMode='redirect'
-      // redirectUri='http://localhost:3000/Login/'
+    
       render={(renderProps) => (
         <Button
           className="m-1  btn-pill bg-white"

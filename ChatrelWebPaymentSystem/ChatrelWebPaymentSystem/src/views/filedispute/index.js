@@ -2,26 +2,14 @@
 import React ,{useEffect}from 'react';
 import { Card } from '@material-ui/core';
 import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
-import PropTypes from 'prop-types';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import { TableBodyRow } from 'mui-datatables';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { subMinutes } from 'date-fns';
-import { useHistory } from 'react-router-dom';
+
 import { useSelector, useDispatch } from 'react-redux';
-import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
+
 import axios from 'axios';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+
 import { useState } from 'react';
 import { Alerts } from '../alerts';
 
@@ -29,7 +17,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import BackGroundImage from '../../assets/images/lake-file-dispute.jpg';
-import TestImage from '../../assets/images/wallpaper.jpg';
+
 import {storeSession} from '../../actions/transactions/SessionAction';
 
 const useStyles = makeStyles((theme) => ({
@@ -92,22 +80,12 @@ const handleUploadClick =(e) =>{
   console.log(e)
   //filename = this.files[0].name
 }
-/*const reader = new FileReader();
-
-    reader.addEventListener("load", function () {
-      console.log(reader.result.split('base64,')[1]);
-        setbinFileDoc(reader.result.split('base64,')[1]);
-       // console.log(reader.result);
-    }, false);
-  */
 
 const handleSingleFile = (file) => {
   const reader = new FileReader();
     let fileObj={}
     reader.addEventListener("load", function () {
-     // console.log(reader.result.split('base64,')[1]);
-        //setbinFileDoc(reader.result.split('base64,')[1]);
-       // console.log(reader.result);
+    
         fileObj.binFileDoc=reader.result.split('base64,')[1];
     }, false);
     reader.readAsDataURL(file);
@@ -118,11 +96,7 @@ const handleSingleFile = (file) => {
     fileObj.sFileExtension=Extension;
     console.log(sTitle);
 
-   // setsTitle(Name);
-    //  setsFileExtension(Extension);
-    // console.log(file.name);
-    // console.log(Name);
-    // console.log(Extension);
+ 
   return fileObj
 }
 const MaxFileSize=5;
@@ -154,16 +128,7 @@ console.log(files );
                FileName=FileName+" "+files[i].name; 
             }
        
-            // reader.readAsDataURL(file);
-            //use var instead of let
-            // var Dot = file.name.lastIndexOf('.');
-            // var Name = file.name.slice(0, Dot);
-            // var Extension = file.type.split("/").pop()
-            // setsTitle(Name);
-            // setsFileExtension(Extension);
-            // console.log(file.name);
-            // console.log(Name);
-            // console.log(Extension);
+           
         }
         console.log("File Obj",FileDisputeObj);
         console.log('FileName:',FileName);
@@ -204,7 +169,7 @@ else if (FileDisputeObj.length !== 0 && disputeDescription !== "")
 {
   //console.log(backdrop);
   // console.log ("File upload:", binFileDoc)
-   const submit = {sGBID: sGBID, sName: sName, description: disputeDescription,aFileResults: FileDisputeObj }
+   const submit = { description: disputeDescription,aFileResults: FileDisputeObj }
    console.log(submit);
    axios.post(`/ChatrelPayment/SubmitDispute`, submit)
    .then((resp) => {

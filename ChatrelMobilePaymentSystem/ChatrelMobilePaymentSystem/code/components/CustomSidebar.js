@@ -16,7 +16,13 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Colors from '../../code/constants/Colors';
-import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import {
+  sFontName,
+  sFontNameBold,
+  sLogoutConfirmation,
+  sSessionExpireLoginAgain,
+  sSessionTimeout,
+} from '../constants/CommonConfig';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import {useDispatch} from 'react-redux';
 import {removeGoogleCreds} from '../store/actions/GLoginAction';
@@ -29,7 +35,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {sAPIBASEURL} from '../constants/CommonConfig';
 import {decode as atob, decode, encode as btoa} from 'base-64';
-// import {useNavigation} from '@react-navigation/native';
 
 export const CustomSidebarMenu = (props) => {
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
@@ -46,12 +51,11 @@ export const CustomSidebarMenu = (props) => {
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
   const dispatch = useDispatch();
   let newGroup = true;
-  // const navigation = useNavigation();
   const handleLogoutButtonPress = () => {
     navigation.closeDrawer();
     Alert.alert(
       'Logout',
-      'Are you sure you want to logout?',
+      sLogoutConfirmation,
       [
         {
           text: 'No',
@@ -67,35 +71,28 @@ export const CustomSidebarMenu = (props) => {
         await GoogleSignin.revokeAccess();
         await GoogleSignin.signOut();
         //await AsyncStorage.multiRemove(keysToRemove, (err) => {
-          axios
-            .get(`/User/Logout`)
-            .then((resp) => {
-              if (
-                resp.status === 200 &&
-                resp.data.message === 'Logged Out successfully'
-              ) {
-                dispatch(removeGoogleCreds);
-                dispatch(removeGBDetails);
-                dispatch(removeJWTToken);
-                dispatch(removeCurrentGBDetails);
-                axios.defaults.headers.common['Authorization'] = undefined;
-                navigation.navigate('Login');
-              }
-            })
-            .catch((error) => {
-              console.log('Error ', error.response);
-              if (error.response) {
-                console.error(error.response);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
-            })
-            .then((release) => {
+        axios
+          .get(`/User/Logout`)
+          .then((resp) => {
+            if (
+              resp.status === 200 &&
+              resp.data.message === 'Logged Out successfully'
+            ) {
+              dispatch(removeGoogleCreds);
+              dispatch(removeGBDetails);
+              dispatch(removeJWTToken);
+              dispatch(removeCurrentGBDetails);
+              axios.defaults.headers.common['Authorization'] = undefined;
               navigation.navigate('Login');
-            });
+            }
+          })
+          .catch((error) => {
+            console.log('Error ', error.response);
+            navigation.navigate('Login');
+          })
+          .then((release) => {
+            navigation.navigate('Login');
+          });
         //});
       } catch (error) {
         console.error(error);
@@ -108,7 +105,7 @@ export const CustomSidebarMenu = (props) => {
   const [timerId, setTimerId] = React.useState(null);
   const sJwtToken = useSelector((state) => state.GBDetailsReducer.sJwtToken);
   const setSessionTimeoutTrue = () => {
-    //console.log('Index for Page: ' + state.index);
+    //console.log('Index for Page: '+state.index);
     //Note: Login index is 7
     if (state.index === 7) {
       setSessionTimeout(false);
@@ -160,7 +157,6 @@ export const CustomSidebarMenu = (props) => {
 
       const timer = () =>
         setTimeout(() => {
-          //setSessionTimeout(true);
           setSessionTimeoutTrue();
         }, jwtObject.exp * 1000 - Date.now());
       //}, 1000 * 60 * 1);
@@ -173,8 +169,8 @@ export const CustomSidebarMenu = (props) => {
   useEffect(() => {
     if (sessionTimeout) {
       Alert.alert(
-        'Session Timeout',
-        'Your session has expired. Please login again.',
+        sSessionTimeout,
+        sSessionExpireLoginAgain,
         [
           {
             text: 'Ok',
@@ -187,9 +183,9 @@ export const CustomSidebarMenu = (props) => {
                 dispatch(removeGBDetails);
                 dispatch(removeJWTToken);
                 dispatch(removeCurrentGBDetails);
-                await AsyncStorage.multiRemove(keysToRemove, (err) => {
-                  navigation.navigate('Login');
-                });
+                //await AsyncStorage.multiRemove(keysToRemove, (err) => {
+                navigation.navigate('Login');
+                //});
               } catch (error) {
                 navigation.navigate('Login');
               }
@@ -235,8 +231,6 @@ export const CustomSidebarMenu = (props) => {
             minWidth: wp(25),
             maxWidth: wp(45),
             marginHorizontal: hp(1.5),
-            //alignItems:"center",
-            //alignSelf:"center"
           }}>
           <Text
             style={{
@@ -324,12 +318,7 @@ export const CustomSidebarMenu = (props) => {
           }}
         />
         <DrawerItem
-          labelStyle={{
-            ...styles.logoutLabelStyles,
-            //backgroundColor: Colors.white,
-            // marginLeft:0,
-            // paddingLeft:0
-          }}
+          labelStyle={styles.logoutLabelStyles}
           label="LOGOUT"
           style={{
             ...styles.drawerItemStyles,
@@ -366,8 +355,5 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginBottom: hp(1),
     marginHorizontal: 0,
-    //backgroundColor: Colors.white,
-    //borderBottomColor:Colors.black,
-    //borderBottomWidth:1,
   },
 });

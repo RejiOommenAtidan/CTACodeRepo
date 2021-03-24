@@ -1,4 +1,5 @@
-﻿using CTADBL.BaseClasses.Transactions;
+﻿using CTADBL.BaseClasses.Masters;
+using CTADBL.BaseClasses.Transactions;
 using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
@@ -32,6 +33,7 @@ namespace CTAWebAPI.Controllers.Transactions
         private readonly GreenBookSerialNewRecordRepository _greenBookSerialNewRecordRepository;
         private readonly MadebRepository _madebRepository;
         private readonly CTALogger _ctaLogger;
+        private readonly CTAConfigRepository _ctaConfigRepository;
         public GreenBookSerialNumberController(DBConnectionInfo info)
         {
             _info = info;
@@ -40,6 +42,7 @@ namespace CTAWebAPI.Controllers.Transactions
             _greenBookSerialNewRecordRepository = new GreenBookSerialNewRecordRepository(_info.sConnectionString);
             _madebRepository = new MadebRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
+            _ctaConfigRepository = new CTAConfigRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -246,7 +249,11 @@ namespace CTAWebAPI.Controllers.Transactions
                     gbsn.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     gbsn.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     _greenBookSerialNumberRepository.Add(gbsn);
-                    if(gbsn.nFormNumber != null)
+                    CTAConfig config = _ctaConfigRepository.GetConfigByKey("BookSerialNumber");
+                    config.sValue = gbsn.nBookNo.ToString();
+                    config.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    _ctaConfigRepository.Update(config);
+                    if (gbsn.nFormNumber != null)
                     {
                         int? nCurrentGBSno = (int?)gbsn.nBookNo;
                         int? nIssuedOrNotID = 1;

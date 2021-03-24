@@ -33,8 +33,7 @@ const Success = lazy(() => import('./views/app/success.js'));
 
 
 const Home = lazy(() => import('./views/home/home.js'));
-const Test = lazy(() => import('./views/test'));
-const PaypalTest = lazy(() => import('./views/test/paypaltest.js'));
+
 const Login = lazy(() => import('./views/login'));
 const AccessDenied = lazy(() => import('./views/error/locationerror.js'));
 //const Page404 = lazy(() => import('./views/error/404Page'));
@@ -44,7 +43,7 @@ const FileDispute = lazy(() => import("./views/filedispute/index.js"));
 const ContactUs = lazy(() => import("./views/Contact/index.js"));
 const Privacy = lazy(() => import("./views/privacy-policy/index.js"));
 
-const Family = lazy(() => import("./views/family"));
+
 const Friends = lazy(() => import("./views/friends"));
 const ChatrelHistory = lazy(() => import('./views/paymenthistory'));
 const Chatrel = lazy(() => import('./views/paymentpage'));
@@ -173,48 +172,7 @@ const Routes = () => {
       };
     }, []);
 
-    // const bSession = useSelector(state => state.SessionReducer.bSession);
-   // console.log("session",bSession);
-    /*if(bSession){
-      
-      console.log(new Date());
-      //alert('timeout');
-    }*/
-   // const a = new Date();
-//    const b = new Date(a.getTime() + 1000*30);
-    // const checkSession=()=>{
-    //   let x = new Date();
-    //   console.log('old',bSession);
-    //   console.log('new',x);
-    //   if(bSession.getTime()<= x.getTime()){
-    //     alert('hi');
-    //   }
-    // }
-   /* while (bSession){
-      setTimeout(() => console.log('hi'), 1000*60);
-    }*/
-   
-  //   console.log("Location:",window.location.pathname);
-  //   const[timer,setTimer]=useState(false);
-  //  /* setTimer(window.location.pathname !=="/Login");*/
-  //   useEffect(() => {
-  //    /* var d = new Date();
-  //     var time= d.getTime() + 1000*60*10;*/
-  //     //document.cookie = "timeout=hi;" + expires;  
-  //    // document.cookie = "session=Active;";
-  //     //document.cookie = "session2=Active;"+time+";";
-  //   }, []);
-  //   /*var username = getCookie("username");
-  //   alert(username);*/
-  //   var timeout=document.cookie;
-  //   if(timeout.includes("session=Active")){
-  //     //alert('yes');
-  //   }
-  //   else{
-  //    // alert('no');
-  //   }
-  //   console.log(timeout);
-    
+
 
     return (
       <>
@@ -247,8 +205,7 @@ const Routes = () => {
             <Route path={[
               '/Login',
               '/AccessDenied',
-              '/Test',
-              '/PaypalTest',
+             
               '/Failure',
               '/Success',
               '/404',
@@ -267,8 +224,7 @@ const Routes = () => {
                     transition={pageTransition}>
                     <Route path="/Login" component={Login} />
                     <Route path="/AccessDenied" component={AccessDenied} />
-                    <Route path="/Test" component={Test} ></Route>
-                    <Route path="/PaypalTest" component={PaypalTest} ></Route>
+                  
                     <Route path="/Failure" component={Failure} ></Route>
                     <Route path="/Success" component={Success} ></Route>
                     <Route path="/404" component={Page404} ></Route>
@@ -304,10 +260,10 @@ const Routes = () => {
 
             <Route
               path={[
-            //    '/Family',
+           
                 '/Friends',
                 '/ChatrelHistory',
-               // '/Test',
+              
                 '/Home',
                 '/Chatrel',
                 '/SelfPayment',
@@ -336,14 +292,7 @@ const Routes = () => {
                       path="/FileDispute"
                       component={FileDispute}
                     />
-                 {/*   <Route
-                      path="/Test"
-                      component={Test}
-                 />*/}
-                     {/* <Route
-                      path="/Family"
-                      component={Family}
-                    /> */}
+              
                     <Route
                       path="/Friends"
                       component={Friends}

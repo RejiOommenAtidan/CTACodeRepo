@@ -472,7 +472,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                         LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         LEFT JOIN `lstmadebtype` on `tblmadeb`.`nMadebTypeID` = `lstmadebtype`.`Id`
                         
-                        WHERE `tblmadeb`.`nFormNumber` IN (SELECT nFormNumber FROM tblgreenbookserial where nFormNumber IS NOT NULL ) AND  `tblmadeb`.`nIssuedOrNotID` !=2 AND  `tblmadeb`.`sGBID` = @sGBId ORDER BY  `tblmadeb`.`Id` DESC";
+                        WHERE `tblmadeb`.`nFormNumber` IN (SELECT nFormNumber FROM tblgreenbookserial where nFormNumber IS NOT NULL ) AND  `tblmadeb`.`nIssuedOrNotID` !=2 AND `tblmadeb`.`nMadebStatusID` !=6 AND `tblmadeb`.`sGBID` = @sGBId ORDER BY  `tblmadeb`.`Id` DESC";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sGBId", sGBId);

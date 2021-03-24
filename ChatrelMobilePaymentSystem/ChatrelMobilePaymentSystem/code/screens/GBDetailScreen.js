@@ -15,6 +15,9 @@ import {
   sDateFormat,
   sVerificationSuccessfulMessage,
   sVerificationFailedMessage,
+  sSomethingWentWrongPleaseTryAgainLater,
+  sAttentionRequired,
+  sEnteredDetailsDidntMatchDB,
 } from '../constants/CommonConfig';
 import Moment from 'moment';
 import {useSelector, useDispatch} from 'react-redux';
@@ -51,9 +54,6 @@ import {useFocusEffect} from '@react-navigation/native';
 import {TextInputMask} from 'react-native-masked-text';
 import Toast from 'react-native-root-toast';
 
-// import {WebView} from 'react-native-webview';
-// import LinearGradient from 'react-native-linear-gradient';
-
 export const GBDetailScreen = (props) => {
   useFocusEffect(
     React.useCallback(() => {
@@ -68,90 +68,6 @@ export const GBDetailScreen = (props) => {
     }, []),
   );
 
-  // useEffect(() => {
-  //   if (isFocused) {
-  //     BackHandler.addEventListener('hardwareBackPress', () => true);
-
-  //     // getUserDataFromAsnycStorage().then(oUserInfo => {
-  //     //   if (oUserInfo) {
-  //     //     getGBDataFromAsnycStorage().then(oGBInfo => {
-  //     //       if (oGBInfo) {
-  //     //         let oUserCompleteDetails = {...oUserInfo,...oGBInfo}
-  //     //         verifyAllDetails(oUserCompleteDetails);
-  //     //       }
-  //     //     });
-  //     //   }
-  //     // });
-
-  //   }
-  //   return () => {
-  //     BackHandler.removeEventListener('hardwareBackPress', () => true);
-  //   };
-  // }, [isFocused]);
-
-  // useEffect(() => {
-  //   BackHandler.addEventListener('hardwareBackPress', () => true);
-
-  //   // getUserDataFromAsnycStorage().then(oUserInfo => {
-  //   //   if (oUserInfo) {
-  //   //     getGBDataFromAsnycStorage().then(oGBInfo => {
-  //   //       if (oGBInfo) {
-  //   //         let oUserCompleteDetails = {...oUserInfo,...oGBInfo}
-  //   //         verifyAllDetails(oUserCompleteDetails);
-  //   //       }
-  //   //     });
-  //   //   }
-  //   // });
-
-  //   return () => {
-  //     BackHandler.removeEventListener('hardwareBackPress', () => true);
-  //   };
-  // }, []);
-
-  // const getGBDataFromAsnycStorage = async () => {
-  //   try {
-  //     const jsonValue = await AsyncStorage.getItem('oGBInfo');
-  //     console.info(jsonValue);
-  //     return jsonValue != null ? JSON.parse(jsonValue) : null;
-  //   } catch (e) {
-  //     console.info(e);
-  //   }
-  // };
-
-  // const getUserDataFromAsnycStorage = async () => {
-  //   try {
-  //     const jsonValue = await AsyncStorage.getItem('oUserInfo');
-  //     console.info(jsonValue);
-  //     return jsonValue != null ? JSON.parse(jsonValue) : null;
-  //   } catch (e) {
-  //     console.info(e);
-  //   }
-  // };
-
-  // const verifyAllDetails = (oUserCompleteDetails) => {
-  //   axios
-  //     .post('/ChatrelPayment/VerifyUser', oUserCompleteDetails)
-  //     .then((response) => {
-  //       if (response.status === 200) {
-  //         //TODO: Make Set State calls
-  //         props.navigation.navigate('Home');
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       if (error.response) {
-  //         // Not 2xx
-  //         console.log(error.response.data);
-  //         console.log(error.response.status);
-  //         console.log(error.response.headers);
-  //       } else if (error.request) {
-  //         console.log(error.request);
-  //       } else {
-  //         console.log('Error', error.message);
-  //       }
-  //     });
-  // };
-
-  // const [bShowWebView, setbShowWebView] = useState(false);
   const dtDOBRef = useRef(null);
   const dtDOBInputRef = useRef(null);
   const isFocused = useIsFocused();
@@ -170,11 +86,11 @@ export const GBDetailScreen = (props) => {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
       //await AsyncStorage.multiRemove(keysToRemove, (err) => {
-        dispatch(removeGoogleCreds);
-        dispatch(removeGBDetails);
-        dispatch(removeJWTToken);
-        dispatch(removeCurrentGBDetails);
-        props.navigation.navigate('Login');
+      dispatch(removeGoogleCreds);
+      dispatch(removeGBDetails);
+      dispatch(removeJWTToken);
+      dispatch(removeCurrentGBDetails);
+      props.navigation.navigate('Login');
       //});
     } catch (error) {
       props.navigation.navigate('Login');
@@ -183,7 +99,6 @@ export const GBDetailScreen = (props) => {
   const handleVerifyDetailsPress = async () => {
     setbLoader(true);
     let oAPI = {
-      // dtDOB: dtDOB,
       // sFirstName: oGoogle.user?.givenName,
       // sLastName: oGoogle.user?.familyName,
       sGBID: sGBID,
@@ -193,14 +108,12 @@ export const GBDetailScreen = (props) => {
       sType: sType,
     };
 
-    console.log(oAPI);
-
+    // console.log(oAPI);
     // setbLoader(false);
 
     axios
       .post('User/AuthenticateGBID', oAPI)
       .then((response) => {
-        debugger;
         if (response.status === 200) {
           {
             /*Using here word "sJWTToken" rest places "token" word*/
@@ -236,7 +149,7 @@ export const GBDetailScreen = (props) => {
           } else {
             Alert.alert(
               sVerificationFailedMessage,
-              "The entered details didn't match our database. Please try again.",
+              sEnteredDetailsDidntMatchDB,
               [
                 {
                   text: 'Ok',
@@ -255,7 +168,6 @@ export const GBDetailScreen = (props) => {
         }
       })
       .catch((error) => {
-        //console.log(error.response);
         if (error.response.status === 401) {
           // const oSession = {
           //   sJwtToken: '',
@@ -263,10 +175,9 @@ export const GBDetailScreen = (props) => {
           // };
           // dispatch(storeJWTToken(oSession));
         } else {
-          debugger;
           Alert.alert(
-            sVerificationFailedMessage,
-            "The entered details didn't match our database. Please try again.",
+            sAttentionRequired,
+            sSomethingWentWrongPleaseTryAgainLater,
             [
               {
                 text: 'Ok',
@@ -300,26 +211,12 @@ export const GBDetailScreen = (props) => {
   return (
     <ImageBackground
       source={require('../assets/Background.png')}
-      style={styles.imagebackgroundComponent}
-      imageStyle={
-        {
-          //backgroundColor: 'rgba(0,0,0,0.4)'
-          // backfaceVisibility:"hidden",
-          // backgroundColor:Colors.white,
-          // opacity:0.5
-        }
-      }>
-      {/* <LinearGradient
-        //style={styles.linearGradient}
-        colors={[Colors.white, Colors.white]}
-        //start={{ x: 0.5, y: 0.5 }}
-      > */}
+      style={styles.imagebackgroundComponent}>
       {bLoader && (
         <ActivityIndicator
           size={Platform.OS === 'ios' ? 0 : 'large'}
           color={Colors.spinnerColor}
           animating={true}
-          //hidesWhenStopped={true}
           style={{
             ...oActivityIndicatorStyle,
             backgroundColor: Colors.black,
@@ -327,28 +224,6 @@ export const GBDetailScreen = (props) => {
           }}
         />
       )}
-      {/*<Modal
-        visible={bShowWebView}
-        onRequestClose={() => setbShowWebView(false)}>
-        <WebView
-          cacheEnabled={false}
-          pullToRefreshEnabled={true}
-          source={{uri: sMappingURL}}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          startInLoadingState={false}
-          style={{marginTop: hp(3.5)}}
-          renderLoading={() => (
-            <ActivityIndicator
-              size={Platform.OS === 'ios' ? 0 : 'large'}
-              color={Colors.spinnerColor}
-              animating={true}
-              //hidesWhenStopped={true}
-              style={oActivityIndicatorStyle}
-            />
-          )}
-        />
-          </Modal>*/}
       <View style={styles.mainContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerComponent}>
@@ -366,7 +241,6 @@ export const GBDetailScreen = (props) => {
             control={control}
             render={({onChange, onBlur, value}) => (
               <Input
-                //autoFocus={true}
                 //returnKeyType={'next'}
                 returnKeyType={'done'}
                 onSubmitEditing={() => {
@@ -392,8 +266,6 @@ export const GBDetailScreen = (props) => {
                   setsGBID(value);
                 }}
                 value={sGBID}
-                //enablesReturnKeyAutomatically={true}
-                // spellCheck={false}
               />
             )}
             name="name_nGBID"
@@ -411,7 +283,7 @@ export const GBDetailScreen = (props) => {
           </View>
         )}
 
-        {/*Android/iOS Date Picker With Text Component as a Masking*/}
+        {/*Android/iOS Date Picker With Text Component having Masking*/}
 
         {
           <View>
@@ -497,58 +369,12 @@ export const GBDetailScreen = (props) => {
                         alignItems: 'center',
                         display: 'flex',
                         marginTop: Platform.OS === 'android' ? hp(2.25) : hp(0),
-                        //borderBottomWidth: 1,
-                        //borderBottomColor: Colors.grey,
-                        // borderWidth: 0,
-                        // borderStyle: null,
-                        // height: 0,
-                        // width: 0,
-                        // borderBottomWidth:1,
-                        // marginLeft: 0,
-                        // alignContent: 'flex-end',
-                        // alignSelf: 'flex-end',
-                        // justifyContent: 'flex-end',
                       },
-                      // placeholderText: {
-                      //   color: Colors.grey,
-                      //   fontSize: wp(5),
-                      //   fontStyle: 'normal',
-                      //   fontWeight: 'normal',
-                      //   fontFamily: sFontName,
-                      // },
-                      // dateText: {
-                      //   //textAlign: 'left',
-                      //   color: Colors.white,
-                      //   fontSize: wp(5),
-                      //   fontStyle: 'normal',
-                      //   fontWeight: 'normal',
-                      //   fontFamily: sFontName,
-                      // },
-                      // dateIcon: {
-                      //   width:0,
-                      //   height:0,
-                      // position: 'relative',
-                      // left: 0,
-                      // top:
-                      // Dimensions.get('window').height <
-                      // Resolution.nHeightBreakpoint
-                      // ? 2.4
-                      // : 4,
-                      // marginLeft: 0,
-                      // },
                       dateInput: {
                         borderWidth: 0,
                         borderStyle: null,
                         height: 0,
                         width: 0,
-                        // flexGrow: 1,
-                        // alignItems: 'flex-start',
-                        // borderLeftWidth: 0,
-                        // borderRightWidth: 0,
-                        // borderTopWidth: 0,
-                        // margin:0
-                        //margin: 0,
-                        // marginRight: -32,
                       },
                     }}
                     onBlur={onBlur}
@@ -574,97 +400,6 @@ export const GBDetailScreen = (props) => {
             )}
           </View>
         }
-        {/*IOS PART*/}
-        {/*{Platform.OS === 'ios' && (
-          <View>
-            <View style={styles.dobContainer}>
-              <Controller
-                control={control}
-                render={({onChange, onBlur, value}) => (
-                  <DatePicker
-                    ref={dtDOBRef}
-                    blurOnSubmit={true}
-                    showIcon={false}
-                    useNativeDriver={true}
-                    androidMode={'calendar'}
-                    style={styles.dobComponent}
-                    date={dtDOB}
-                    mode="date"
-                    placeholder={sDateFormat + '*'}
-                    //placeholderTextColor={Colors.grey}
-                    // allowFontScaling
-                    // placeholder={"Date of Birth "+sDateFormat+"*"}
-                    format={sDateFormat}
-                    maxDate={dtToday}
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                      dateIcon: {
-                        borderWidth: 0,
-                        borderStyle: null,
-                        height: 0,
-                        width: 0,
-                        // borderBottomWidth:1
-                      },
-                      placeholderText: {
-                        color: Colors.grey,
-                        fontSize: wp(5),
-                        fontStyle: 'normal',
-                        fontWeight: 'normal',
-                        fontFamily: sFontName,
-                      },
-                      dateText: {
-                        //textAlign: 'left',
-                        color: Colors.white,
-                        fontSize: wp(5),
-                        fontStyle: 'normal',
-                        fontWeight: 'normal',
-                        fontFamily: sFontName,
-                      },
-                      // dateIcon: {
-                      //   width:0,
-                      //   height:0,
-                      //position: 'relative',
-                      //left: 0,
-                      //top:
-                      //Dimensions.get('window').height <
-                      //Resolution.nHeightBreakpoint
-                      //? 2.4
-                      //: 4,
-                      // marginLeft: 0,
-                      //},
-                      dateInput: {
-                        flexGrow: 1,
-                        alignItems: 'flex-start',
-                        borderLeftWidth: 0,
-                        borderRightWidth: 0,
-                        borderTopWidth: 0,
-                        //marginLeft: wp(3),
-                      },
-                    }}
-                    onBlur={onBlur}
-                    onDateChange={(date) => {
-                      onChange(date);
-                      setdtDOB(date);
-                    }}
-                  />
-                )}
-                name="name_dtDOB"
-                rules={{required: true}}
-                defaultValue=""
-              />
-            </View>
-            {errors.name_dtDOB && (
-              <View
-                style={{
-                  ...errorContainer,
-                  marginHorizontal: wp(Resolution.nWidthMarginValueScreen),
-                }}>
-                <Text style={errorComponent}>Please enter Date of Birth.</Text>
-              </View>
-            )}
-          </View>
-              )}*/}
         <View style={styles.buttonContainer}>
           <Button
             buttonStyle={styles.buttonStyleComponent}
@@ -698,7 +433,6 @@ export const GBDetailScreen = (props) => {
                 textDecorationColor: Colors.darkYellowFamilyPage,
               }}
               onPress={() => {
-                //setbShowWebView(true);
                 Linking.openURL(sMappingURL);
               }}>
               this form
@@ -716,7 +450,6 @@ export const GBDetailScreen = (props) => {
           </Text>
         </View>
       </View>
-      {/* </LinearGradient> */}
     </ImageBackground>
   );
 };
@@ -737,25 +470,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     height: hp(100),
     width: wp(100),
-    //flex: 1,
-    // flexGrow:1,
-    // marginHorizontal:
-    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
-    // marginVertical:
-    //   Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
   imagebackgroundComponent: {
     height: hp(100),
     width: wp(100),
-    //flex: 1,
-    // opacity
-    // height:hp(100),
-    // width:wp(100)
-    //opacity:0
-    // opacity:0.5
-    //flex: 1,
-    //backgroundColor: 'rgb(0,0,0)',
-    //opacity:1
   },
   headerContainer: {
     marginTop: hp(15),
@@ -773,17 +491,6 @@ const styles = StyleSheet.create({
   },
   gbidContainer: {
     flexDirection: 'row',
-    // marginHorizontal: wp(Resolution.nWidthMarginValueScreen),
-    //width: wp(85),
-    // height: hp(3.5),
-    // marginBottom: hp(3),
-    // lineHeight:
-    //   Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
-    //letterSpacing: Resolution.nLetterSpacing,
-    // maxwidth: '95%',
-    // minWidth: '80%',
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   gbidComponent: {
     borderBottomColor: Colors.grey,
@@ -800,31 +507,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: wp(Resolution.nWidthMarginValueScreen),
     marginVertical: hp(2.5),
-    // marginTop: hp(5),
-    // marginBottom: hp(5),
-    // width: wp(85 - 2),
   },
   dobContainerAndroid: {
     alignItems: 'center',
     flexDirection: 'row',
     marginHorizontal: wp(Resolution.nWidthMarginValueScreen),
     marginVertical: hp(2.5),
-    // justifyContent:"flex-end",
-    // alignSelf:"center"
-    // marginTop: hp(5),
-    // marginBottom: hp(5),
-    // width: wp(85 - 2),
   },
   dobComponent: {
     flexGrow: 1,
-    // textAlign: "left",
-    // color: Colors.white,
-    // fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
-    // fontStyle: "normal",
-    // fontWeight: "normal",
-    // fontFamily: sFontName
-    //width:wp(10)
-    // width:wp(50)
   },
   textContainer: {
     marginHorizontal: wp(Resolution.nWidthMarginValueScreen),
@@ -848,21 +539,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.buttonYellow,
     backgroundColor: Colors.buttonYellow,
-    // height: hp(4),
-    // width:"100%"
-    //color: Colors.black
-    // marginTop:20
-    // marginLeft:20,
-    // marginRight:20
-    //width: Dimensions.get("window").width * 0.50
-  },
-  linearGradient: {
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    //borderRadius: 5,
-    // height: hp(100),
-    // width: wp(100),
-    // opacity: 0,
   },
   infoComponent: {
     color: Colors.white,
@@ -872,7 +548,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     marginBottom: hp(3),
     textAlign: 'center',
-    // marginHorizontal: wp(Resolution.nWidthMarginValueScreen),
   },
   backToLoginComponent: {
     color: Colors.ChatrelInfoBlue,
@@ -883,7 +558,6 @@ const styles = StyleSheet.create({
     textDecorationColor: Colors.ChatrelInfoBlue,
     textDecorationLine: 'underline',
     textAlign: 'center',
-    // marginHorizontal: wp(Resolution.nWidthMarginValueScreen),
   },
   buttonTitleStyle: {
     color: Colors.black,

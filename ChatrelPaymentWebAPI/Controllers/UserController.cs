@@ -113,7 +113,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             string sEmail = dict.ContainsKey("sEmail") ? dict["sEmail"] : "";
             string sGToken = dict.ContainsKey("code") ? dict["code"] : "";
             DateTime? dtDOB = dict.ContainsKey("dtDOB") ? (DateTime?)DateTime.Parse(dict["dtDOB"]) : null;
-            string sType = dict.ContainsKey("sType") ? dict["sType"] : "";
+            //string sType = dict.ContainsKey("sType") ? dict["sType"] : "";
 
             if (String.IsNullOrEmpty(sGBID.Trim()) || String.IsNullOrEmpty(sEmail.Trim()) || dtDOB == null || String.IsNullOrEmpty(sGToken.Trim()))
             {
@@ -125,18 +125,24 @@ namespace ChatrelPaymentWebAPI.Controllers
                 {
                     string payloadEmail = String.Empty;
                     bool emailVerified = false;
-                    
-                    if(sType == "Apple")
-                    {
-                        payloadEmail = sEmail;
-                        emailVerified = true;
-                    }
-                    if (sType == "Google")
-                    {
-                        var payload = await ValidateGoogle(sGToken);
-                        payloadEmail = payload.Email;
-                        emailVerified = payload.EmailVerified;
-                    }
+
+                    //Old Code 
+                    var payload = await ValidateGoogle(sGToken);
+                    payloadEmail = payload.Email;
+                    emailVerified = payload.EmailVerified;
+
+                    //Apple & Google Double Verification Code
+                    //if(sType == "Apple")
+                    //{
+                    //    payloadEmail = sEmail;
+                    //    emailVerified = true;
+                    //}
+                    //if (sType == "Google")
+                    //{
+                    //    var payload = await ValidateGoogle(sGToken);
+                    //    payloadEmail = payload.Email;
+                    //    emailVerified = payload.EmailVerified;
+                    //}
 
                     if (emailVerified && payloadEmail == sEmail)
                     {

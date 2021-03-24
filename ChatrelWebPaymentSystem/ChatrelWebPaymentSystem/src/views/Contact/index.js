@@ -1,29 +1,13 @@
 
 import React from 'react';
 import { Card } from '@material-ui/core';
-import {Link, Box, Container, Grid, Button,CardContent,Tooltip, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
-import PropTypes from 'prop-types';
+import {Grid} from '@material-ui/core';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import { TableBodyRow } from 'mui-datatables';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { subMinutes } from 'date-fns';
-import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
-import Moment from 'moment';
-import avatar1 from '../../assets/images/avatars/avatar1.jpg';
 
-import stock3 from '../../assets/images/stock-photos/stock-3.jpg';
+import { useSelector } from 'react-redux';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -139,7 +123,7 @@ const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
          
          
       </div>
-    {/*    <Button variant="outlined" color="primary" type="submit" >Verify &amp; Pay</Button>*/}
+   
                             </Card>
          
      

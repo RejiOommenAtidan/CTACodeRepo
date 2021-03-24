@@ -18,7 +18,6 @@ import {
   sFailurePayPalWebPageURL,
   sFontName,
   sFontNameBold,
-  sPayPalBASEURL,
   sSuccessPayPalWebPageURL,
   sFolderName,
   sReceiptDownloadMessageAndroid,
@@ -33,6 +32,8 @@ import {
   sContactEmail,
   sAttentionRequired,
   sPayPalUIErrorMessage,
+  sSomethingWentWrongPleaseTryAgainLater,
+  sContributionUnsuccessful,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import {Loader} from '../components/Loader';
@@ -57,34 +58,22 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import base64 from 'react-native-base64';
 import RNFetchBlob from 'react-native-fetch-blob';
 import Toast from 'react-native-root-toast';
 
 export const Chatrel = (props) => {
-  // let bCallRunOnce = false;
   const [bCallRunOnce, setbCallRunOnce] = useState(false);
+  const [sPayPalBASEURL, setsPayPalBASEURL] = useState('');
   const [
     bDisplayAuthorityRegionOnceOnChange,
     setbDisplayAuthorityRegionOnceOnChange,
   ] = useState(true);
-  const [sPayPalClientIDAPI, setsPayPalClientIDAPI] = useState('');
-  const [sPayPalClientSecretAPI, setsPayPalClientSecretAPI] = useState('');
-  const [bPaymentIDDialogVisible, setbPaymentIDDialogVisible] = useState(false);
   const {control, handleSubmit, errors} = useForm();
-  //let validationForAutocomplete = true;
-  // const [bValidateAutocomplete, setbValidateAutocomplete] = useState(false);
   const [lBValidateAutocomplete, setlBValidateAutocomplete] = useState(true);
-  //let mytempDefaultValueArray = [];
-  const autoCompleteRef = useRef('');
-  const [bEnableScrollView, setbEnableScrollView] = useState(true);
   //for Main Data
   const [lAuthRegions, setlAuthRegions] = React.useState([]);
   //for filtered data
   const [lFilteredAuthRegions, setlFilteredAuthRegions] = React.useState(null);
-  // for selected Auth region
-  const [oSelectedAuthRegion, setoSelectedAuthRegion] = React.useState({});
-
   const findAuthRegion = (sAuthRegionNameQueryParam, mainIndex) => {
     // Method called every time when we change the value of the input
     let myTempAuthRegionsArray = [];
@@ -113,16 +102,13 @@ export const Chatrel = (props) => {
       );
 
       setlFilteredAuthRegions(myTempAuthRegionsArray);
-
       setlBValidateAutocomplete(myTempBValidateArray);
     } else {
       // If the query is null then return blank
-      // lFilteredAuthRegions[mainIndex] = [];
       myTempAuthRegionsArray[mainIndex] = [];
       myTempBValidateArray[mainIndex] = false;
       setlFilteredAuthRegions(myTempAuthRegionsArray);
       setlBValidateAutocomplete(myTempBValidateArray);
-      // setlFilteredAuthRegions([]);
     }
   };
 
@@ -134,7 +120,6 @@ export const Chatrel = (props) => {
   const [approvalUrl, setapprovalUrl] = useState(null);
   const [sAccessToken, setsAccessToken] = useState('');
   const [paymentID, setpaymentID] = useState('');
-  const [sPayerID, setsPayerID] = useState('');
   const [bPaymentModal, setbPaymentModal] = useState(false);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
@@ -238,7 +223,6 @@ export const Chatrel = (props) => {
   };
 
   const runOnce = () => {
-    debugger;
     if (aGBChatrels && dollarToRupees && shouldRun) {
       if (!outstanding) {
         //for employment & donation issue
@@ -256,46 +240,8 @@ export const Chatrel = (props) => {
           setnGrandTotal(0.0);
           setGBChatrelsNull(true);
         }
-        // //for switch employment
-        // if (
-        //   aGBChatrels[0].nCurrentChatrelSalaryAmt === undefined &&
-        //   aGBChatrels[0].sAuthRegionCurrency === 'USD'
-        // ) {
-        //   // setaGBChatrels(
-        //   //   aGBChatrels.map((element) => {
-        //   //     element.nChatrelTotalAmount = dataAPI.nSalaryUSD;
-        //   //     element.nCurrentChatrelSalaryAmt = dataAPI.nSalaryUSD;
-        //   //     return element;
-        //   //   }),
-        //   // );
-        //   // setnGrandTotal(dataAPI.nSalaryUSD);
-        //   // setGBChatrelsNull(true);
-        //   setaGBChatrels(
-        //     aGBChatrels.map((element) => {
-        //       element.nChatrelTotalAmount = dataAPI.nSalaryUSD;
-        //       element.nCurrentChatrelSalaryAmt = dataAPI.nSalaryUSD;
-        //       return element;
-        //     }),
-        //   );
-        //   setnGrandTotal(dataAPI.nSalaryUSD);
-        //   setGBChatrelsNull(true);
-        // }
       } else {
         const len = aGBChatrels.length;
-        // if (
-        //   len === 1 &&
-        //   aGBChatrels[0].nCurrentChatrelSalaryAmt === undefined && aGBChatrels[0].sAuthRegionCurrency === "USD"
-        // ) {
-        //   setaGBChatrels(
-        //     aGBChatrels.map((element) => {
-        //       element.nChatrelTotalAmount = 0;
-        //       element.nCurrentChatrelSalaryAmt = 0;
-        //       return element;
-        //     }),
-        //   );
-        //   setnGrandTotal(0);
-        //   setGBChatrelsNull(true);
-        // }
         for (var i = 0; i < len; i++) {
           calculateMethod(i);
         }
@@ -307,7 +253,6 @@ export const Chatrel = (props) => {
   const updateAuthRegion = (index, value) => {
     let chatrelObj = [...aGBChatrels];
     let value1 = lAuthRegions.find((x) => x.id === value.id);
-    //console.log(bDisplayAuthorityRegionOnceOnChange);
 
     for (var forIndex = index; forIndex < chatrelObj.length; forIndex++) {
       chatrelObj[forIndex].nAuthRegionID = value1.id;
@@ -339,7 +284,7 @@ export const Chatrel = (props) => {
       setbDisplayAuthorityRegionOnceOnChange(false);
       setTimeout(() => {
         Alert.alert(
-          '',
+          sAttentionRequired,
           sINRAuthRegionHelpMessage,
           [
             {
@@ -483,7 +428,7 @@ export const Chatrel = (props) => {
       gbChatrelDonation: donationObj,
     };
 
-    console.log('Final Obj:', finalObj);
+    //console.log('Final Obj:', finalObj);
 
     setbLoader(true);
     setbRender(false);
@@ -514,7 +459,6 @@ export const Chatrel = (props) => {
           // };
           // dispatch(storeJWTToken(oSession));
         } else {
-          //setbTransactionIDDialogVisible(true);
           setTimeout(() => {
             Alert.alert(
               sAttentionRequired,
@@ -549,47 +493,15 @@ export const Chatrel = (props) => {
               ],
               {
                 cancelable: false,
-                //onDismiss:()=>{}
               },
             );
           }, 1000);
-          // setTimeout(() => {
-          //   <Dialog.Container visible={bTransactionIDDialogVisible}>
-          //     <Dialog.Title>Attention Required</Dialog.Title>
-          //     <Dialog.Description>
-          //       {'Cannot Connect to Server, Please save PayPal Transaction ID: ' +
-          //         paypalObj.id +
-          //         ' and Contact CTA'}
-          //     </Dialog.Description>
-          //     <Dialog.Button
-          //       label="sCopyPayPalTransactionID"
-          //       onPress={() => {
-          //         Clipboard.setString(paypalObj.id);
-          //         Toast.show(sPayPalTransactionIDCopied, {
-          //           duration: Toast.durations.SHORT,
-          //           position: Toast.positions.BOTTOM,
-          //           shadow: true,
-          //           animation: true,
-          //           hideOnPress: true,
-          //           delay: 0,
-          //         });
-          //       }}
-          //     />
-          //     <Dialog.Button
-          //       label="Close"
-          //       onPress={() => {
-          //         setbTransactionIDDialogVisible(false);
-          //       }}
-          //     />
-          //   </Dialog.Container>
-          // }, 1000);
         }
       });
   };
 
   useEffect(() => {
     if (isFocused) {
-      console.log('Chatrel Common Component Called');
       setbRender(false);
       setbLoader(true);
       setDisplayFileDispute(false);
@@ -602,6 +514,7 @@ export const Chatrel = (props) => {
       setaGBChatrels([]);
       setOutstanding(true);
       setBasicResponse(0);
+      setsPayPalBASEURL('');
       getChatrelDetails();
       setbDisplayAuthorityRegionOnceOnChange(true);
       //setShouldRun(true);
@@ -634,11 +547,10 @@ export const Chatrel = (props) => {
                   setbRender(true);
                   setDisplayFileDispute(true);
                 } else {
-                  console.log(resp.data);
-                  console.log('Client ID: ' + resp.data.clientId);
-                  console.log('Client Secret: ' + resp.data.secret);
-                  setsPayPalClientIDAPI(resp.data.clientId);
-                  setsPayPalClientSecretAPI(resp.data.secret);
+                  debugger;
+                  setsPayPalBASEURL(
+                    resp.data.payPalAuthURL.replace('/v1/oauth2/token', ''),
+                  );
                   setsCountryID(resp.data?.chatrel?.sCountryID);
                   if (
                     resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0
@@ -691,11 +603,6 @@ export const Chatrel = (props) => {
                     nBusinessDonation,
                   );
 
-                  debugger;
-                  console.log(aGBChatrelsUSDEnabled);
-                  console.log(
-                    resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt,
-                  );
                   if (
                     aGBChatrelsUSDEnabled &&
                     resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt > 0
@@ -704,7 +611,6 @@ export const Chatrel = (props) => {
                       resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0
                     ) {
                       //for employment & donation switch issue for undefined
-
                       if (
                         aGBChatrelsUSDEnabled.length === 1 &&
                         aGBChatrelsUSDEnabled[0].sAuthRegionCurrency ===
@@ -740,7 +646,13 @@ export const Chatrel = (props) => {
                     .then((response) => response.json())
                     .then((data) => {
                       setDollarToRupees(data.rates.USD);
-                      if (myINRAuthRegion.sCurrencyCode === 'INR') {
+                      if (
+                        myINRAuthRegion.sCurrencyCode === 'INR' &&
+                        !(
+                          resp.data.chatrel.gbChatrels[0]
+                            .nCurrentChatrelSalaryAmt > 0
+                        )
+                      ) {
                         setTimeout(() => {
                           Alert.alert(
                             sAttentionRequired,
@@ -772,7 +684,7 @@ export const Chatrel = (props) => {
                 setTimeout(() => {
                   Alert.alert(
                     sAttentionRequired,
-                    'Something went wrong, please try again later',
+                    sSomethingWentWrongPleaseTryAgainLater,
                     [
                       {
                         text: 'Ok',
@@ -799,7 +711,7 @@ export const Chatrel = (props) => {
           setTimeout(() => {
             Alert.alert(
               sAttentionRequired,
-              'Something went wrong, please try again later',
+              sSomethingWentWrongPleaseTryAgainLater,
               [
                 {
                   text: 'Ok',
@@ -831,14 +743,12 @@ export const Chatrel = (props) => {
   }, [lAuthRegions, dataAPI, isFocused]);
 
   const onNavigationStateChange = (webViewState) => {
-    // console.log(webViewState.title);
-    // console.log(webViewState.url);
     if (webViewState.url.includes(sFailurePayPalWebPageURL)) {
       setbPaymentModal(false);
       setTimeout(() => {
         Alert.alert(
-          'Contribution Unsuccessful',
-          'Some thing went wrong. Please try again later',
+          sContributionUnsuccessful,
+          sSomethingWentWrongPleaseTryAgainLater,
           [
             {
               text: 'Ok',
@@ -849,6 +759,7 @@ export const Chatrel = (props) => {
           {cancelable: false},
         );
       }, 1000);
+      return;
     }
     // get payer from of the url
     if (
@@ -864,16 +775,9 @@ export const Chatrel = (props) => {
         params[check[1]] = check[2];
       }
       //console.log("params", params);
-      // setsPayerID(params.PayerID);
-      // sPayerID = params.PayerID;
 
-      {
-        /*Fourth Step: Capture payment Request*/
-      }
       var axios = require('axios');
       var dataFourth = JSON.stringify({payer_id: params.PayerID});
-
-      //debugger;
       var fourthConfig = {
         baseURL: sPayPalBASEURL,
         method: 'post',
@@ -884,12 +788,9 @@ export const Chatrel = (props) => {
         },
         data: dataFourth,
       };
-      //debugger;
+
       axios(fourthConfig)
         .then(function (response) {
-          {
-            /*Fifth Step: Payment verification Request*/
-          }
           var fifthConfig = {
             baseURL: sPayPalBASEURL,
             method: 'get',
@@ -910,7 +811,7 @@ export const Chatrel = (props) => {
               setTimeout(() => {
                 Alert.alert(
                   sAttentionRequired,
-                  'Cannot verify contribution from PayPal, Please save PayPal Payment ID: ' +
+                  'Cannot verify contribution from PayPal, Please save PayPal Order ID: ' +
                     paymentID +
                     '\nand contact CTA at ' +
                     sContactEmail,
@@ -919,6 +820,7 @@ export const Chatrel = (props) => {
                       text: sCopyPayPalPaymentID,
                       onPress: () => {
                         Clipboard.setString(paymentID);
+                        // Clipboard.setString(JSON.stringify(error));
                         Toast.show(sPayPalPaymentIDCopied, {
                           duration: Toast.durations.SHORT,
                           position: Toast.positions.BOTTOM,
@@ -947,11 +849,11 @@ export const Chatrel = (props) => {
             });
         })
         .catch(function (error) {
-          console.error('Caught in Step 4: ' + error);
+          console.error('Caught in Step 4: ' + error.response);
           setTimeout(() => {
             Alert.alert(
               sAttentionRequired,
-              'Cannot verify contribution from PayPal, Please save PayPal Payment ID: ' +
+              'Cannot verify contribution from PayPal, Please save PayPal Order ID: ' +
                 paymentID +
                 '\nand contact CTA at ' +
                 sContactEmail,
@@ -960,6 +862,7 @@ export const Chatrel = (props) => {
                   text: sCopyPayPalPaymentID,
                   onPress: () => {
                     Clipboard.setString(paymentID);
+                    // Clipboard.setString(JSON.stringify(error.response));
                     Toast.show(sPayPalPaymentIDCopied, {
                       duration: Toast.durations.SHORT,
                       position: Toast.positions.BOTTOM,
@@ -1094,7 +997,6 @@ export const Chatrel = (props) => {
                 color={Colors.white}
                 iconStyle={styles.iconStyles}
                 iconProps={{}}
-                //underlayColor={Colors.websiteLightBlueColor}
                 backgroundColor={Colors.websiteLightBlueColor}
                 size={40}
                 type="font-awesome-5"
@@ -1157,7 +1059,6 @@ export const Chatrel = (props) => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           keyboardShouldPersistTaps="always"
-          //scrollEnabled={bEnableScrollView}
           style={styles.mainContainer}>
           <Modal
             visible={bPaymentModal}
@@ -1210,14 +1111,6 @@ export const Chatrel = (props) => {
                     }}>
                     Thank you for your chatrel contribution.
                   </Text>
-                  {/* <Text
-                    style={{
-                      ...styles.valueComponent,
-                      fontFamily: sHimalayaFontName,
-                      fontSize: Platform.OS === 'android' ? wp(4.75) : wp(5),
-                    }}>
-                    བོད་མིའི་སྒྲིག་འཛུགས་དཔལ་འབྱོར་ལས་ཁུངས་ནས།
-                  </Text> */}
                   <Button
                     title="DOWNLOAD RECEIPT"
                     titleStyle={{
@@ -1337,20 +1230,6 @@ export const Chatrel = (props) => {
                   </View>
                 </View>
               </Card>
-              {/* <View>
-            <Text style={styles.textComponent}>DATE OF BIRTH</Text>
-          </View>
-          <View>
-            <Text style={styles.textComponentAPI}>{oGBDetails.dtDOB}</Text>
-          </View> */}
-              {/* <View>
-            <Text style={styles.textComponent}>CHATREL OF YEARS DUE</Text>
-          </View>
-          <View>
-            <Text style={styles.textComponentAPI}>
-              {Moment().diff(nPaidUntil, 'years')} Years
-            </Text>
-          </View> */}
               <View>
                 <Text style={styles.headerComponent}>CHATREL BALANCE</Text>
               </View>
@@ -1525,7 +1404,6 @@ export const Chatrel = (props) => {
                                         control={control}
                                         render={({onChange, onBlur, value}) => (
                                           <Input
-                                            // value={oSelectedAuthRegion.sAuthRegion}
                                             {...props}
                                             disabled={!outstanding}
                                             disabledInputStyle={{
@@ -1598,18 +1476,6 @@ export const Chatrel = (props) => {
                                   )}
                                   placeholder="Enter Authority Region"
                                   clearButtonMode={'while-editing'}
-                                  // renderSeparator={(sID,rID,adjRowHightlighted)=>{
-                                  //   return(
-                                  //   <View style={{
-                                  //     borderStyle:"solid",
-                                  //     borderBottomColor:Colors.black,
-                                  //     borderBottomWidth:1,
-                                  //     paddingVertical:hp(2)
-
-                                  //   }}>
-                                  //   </View>
-                                  //   )
-                                  // }}
                                   renderItem={({
                                     item,
                                     indexForSuggestionItem,
@@ -1723,12 +1589,6 @@ export const Chatrel = (props) => {
                                       padding: 0,
                                     }}
                                     inputContainerStyle={{
-                                      //borderBottomWidth:0,
-                                      //borderTopWidth:0,
-                                      //width:wp(60),
-                                      //align
-                                      //padding:0
-
                                       margin: 0,
                                       padding: 0,
                                       borderTopWidth: 0,
@@ -1744,15 +1604,6 @@ export const Chatrel = (props) => {
                                       borderRightWidth: 0,
                                       width: hp(7.5),
                                       height: hp(0.25),
-                                      //marginBottom:hp(1)
-                                      // paddingBottom: 0,
-                                      // marginBottom: 0,
-                                      // height:hp(5),
-                                      // borderBottomWidth: 1,
-                                      // //height:hp(10)
-                                      //paddingHorizontal:0,
-                                      //borderTopWidth:0,
-                                      //borderBottomWidth:0
                                     }}
                                     style={{
                                       textAlign: 'right',
@@ -1808,7 +1659,10 @@ export const Chatrel = (props) => {
                                     key={year.nChatrelYear}
                                     trackColor={{
                                       true: Colors.websiteLightBlueColor,
-                                      false: Colors.white,
+                                      false:
+                                        Platform.OS === 'ios'
+                                          ? Colors.white
+                                          : Colors.grey,
                                     }}
                                     thumbColor={
                                       year.nCurrentChatrelSalaryAmt === 0
@@ -1970,10 +1824,6 @@ export const Chatrel = (props) => {
                           <Text
                             style={{
                               ...styles.textComponent,
-                              //textAlign: 'left',
-                              //fontStyle: 'normal',
-                              //fontWeight: 'bold',
-                              // marginLeft: wp(12.5),
                               fontSize: wp(5),
                               color: Colors.black,
                               fontWeight:
@@ -1988,8 +1838,6 @@ export const Chatrel = (props) => {
                           <Text
                             style={{
                               ...styles.textComponentAPI,
-                              //textAlign: 'center',
-                              //fontStyle: 'normal',
                               textAlign: 'right',
                               fontSize: wp(5),
                               fontWeight:
@@ -2008,9 +1856,6 @@ export const Chatrel = (props) => {
                   </View>
                 );
               })}
-              {/* <View>
-                <Text style={styles.headerComponent}>ADDITIONAL CHATREL</Text>
-              </View> */}
               <Card
                 //key={year.nChatrelYear}
                 containerStyle={{
@@ -2178,138 +2023,87 @@ export const Chatrel = (props) => {
                       setbLoader(true);
                       setbRender(false);
                       {
-                        /*Step 1: Get Access Token*/
+                        /*Step 1: Get Access Token from Our API*/
                       }
-                      var axios = require('axios');
-                      var qs = require('qs');
-                      var data = qs.stringify({
-                        grant_type: 'client_credentials',
-                      });
-                      var stepOneConfig = {
-                        baseURL: sPayPalBASEURL,
-                        method: 'post',
-                        url: '/v1/oauth2/token',
-                        headers: {
-                          accept: 'application/json',
-                          'accept-language': 'en_US',
-                          'content-type': 'application/x-www-form-urlencoded',
-                          Authorization:
-                            'Basic ' +
-                            base64.encode(
-                              sPayPalClientIDAPI + ':' + sPayPalClientSecretAPI,
-                            ),
-                        },
-                        data: data,
-                      };
-
-                      axios(stepOneConfig)
-                        .then(function (response) {
-                          setsAccessToken(response.data.access_token);
-                          {
-                            /*Step 2: Create Order*/
-                          }
-
-                          var dataDetail = {
-                            // intent: 'CAPTURE',
-                            // payer: {
-                            //   payment_method: 'paypal',
-                            // },
-                            intent: 'CAPTURE',
-                            // payer: {
-                            //   payment_method: 'paypal',
-                            // },
-                            // payment_method: {
-                            //   payee_preferred: 'UNRESTRICTED',
-                            // },
-                            // payee: {
-                            //   //email: 'ctadummy101@gmail.com',
-                            //   merchant_id: 'NFANBVBZ4RSE2',
-                            //   // payment_method: "paypal"
-                            // },
-                            purchase_units: [
-                              {
-                                reference_id: 'PUHF',
-                                amount: {
-                                  currency_code: 'USD',
-                                  value: nGrandTotal.toFixed(2).toString(),
+                      axios
+                        .get(`/ChatrelPayment/GetPayPalAccessToken`)
+                        .then((resp) => {
+                          if (resp.status === 200) {
+                            setsAccessToken(resp.data.access_token);
+                            {
+                              /*Step 2: Create Order*/
+                            }
+                            var axiosSecond = require('axios');
+                            var dataDetail = {
+                              intent: 'CAPTURE',
+                              purchase_units: [
+                                {
+                                  reference_id: 'PUHF',
+                                  amount: {
+                                    currency_code: 'USD',
+                                    value: nGrandTotal.toFixed(2).toString(),
+                                  },
                                 },
+                              ],
+                              application_context: {
+                                return_url: sSuccessPayPalWebPageURL,
+                                cancel_url: sFailurePayPalWebPageURL,
                               },
-                            ],
-                            application_context: {
-                              return_url: sSuccessPayPalWebPageURL,
-                              cancel_url: sFailurePayPalWebPageURL,
-                            },
-                          };
-
-                          var stepTwoConfig = {
-                            baseURL: sPayPalBASEURL,
-                            method: 'post',
-                            url: '/v2/checkout/orders',
-                            headers: {
-                              Authorization:
-                                'Bearer ' + response.data.access_token,
-                              Accept: 'application/json',
-                              'accept-language': 'en_US',
-                              'Content-Type': 'application/json',
-                            },
-                            data: dataDetail,
-                          };
-                          axios(stepTwoConfig)
-                            .then(function (response) {
-                              //console.log(JSON.stringify(response.data));
-                              setpaymentID(response.data.id);
-                              pingPong();
-                              // paymentID = response.data.id;
-                              const aLinks = response.data.links;
-                              let myApprovalLink = aLinks.find(
-                                (link) => link.rel === 'approve',
-                              );
-                              setapprovalUrl(myApprovalLink.href);
-                              // navigation.navigate('MyWebView', {
-                              //   approvalUrl: myApprovalHref,
-                              //   payerId: paymentID,
-                              // });
-                              // navigation.navigate('MyWebView', {
-                              //   screen: 'MyWebView',
-                              //   params: {
-                              //     approvalUrl: myApprovalHref,
-                              //     paymentID: paymentID,
-                              //     sAccessToken: sAccessToken,
-                              //   },
-                              // });
-                              //setbLoader(false);
-                              setbLoader(false);
-                              setbRender(true);
-                              {
-                                /*Step 3: Web View*/
-                              }
-                              setbPaymentModal(true);
-                            })
-                            .catch(function (error) {
-                              //debugger;
-                              console.log('step 3');
-                              console.error(error.response);
-                              setbLoader(false);
-                              setbRender(true);
-                              setTimeout(() => {
-                                Alert.alert(
-                                  sAttentionRequired,
-                                  sPayPalUIErrorMessage,
-                                  [
-                                    {
-                                      text: 'Ok',
-                                      onPress: () => true,
-                                      style: 'cancel',
-                                    },
-                                  ],
+                            };
+                            var stepTwoConfig = {
+                              baseURL: sPayPalBASEURL,
+                              method: 'post',
+                              url: '/v2/checkout/orders',
+                              headers: {
+                                Authorization:
+                                  'Bearer ' + resp.data.access_token,
+                                Accept: 'application/json',
+                                'accept-language': 'en_US',
+                                'Content-Type': 'application/json',
+                              },
+                              data: dataDetail,
+                            };
+                            axiosSecond(stepTwoConfig)
+                              .then(function (response) {
+                                setpaymentID(response.data.id);
+                                pingPong();
+                                const aLinks = response.data.links;
+                                let myApprovalLink = aLinks.find(
+                                  (link) => link.rel === 'approve',
                                 );
-                              }, 1000);
-                              console.log(error);
-                            });
+                                setapprovalUrl(myApprovalLink.href);
+
+                                setbLoader(false);
+                                setbRender(true);
+                                {
+                                  /*Step 3: Web View Show*/
+                                }
+                                setbPaymentModal(true);
+                              })
+                              .catch(function (error) {
+                                console.error(error.response);
+                                setbLoader(false);
+                                setbRender(true);
+                                setTimeout(() => {
+                                  Alert.alert(
+                                    sAttentionRequired,
+                                    sPayPalUIErrorMessage,
+                                    [
+                                      {
+                                        text: 'Ok',
+                                        onPress: () => true,
+                                        style: 'cancel',
+                                      },
+                                    ],
+                                  );
+                                }, 1000);
+                                console.log(error);
+                              });
+                          } else {
+                            console.log(resp.data);
+                          }
                         })
-                        .catch(function (error) {
-                          //debugger;
-                          console.error(error);
+                        .catch((error) => {
                           setbLoader(false);
                           setbRender(true);
                           setTimeout(() => {
@@ -2326,7 +2120,6 @@ export const Chatrel = (props) => {
                               {cancelable: false},
                             );
                           }, 1000);
-                          console.log(error);
                         });
                     },
                   }}
@@ -2371,18 +2164,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     fontFamily: sFontName,
   },
-  // chatrelTextComponent: {
-  //   marginTop: 15,
-  //   textAlign: 'left',
-  //   fontSize: 24,
-  //   fontStyle: 'normal',
-  //   color: Colors.ChatrelInfoBlue,
-  //   marginBottom: 10,
-  //   fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-  //   fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
-  // },
   chatrelYearComponent: {
-    // marginBottom: 15,
     fontSize: wp(7),
     fontStyle: 'normal',
     textAlign: 'left',
@@ -2433,16 +2215,8 @@ const styles = StyleSheet.create({
   businessDonationComponent: {},
   grandTotalComponent: {
     textAlign: 'right',
-    //fontSize: 28,
-    // fontWeight: 'bold',
-    // fontStyle: 'normal',
-    //color: Colors.ChatrelYearGreen,
   },
-  grandTotalContainer: {
-    //marginBottom: 10,
-    //width:"",
-    //height: hp(7.5),
-  },
+  grandTotalContainer: {},
   paypalButtonContainer: {
     marginVertical: 10,
   },
@@ -2537,7 +2311,6 @@ const styles = StyleSheet.create({
     margin: hp(2),
   },
   iconContainerStyles: {
-    // backgroundColor:Colors.white,
     alignSelf: 'center',
     position: 'absolute',
     top: -55,
@@ -2560,7 +2333,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     textAlign: 'center',
     color: Colors.labelColorLight,
-    //lessen from 5 to 3.5
     lineHeight: hp(3.5),
   },
   viewMarginComponent: {

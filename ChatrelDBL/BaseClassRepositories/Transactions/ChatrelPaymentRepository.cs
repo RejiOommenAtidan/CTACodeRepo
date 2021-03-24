@@ -1000,7 +1000,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         #region Get Chatrel Year range for a GBID (if Paid)
         private int[] GetToFromChatrelYear(string sGBID)
         {
-            string sql = "SET SESSION sql_mode = '';SELECT min(l2.nChatrelYear), max(nChatrelYear) FROM lnkgbchatrel l2 WHERE l2.sGBId = @sGBID AND l2.chatrelpaymentID = (SELECT (l2.chatrelpaymentID) FROM lnkgbchatrel l2 WHERE l2.nChatrelYear = (SELECT max(l.nChatrelYear) FROM lnkgbchatrel l WHERE sGBId = @sGBID GROUP BY sGBId) AND l2.sGBId  = @sGBID and l2.nChatrelAmount != 0.00 );";
+            string sql = "SET SESSION sql_mode = '';SELECT min(l2.nChatrelYear), max(nChatrelYear) FROM lnkgbchatrel l2 WHERE l2.sGBId = @sGBID AND l2.chatrelpaymentID = (SELECT max(l2.chatrelpaymentID) FROM lnkgbchatrel l2 WHERE l2.nChatrelYear = (SELECT max(l.nChatrelYear) FROM lnkgbchatrel l WHERE sGBId = @sGBID GROUP BY sGBId) AND l2.sGBId  = @sGBID and l2.nChatrelAmount != 0.00 );";
             using(MySqlCommand command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sGBID", sGBID);

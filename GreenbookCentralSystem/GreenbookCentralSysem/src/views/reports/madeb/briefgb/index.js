@@ -1,34 +1,9 @@
 import { useHistory } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Moment from 'moment';
-import {
-  Box,
-  Container,
-  Grid,
-  Button,
-  Typography,
-  FormControl,
-  TextField,
-  Breadcrumbs,
-  Link,
-  Paper,
-  Checkbox,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-  Table,
-  TableBody,
-  TableHead,
-  TableCell,
-  TableRow,
-  Select,
-  InputLabel,
-  MenuItem
-
-} from '@material-ui/core';
+import { Button, FormControl, Paper, Select, InputLabel, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders, sDDMMYYYYRegex, sDateFormatMUIDatepicker, sISODateFormat  } from '../../../../config/commonConfig';
 import { useForm, Controller } from "react-hook-form";
@@ -205,6 +180,7 @@ export default function Report() {
 
       },
     },
+    
     {
       field: "madebCancelled",
       title: "MADEB CANCELLED",
@@ -224,6 +200,25 @@ export default function Report() {
       },
     },
 
+    {
+      field: "madebClosed",
+      title: "MADEB CLOSED/DELETED",
+      
+      headerStyle: {
+        padding: '5px',
+
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+
+        textAlign: 'center',
+        border: '1px solid black'
+
+
+      },
+    },
     {
       field: "madebTotalReceived",
       title: "TOTAL RECEIVED",
@@ -256,8 +251,8 @@ export default function Report() {
       setBackdrop(true);
       axios.get(`/Report/GetReportCTAMadebRegionOrCountryWiseBriefGB/?sMadebDisplayKey=` + madebType + `&dtRecordFrom=` + dtFrom + `&dtRecordTo=` + dtTo + `&sGroupBy=` + groupBy + `&sOrderBy=` + orderBy)
         .then(resp => {
+          setBackdrop(false);
           if (resp.status === 200) {
-            setBackdrop(false);
             const grouping = orderBy === 'lstcountry.sCountry' ? 'Country Wise' : 'Region Wise'
             setTitle(`Madeb Brief GB ${grouping} Report from ${Moment(dtFrom).format(sDateFormat)} to ${Moment(dtTo).format(sDateFormat)}` );
             if (resp.data.length == 0) {
@@ -268,7 +263,7 @@ export default function Report() {
             }
             else {
               let x = 1;
-              let total = { 'no': '', 'sPlaceName': 'Total', 'madebPending': 0, 'madebIssued': 0, 'madebRejected': 0, 'madebDouble': 0, 'madebCancelled': 0, 'madebTotalReceived': 0 };
+              let total = { 'no': '', 'sPlaceName': 'Total', 'madebPending': 0, 'madebIssued': 0, 'madebRejected': 0, 'madebDouble': 0, 'madebCancelled': 0, 'madebClosed' : 0, 'madebTotalReceived': 0 };
               resp.data.forEach((element) => {
                 //element.dtFormattedIssuedDate = element.dtIssuedDate ? Moment(element.dtIssuedDate).format(sDateFormat) : null;
                 element.no = x;
@@ -278,6 +273,7 @@ export default function Report() {
                 total.madebRejected += element.madebRejected;
                 total.madebDouble += element.madebDouble;
                 total.madebCancelled += element.madebCancelled;
+                total.madebClosed += element.madebClosed;
                 total.madebTotalReceived += element.madebTotalReceived;
               })
               resp.data.push(total);
@@ -287,19 +283,19 @@ export default function Report() {
           }
         })
         .catch(error => {
+          setBackdrop(false);
+          console.error('Error', error.message);
+            setAlertMessage('Error', error.messag);
+            setAlertType('error');
+            snackbarOpen();
           if (error.response) {
             console.error(error.response.data);
             console.error(error.response.status);
             console.error(error.response.headers);
           } else if (error.request) {
             console.warn(error.request);
-          } else {
-            console.error('Error', error.message);
-            setAlertMessage('Error', error.messag);
-            setAlertType('error');
-            snackbarOpen();
-          }
-          console.log(error.config);
+          } 
+          console.log(error.message);
         })
         .then(release => {
           //console.log(release); => udefined

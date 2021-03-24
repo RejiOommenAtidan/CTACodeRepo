@@ -32,12 +32,14 @@ namespace ChatrelPaymentWebAPI.Services
                 {
                                  new Claim(ClaimTypes.NameIdentifier, user.User.sGBID),
                                  new Claim(ClaimTypes.DateOfBirth, user.User.dtDOB.ToString()),
-                                 new Claim(ClaimTypes.Email, user.User.sLoginGmail)
+                                 new Claim(ClaimTypes.Email, user.User.sLoginGmail),
+                                 new Claim(ClaimTypes.Name, user.User.sFirstName)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(dTimeout),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
+            var expiry = (token.ValidFrom - token.ValidTo).Minutes;
             return tokenHandler.WriteToken(token);
         }
     }

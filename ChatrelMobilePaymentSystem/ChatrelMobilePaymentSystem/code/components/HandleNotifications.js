@@ -80,7 +80,7 @@ class HandleNotifications extends Component {
     Alert.alert(
       title,
       body,
-      [{text: 'Ok', onPress: () => console.log('Ok Pressed')}],
+      [{text: 'Ok', onPress: () => console.log('Dismissed Notification')}],
       {cancelable: false},
     );
   }

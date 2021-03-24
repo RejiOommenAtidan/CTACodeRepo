@@ -30,6 +30,3 @@ export default {
   MyProfileAgeColor: '#f22341',
   MyProfileAuthorityRegionColor: '#28c741',
 };
-
-//Old Green - #298851
-//primary blue color - #4c69ae

@@ -1,5 +1,5 @@
-DB1AdminConnection : Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=ctadb; Uid=ctamysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;
-DB2ChatrelConnection : Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=chatreldb; Uid=ctamysqldba@ctamysqldb01;Pwd=ekXP9qVo$12na; SslMode=Preferred;
-AdminDBName : ctadb
-ChatrelDBName : chatreldb
+DB1AdminConnection : Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=ctauatdb; Uid=ctamysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;
+DB2ChatrelConnection : Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=chatreluatdb; Uid=ctamysqldba@ctamysqldb01;Pwd=ekXP9qVo$12na; SslMode=Preferred;
+AdminDBName : ctauatdb
+ChatrelDBName : chatreluatdb
 LogPath : d:\log\ 

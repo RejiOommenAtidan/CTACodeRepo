@@ -13,7 +13,7 @@ namespace CTADBL.BaseClassRepositories.Masters
     {
         private static IEnumerable<CTAConfig> _configs;
 
-        public static IEnumerable<CTAConfig> configs
+        private static IEnumerable<CTAConfig> configs
         {
             get
             {
@@ -54,7 +54,7 @@ namespace CTADBL.BaseClassRepositories.Masters
         public IEnumerable<CTAConfig> GetAllConfig()
         {
 
-            return configs;
+            return configs.Where(config => config.sKey != "BookSerialNumber" && config.sKey != "EncryptionKey");
             //string sql = @"SELECT `Id`,
             //                    `sKey`,
             //                    `sValue`,

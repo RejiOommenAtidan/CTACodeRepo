@@ -21,10 +21,10 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 //export const sAPIBASEURL = "http://172.28.21.2:9001/api";
 
 //QA
-export const sAPIBASEURL = "https://cta-portal-webapi.azurewebsites.net/api";
+//export const sAPIBASEURL = "https://cta-portal-webapi.azurewebsites.net/api";
 
 //UAT
-//export const sAPIBASEURL = "https://cta-portal-webapi-uat.azurewebsites.net/api";
+export const sAPIBASEURL = "https://cta-portal-webapi-uat.azurewebsites.net/api";
 
 export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record added successfully";
@@ -34,10 +34,10 @@ export const sISODateFormat = "YYYY-MM-DD";
 export const sDateFormatMUIDatepicker = "dd-MM-yyyy";
 export const sDateFormatChatrel = "dd/MM/yyyy";
 export const sDateFormatChatrelMoment = "DD/MM/YYYY";
-export const errorText=<span style={{ color: "red" }}>
-This field is required
+export const errorText = <span style={{ color: "red" }}>
+  This field is required
 </span>
-export const asterisk=<span style={{ color: 'red' }}> *</span>;
+export const asterisk = <span style={{ color: 'red' }}> *</span>;
 export const aPageSizeArray = [5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 100];
 export const nPageSize = 15;
 export const oOptions = {
@@ -70,16 +70,16 @@ export const oOptions = {
     textAlign: "left",
     padding: '5px',
     border: '1px solid black'
-    
+
   },
   pageSize: nPageSize,
   pageSizeOptions: aPageSizeArray,
   rowStyle: x => {
     if (x.tableData.id % 2) {
-      return { color: "#000000" ,  backgroundColor: "#f2f2f2", padding: '0' }
+      return { color: "#000000", backgroundColor: "#f2f2f2", padding: '0' }
     }
     else {
-      return { color: "#000000" ,  padding: '0' }
+      return { color: "#000000", padding: '0' }
     }
   }
 };
@@ -104,7 +104,7 @@ export const modifyHeaders = () => {
 };
 
 export const oTableIcons = {
-  Refresh : forwardRef((props, ref) => <Refresh {...props} color={"primary"} ref={ref} />),
+  Refresh: forwardRef((props, ref) => <Refresh {...props} color={"primary"} ref={ref} />),
   Add: forwardRef((props, ref) => <AddBox {...props} color={"primary"} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} color={"primary"} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} color={"primary"} ref={ref} />),

@@ -12,7 +12,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
-import MaterialTable from 'material-table';
+import MaterialTable, { MTableToolbar } from 'material-table';
 import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders, sDDMMYYYYRegex, sDateFormatMUIDatepicker, sISODateFormat } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { useForm, Controller } from "react-hook-form";
@@ -671,11 +671,22 @@ const [country,setCountry]=React.useState(null);
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px', color: 'black', fontSize:'1.05rem' }}
             //isLoading={isLoading}
             icons={oTableIcons}
-            title={<div style={{textAlign:'left'}}><span style={{fontSize:'20px'}}>Chatrel Defaulter List {title} </span><br/><span style={{fontSize:'20px',textAlign:'left'}}>{total} </span></div>}
+           title={`Chatrel Defaulter List ${title}`}
+           components={{
+            Toolbar: props => (
+              <div>
+              <MTableToolbar {...props} />
+              <div ></div>
+              <Grid container style={{maxWidth: '700px'}} spacing={1}>
+                <Grid item xs={4} lg={4}><b style={{paddingLeft:'15px'}}> {total}</b></Grid> 
+                </Grid>
+              </div>
+            ),
+          }}
           //  columns={columns}
           columns={responseType==='Region'?columnsRegion:(responseType==='Country'?columnsCountry:columnsAllCountry)}
             data={data}
-            options={{ ...oOptions, exportFileName: `Chatrel Defaulter List ${title} ${total}`}}
+            options={{ ...oOptions, exportFileName: total}}
             actions={[
 
               {

@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Platform, Alert} from 'react-native';
 import {
   GoogleSignin,
-  GoogleSigninButton,
   statusCodes,
+  GoogleSigninButton,
 } from '@react-native-community/google-signin';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeGoogleCreds} from '../store/actions/GLoginAction';
@@ -27,16 +27,13 @@ import {
   AppleButton,
   appleAuth,
 } from '@invertase/react-native-apple-authentication';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import Colors from '../constants/Colors';
+import {Button} from 'react-native-elements';
 // import {decode as atob, decode, encode as btoa} from 'base-64';
 // import jwt_decode from "jwt-decode";
-// import {sFontName, sFontNameBold} from '../constants/CommonConfig';
-// import Colors from '../constants/Colors';
-// import {Button} from 'react-native-elements';
-// import {sClientIDAndroid, sClientIDIOS} from '../constants/CommonConfig';
 
 export const GLogin = (props) => {
-  // const [sClientIDAndroidAPI, setsClientIDAndroidAPI] = useState('');
-  // const [sClientIDIOSAPI, setsClientIDIOSAPI] = useState('');
   const dispatch = useDispatch();
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const [user, setUser] = useState({});
@@ -66,9 +63,9 @@ export const GLogin = (props) => {
             : setbRenderAppleButton(false);
 
           getUserDataFromAsnycStorage().then((data) => {
-            console.log(JSON.stringify(data));
+            //console.log(JSON.stringify(data));
             //Alert.alert('Async Storage Data: ', JSON.stringify(data));
-            debugger;
+            //debugger;
             setoGlobalUserInfo(data);
             //oGlobalUserInfo = data;
             sClientIDAndroidAPI = resp.data.sGoogleClientIDAndroid;
@@ -81,6 +78,15 @@ export const GLogin = (props) => {
               iosClientId: sClientIDIOSAPI,
             });
           });
+          // sClientIDAndroidAPI = resp.data.sGoogleClientIDAndroid;
+          // sClientIDIOSAPI = resp.data.sGoogleClientIDIOS;
+          // setbGoogleButton(false);
+          // GoogleSignin.configure({
+          //   webClientId: sClientIDAndroidAPI,
+          //   offlineAccess: true,
+          //   forceCodeForRefreshToken: true,
+          //   iosClientId: sClientIDIOSAPI,
+          // });
         }
       })
       .catch((error) => {
@@ -105,18 +111,11 @@ export const GLogin = (props) => {
   useEffect(() => {
     // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
     return appleAuth.onCredentialRevoked(async () => {
-      console.warn(
-        'If this function executes, User Credentials have been Revoked',
-      );
+      console.warn('User Credentials have been Revoked');
     });
   }, [isFocused]);
 
-  // useEffect(() => {
-
-  // }, [isFocused,oGlobalUserInfo]);
-
   const onAppleButtonPress = async () => {
-    //debugger;
     try {
       // performs login request
       const appleAuthRequestResponse = await appleAuth.performRequest({
@@ -128,7 +127,7 @@ export const GLogin = (props) => {
       //Check for null for both email and fullName
       //if first time store in async and continue
       //else read from async and continue
-      debugger;
+
       if (
         appleAuthRequestResponse.email !== null &&
         appleAuthRequestResponse.fullName.familyName !== null &&
@@ -136,7 +135,7 @@ export const GLogin = (props) => {
       ) {
         //First Time
         //Store Every Thing in Async Storage
-        debugger;
+
         let oiOSEmailNameUserInfo = {
           idToken: appleAuthRequestResponse.identityToken,
           serverAuthCode: '',
@@ -154,7 +153,7 @@ export const GLogin = (props) => {
         //oGlobalUserInfo = oiOSEmailNameUserInfo;
         const jsonUserInfoValue = JSON.stringify(oiOSEmailNameUserInfo);
         await AsyncStorage.setItem('oUserInfoApple', jsonUserInfoValue);
-        debugger;
+
         setUser(oiOSEmailNameUserInfo);
         //Store Google Creds
         dispatch(storeGoogleCreds(oiOSEmailNameUserInfo));
@@ -228,13 +227,13 @@ export const GLogin = (props) => {
       //   appleAuthRequestResponse.fullName.givenName === null &&
       //   oGlobalUserInfo?.user?.email === null
       // ) {
-      //   debugger;
+
       //   Alert.alert(sAttentionRequired, sRequestAccessForEmailID);
       //   return;
       // }
       else {
         //Second Time
-        debugger;
+
         let iOSUserInfo = {
           idToken: appleAuthRequestResponse.identityToken,
           serverAuthCode: '',
@@ -252,7 +251,7 @@ export const GLogin = (props) => {
           },
         };
         //Alert.alert('After iOSUserInfo', JSON.stringify(iOSUserInfo));
-        debugger;
+
         setUser(iOSUserInfo);
         //Store Google Creds
         dispatch(storeGoogleCreds(iOSUserInfo));
@@ -260,7 +259,7 @@ export const GLogin = (props) => {
         //Alert.alert('AR', 'Before Async Set Storage');
         const jsonUserInfoValue = JSON.stringify(iOSUserInfo);
         //Clear before Storing
-        debugger;
+
         AsyncStorage.clear();
         await AsyncStorage.setItem('oUserInfoApple', jsonUserInfoValue);
         //Alert.alert('AR', 'Before Nav to GBDetails');
@@ -275,10 +274,8 @@ export const GLogin = (props) => {
 
   const signIn = async () => {
     try {
-      debugger;
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      // console.log(JSON.stringify(userInfo));
       //Store User Info
       setUser(userInfo);
       //Store Google Creds
@@ -337,7 +334,7 @@ export const GLogin = (props) => {
   return (
     <View>
       <View style={styles.gSignInContainer}>
-        {Platform.OS === 'ios' && bRenderAppleButton && (
+        {/* {Platform.OS === 'ios' && bRenderAppleButton && (
           <View style={styles.appleSignInContainer}>
             <AppleButton
               buttonStyle={AppleButton.Style.WHITE}
@@ -347,13 +344,32 @@ export const GLogin = (props) => {
               //cornerRadius={10}
             />
           </View>
-        )}
-        <GoogleSigninButton
+        )} */}
+        {/* <GoogleSigninButton
           style={styles.gSignInComponent}
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
           onPress={signIn}
           disabled={bGoogleButton}
+        /> */}
+        <Button
+          disabled={bGoogleButton}
+          title="Verify Your Identity"
+          titleStyle={{
+            fontStyle: 'normal',
+            fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+            fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+            fontSize: wp(4),
+            padding: hp(4),
+            color: Colors.black,
+          }}
+          type={'solid'}
+          onPress={signIn}
+          buttonStyle={styles.iOSVerifyButtonComponent}
+          disabledStyle={{
+            borderColor: Colors.grey,
+            backgroundColor: Colors.grey,
+          }}
         />
       </View>
     </View>
@@ -362,10 +378,7 @@ export const GLogin = (props) => {
 
 const styles = StyleSheet.create({
   gSignInContainer: {
-    marginVertical: hp(2.5),
-    // alignItems: 'center',
-    // flex: 1,
-    // justifyContent: 'center',
+    marginVertical: hp(5),
   },
   gSignInComponent: {
     // height: Platform.OS === 'android' ? hp(5.75) : hp(4.75),
@@ -381,5 +394,11 @@ const styles = StyleSheet.create({
   appleSignInComponent: {
     width: 192,
     height: 48,
+  },
+  iOSVerifyButtonComponent: {
+    backgroundColor: Colors.buttonYellow,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: Colors.buttonYellow,
   },
 });
