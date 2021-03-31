@@ -86,6 +86,7 @@ export default () => {
   const [viewModal, setViewModal] = useState(false);
   const [noRecords, setNoRecords] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
   const [error, setError] = useState(false);
 
   // TextFields
@@ -427,21 +428,13 @@ export default () => {
                 actions={
                   [
 
-                     {
+                   
+                    {
                       icon: oTableIcons.Search,
-                      tooltip: 'Show Filter',
+                      tooltip: 'Toggle Filter',
                       isFreeAction: true,
-                      onClick: (event) => {setFiltering(currentFilter => !currentFilter)}
-                    },
-                    // {
-                    //   icon: PrintIcon,
-                    //   iconProps: {fontSize: 'large', color: 'primary'},
-                    //   tooltip: 'Mark Printed',
-                    //   isFreeAction: true,
-                    //   onClick:((event, data) => {
-                    //     setPrinted();
-                    //   })
-                    // }
+                      onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+                    }
                   ]
                 }
               />

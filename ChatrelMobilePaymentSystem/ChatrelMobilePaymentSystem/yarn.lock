@@ -5966,6 +5966,11 @@
   dependencies:
     "moment" "^2.22.0"
 
+"react-native-device-detection@^0.2.1":
+  "integrity" "sha512-0ErWdxoB4DPLuzzjgS3nUyzauo1YoJ0QjQJZMjx0dr3MGdF3SE9T3Lb2lKj3kPsTQYy5qnlWZ24DmQkHZlIjgw=="
+  "resolved" "https://registry.npmjs.org/react-native-device-detection/-/react-native-device-detection-0.2.1.tgz"
+  "version" "0.2.1"
+
 "react-native-document-picker@^4.1.0":
   "integrity" "sha512-tHYNng9GrnVrOoLk9K2j+T1xa8gAfC2Mk2dbJq32QBYD3zkHGMkFYGd2FZt0nuYxCBnd768tOQWuEZXwXM1tsg=="
   "resolved" "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-4.1.0.tgz"

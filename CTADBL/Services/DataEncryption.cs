@@ -18,9 +18,9 @@ namespace CTADBL.Services
         /// <param name="cipherText">Encrypted String</param>
         /// <returns>string - Decrypted String</returns>
 
-        public static string DecryptString(string cipherText)
+        public static string DecryptString(string cipherText, string sEncryptKey = "NA")
         {
-            string EncryptionKey = CTAConfigRepository.GetValueByKey("EncryptionKey");
+            string EncryptionKey = (sEncryptKey != "NA") ? sEncryptKey : CTAConfigRepository.GetValueByKey("EncryptionKey");
             cipherText = cipherText.Replace(" ", "+");
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
             using (Aes encryptor = Aes.Create())
@@ -46,9 +46,9 @@ namespace CTADBL.Services
         /// </summary>
         /// <param name="encryptString">Normal String</param>
         /// <returns>string - Encrypted String</returns>
-        public static string EncryptString(string encryptString)
+        public static string EncryptString(string encryptString, string sEncryptKey = "NA")
         {
-            string EncryptionKey = CTAConfigRepository.GetValueByKey("EncryptionKey");
+            string EncryptionKey =  (sEncryptKey != "NA") ? sEncryptKey : CTAConfigRepository.GetValueByKey("EncryptionKey");
             byte[] clearBytes = Encoding.Unicode.GetBytes(encryptString);
             using (Aes encryptor = Aes.Create())
             {

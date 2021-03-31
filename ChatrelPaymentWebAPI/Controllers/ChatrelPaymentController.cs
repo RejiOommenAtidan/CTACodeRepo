@@ -227,7 +227,8 @@ namespace ChatrelPaymentWebAPI.Controllers
                 //string sGBIDf = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
                 Object chatrel = _chatrelPaymentRepository.DisplayChatrelPayment(sGBID);
                 string clientId = ChatrelConfigRepository.GetValueByKey("PayPalClientID").ToString();
-                string PayPalAuthURL = ChatrelConfigRepository.GetValueByKey("PayPalAuthURL").ToString();
+                string failureURL = ChatrelConfigRepository.GetValueByKey("sFailurePayPalWebPageURL").ToString();
+                //string PayPalAuthURL = ChatrelConfigRepository.GetValueByKey("PayPalAuthURL").ToString();
                 //string secret = ChatrelConfigRepository.GetValueByKey("PayPalSecret").ToString();
                 if (chatrel != null)
                 {
@@ -248,7 +249,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                     #region Information Logging 
                     _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called, JwT is: " + token, "", Convert.ToInt32(sGBID));
                     #endregion
-                    return Ok(new { chatrel, token, clientId, PayPalAuthURL });
+                    return Ok(new { chatrel, token, clientId, failureURL });
                 }
                 else
                 {

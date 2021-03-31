@@ -672,9 +672,10 @@ export default function BulkUpload(props) {
           snackbarOpen();
         }
         ;
-        setAlertMessage("Error while verifying CSV file with server.\n" + error.response.data);
+        setAlertMessage("Error while verifying CSV file with server.\n" + error.message);
         setAlertType('error');
         snackbarOpen();
+        setDisplayUpload(false);
         console.log(error.response);
 
       });
@@ -722,7 +723,7 @@ export default function BulkUpload(props) {
       })
       .catch(error => {
         setBackdrop(false);
-        setAlertMessage("Error while submitting Bulk Data\n" + error.response.data);
+        setAlertMessage("Error while submitting Bulk Data\n" + error.message);
         setAlertType('error');
         snackbarOpen();
         console.log(error.response);

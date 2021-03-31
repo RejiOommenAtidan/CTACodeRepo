@@ -1181,6 +1181,13 @@ INNER JOIN (
 SET 
 	t4.nPreviousGBSno = t5.nBookNo 
 WHERE 
-	t4.nFormNumber = t5.nFormNumber 
+	t4.sGBID = '1755192' 
+	AND t4.nFormNumber = t5.nFormNumber 
 	AND t4.nMadebTypeID > 1;
 	
+-- ======================================================================================== 24-03-2021
+    
+ALTER TABLE tblchatrelpayment
+ADD CONSTRAINT UC_sChatrelReceiptNumber UNIQUE (sChatrelReceiptNumber);
+
+ 

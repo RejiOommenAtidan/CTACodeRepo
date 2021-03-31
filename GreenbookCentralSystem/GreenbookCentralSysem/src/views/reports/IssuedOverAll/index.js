@@ -57,6 +57,7 @@ export default function Report() {
   const [orderBy, SetOrderBy] = React.useState('');
   const [groupBy, SetGroupBy] = React.useState('');
   const [title, setTitle] = useState();
+  const [total, setTotal] = useState('');
   const [rcheader, setRCHeader] = useState();
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
@@ -79,7 +80,7 @@ export default function Report() {
     {
       field: "no",
       title: "Sr. No.",
-      
+      sorting:false,
       width: '5%',
       //hidden:true,
       headerStyle: {
@@ -100,7 +101,14 @@ export default function Report() {
     {
       field: "individualPlace",
       title: `${rcheader}`,
-      
+     // render: rowData => rowData.individualPlace==='Total'?<b>Total</b>:rowData.individualPlace ,
+      //sorting:false,
+      customSort: (a, b) => {
+        if (a.individualPlace==='Total' || b.individualPlace==='Total') {  
+          return 1
+        }
+        return a.individualPlace.localeCompare(b.individualPlace);
+      },
       headerStyle: {
         padding: '5px',
 
@@ -113,12 +121,18 @@ export default function Report() {
         border: '1px solid black'
 
       },
+
     },
     {
       field: "nCount",
       title: "TOTAL",
-      // render: rowData => rowData.dtIssuedDate ? Moment(rowData.dtIssuedDate).format('DD-MM-YYYY') : '',
-      
+     // render: rowData => rowData.individualPlace==='Total'?<b>{rowData.nCount}</b>:rowData.nCount ,
+      customSort: (a, b) => {
+        if (a.individualPlace==='Total' || b.individualPlace==='Total') {  
+          return 1
+        }
+        return a.nCount.toString().localeCompare(b.nCount.toString(), 'en', {numeric: true});
+      },
       headerStyle: {
         padding: '5px',
 
@@ -164,14 +178,17 @@ export default function Report() {
             }
             else {
               let x = 1;
-              let total = 0;
+              let totalcount = 0;
               resp.data.forEach((element) => {
                 //element.dtFormattedIssuedDate = element.dtIssuedDate ? Moment(element.dtIssuedDate).format(sDateFormat) : null;
                 element.no = x;
-                total = total + element.nCount;
+                totalcount = totalcount + element.nCount;
                 x = x + 1;
               })
-              resp.data.push({ 'no': '', 'individualPlace': 'Total', 'nCount': total })
+              setTotal(totalcount);
+             
+              resp.data.push({ 'no': '', 'individualPlace': 'Total', 'nCount': totalcount });
+              //console.log()
               SetIssuedIndividualData(resp.data);
             }
           }

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Switch,
   Text,
@@ -15,10 +15,8 @@ import {
 import Resolution from '../constants/ResolutionBreakpoint';
 import Autocomplete from 'react-native-autocomplete-input';
 import {
-  sFailurePayPalWebPageURL,
   sFontName,
   sFontNameBold,
-  sSuccessPayPalWebPageURL,
   sFolderName,
   sReceiptDownloadMessageAndroid,
   sReceiptDownloadMessageIOS,
@@ -62,8 +60,10 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import Toast from 'react-native-root-toast';
 
 export const Chatrel = (props) => {
+  const Device = require('react-native-device-detection');
+  const [bFourthDone, setbFourthDone] = useState(false);
   const [bCallRunOnce, setbCallRunOnce] = useState(false);
-  const [sPayPalBASEURL, setsPayPalBASEURL] = useState('');
+  const [sFailurePayPalWebPageURL, setsFailurePayPalWebPageURL] = useState('');
   const [
     bDisplayAuthorityRegionOnceOnChange,
     setbDisplayAuthorityRegionOnceOnChange,
@@ -117,9 +117,7 @@ export const Chatrel = (props) => {
   const [showData, setshowData] = useState(true);
   const [successDiv, setSuccessDiv] = useState(false);
   const [receiptData, setReceiptData] = useState(false);
-  const [approvalUrl, setapprovalUrl] = useState(null);
-  const [sAccessToken, setsAccessToken] = useState('');
-  const [paymentID, setpaymentID] = useState('');
+  const [approvalUrl, setapprovalUrl] = useState('');
   const [bPaymentModal, setbPaymentModal] = useState(false);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
@@ -170,11 +168,20 @@ export const Chatrel = (props) => {
         }
       })
       .catch((error) => {
-        console.log('Error ', error.response);
-        console.log(error.config);
-      })
-      .then((release) => {
-        //console.log(release); => udefined
+        setTimeout(() => {
+          Alert.alert(
+            sAttentionRequired,
+            sSomethingWentWrongPleaseTryAgainLater,
+            [
+              {
+                text: 'Ok',
+                onPress: () => true,
+                style: 'cancel',
+              },
+            ],
+            {cancelable: false},
+          );
+        }, 1000);
       });
   };
 
@@ -343,6 +350,7 @@ export const Chatrel = (props) => {
   };
 
   const handleSubmitAfterPayPal = async (paypalObj) => {
+    debugger;
     let tempSummaryObj = summaryData;
     let oPayment = [...aGBChatrels];
     let lastindex = oPayment.length - 1;
@@ -428,7 +436,7 @@ export const Chatrel = (props) => {
       gbChatrelDonation: donationObj,
     };
 
-    //console.log('Final Obj:', finalObj);
+    console.log('Final Obj:', finalObj);
 
     setbLoader(true);
     setbRender(false);
@@ -437,6 +445,7 @@ export const Chatrel = (props) => {
       .post(`/ChatrelPayment/AddNewChatrelPayment`, finalObj)
       .then((resp) => {
         if (resp.status === 200) {
+          debugger;
           const oSession = {
             sJwtToken: resp.data.token,
             bSession: true,
@@ -450,8 +459,9 @@ export const Chatrel = (props) => {
         }
       })
       .catch((error) => {
+        debugger;
         setbLoader(false);
-        console.error(error.config);
+        console.error(error.response);
         if (error.response.status === 401) {
           // const oSession = {
           //   sJwtToken: '',
@@ -514,7 +524,8 @@ export const Chatrel = (props) => {
       setaGBChatrels([]);
       setOutstanding(true);
       setBasicResponse(0);
-      setsPayPalBASEURL('');
+      setsFailurePayPalWebPageURL('');
+      setapprovalUrl('');
       getChatrelDetails();
       setbDisplayAuthorityRegionOnceOnChange(true);
       //setShouldRun(true);
@@ -548,9 +559,7 @@ export const Chatrel = (props) => {
                   setDisplayFileDispute(true);
                 } else {
                   debugger;
-                  setsPayPalBASEURL(
-                    resp.data.payPalAuthURL.replace('/v1/oauth2/token', ''),
-                  );
+                  setsFailurePayPalWebPageURL(resp.data.failureURL);
                   setsCountryID(resp.data?.chatrel?.sCountryID);
                   if (
                     resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0
@@ -673,6 +682,7 @@ export const Chatrel = (props) => {
               }
             })
             .catch((error) => {
+              debugger;
               setbLoader(false);
               if (error.response.status === 401) {
                 // const oSession = {
@@ -700,6 +710,7 @@ export const Chatrel = (props) => {
         }
       })
       .catch((error) => {
+        debugger;
         setbLoader(false);
         if (error.response.status === 401) {
           // const oSession = {
@@ -743,6 +754,7 @@ export const Chatrel = (props) => {
   }, [lAuthRegions, dataAPI, isFocused]);
 
   const onNavigationStateChange = (webViewState) => {
+    //Failure Case
     if (webViewState.url.includes(sFailurePayPalWebPageURL)) {
       setbPaymentModal(false);
       setTimeout(() => {
@@ -761,108 +773,47 @@ export const Chatrel = (props) => {
       }, 1000);
       return;
     }
-    // get payer from of the url
+
+    //Get Payer ID & Order ID from URL, if Success
     if (
-      webViewState.title === 'eChatrel' ||
-      webViewState.title === 'Success' ||
-      webViewState.title === 'Chatrel'
+      (webViewState.title === 'eChatrel' ||
+        webViewState.title === 'Success' ||
+        webViewState.title === 'Chatrel') &&
+      !bFourthDone
     ) {
-      // const params = new URL(webViewState.url).searchParams;
+      setbFourthDone(true);
       var regexp = /[?&]([^=#]+)=([^&#]*)/g,
         params = {},
         check;
       while ((check = regexp.exec(webViewState.url))) {
         params[check[1]] = check[2];
       }
-      //console.log("params", params);
-
-      var axios = require('axios');
-      var dataFourth = JSON.stringify({payer_id: params.PayerID});
-      var fourthConfig = {
-        baseURL: sPayPalBASEURL,
-        method: 'post',
-        url: '/v2/checkout/orders/' + paymentID + '/capture',
-        headers: {
-          Authorization: 'Bearer ' + sAccessToken,
-          'Content-Type': 'application/json',
-        },
-        data: dataFourth,
-      };
-
-      axios(fourthConfig)
-        .then(function (response) {
-          var fifthConfig = {
-            baseURL: sPayPalBASEURL,
-            method: 'get',
-            url: '/v2/checkout/orders/' + paymentID,
-            headers: {
-              'content-type': 'application/json',
-              Authorization: 'Bearer ' + sAccessToken,
-            },
-          };
-
-          axios(fifthConfig)
-            .then(function (response) {
-              setbPaymentModal(false);
-              handleSubmitAfterPayPal(response.data);
-            })
-            .catch(function (error) {
-              console.error('Caught in Step 5: ' + error);
-              setTimeout(() => {
-                Alert.alert(
-                  sAttentionRequired,
-                  'Cannot verify contribution from PayPal, Please save PayPal Order ID: ' +
-                    paymentID +
-                    '\nand contact CTA at ' +
-                    sContactEmail,
-                  [
-                    {
-                      text: sCopyPayPalPaymentID,
-                      onPress: () => {
-                        Clipboard.setString(paymentID);
-                        // Clipboard.setString(JSON.stringify(error));
-                        Toast.show(sPayPalPaymentIDCopied, {
-                          duration: Toast.durations.SHORT,
-                          position: Toast.positions.BOTTOM,
-                          shadow: true,
-                          animation: true,
-                          hideOnPress: true,
-                          delay: 0,
-                        });
-                        navigation.navigate('Home');
-                      },
-                      style: 'default',
-                    },
-                    {
-                      text: 'Close',
-                      onPress: () => {
-                        navigation.navigate('Home');
-                      },
-                      style: 'cancel',
-                    },
-                  ],
-                  {
-                    cancelable: false,
-                  },
-                );
-              }, 1000);
-            });
+      console.log('params: ', params);
+      debugger;
+      axios
+        .get(`/PayPalCheckout/CaptureOrder?orderID=${params.token}`)
+        .then((resp) => {
+          if (resp.status === 200) {
+            setbPaymentModal(false);
+            handleSubmitAfterPayPal(resp.data);
+          }
         })
-        .catch(function (error) {
-          console.error('Caught in Step 4: ' + error.response);
+        .catch((error) => {
+          setbPaymentModal(false);
+          setbRender(false);
+          setbLoader(false);
           setTimeout(() => {
             Alert.alert(
               sAttentionRequired,
               'Cannot verify contribution from PayPal, Please save PayPal Order ID: ' +
-                paymentID +
+                params.token +
                 '\nand contact CTA at ' +
                 sContactEmail,
               [
                 {
                   text: sCopyPayPalPaymentID,
                   onPress: () => {
-                    Clipboard.setString(paymentID);
-                    // Clipboard.setString(JSON.stringify(error.response));
+                    Clipboard.setString(params.token);
                     Toast.show(sPayPalPaymentIDCopied, {
                       duration: Toast.durations.SHORT,
                       position: Toast.positions.BOTTOM,
@@ -974,6 +925,20 @@ export const Chatrel = (props) => {
           // };
           // dispatch(storeJWTToken(oSession));
         } else {
+          setTimeout(() => {
+            Alert.alert(
+              sAttentionRequired,
+              sSomethingWentWrongPleaseTryAgainLater,
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => true,
+                  style: 'cancel',
+                },
+              ],
+              {cancelable: true},
+            );
+          }, 1000);
         }
       })
       .then((release) => {});
@@ -1064,7 +1029,9 @@ export const Chatrel = (props) => {
             visible={bPaymentModal}
             onRequestClose={() => setbPaymentModal(false)}>
             <WebView
-              source={{uri: approvalUrl}}
+              source={{
+                uri: approvalUrl,
+              }}
               onNavigationStateChange={onNavigationStateChange}
               javaScriptEnabled={true}
               domStorageEnabled={true}
@@ -1885,7 +1852,15 @@ export const Chatrel = (props) => {
                       <Text
                         style={{
                           ...styles.labelComponent,
-                          paddingBottom: Platform.isPad ? hp(1.75) : hp(1.5),
+                          // paddingBottom: Platform.isPad ? hp(1.75) : hp(1.5),
+                          paddingBottom:
+                            Platform.OS === 'ios'
+                              ? Platform.isPad
+                                ? hp(1.75)
+                                : hp(1.5)
+                              : Device.isTablet
+                              ? hp(1.5)
+                              : hp(1.25),
                         }}>
                         BUSINESS DONATION ($)
                       </Text>
@@ -1933,7 +1908,15 @@ export const Chatrel = (props) => {
                       <Text
                         style={{
                           ...styles.labelComponent,
-                          paddingBottom: Platform.isPad ? hp(1.75) : hp(1.5),
+                          // paddingBottom: Platform.isPad ? hp(1.75) : hp(1.5),
+                          paddingBottom:
+                            Platform.OS === 'ios'
+                              ? Platform.isPad
+                                ? hp(1.75)
+                                : hp(1.5)
+                              : Device.isTablet
+                              ? hp(1.5)
+                              : hp(1.25),
                         }}>
                         ADDITIONAL DONATION ($)
                       </Text>
@@ -2022,85 +2005,21 @@ export const Chatrel = (props) => {
                     onPress: () => {
                       setbLoader(true);
                       setbRender(false);
-                      {
-                        /*Step 1: Get Access Token from Our API*/
-                      }
                       axios
-                        .get(`/ChatrelPayment/GetPayPalAccessToken`)
+                        .get(
+                          `/PayPalCheckout/CreateOrder?amount=${nGrandTotal
+                            .toFixed(2)
+                            .toString()}`,
+                        )
                         .then((resp) => {
                           if (resp.status === 200) {
-                            setsAccessToken(resp.data.access_token);
+                            setapprovalUrl(resp.data.payment_link);
+                            setbLoader(false);
+                            setbRender(true);
                             {
-                              /*Step 2: Create Order*/
+                              /*Render Web View*/
                             }
-                            var axiosSecond = require('axios');
-                            var dataDetail = {
-                              intent: 'CAPTURE',
-                              purchase_units: [
-                                {
-                                  reference_id: 'PUHF',
-                                  amount: {
-                                    currency_code: 'USD',
-                                    value: nGrandTotal.toFixed(2).toString(),
-                                  },
-                                },
-                              ],
-                              application_context: {
-                                return_url: sSuccessPayPalWebPageURL,
-                                cancel_url: sFailurePayPalWebPageURL,
-                              },
-                            };
-                            var stepTwoConfig = {
-                              baseURL: sPayPalBASEURL,
-                              method: 'post',
-                              url: '/v2/checkout/orders',
-                              headers: {
-                                Authorization:
-                                  'Bearer ' + resp.data.access_token,
-                                Accept: 'application/json',
-                                'accept-language': 'en_US',
-                                'Content-Type': 'application/json',
-                              },
-                              data: dataDetail,
-                            };
-                            axiosSecond(stepTwoConfig)
-                              .then(function (response) {
-                                setpaymentID(response.data.id);
-                                pingPong();
-                                const aLinks = response.data.links;
-                                let myApprovalLink = aLinks.find(
-                                  (link) => link.rel === 'approve',
-                                );
-                                setapprovalUrl(myApprovalLink.href);
-
-                                setbLoader(false);
-                                setbRender(true);
-                                {
-                                  /*Step 3: Web View Show*/
-                                }
-                                setbPaymentModal(true);
-                              })
-                              .catch(function (error) {
-                                console.error(error.response);
-                                setbLoader(false);
-                                setbRender(true);
-                                setTimeout(() => {
-                                  Alert.alert(
-                                    sAttentionRequired,
-                                    sPayPalUIErrorMessage,
-                                    [
-                                      {
-                                        text: 'Ok',
-                                        onPress: () => true,
-                                        style: 'cancel',
-                                      },
-                                    ],
-                                  );
-                                }, 1000);
-                                console.log(error);
-                              });
-                          } else {
-                            console.log(resp.data);
+                            setbPaymentModal(true);
                           }
                         })
                         .catch((error) => {

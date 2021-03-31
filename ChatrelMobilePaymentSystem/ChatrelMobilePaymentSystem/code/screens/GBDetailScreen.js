@@ -108,7 +108,7 @@ export const GBDetailScreen = (props) => {
       sType: sType,
     };
 
-    // console.log(oAPI);
+    console.log(oAPI);
     // setbLoader(false);
 
     axios
@@ -168,6 +168,8 @@ export const GBDetailScreen = (props) => {
         }
       })
       .catch((error) => {
+        debugger;
+        console.error(error.response);
         if (error.response.status === 401) {
           // const oSession = {
           //   sJwtToken: '',

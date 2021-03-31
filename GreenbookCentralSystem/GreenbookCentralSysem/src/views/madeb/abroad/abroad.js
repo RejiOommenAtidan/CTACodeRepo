@@ -261,7 +261,7 @@ export default function EnhancedTable() {
     {
       width: "10%",
       field: "madeb.sName",
-      title: "NAME",
+      title: "FULLNAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -939,7 +939,7 @@ export default function EnhancedTable() {
     //setBackdrop(true);
     axios.post(`/MadebAuthRegionVM/ColumnSearchMadeb/madebType=4`, searchObj)
     .then(resp => {
-      setBackdrop(false);
+      
       if(resp.status === 200){
         console.log("Search result", resp.data);
         resp.data.forEach((element) => {
@@ -950,8 +950,12 @@ export default function EnhancedTable() {
           element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
         });
         setdataAPI(resp.data);
+        setBackdrop(false);
+        modifyHeaders();
+        selectDatafunction();
       }
       if(resp.status === 204){
+        setBackdrop(false);
         console.log("Got 204, Empty result");
         setdataAPI([]);
         setAlertMessage("No Data Found...");
@@ -961,18 +965,20 @@ export default function EnhancedTable() {
     })
     .catch(error =>{
       setBackdrop(false);
-      setAlertMessage("Error in searching...");
-      setAlertType('error');
-      snackbarOpen();
+      // setAlertMessage("Error in searching...");
+      // setAlertType('error');
+      // snackbarOpen();
     });
   };
 
   return (
     <>
     <Paper style={{borderRadius: '10px'}}>
-        <Grid container spacing={1} justify='"space-evenly"' style={{paddingLeft: '20px', maxWidth: '80%'}} >
+        <Grid container spacing={1} justify='"space-evenly"' style={{paddingLeft: '40px',paddingRight: '40px'}} >
           <Grid item xs style={{paddingTop: '9px'}}>
-            <TextField label={'Form No'} onChange={(e) => {
+            <TextField label={'Form No'}
+            fullWidth
+             onChange={(e) => {
             if(e.target.value){
               setFormNumber(parseInt(e.target.value)); 
               searchFunction(parseInt(e.target.value), dtReceived, sAuthRegion, sName, sFathersName, sGBIDForSearch, sAlias);
@@ -986,10 +992,26 @@ export default function EnhancedTable() {
 
           } />
           </Grid>
-
+          <Grid item xs style={{paddingTop: '9px'}}>
+            <TextField 
+              label={'Full Name'}
+              fullWidth
+              onChange={(e) => {
+                if(e.target.value){
+                  setName(e.target.value); 
+                  searchFunction(nFormNumber, dtReceived, sAuthRegion, e.target.value,sFathersName, sGBIDForSearch, sAlias); 
+                }
+                if(e.target.value === ''){
+                  setName(null); 
+                  searchFunction(nFormNumber, dtReceived, sAuthRegion, null,sFathersName, sGBIDForSearch, sAlias); 
+                }
+                }} 
+            />
+          </Grid>
           <Grid item xs style={{paddingTop: '9px'}}>
             <Autocomplete
               openOnFocus
+              fullWidth
               clearOnEscape
               autoComplete={true}
               autoHighlight={true}
@@ -1036,24 +1058,11 @@ export default function EnhancedTable() {
             /> */}
           </Grid>
 
-          <Grid item xs style={{paddingTop: '9px'}}>
-            <TextField 
-              label={'Name'}
-              onChange={(e) => {
-                if(e.target.value){
-                  setName(e.target.value); 
-                  searchFunction(nFormNumber, dtReceived, sAuthRegion, e.target.value,sFathersName, sGBIDForSearch, sAlias); 
-                }
-                if(e.target.value === ''){
-                  setName(null); 
-                  searchFunction(nFormNumber, dtReceived, sAuthRegion, null,sFathersName, sGBIDForSearch, sAlias); 
-                }
-                }} 
-            />
-          </Grid>
+         
           <Grid item xs style={{paddingTop: '9px'}}>
             <TextField 
               label={'Alias Name'} 
+              fullWidth
               onChange={(e) => {
                 if(e.target.value){
                   setAlias(e.target.value); 
@@ -1069,6 +1078,7 @@ export default function EnhancedTable() {
           <Grid item xs style={{paddingTop: '9px'}}>
             <TextField 
             label={"Father's Name"} 
+            fullWidth
             onChange={(e) => {
               if(e.target.value){
                 setFathersName(e.target.value); 
@@ -1084,7 +1094,8 @@ export default function EnhancedTable() {
           </Grid>
           <Grid item xs style={{paddingTop: '9px'}}>
             <TextField 
-            label={"GreenBook ID"} 
+            label={"Green Book ID"} 
+            fullWidth
             onChange={(e) => {
               if(e.target.value){
                 setGBIDForSearch(e.target.value); 
@@ -1104,6 +1115,7 @@ export default function EnhancedTable() {
                   <KeyboardDatePicker
                     placeholder="DD-MM-YYYY"
                     variant="dialog"
+                    fullWidth
                     margin="dense"
                     id="dtReceived"
                     name="dtReceived"

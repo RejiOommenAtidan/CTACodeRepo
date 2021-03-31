@@ -3,6 +3,7 @@ using ChatrelDBL.BaseClasses.Transactions;
 using ChatrelDBL.BaseClassRepositories.Masters;
 using ChatrelDBL.QueryBuilder;
 using ChatrelDBL.Repository;
+using ChatrelDBL.Services;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1;
 using System;
@@ -829,8 +830,8 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                         sPaidByGBId = row.Field<string>("sPaidByGBId"),
                         sGBIDPaidFor = row.Field<string>("sGBIDPaidFor"),
                         sCountryIDPaidFor = row.Field<string>("sCountryIDPaidFor"),
-                        sFirstName = row.Field<string>("sFirstName"),
-                        sLastName = row.Field<string>("sLastName"),
+                        sFirstName = DataEncryption.DecryptString(row.Field<string>("sFirstName")),
+                        sLastName = DataEncryption.DecryptString(row.Field<string>("sLastName")),
                         sRelation = row.Field<string>("sRelation"),
                         sPaymentCurrency = row.Field<string>("sPaymentCurrency"),
                         nChatrelTotalAmount = row.Field<decimal>("nChatrelTotalAmount"),

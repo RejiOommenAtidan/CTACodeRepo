@@ -16,29 +16,29 @@ namespace ChatrelDBL.BaseClassRepositories.Masters
         }
         #endregion
 
-        #region AuthRegion Add Call
-        public int Add(AuthRegion region)
-        {
-            var builder = new SqlQueryBuilder<AuthRegion>(region);
-            return ExecuteCommand(builder.GetInsertCommand());
-        }
-        #endregion
+        //#region AuthRegion Add Call
+        //public int Add(AuthRegion region)
+        //{
+        //    var builder = new SqlQueryBuilder<AuthRegion>(region);
+        //    return ExecuteCommand(builder.GetInsertCommand());
+        //}
+        //#endregion
 
-        #region AuthRegion Update Call
-        public int Update(AuthRegion region)
-        {
-            var builder = new SqlQueryBuilder<AuthRegion>(region);
-            return ExecuteCommand(builder.GetUpdateCommand());
-        }
-        #endregion
+        //#region AuthRegion Update Call
+        //public int Update(AuthRegion region)
+        //{
+        //    var builder = new SqlQueryBuilder<AuthRegion>(region);
+        //    return ExecuteCommand(builder.GetUpdateCommand());
+        //}
+        //#endregion
 
-        #region AuthRegion Delete Call
-        public int Delete(AuthRegion region)
-        {
-            var builder = new SqlQueryBuilder<AuthRegion>(region);
-            return ExecuteCommand(builder.GetDeleteCommand());
-        }
-        #endregion
+        //#region AuthRegion Delete Call
+        //public int Delete(AuthRegion region)
+        //{
+        //    var builder = new SqlQueryBuilder<AuthRegion>(region);
+        //    return ExecuteCommand(builder.GetDeleteCommand());
+        //}
+        //#endregion
 
         #region Get AuthRegion(s) Call 
         public IEnumerable<AuthRegion> GetAllAuthRegions()

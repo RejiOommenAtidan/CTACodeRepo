@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   const [dataAPI, setdataAPI] = useState([]);
-  const [loading, setLoading] = useState(true);
+  //const [loading, setLoading] = useState(true);
   const [selectData, setSelectData] = useState([]);
   const [filtering, setFiltering] = React.useState(false);
   const [addModal, setAddModal] = useState(false);
@@ -292,8 +292,8 @@ export default () => {
           }
           snackbarOpen();
           setAddModal(false);
-          setBackdrop(false);
-          setLoading(true);
+          //setBackdrop(false);
+          //setLoading(true);
           if (clicked) {
             setTimeout(() => {
               history.push("/GreenBookSerial");
@@ -308,11 +308,11 @@ export default () => {
                 });
                 setdataAPI(resp.data)
                 selectDatafunction();
-                setLoading(false);
+                //setLoading(false);
               }
             })
             .catch(error => {
-              setLoading(false);
+              setBackdrop(false);
               console.log(error.message);
               console.log(error.config);
             })
@@ -334,10 +334,16 @@ export default () => {
         if (resp.status === 200) {
           setSelectData(resp.data);
           console.log("New Record Data\n", resp.data);
+          setBackdrop(false);
           // setdataAPI(resp.data)
         }
       })
       .catch(error => {
+        setBackdrop(false);
+        setAlertMessage(`Error fetching Serial Number Record`);
+        setAlertType('error');
+        snackbarOpen();
+        setSelectData([]);
         console.log(error.config);
         console.log(error.message);
       })
@@ -350,6 +356,7 @@ export default () => {
 
 
   useEffect(() => {
+    setBackdrop(true);
     axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumberAssignList`)
       .then(resp => {
         if (resp.status === 200) {
@@ -358,13 +365,13 @@ export default () => {
           });
           setdataAPI(resp.data);
           selectDatafunction();
-          setLoading(false);
+         
         }
       })
       .catch(error => {
         console.log(error.config);
         console.log(error.message);
-        setLoading(false);
+        setBackdrop(false);
       })
     modifyHeaders();
   }, []);
@@ -381,7 +388,7 @@ export default () => {
   </Breadcrumbs>*/}
           <MaterialTable
             style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
-            isLoading={loading}
+            //isLoading={loading}
             icons={oTableIcons}
             title="Give Green Book Serial Number"
             columns={columns}

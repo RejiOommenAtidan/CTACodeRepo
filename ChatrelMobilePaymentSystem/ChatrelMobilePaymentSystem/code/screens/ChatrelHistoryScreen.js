@@ -183,6 +183,7 @@ export const ChatrelHistoryScreen = (props) => {
             sPaidUntil !== null
           ) {
             if (resp.data.paymentHistory.length > 0) {
+              //console.log(resp.data.paymentHistory);
               let tempReversedArray = resp.data.paymentHistory;
               tempReversedArray = tempReversedArray.reverse();
               setPaymentHistory(tempReversedArray);
@@ -470,7 +471,8 @@ export const ChatrelHistoryScreen = (props) => {
                   <View style={styles.labelContainer}>
                     <Text style={styles.labelComponent}>AMOUNT</Text>
                     <Text style={styles.valueComponent}>
-                      {item.sPaymentMode === 'Online' ? '$' : ''}
+                      {/* {item.sPaymentMode === 'Online' ? '$' : ''} */}
+                      {item.sPaymentCurrency + ' '}
                       {item.nChatrelTotalAmount}
                     </Text>
                   </View>
@@ -559,6 +561,10 @@ export const ChatrelHistoryScreen = (props) => {
                       borderRadius: 20,
                       borderWidth: 1,
                       borderColor: Colors.buttonYellow,
+                    }}
+                    disabledStyle={{
+                      borderColor: Colors.grey,
+                      backgroundColor: Colors.grey,
                     }}
                   />
                 </View>

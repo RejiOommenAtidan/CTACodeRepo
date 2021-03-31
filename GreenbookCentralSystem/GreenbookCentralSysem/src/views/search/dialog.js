@@ -173,7 +173,7 @@ export const ViewDialog = (props) => {
       });
   };
   const [sFeature, setsFeature] = useState("");
-  const [expanded, setExpanded] = React.useState('panel1');
+  const [expanded, setExpanded] = React.useState('panel2');
   const [data, setData] = React.useState([]);
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
@@ -484,78 +484,7 @@ export const ViewDialog = (props) => {
                   </Grid>
                   <Grid item xl={7}>
                     <Grid container className={props.classes.box}>
-                      <Grid item xs={12}>
-                        <ExpansionPanel
-                          TransitionProps={{ unmountOnExit: true }}
-                          expanded={expanded === 'panel1'}
-                          onChange={handleAccordionChange('panel1')}
-                        >
-                          <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon className={props.classes.expansionHeading} />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                            className={props.classes.expansionPanel}
-                          >
-                            <Typography
-
-                              className={props.classes.expansionHeading}
-                            >Contact Information</Typography>
-                          </ExpansionPanelSummary>
-                          <ExpansionPanelDetails>
-                            <Grid container spacing={2} >
-                              <Grid item sm={6}>
-                                <FormControl className={props.classes.formControl}>
-                                <strong>Address 1:</strong> {data.greenBook.sAddress1}
-                                </FormControl>
-                              </Grid>
-                              <Grid item sm={6}>
-                                <FormControl className={props.classes.formControl}>
-                                <strong>Address 2:</strong> {data.greenBook.sAddress2}
-                                </FormControl>
-                              </Grid>
-                              <Grid item sm={6}>
-                              <strong> City:</strong> {data.greenBook.sCity}
-
-                              </Grid>
-                              <Grid item xs={6}>
-                              <strong>State:</strong> {data.greenBook.sState}
-
-                              </Grid>
-                              <Grid item sm={6}>
-                              <strong> Pin Code:</strong> {data.greenBook.sPCode}
-
-                              </Grid>
-                              <Grid item sm={6}>
-                              <strong> Country:</strong>  {data.sCountry}
-
-                              </Grid>
-                              <Grid item sm={6}>
-                              <strong> Fax Number:</strong> {data.greenBook.sFax}
-
-                              </Grid>
-
-                              <Grid item sm={6}>
-                              <strong> Email:</strong> {data.greenBook.sEmail}
-
-                              </Grid>
-                              <Grid item sm={6}>
-                              <strong> Phone Number:</strong> {data.greenBook.sPhone}
-                              </Grid>
-                              <Grid item sm={6}>
-                              <strong> Google Email:</strong> {data.greenBook.sLoginGmail}
-                              </Grid>
-                              <Grid item sm={6}>
-                              <strong> Authority Region:</strong> {data.sAuthRegion}
-
-                              </Grid>
-                              <Grid item sm={6}>
-                              <strong>Form Date: </strong> {data.greenBook.dtFormDate ? Moment(data.greenBook.dtFormDate).format(sDateFormat) : ''}
-                              </Grid>
-                            </Grid>
-
-                          </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                      </Grid>
+                      
 
                       <Grid item xs={12}>
                         <ExpansionPanel
@@ -775,6 +704,78 @@ export const ViewDialog = (props) => {
                                   </tbody>
                                 </Table>}
                             </div>
+
+                          </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <ExpansionPanel
+                          TransitionProps={{ unmountOnExit: true }}
+                          expanded={expanded === 'panel1'}
+                          onChange={handleAccordionChange('panel1')}
+                        >
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon className={props.classes.expansionHeading} />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                            className={props.classes.expansionPanel}
+                          >
+                            <Typography
+
+                              className={props.classes.expansionHeading}
+                            >Contact Information</Typography>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails>
+                            <Grid container spacing={2} >
+                              <Grid item sm={6}>
+                                <FormControl className={props.classes.formControl}>
+                                <strong>Address 1:</strong> {data.greenBook.sAddress1}
+                                </FormControl>
+                              </Grid>
+                              <Grid item sm={6}>
+                                <FormControl className={props.classes.formControl}>
+                                <strong>Address 2:</strong> {data.greenBook.sAddress2}
+                                </FormControl>
+                              </Grid>
+                              <Grid item sm={6}>
+                              <strong> City:</strong> {data.greenBook.sCity}
+
+                              </Grid>
+                              <Grid item xs={6}>
+                              <strong>State:</strong> {data.greenBook.sState}
+
+                              </Grid>
+                              <Grid item sm={6}>
+                              <strong> Pin Code:</strong> {data.greenBook.sPCode}
+
+                              </Grid>
+                              <Grid item sm={6}>
+                              <strong> Country:</strong>  {data.sCountry}
+
+                              </Grid>
+                              <Grid item sm={6}>
+                              <strong> Fax Number:</strong> {data.greenBook.sFax}
+
+                              </Grid>
+
+                              <Grid item sm={6}>
+                              <strong> Email:</strong> {data.greenBook.sEmail}
+
+                              </Grid>
+                              <Grid item sm={6}>
+                              <strong> Phone Number:</strong> {data.greenBook.sPhone}
+                              </Grid>
+                              <Grid item sm={6}>
+                              <strong> Google Email:</strong> {data.greenBook.sLoginGmail}
+                              </Grid>
+                              <Grid item sm={6}>
+                              <strong> Authority Region:</strong> {data.sAuthRegion}
+
+                              </Grid>
+                              <Grid item sm={6}>
+                              <strong>Form Date: </strong> {data.greenBook.dtFormDate ? Moment(data.greenBook.dtFormDate).format(sDateFormat) : ''}
+                              </Grid>
+                            </Grid>
 
                           </ExpansionPanelDetails>
                         </ExpansionPanel>

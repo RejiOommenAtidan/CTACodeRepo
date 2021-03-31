@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Platform} from 'react-native';
+import {StyleSheet, View, Platform, Alert} from 'react-native';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -14,7 +14,12 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import axios from 'axios';
-import {sMobilePassphrase, sSignTypeGoogle} from '../constants/CommonConfig';
+import {
+  sAttentionRequired,
+  sMobilePassphrase,
+  sSignTypeGoogle,
+  sSomethingWentWrongPleaseTryAgainLater,
+} from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 
 export const GLogin = (props) => {
@@ -33,10 +38,6 @@ export const GLogin = (props) => {
       )
       .then((resp) => {
         if (resp.status === 200) {
-          // console.log(
-          //   'Login Ping Pong Android: ' + resp.data.sGoogleClientIDAndroid,
-          // );
-          // console.log('Login Ping Pong iOS: ' + resp.data.sGoogleClientIDIOS);
           sClientIDAndroidAPI = resp.data.sGoogleClientIDAndroid;
           sClientIDIOSAPI = resp.data.sGoogleClientIDIOS;
           setbGoogleButton(false);
@@ -49,11 +50,20 @@ export const GLogin = (props) => {
         }
       })
       .catch((error) => {
-        console.log('Error ', error.response);
-        console.log('Error Config', error.config);
-      })
-      .then((release) => {
-        //console.log(release); => udefined
+        setTimeout(() => {
+          Alert.alert(
+            sAttentionRequired,
+            sSomethingWentWrongPleaseTryAgainLater,
+            [
+              {
+                text: 'Ok',
+                onPress: () => true,
+                style: 'cancel',
+              },
+            ],
+            {cancelable: false},
+          );
+        }, 1000);
       });
 
     Platform.OS === 'android' ? isSignedIn() : null;

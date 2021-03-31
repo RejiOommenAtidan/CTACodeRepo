@@ -169,16 +169,21 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Change Status for bGivenOrNot
-        public int UpdateGivenOrNot(int nGBId)
+        public int UpdateGivenOrNot(int nGBId, MySqlCommand command)
         {
             string sql = @"UPDATE tblgivengbid
                         SET bGivenOrNot = 1
                         WHERE nGBId = @nGBId;";
-            using (var command = new MySqlCommand(sql))
+
+            command.CommandText = sql;
+            command.Parameters.AddWithValue("nGBId", nGBId);
+            int updateRows = command.ExecuteNonQuery();
+            if(updateRows < 1)
             {
-                command.Parameters.AddWithValue("nGBId", nGBId);
-                return ExecuteCommand(command);
+                command.Transaction.Rollback();
+                return 0;
             }
+            return updateRows;
         }
         #endregion
 

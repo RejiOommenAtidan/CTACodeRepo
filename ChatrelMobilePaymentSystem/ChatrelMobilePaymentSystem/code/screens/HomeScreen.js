@@ -26,6 +26,8 @@ import {
   sLogoutConfirmation,
   sInvalidDetailsForChatrel,
   sPleaseContactCTA,
+  sAttentionRequired,
+  sSomethingWentWrongPleaseTryAgainLater,
 } from '../constants/CommonConfig';
 import {
   widthPercentageToDP as wp,
@@ -77,6 +79,7 @@ const HomeScreen = (props) => {
     }, []),
   );
 
+  const Device = require('react-native-device-detection');
   const [bLoader, setbLoader] = useState(true);
   const [dollarToRupees, setDollarToRupees] = React.useState(0.0);
   const [activeSections, setactiveSections] = useState([]);
@@ -130,7 +133,6 @@ const HomeScreen = (props) => {
             resp.status === 200 &&
             resp.data.message === 'Logged Out successfully'
           ) {
-            //console.log(resp.data);
             dispatch(removeGoogleCreds);
             dispatch(removeGBDetails);
             dispatch(removeJWTToken);
@@ -302,12 +304,25 @@ const HomeScreen = (props) => {
                 }
               })
               .catch((error) => {
-                console.log(error.message);
-                console.log(error.response.status);
+                setTimeout(() => {
+                  Alert.alert(
+                    sAttentionRequired,
+                    sSomethingWentWrongPleaseTryAgainLater,
+                    [
+                      {
+                        text: 'Ok',
+                        onPress: () => true,
+                        style: 'cancel',
+                      },
+                    ],
+                    {cancelable: false},
+                  );
+                }, 1000);
               });
           }
         })
         .catch((error) => {
+          console.error(error.response)
           setbLoader(false);
           if (error.response.status === 401) {
             // const oSession = {
@@ -316,7 +331,6 @@ const HomeScreen = (props) => {
             // };
             // dispatch(storeJWTToken(oSession));
           } else {
-            console.log(error.response);
             setTimeout(() => {
               Alert.alert(
                 sInvalidDetailsForChatrel,
@@ -376,8 +390,16 @@ const HomeScreen = (props) => {
                         color: Colors.greenBG,
                         textAlign: 'left',
                         fontSize: wp(6),
-                        lineHeight: Platform.isPad ? hp(0) : hp(3.5),
                         fontFamily: sHimalayaFontName,
+                        // lineHeight: Platform.isPad ? hp(0) : hp(3.5),
+                        lineHeight:
+                          Platform.OS === 'ios'
+                            ? Platform.isPad
+                              ? hp(5)
+                              : hp(3.5)
+                            : Device.isTablet
+                            ? hp(5)
+                            : hp(3.5),
                       }}>
                       རྩིས་ལོ་
                     </Text>
@@ -387,11 +409,14 @@ const HomeScreen = (props) => {
                         color: Colors.greenBG,
                         textAlign: 'left',
                         fontSize: wp(6),
-                        lineHeight: Platform.isPad ? hp(0) : hp(3.5),
-                        //fontFamily:sHimalayaFontName
-                        // fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                        // fontFamily:
-                        //   Platform.OS === 'android' ? sFontNameBold : sFontName,
+                        lineHeight:
+                          Platform.OS === 'ios'
+                            ? Platform.isPad
+                              ? hp(5)
+                              : hp(3.5)
+                            : Device.isTablet
+                            ? hp(5)
+                            : hp(3.5),
                       }}>
                       {' '}
                       {thankYouMessageContent}{' '}
@@ -403,8 +428,16 @@ const HomeScreen = (props) => {
                       color: Colors.greenBG,
                       textAlign: 'left',
                       fontSize: wp(6),
-                      lineHeight: Platform.isPad ? hp(0) : hp(3.5),
                       fontFamily: sHimalayaFontName,
+                      // lineHeight: Platform.isPad ? hp(0) : hp(3.5),
+                      lineHeight:
+                        Platform.OS === 'ios'
+                          ? Platform.isPad
+                            ? hp(5)
+                            : hp(3.5)
+                          : Device.isTablet
+                          ? hp(5)
+                          : hp(3.5),
                     }}>
                     ལོའི་དྭང་བླངས་དཔྱ་དངུལ་འབུལ་འབབ་གཙང་འབུལ་ཟིན།
                   </Text>

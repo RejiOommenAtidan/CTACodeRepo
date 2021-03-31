@@ -18,6 +18,8 @@ import {
   sVerificationSuccessfulMessage,
   sVerificationFailedMessage,
   sEnteredDetailsDidntMatchDB,
+  sAttentionRequired,
+  sSomethingWentWrongPleaseTryAgainLater,
 } from '../constants/CommonConfig';
 import {TextInputMask} from 'react-native-masked-text';
 import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
@@ -150,8 +152,21 @@ export const FriendChatrelIntermediateScreen = (props) => {
         }
       })
       .catch((error) => {
-        console.log('Error ', error.response);
-        console.log(error.config);
+        debugger;
+        setTimeout(() => {
+          Alert.alert(
+            sAttentionRequired,
+            sSomethingWentWrongPleaseTryAgainLater,
+            [
+              {
+                text: 'Ok',
+                onPress: () => true,
+                style: 'cancel',
+              },
+            ],
+            {cancelable: false},
+          );
+        }, 1000);
       })
       .then((release) => {
         //console.log(release); => udefined

@@ -15,18 +15,18 @@ import Refresh from '@material-ui/icons/Refresh';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-
+import EmailIcon from '@material-ui/icons/Email';
 //Local
 //export const sAPIBASEURL = "http://localhost:52013/api";
 //export const sAPIBASEURL = "http://172.28.21.2:9001/api";
 
 //QA
-//export const sAPIBASEURL = "https://cta-portal-webapi.azurewebsites.net/api";
+export const sAPIBASEURL = "https://cta-portal-webapi.azurewebsites.net/api";
 
 //UAT
-export const sAPIBASEURL = "https://cta-portal-webapi-uat.azurewebsites.net/api";
+//export const sAPIBASEURL = "https://cta-portal-webapi-uat.azurewebsites.net/api";
 
-export const sAdminEmail = "admin@CTA.com";
+export const sAdminEmail = "tcrcsupport@tibet.net";
 export const sSnackbarAddMessage = "Record added successfully";
 export const sSnackbarUpdateMessage = "Record updated successfully";
 export const sDateFormat = "DD-MM-YYYY";
@@ -111,6 +111,7 @@ export const oTableIcons = {
   Delete: forwardRef((props, ref) => <DeleteOutline {...props} color={"primary"} ref={ref} />),
   DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} color={"primary"} ref={ref} />),
   Edit: forwardRef((props, ref) => <Edit {...props} color={"primary"} ref={ref} />),
+  Email: forwardRef((props, ref) => <EmailIcon {...props} color={"primary"} ref={ref} />),
   Export: forwardRef((props, ref) => <SaveAlt {...props} color={"primary"} ref={ref} />),
   //Filter: forwardRef((props, ref) => <FilterList {...props} color={"primary"} ref={ref} />),
   Filter: forwardRef((props, ref) => <div />),
@@ -133,3 +134,226 @@ export const sButtonSize = "small";
 
 export const sDDMMYYYYRegex = /^([0-2][0-9]|(3)[0-1])(\-)(((0)[0-9])|((1)[0-2]))(\-)\d{4}$/;
 
+
+export const MadebReportColumns = [
+  {
+    field: "no",
+    title: "Sr. No.",
+    
+    width: '5%',
+    //hidden:true,
+   sorting:false,
+    headerStyle: {
+      padding: '5px',
+
+      textAlign: 'center'
+    },
+    cellStyle: {
+      // padding:'0px',
+      padding: '5px',
+
+      textAlign: 'center',
+      border: '1px solid black'
+
+
+    },
+  },
+  {
+    field: "sPlaceName",
+    title: "REGION/COUNTRY",
+    customSort: (a, b) => {
+      if (a.sPlaceName==='Total' || b.sPlaceName==='Total') {  
+        return 1
+      }
+      return a.sPlaceName.localeCompare(b.sPlaceName);
+    },
+
+
+    headerStyle: {
+      padding: '5px',
+
+      textAlign: 'center'
+    },
+    cellStyle: {
+      // padding:'0px',
+      padding: '5px',
+
+      textAlign: 'left',
+      border: '1px solid black'
+
+
+    },
+  },
+  {
+    field: "madebPending",
+    title: "MADEB PENDING",
+    customSort: (a, b) => {
+      if (a.sPlaceName==='Total' || b.sPlaceName==='Total') {  
+        return 1
+      }
+      return a.madebPending.toString().localeCompare(b.madebPending.toString(), 'en', {numeric: true});
+    },
+    headerStyle: {
+      padding: '5px',
+
+      textAlign: 'center'
+    },
+    cellStyle: {
+      // padding:'0px',
+      padding: '5px',
+
+      textAlign: 'center',
+      border: '1px solid black'
+
+
+    },
+  },
+  {
+    field: "madebIssued",
+    title: "MADEB ISSUED",
+    customSort: (a, b) => {
+      if (a.sPlaceName==='Total' || b.sPlaceName==='Total') {  
+        return 1
+      }
+      return a.madebIssued.toString().localeCompare(b.madebIssued.toString(), 'en', {numeric: true});
+    },
+    headerStyle: {
+      padding: '5px',
+
+      textAlign: 'center'
+    },
+    cellStyle: {
+      // padding:'0px',
+      padding: '5px',
+
+      textAlign: 'center',
+      border: '1px solid black'
+
+
+    },
+  },
+  {
+    field: "madebRejected",
+    title: "MADEB REJECTED",
+    customSort: (a, b) => {
+      if (a.sPlaceName==='Total' || b.sPlaceName==='Total') {  
+        return 1
+      }
+      return a.madebRejected.toString().localeCompare(b.madebRejected.toString(), 'en', {numeric: true});
+    },
+    headerStyle: {
+      padding: '5px',
+
+      textAlign: 'center'
+    },
+    cellStyle: {
+      // padding:'0px',
+      padding: '5px',
+
+      textAlign: 'center',
+      border: '1px solid black'
+
+
+    },
+  },
+  {
+    field: "madebDouble",
+    title: "MADEB DOUBLE",
+    customSort: (a, b) => {
+      if (a.sPlaceName==='Total' || b.sPlaceName==='Total') {  
+        return 1
+      }
+      return a.madebDouble.toString().localeCompare(b.madebDouble.toString(), 'en', {numeric: true});
+    },
+    headerStyle: {
+      padding: '5px',
+
+      textAlign: 'center'
+    },
+    cellStyle: {
+      // padding:'0px',
+      padding: '5px',
+
+      textAlign: 'center',
+      border: '1px solid black'
+
+
+    },
+  },
+  {
+    field: "madebCancelled",
+    title: "MADEB CANCELLED",
+    customSort: (a, b) => {
+      if (a.sPlaceName==='Total' || b.sPlaceName==='Total') {  
+        return 1
+      }
+      return a.madebCancelled.toString().localeCompare(b.madebCancelled.toString(), 'en', {numeric: true});
+    },
+    headerStyle: {
+      padding: '5px',
+
+      textAlign: 'center'
+    },
+    cellStyle: {
+      // padding:'0px',
+      padding: '5px',
+
+      textAlign: 'center',
+      border: '1px solid black'
+
+
+    },
+  },
+
+  {
+    field: "madebClosed",
+    title: "MADEB CLOSED/DELETED",
+    
+    customSort: (a, b) => {
+      if (a.sPlaceName==='Total' || b.sPlaceName==='Total') {  
+        return 1
+      }
+      return a.madebClosed.toString().localeCompare(b.madebClosed.toString(), 'en', {numeric: true});
+    },
+    headerStyle: {
+      padding: '5px',
+
+      textAlign: 'center'
+    },
+    cellStyle: {
+      // padding:'0px',
+      padding: '5px',
+
+      textAlign: 'center',
+      border: '1px solid black'
+
+
+    },
+  },
+
+  {
+    field: "madebTotalReceived",
+    title: "TOTAL RECEIVED",
+    customSort: (a, b) => {
+      if (a.sPlaceName==='Total' || b.sPlaceName==='Total') {  
+        return 1
+      }
+      return a.madebTotalReceived.toString().localeCompare(b.madebTotalReceived.toString(), 'en', {numeric: true});
+    },
+    headerStyle: {
+      padding: '5px',
+
+      textAlign: 'center'
+    },
+    cellStyle: {
+      // padding:'0px',
+      padding: '5px',
+
+      textAlign: 'center',
+      border: '1px solid black'
+
+
+    },
+  },
+
+]

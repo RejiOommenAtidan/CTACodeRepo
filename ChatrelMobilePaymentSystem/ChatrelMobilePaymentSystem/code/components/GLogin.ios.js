@@ -21,6 +21,7 @@ import {
   sSignTypeGoogle,
   sAttentionRequired,
   sRequestAccessForEmailID,
+  sSomethingWentWrongPleaseTryAgainLater,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import {
@@ -46,26 +47,18 @@ export const GLogin = (props) => {
   const isFocused = useIsFocused();
   useEffect(() => {
     //AsyncStorage.clear();
+
     axios
       .post(
         `/ChatrelPayment/GetGoogleCredentialsForMobile?sMobilePassphrase=${sMobilePassphrase}`,
       )
       .then((resp) => {
         if (resp.status === 200) {
-          // console.log(
-          //   'Login Ping Pong Android: ' + resp.data.sGoogleClientIDAndroid,
-          // );
-          // console.log('Login Ping Pong iOS: ' + resp.data.sGoogleClientIDIOS);
-          Platform.OS === 'android' ? isSignedIn() : null;
-
           appleAuth.isSupported
             ? setbRenderAppleButton(true)
             : setbRenderAppleButton(false);
 
           getUserDataFromAsnycStorage().then((data) => {
-            //console.log(JSON.stringify(data));
-            //Alert.alert('Async Storage Data: ', JSON.stringify(data));
-            //debugger;
             setoGlobalUserInfo(data);
             //oGlobalUserInfo = data;
             sClientIDAndroidAPI = resp.data.sGoogleClientIDAndroid;
@@ -78,23 +71,23 @@ export const GLogin = (props) => {
               iosClientId: sClientIDIOSAPI,
             });
           });
-          // sClientIDAndroidAPI = resp.data.sGoogleClientIDAndroid;
-          // sClientIDIOSAPI = resp.data.sGoogleClientIDIOS;
-          // setbGoogleButton(false);
-          // GoogleSignin.configure({
-          //   webClientId: sClientIDAndroidAPI,
-          //   offlineAccess: true,
-          //   forceCodeForRefreshToken: true,
-          //   iosClientId: sClientIDIOSAPI,
-          // });
         }
       })
       .catch((error) => {
-        console.log('Error ', error.response);
-        console.log('Error Config', error.config);
-      })
-      .then((release) => {
-        //console.log(release); => udefined
+        setTimeout(() => {
+          Alert.alert(
+            sAttentionRequired,
+            sSomethingWentWrongPleaseTryAgainLater,
+            [
+              {
+                text: 'Ok',
+                onPress: () => true,
+                style: 'cancel',
+              },
+            ],
+            {cancelable: false},
+          );
+        }, 1000);
       });
   }, [isFocused]);
 

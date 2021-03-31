@@ -182,7 +182,7 @@ export default function ChatrelList(){
       },
     },
     {
-      field: "sGBID",
+      field: "sGBIDCombo",
       title: "GREENBOOK ID",
       headerStyle: {
         textAlign: "center",
@@ -194,7 +194,7 @@ export default function ChatrelList(){
         padding: '5px',
         borderRight: '1px solid grey'
       },
-      render: rowData =>  <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewGb(rowData['sGBID']) }}><span><u>{rowData['sGBID']}</u></span></Button>
+      render: rowData =>  <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewGb(rowData['sGBID']) }}><span><u>{rowData['sGBIDCombo']}</u></span></Button>
     },
     {
       field: "sChatrelReceiptNumber",
@@ -553,6 +553,7 @@ export default function ChatrelList(){
           element.dtArrearsFrom = element.dtArrearsFrom ? Moment(element.dtArrearsFrom).format(sDateFormat) : null;
           element.dtArrearsTo = element.dtArrearsTo ? Moment(element.dtArrearsTo).format(sDateFormat) : null;
           element.nSerialNo = i++;
+          element.sGBIDCombo=element.sCountryID+element.sGBID;
         });
         setdataAPI(resp.data);
         modifyHeaders();

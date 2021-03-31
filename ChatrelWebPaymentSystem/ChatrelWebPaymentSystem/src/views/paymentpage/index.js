@@ -215,11 +215,7 @@ export default function Chatrel(props) {
   const updateAuthRegion = (e, value) => {
     console.log('Auth region changed to ', value.id, 'at row ', e.target.id);
     console.log("test Auth2",value);
-    if(!popupOnce && value.sCurrencyCode==='INR' && !value.isChild){
-      setPopup(true);
-      setPopupOnce(true);
-    }
-   
+  
     const index = parseInt(e.target.id);
     let chatrelObj = [...paymentData];
     let tempAuthArray =[...authRegion];
@@ -253,6 +249,11 @@ export default function Chatrel(props) {
     calculate(forIndex);
     }
     setAuthRegion(tempAuthArray);
+    if(!popupOnce && value.sCurrencyCode==='INR' && !value.isChild){
+        setPopup(true);
+        setPopupOnce(true); 
+    }
+   
   };
 
   const modify = (target) => {
@@ -619,6 +620,8 @@ let textFieldDisabled=false;
   }
   useEffect(() => {
     console.log("Props Console:",props.location.state);
+    setBackdrop(true);
+   // alert('page hit');
     axios
       .get(`/AuthRegion/GetAuthRegions`)
       .then((resp) => {
@@ -863,7 +866,7 @@ const runOnceAuthRegion=()=>{
     <Autocomplete
       disabled={!outstanding}
       id={`${index}`}
-      openOnFocus
+      //openOnFocus
       clearOnEscape
       disableClearable
       autoComplete={true}
@@ -1111,7 +1114,7 @@ const runOnceAuthRegion=()=>{
     <Autocomplete
       disabled={!outstanding}
       id={`${index}`}
-      openOnFocus
+     // openOnFocus
       clearOnEscape
       disableClearable
       autoComplete={true}
@@ -1551,10 +1554,7 @@ const runOnceAuthRegion=()=>{
          
         </DialogActions>
       </Dialog>
-          <Backdrop className={classes.backdrop} open={backdrop}>
          
-            <CircularProgress color="inherit" />
-          </Backdrop>
           <Backdrop className={classes.backdrop} open={showPaypalDetails}>
           <Card  variant="outlined" className='text-center mx-auto p-3 text-black'>
           <strong>PayPal Contribution Details</strong><br/>
@@ -1568,6 +1568,10 @@ const runOnceAuthRegion=()=>{
           </Backdrop>
         </>
       )}
+       <Backdrop className={classes.backdrop} open={backdrop}>
+         
+         <CircularProgress color="inherit" />
+       </Backdrop>
     </>
   );
 }

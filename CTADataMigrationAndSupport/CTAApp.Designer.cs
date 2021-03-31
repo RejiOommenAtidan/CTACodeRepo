@@ -50,6 +50,7 @@
             this.textBoxDocumentPath = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPageDummyData = new System.Windows.Forms.TabPage();
+            this.labelStartTime = new System.Windows.Forms.Label();
             this.checkBoxMadebsAlias = new System.Windows.Forms.CheckBox();
             this.buttonMadebDummyData = new System.Windows.Forms.Button();
             this.checkBoxMadebFathersName = new System.Windows.Forms.CheckBox();
@@ -85,18 +86,17 @@
             this.btnUploadfile = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.tabPageSyncData = new System.Windows.Forms.TabPage();
-            this.labelSyncReport = new System.Windows.Forms.Label();
-            this.buttonSyncDB = new System.Windows.Forms.Button();
-            this.checkBoxlstChatrelConfig = new System.Windows.Forms.CheckBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.textBoxDB2 = new System.Windows.Forms.TextBox();
-            this.labelDB1 = new System.Windows.Forms.Label();
-            this.textBoxDB1 = new System.Windows.Forms.TextBox();
+            this.tabPageEncryptData = new System.Windows.Forms.TabPage();
+            this.labelStatusOfItems = new System.Windows.Forms.Label();
+            this.buttonQAConn = new System.Windows.Forms.Button();
+            this.labelStatusTime = new System.Windows.Forms.Label();
+            this.chkBoxsLastName = new System.Windows.Forms.CheckBox();
+            this.chkBoxsFirstName = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.buttonGenerateEncryptData = new System.Windows.Forms.Button();
             this.txtLogFolderPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
-            this.labelStartTime = new System.Windows.Forms.Label();
             this.tabControlCTA.SuspendLayout();
             this.tabPageRelationDataClincing.SuspendLayout();
             this.tabPageImageMigration.SuspendLayout();
@@ -104,7 +104,7 @@
             this.tabPageDummyData.SuspendLayout();
             this.tabPageDummyProfilePicture.SuspendLayout();
             this.tabPageBulkInsert.SuspendLayout();
-            this.tabPageSyncData.SuspendLayout();
+            this.tabPageEncryptData.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtConnectionString
@@ -134,7 +134,7 @@
             this.tabControlCTA.Controls.Add(this.tabPageDummyData);
             this.tabControlCTA.Controls.Add(this.tabPageDummyProfilePicture);
             this.tabControlCTA.Controls.Add(this.tabPageBulkInsert);
-            this.tabControlCTA.Controls.Add(this.tabPageSyncData);
+            this.tabControlCTA.Controls.Add(this.tabPageEncryptData);
             this.tabControlCTA.Location = new System.Drawing.Point(10, 88);
             this.tabControlCTA.Name = "tabControlCTA";
             this.tabControlCTA.SelectedIndex = 0;
@@ -358,6 +358,15 @@
             this.tabPageDummyData.TabIndex = 3;
             this.tabPageDummyData.Text = "CTA Dummy Data";
             this.tabPageDummyData.UseVisualStyleBackColor = true;
+            // 
+            // labelStartTime
+            // 
+            this.labelStartTime.AutoSize = true;
+            this.labelStartTime.Location = new System.Drawing.Point(21, 240);
+            this.labelStartTime.Name = "labelStartTime";
+            this.labelStartTime.Size = new System.Drawing.Size(60, 15);
+            this.labelStartTime.TabIndex = 30;
+            this.labelStartTime.Text = "Start Time";
             // 
             // checkBoxMadebsAlias
             // 
@@ -749,89 +758,96 @@
             this.textBox2.Size = new System.Drawing.Size(394, 23);
             this.textBox2.TabIndex = 0;
             // 
-            // tabPageSyncData
+            // tabPageEncryptData
             // 
-            this.tabPageSyncData.Controls.Add(this.labelSyncReport);
-            this.tabPageSyncData.Controls.Add(this.buttonSyncDB);
-            this.tabPageSyncData.Controls.Add(this.checkBoxlstChatrelConfig);
-            this.tabPageSyncData.Controls.Add(this.label11);
-            this.tabPageSyncData.Controls.Add(this.textBoxDB2);
-            this.tabPageSyncData.Controls.Add(this.labelDB1);
-            this.tabPageSyncData.Controls.Add(this.textBoxDB1);
-            this.tabPageSyncData.Location = new System.Drawing.Point(4, 24);
-            this.tabPageSyncData.Name = "tabPageSyncData";
-            this.tabPageSyncData.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSyncData.Size = new System.Drawing.Size(759, 435);
-            this.tabPageSyncData.TabIndex = 7;
-            this.tabPageSyncData.Text = "Chatrel Sync Tables";
-            this.tabPageSyncData.UseVisualStyleBackColor = true;
+            this.tabPageEncryptData.Controls.Add(this.labelStatusOfItems);
+            this.tabPageEncryptData.Controls.Add(this.buttonQAConn);
+            this.tabPageEncryptData.Controls.Add(this.labelStatusTime);
+            this.tabPageEncryptData.Controls.Add(this.chkBoxsLastName);
+            this.tabPageEncryptData.Controls.Add(this.chkBoxsFirstName);
+            this.tabPageEncryptData.Controls.Add(this.label7);
+            this.tabPageEncryptData.Controls.Add(this.buttonGenerateEncryptData);
+            this.tabPageEncryptData.Location = new System.Drawing.Point(4, 24);
+            this.tabPageEncryptData.Name = "tabPageEncryptData";
+            this.tabPageEncryptData.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageEncryptData.Size = new System.Drawing.Size(759, 435);
+            this.tabPageEncryptData.TabIndex = 7;
+            this.tabPageEncryptData.Text = "Chatrel Encrypt Data";
+            this.tabPageEncryptData.UseVisualStyleBackColor = true;
             // 
-            // labelSyncReport
+            // labelStatusOfItems
             // 
-            this.labelSyncReport.AutoSize = true;
-            this.labelSyncReport.Location = new System.Drawing.Point(137, 350);
-            this.labelSyncReport.Name = "labelSyncReport";
-            this.labelSyncReport.Size = new System.Drawing.Size(235, 15);
-            this.labelSyncReport.TabIndex = 30;
-            this.labelSyncReport.Text = "Sync the CTA Admin and Chatrel Databases";
+            this.labelStatusOfItems.AutoSize = true;
+            this.labelStatusOfItems.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelStatusOfItems.Location = new System.Drawing.Point(117, 170);
+            this.labelStatusOfItems.Name = "labelStatusOfItems";
+            this.labelStatusOfItems.Size = new System.Drawing.Size(136, 37);
+            this.labelStatusOfItems.TabIndex = 37;
+            this.labelStatusOfItems.Text = "Start Time";
             // 
-            // buttonSyncDB
+            // buttonQAConn
             // 
-            this.buttonSyncDB.Location = new System.Drawing.Point(137, 292);
-            this.buttonSyncDB.Name = "buttonSyncDB";
-            this.buttonSyncDB.Size = new System.Drawing.Size(82, 23);
-            this.buttonSyncDB.TabIndex = 29;
-            this.buttonSyncDB.Text = "Sync DB";
-            this.buttonSyncDB.UseVisualStyleBackColor = true;
-            this.buttonSyncDB.Click += new System.EventHandler(this.buttonSyncDB_Click);
+            this.buttonQAConn.Location = new System.Drawing.Point(531, 17);
+            this.buttonQAConn.Name = "buttonQAConn";
+            this.buttonQAConn.Size = new System.Drawing.Size(210, 23);
+            this.buttonQAConn.TabIndex = 36;
+            this.buttonQAConn.Text = "Get Chatrel QA - Connection String";
+            this.buttonQAConn.UseVisualStyleBackColor = true;
+            this.buttonQAConn.Click += new System.EventHandler(this.buttonQAConn_Click);
             // 
-            // checkBoxlstChatrelConfig
+            // labelStatusTime
             // 
-            this.checkBoxlstChatrelConfig.AutoSize = true;
-            this.checkBoxlstChatrelConfig.Checked = true;
-            this.checkBoxlstChatrelConfig.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxlstChatrelConfig.Location = new System.Drawing.Point(137, 121);
-            this.checkBoxlstChatrelConfig.Name = "checkBoxlstChatrelConfig";
-            this.checkBoxlstChatrelConfig.Size = new System.Drawing.Size(108, 19);
-            this.checkBoxlstChatrelConfig.TabIndex = 27;
-            this.checkBoxlstChatrelConfig.Text = "lstchatrelconfig";
-            this.checkBoxlstChatrelConfig.UseVisualStyleBackColor = true;
+            this.labelStatusTime.AutoSize = true;
+            this.labelStatusTime.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelStatusTime.Location = new System.Drawing.Point(117, 143);
+            this.labelStatusTime.Name = "labelStatusTime";
+            this.labelStatusTime.Size = new System.Drawing.Size(71, 19);
+            this.labelStatusTime.TabIndex = 35;
+            this.labelStatusTime.Text = "Start Time";
             // 
-            // label11
+            // chkBoxsLastName
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(3, 66);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(114, 15);
-            this.label11.TabIndex = 12;
-            this.label11.Text = "DB Chatrel Database";
+            this.chkBoxsLastName.AutoSize = true;
+            this.chkBoxsLastName.Checked = true;
+            this.chkBoxsLastName.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkBoxsLastName.Location = new System.Drawing.Point(243, 56);
+            this.chkBoxsLastName.Name = "chkBoxsLastName";
+            this.chkBoxsLastName.Size = new System.Drawing.Size(84, 19);
+            this.chkBoxsLastName.TabIndex = 34;
+            this.chkBoxsLastName.Text = "sLastName";
+            this.chkBoxsLastName.UseVisualStyleBackColor = true;
             // 
-            // textBoxDB2
+            // chkBoxsFirstName
             // 
-            this.textBoxDB2.Location = new System.Drawing.Point(137, 63);
-            this.textBoxDB2.Name = "textBoxDB2";
-            this.textBoxDB2.Size = new System.Drawing.Size(596, 23);
-            this.textBoxDB2.TabIndex = 13;
-            this.textBoxDB2.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=chatreldb; Uid=" +
-    "ctamysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;";
+            this.chkBoxsFirstName.AutoSize = true;
+            this.chkBoxsFirstName.Checked = true;
+            this.chkBoxsFirstName.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkBoxsFirstName.Location = new System.Drawing.Point(123, 56);
+            this.chkBoxsFirstName.Name = "chkBoxsFirstName";
+            this.chkBoxsFirstName.Size = new System.Drawing.Size(85, 19);
+            this.chkBoxsFirstName.TabIndex = 33;
+            this.chkBoxsFirstName.Text = "sFirstName";
+            this.chkBoxsFirstName.UseVisualStyleBackColor = true;
             // 
-            // labelDB1
+            // label7
             // 
-            this.labelDB1.AutoSize = true;
-            this.labelDB1.Location = new System.Drawing.Point(3, 21);
-            this.labelDB1.Name = "labelDB1";
-            this.labelDB1.Size = new System.Drawing.Size(127, 15);
-            this.labelDB1.TabIndex = 10;
-            this.labelDB1.Text = "DB CTA Main Database";
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label7.Location = new System.Drawing.Point(117, 16);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(152, 21);
+            this.label7.TabIndex = 32;
+            this.label7.Text = "Chatrel Encrypt Data";
             // 
-            // textBoxDB1
+            // buttonGenerateEncryptData
             // 
-            this.textBoxDB1.Location = new System.Drawing.Point(137, 18);
-            this.textBoxDB1.Name = "textBoxDB1";
-            this.textBoxDB1.Size = new System.Drawing.Size(596, 23);
-            this.textBoxDB1.TabIndex = 11;
-            this.textBoxDB1.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=ctadb; Uid=ctam" +
-    "ysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;";
+            this.buttonGenerateEncryptData.Location = new System.Drawing.Point(117, 95);
+            this.buttonGenerateEncryptData.Name = "buttonGenerateEncryptData";
+            this.buttonGenerateEncryptData.Size = new System.Drawing.Size(210, 23);
+            this.buttonGenerateEncryptData.TabIndex = 31;
+            this.buttonGenerateEncryptData.Text = "Generate Encrypt Data";
+            this.buttonGenerateEncryptData.UseVisualStyleBackColor = true;
+            this.buttonGenerateEncryptData.Click += new System.EventHandler(this.buttonGenerateEncryptData_Click);
             // 
             // txtLogFolderPath
             // 
@@ -856,15 +872,6 @@
             this.progressBarProcess.Name = "progressBarProcess";
             this.progressBarProcess.Size = new System.Drawing.Size(763, 23);
             this.progressBarProcess.TabIndex = 20;
-            // 
-            // labelStartTime
-            // 
-            this.labelStartTime.AutoSize = true;
-            this.labelStartTime.Location = new System.Drawing.Point(21, 240);
-            this.labelStartTime.Name = "labelStartTime";
-            this.labelStartTime.Size = new System.Drawing.Size(60, 15);
-            this.labelStartTime.TabIndex = 30;
-            this.labelStartTime.Text = "Start Time";
             // 
             // CTAApp
             // 
@@ -893,8 +900,8 @@
             this.tabPageDummyProfilePicture.PerformLayout();
             this.tabPageBulkInsert.ResumeLayout(false);
             this.tabPageBulkInsert.PerformLayout();
-            this.tabPageSyncData.ResumeLayout(false);
-            this.tabPageSyncData.PerformLayout();
+            this.tabPageEncryptData.ResumeLayout(false);
+            this.tabPageEncryptData.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -960,16 +967,16 @@
         private System.Windows.Forms.CheckBox checkBoxDummyProfile;
         private System.Windows.Forms.TextBox textBoxDummyProfilePath;
         private System.Windows.Forms.CheckBox checkBoxMadebsAlias;
-        private System.Windows.Forms.TabPage tabPageSyncData;
-        private System.Windows.Forms.Button buttonSyncDB;
-        private System.Windows.Forms.CheckBox checkBoxlstChatrelConfig;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBoxDB2;
-        private System.Windows.Forms.Label labelDB1;
-        private System.Windows.Forms.TextBox textBoxDB1;
-        private System.Windows.Forms.Label labelSyncReport;
+        private System.Windows.Forms.TabPage tabPageEncryptData;
         private System.Windows.Forms.Label labelResult;
         private System.Windows.Forms.Label labelStartTime;
+        private System.Windows.Forms.Label labelStatusTime;
+        private System.Windows.Forms.CheckBox chkBoxsLastName;
+        private System.Windows.Forms.CheckBox chkBoxsFirstName;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button buttonGenerateEncryptData;
+        private System.Windows.Forms.Button buttonQAConn;
+        private System.Windows.Forms.Label labelStatusOfItems;
     }
 }
 

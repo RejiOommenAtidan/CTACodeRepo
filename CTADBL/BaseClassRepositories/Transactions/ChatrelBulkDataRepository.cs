@@ -58,7 +58,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Verify and Save Bulk Import File
-        public string InsertBulkImport(IEnumerable<ChatrelBulkData> chatrelBulkData)
+        public (string, bool) InsertBulkImport(IEnumerable<ChatrelBulkData> chatrelBulkData)
         {
             string guid = Guid.NewGuid().ToString();
             
@@ -67,22 +67,35 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 data.sBatchNumber = guid;
                 data.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                 data.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                int inserted = Add(data);
-                if(inserted <= 0)
+                try
                 {
-                    return String.Empty;
+                    int inserted = Add(data);
+                }
+                catch (Exception ex)
+                {
+                    return (ex.Message, false);
                 }
             }
             
             using (var command = new MySqlCommand("spValidateBulkUploadedDataByBatchNumber"))
             {
-                command.Parameters.AddWithValue("strBatchNumber", guid);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Connection = _connection;
-                _connection.Open();
-                int returnValue = command.ExecuteNonQuery();
-                _connection.Close();
-                return guid;
+                try
+                {
+                    command.Parameters.AddWithValue("strBatchNumber", guid);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandTimeout = 300;
+                    command.Connection = _connection;
+                    _connection.Open();
+                    int returnValue = command.ExecuteNonQuery();
+                    _connection.Close();
+                    return (guid, true);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+                
             }
         }
         #endregion
@@ -92,15 +105,22 @@ namespace CTADBL.BaseClassRepositories.Transactions
         {
             using(var command = new MySqlCommand("spInsertBulkUploadedDataByBatchNumber"))
             {
-                command.Parameters.AddWithValue("strBatchNumber", sBatchNumber);
-                command.Parameters.Add("@rowsinserted", MySqlDbType.UInt32);
-                command.Parameters["@rowsinserted"].Direction = ParameterDirection.Output;
-                command.CommandType = CommandType.StoredProcedure;
-                command.Connection = _connection;
-                _connection.Open();
-                int x = (int)command.ExecuteScalar();
-                _connection.Close();
-                return x;
+                try
+                {
+                    command.Parameters.AddWithValue("strBatchNumber", sBatchNumber);
+                    command.Parameters.Add("@rowsinserted", MySqlDbType.UInt32);
+                    command.Parameters["@rowsinserted"].Direction = ParameterDirection.Output;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = _connection;
+                    _connection.Open();
+                    int x = (int)command.ExecuteScalar();
+                    _connection.Close();
+                    return x;
+                }
+                catch(MySqlException ex)
+                {
+                    throw;
+                }
             }
         }
         #endregion

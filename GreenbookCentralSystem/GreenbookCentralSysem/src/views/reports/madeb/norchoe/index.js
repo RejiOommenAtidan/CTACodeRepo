@@ -31,7 +31,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import MaterialTable from 'material-table';
 
-import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders, sDDMMYYYYRegex, sDateFormatMUIDatepicker, sISODateFormat  } from '../../../../config/commonConfig';
+import {MadebReportColumns, oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders, sDDMMYYYYRegex, sDateFormatMUIDatepicker, sISODateFormat  } from '../../../../config/commonConfig';
 import { useForm, Controller } from "react-hook-form";
 import {
   MuiPickersUtilsProvider,
@@ -96,174 +96,7 @@ export default function Report() {
   const snackbarClose = () => {
     setSnackbar(false);
   };
-  const columns = [
-    {
-      field: "no",
-      title: "Sr. No.",
-      
-      width: '5%',
-      //hidden:true,
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'center',
-        border: '1px solid black'
-
-      },
-    },
-    {
-      field: "sPlaceName",
-      title: "REGION/COUNTRY",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'left',
-        border: '1px solid black'
-
-      },
-    },
-    {
-      field: "madebPending",
-      title: "MADEB PENDING",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'center',
-        border: '1px solid black'
-
-      },
-    },
-    {
-      field: "madebIssued",
-      title: "MADEB ISSUED",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'center',
-        border: '1px solid black'
-
-      },
-    },
-    {
-      field: "madebRejected",
-      title: "MADEB REJECTED",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'center',
-        border: '1px solid black'
-
-      },
-    },
-    {
-      field: "madebDouble",
-      title: "MADEB DOUBLE",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'center',
-        border: '1px solid black'
-
-      },
-    },
-    {
-      field: "madebCancelled",
-      title: "MADEB CANCELLED",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'center',
-        border: '1px solid black'
-
-      },
-    },
-    {
-      field: "madebClosed",
-      title: "MADEB CLOSED/DELETED",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'center',
-        border: '1px solid black'
-
-
-      },
-    },
-    {
-      field: "madebTotalReceived",
-      title: "TOTAL RECEIVED",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'center',
-        border: '1px solid black'
-
-      },
-    },
-
-  ]
+  
   const norchoe = (e) => {
     e.preventDefault();
     if (madebType === '' || dtFrom === null || dtTo === null || orderBy === '') {
@@ -497,7 +330,7 @@ export default function Report() {
             //isLoading={isLoading}
             icons={tableIcons}
             title={title} 
-            columns={columns}
+            columns={MadebReportColumns}
             data={norchoeData}
             options={{...oOptions, exportFileName: "NorchoeReport"}}
             actions={[

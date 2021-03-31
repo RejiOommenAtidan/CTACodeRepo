@@ -31,10 +31,10 @@ import {
   removeGBDetails,
   removeJWTToken,
 } from '../store/actions/GBDetailsAction';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {sAPIBASEURL} from '../constants/CommonConfig';
 import {decode as atob, decode, encode as btoa} from 'base-64';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const CustomSidebarMenu = (props) => {
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
@@ -84,10 +84,16 @@ export const CustomSidebarMenu = (props) => {
               dispatch(removeCurrentGBDetails);
               axios.defaults.headers.common['Authorization'] = undefined;
               navigation.navigate('Login');
+            } else {
+              dispatch(removeGoogleCreds);
+              dispatch(removeGBDetails);
+              dispatch(removeJWTToken);
+              dispatch(removeCurrentGBDetails);
+              axios.defaults.headers.common['Authorization'] = undefined;
+              navigation.navigate('Login');
             }
           })
           .catch((error) => {
-            console.log('Error ', error.response);
             navigation.navigate('Login');
           })
           .then((release) => {
@@ -95,7 +101,6 @@ export const CustomSidebarMenu = (props) => {
           });
         //});
       } catch (error) {
-        console.error(error);
         navigation.navigate('Login');
       }
     };

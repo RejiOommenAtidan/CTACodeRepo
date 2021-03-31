@@ -484,6 +484,40 @@ placeholder="DD-MM-YYYY"
 
                                     </FormControl>
                                 </Grid>
+                                <Grid item sm={6} xs={12}>
+                                    <FormControl className={props.classes.formControl}>
+                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                            <KeyboardDatePicker
+                                                placeholder="DD-MM-YYYY"
+                                                variant="dialog"
+                                                //openTo="year"
+                                                //views={["year", "month", "date"]}
+                                                margin="dense"
+                                                id="id_dtEmailSend"
+                                                name="name_dtEmailSend"
+
+                                                label="Email Sent Date"
+                                                format={sDateFormatMUIDatepicker}
+                                                // returnMoment={true}
+                                                onChange={(date) => {
+                                                    //console.log(date.toISOString().split("T")[0]);
+                                                    //console.log(date.toDateString());
+                                                    // console.log(date.toLocaleDateString());
+                                                    //console.log(date);
+                                                    setEmailSendDate(date);
+                                                }}
+                                                value={dtEmailSend}
+                                                KeyboardButtonProps={{
+                                                    "aria-label": "change date",
+                                                }}
+
+                                            //   className={classes.dateField}
+
+                                            />
+                                        </MuiPickersUtilsProvider>
+
+                                    </FormControl>
+                                </Grid>
 
                             </Grid>
                         </div>

@@ -169,8 +169,8 @@ namespace ChatrelPaymentWebAPI.Controllers
                             #endregion
 
                             #region Update Last Successful Login Date
-                            greenbook.dtLastSuccessfullLogin = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time")); ;
-                            _greenbookRepository.Update(greenbook);
+                            //greenbook.dtLastSuccessfullLogin = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time")); ;
+                            _greenbookRepository.UpdateLastSuccessfulLogin(greenbook);
                             #endregion
 
                             // should we set a cookie or a token?

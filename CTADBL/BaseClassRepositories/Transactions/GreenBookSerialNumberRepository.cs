@@ -1,4 +1,6 @@
-﻿using CTADBL.BaseClasses.Transactions;
+﻿using CTADBL.BaseClasses.Masters;
+using CTADBL.BaseClasses.Transactions;
+using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using MySql.Data.MySqlClient;
@@ -8,25 +10,69 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using TimeZoneConverter;
 
 namespace CTADBL.BaseClassRepositories.Transactions
 {
     public class GreenBookSerialNumberRepository :  ADORepository<GreenBookSerialNumber>
     {
         private static MySqlConnection _connection;
+        private readonly CTAConfigRepository _ctaConfigRepository;
+        private readonly MadebRepository _madebRepository;
 
         #region Constructor
         public GreenBookSerialNumberRepository(string connectionString) : base(connectionString)
         {
             _connection = new MySqlConnection(connectionString);
+            _ctaConfigRepository = new CTAConfigRepository(connectionString);
+            _madebRepository = new MadebRepository(connectionString);
         }
         #endregion
 
         #region Add Call
         public int Add(GreenBookSerialNumber gbsn)
         {
-            var builder = new SqlQueryBuilder<GreenBookSerialNumber>(gbsn);
-            return ExecuteCommand(builder.GetInsertCommand());
+            _connection.Open();
+            MySqlTransaction transaction = _connection.BeginTransaction();
+            try
+            {
+                var builder = new SqlQueryBuilder<GreenBookSerialNumber>(gbsn);
+                MySqlCommand command = builder.GetInsertCommand();
+                command.Transaction = transaction;
+                command.Connection = _connection;
+                int insertedRows = command.ExecuteNonQuery();
+                if (insertedRows < 1)
+                {
+                    throw new Exception("Failed to Add new Greenbook Serial Record");
+                }
+                CTAConfig config = _ctaConfigRepository.GetConfigByKey("BookSerialNumber");
+                config.sValue = gbsn.nBookNo.ToString();
+                config.dtUpdated = gbsn.dtUpdated;
+                config.nUpdatedBy = gbsn.nUpdatedBy;
+                var cbuilder = new SqlQueryBuilder<CTAConfig>(config);
+                command.CommandText = cbuilder.GetUpdateCommand().CommandText;
+                int updatedRows = command.ExecuteNonQuery();
+                if(updatedRows < 1)
+                {
+                    throw new Exception("Failed to Update Config values");
+                }
+                _ctaConfigRepository.LoadValues();
+                Madeb madeb = _madebRepository.GetMadebByGBIDAndFormNumber(gbsn.sGBID, (int)gbsn.nFormNumber, (int)gbsn.nMadebTypeId);
+                madeb.nCurrentGBSno = (int?)gbsn.nBookNo;
+                madeb.nIssuedOrNotID = 1;
+                madeb.dtUpdated = gbsn.dtUpdated;
+                madeb.nUpdatedBy = gbsn.nUpdatedBy;
+                _madebRepository.Update(madeb);
+                transaction.Commit();
+                _connection.Close();
+                return insertedRows;
+            }
+            catch(Exception ex)
+            {
+                transaction.Rollback();
+                _connection.Close();
+                throw;
+            }
             
         }
         #endregion

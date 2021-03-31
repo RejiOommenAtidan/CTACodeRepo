@@ -170,8 +170,8 @@ export default function Report() {
 
     },
     {
-      field: "sFirstName",
-      title: "FIRST NAME",
+      field: "sFullName",
+      title: "FULL NAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -264,7 +264,7 @@ export default function Report() {
     {
       field: "dtCurrentChatrelFrom",
       title: "CHATREL FROM",
-      type: 'date',
+     
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -292,7 +292,7 @@ export default function Report() {
     {
       field: "dtCurrentChatrelTo",
       title: "CHATREL TO",
-      type: 'date',
+      
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -352,7 +352,7 @@ export default function Report() {
     {
       field: "dtArrearsFrom",
       title: "ARREARS FROM",
-      type: 'date',
+    
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -381,7 +381,7 @@ export default function Report() {
     {
       field: "dtArrearsTo",
       title: "ARREARS TO",
-      type: 'date',
+     
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -529,6 +529,10 @@ export default function Report() {
           element.dtArrearsFrom = element.dtArrearsFrom ? Moment(element.dtArrearsFrom).format(sDateFormat) : null;
           element.dtArrearsTo = element.dtArrearsTo ? Moment(element.dtArrearsTo).format(sDateFormat) : null;
             element.nSerialNo = i++;
+            element.sFullName=element.sFirstName + (element.sLastName ? (' '+element.sLastName):'');
+            element.sGBID=element.sCountryID+element.sGBID;
+            element.sPaidByGBId=element.sPaidByCountryID+element.sPaidByGBId;
+           
           });
           setdataAPI(resp.data);
           modifyHeaders();

@@ -1,5 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, Dimensions, ScrollView} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Platform,
+  Linking,
+} from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Card, Icon} from 'react-native-elements';
@@ -13,6 +21,7 @@ import {
   sChatrelNetURL,
   sFontName,
   sFontNameBold,
+  sPrivacyPolicyURL,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 import {Loader} from '../components/Loader';
@@ -97,6 +106,20 @@ export const ContactUsScreen = () => {
               number if you have any suggestion or any grievances with this
               project.
             </Text>
+            <Text
+              style={{
+                ...styles.contactUsTextComponent,
+                marginTop: hp(3),
+                fontSize: wp(4),
+                marginBottom: hp(1),
+              }}>
+              You can read our Privacy Policy{' '}
+              <Text
+                style={styles.privacyPolicyLink}
+                onPress={() => Linking.openURL(sPrivacyPolicyURL)}>
+                here
+              </Text>
+            </Text>
           </View>
         </Card>
       </View>
@@ -130,6 +153,16 @@ const styles = StyleSheet.create({
   },
   contactUsPlaceholderView: {
     marginBottom: hp(2),
+  },
+  privacyPolicyLink: {
+    color: Colors.ChatrelInfoBlue,
+    fontSize: wp(4.25),
+    fontStyle: 'normal',
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    textDecorationColor: Colors.ChatrelInfoBlue,
+    textDecorationLine: 'underline',
+    textAlign: 'center',
   },
   contactUsTextComponent: {
     color: Colors.blackText,

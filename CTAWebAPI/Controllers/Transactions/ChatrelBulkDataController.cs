@@ -45,10 +45,9 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             try
             {
-                string sBatchNumber = _chatrelBulkDataRepository.InsertBulkImport(chatrelBulkData);
-                if (!String.IsNullOrEmpty(sBatchNumber))
+                (string sBatchNumber, bool status) = _chatrelBulkDataRepository.InsertBulkImport(chatrelBulkData);
+                if (status)
                 {
-
                     var data = _chatrelBulkDataRepository.GetChatrelBulkDataByBatchNumber(sBatchNumber);
 
                     #region Information Logging 
@@ -58,7 +57,8 @@ namespace CTAWebAPI.Controllers.Transactions
                 }
                 else
                 {
-                    return NoContent();
+                    _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + sBatchNumber);
+                    return StatusCode(StatusCodes.Status500InternalServerError, sBatchNumber);
                 }
             }
             catch (Exception ex)
@@ -67,7 +67,7 @@ namespace CTAWebAPI.Controllers.Transactions
 
                 _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
@@ -98,7 +98,7 @@ namespace CTAWebAPI.Controllers.Transactions
 
                 _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

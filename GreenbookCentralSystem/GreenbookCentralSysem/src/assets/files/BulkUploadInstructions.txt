@@ -4,6 +4,7 @@ Instructions for Bulk Import CSV File:
 2. After selecting the file, the file will be verified for correct headers.
 3. If the headers are as per system requirement, the file can be uploaded for verification.
 
+
 The data in the file is expected as mentioned below:
 
 1. All types of dates are expected in the "DD/MM/YYYY" format with "/"  or "-" as separator.
@@ -14,8 +15,9 @@ The data in the file is expected as mentioned below:
 
 3. Currency Format should be correctly mentioned as either "INR" / "USD",  etc.
 4. Financial Year should be mentioned as "2020" and not as "2020-21".
-5. Authority Region names should match exactly as per database.
-6. Country Names should match exactly as per database.
-7. Payment mode should be mentioned strictly as 'Offline'.
-8. During verification, file will be checked for valid data.
-9. A table will be populated below displaying Success or Failed status of each row.
+5. Arrears date should be kept empty if no arrears.
+6. Authority Region names should match exactly as per database.
+7. Country Names should match exactly as per database.
+8. Payment mode should be mentioned strictly as 'Offline'.
+9. During verification, file will be checked for valid data.
+10. A table will be populated below displaying Success or Failed status of each row. 

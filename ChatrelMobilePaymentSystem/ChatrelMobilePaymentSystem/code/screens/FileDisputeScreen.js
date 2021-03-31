@@ -311,8 +311,20 @@ export const FileDisputeScreen = (props) => {
         }
       })
       .catch((error) => {
-        console.log('Error ', error.response);
-        console.log(error.config);
+        setTimeout(() => {
+          Alert.alert(
+            sAttentionRequired,
+            sSomethingWentWrongPleaseTryAgainLater,
+            [
+              {
+                text: 'Ok',
+                onPress: () => true,
+                style: 'cancel',
+              },
+            ],
+            {cancelable: false},
+          );
+        }, 1000);
       })
       .then((release) => {
         //console.log(release); => udefined

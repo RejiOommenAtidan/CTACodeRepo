@@ -5,6 +5,7 @@ import {
   FormControl,
   TextField
 } from '@material-ui/core';
+import { useForm } from "react-hook-form";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -13,8 +14,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
 
 export const AssignDialog = (props) => {
+  const {  handleSubmit, formState } = useForm();
   console.log("Props object: \n", props);
-  const handleSubmit = (e) => {
+  const handleSubmitAssign = (e) => {
     e.preventDefault();
     console.log("Handle submit called");
     props.handleAssignGBID();
@@ -23,7 +25,7 @@ export const AssignDialog = (props) => {
     <div>
       <Dialog open={props.assignModal} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Generate Green Book ID</DialogTitle>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => handleSubmit(handleSubmitAssign(e))}>
           <DialogContent>
             <DialogContentText>
               <Grid container spacing={3}>
@@ -83,7 +85,8 @@ export const AssignDialog = (props) => {
             size={sButtonSize}
             >Cancel</Button>
             <Button 
-            type="submit" 
+            type="submit"
+            disabled={formState.isSubmitting && formState.isValid}
             color={sButtonColor}
             variant={sButtonVariant}
             size={sButtonSize}

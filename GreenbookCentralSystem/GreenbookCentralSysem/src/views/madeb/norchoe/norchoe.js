@@ -911,7 +911,6 @@ export default function EnhancedTable() {
     //setBackdrop(true);
     axios.post(`/MadebAuthRegionVM/ColumnSearchMadeb/madebType=2`, searchObj)
     .then(resp => {
-      setBackdrop(false);
       if(resp.status === 200){
         console.log("Search result", resp.data);
         resp.data.forEach((element) => {
@@ -922,8 +921,12 @@ export default function EnhancedTable() {
           element.madeb.dtFormattedEmailSend = element.madeb.dtEmailSend ? Moment(element.madeb.dtEmailSend).format(sDateFormat) : null;
         });
         setdataAPI(resp.data);
+        modifyHeaders();
+        selectDatafunction();
+        setBackdrop(false);
       }
       if(resp.status === 204){
+        setBackdrop(false);
         console.log("Got 204, Empty result");
         setdataAPI([]);
         setAlertMessage("No Data Found...");
@@ -933,22 +936,25 @@ export default function EnhancedTable() {
     })
     .catch(error =>{
       setBackdrop(false);
-      setAlertMessage("Error in searching...");
-      setAlertType('error');
-      snackbarOpen();
+      // setAlertMessage("Error in searching...");
+      // setAlertType('error');
+      // snackbarOpen();
     });
   };
 
   return (
     <>
     <Paper>
-        <Grid container spacing={1} alignContent='flex-start' style={{paddingLeft: '20px', maxWidth: '70%'}} >
+        <Grid container spacing={1} alignContent='flex-start' /*style={{paddingLeft: '20px', maxWidth: '70%'}}*/ >
 
 
         
-
-          <Grid item xs={1} lg={1} style={{paddingTop: '9px'}}>
-            <TextField label={'Form No'} onChange={(e) => {
+        <Grid item xs={1} lg={1}>
+          </Grid>
+          <Grid item xs={2} lg={2} style={{paddingTop: '9px'}}>
+            <TextField label={'Form No'} 
+            fullWidth
+            onChange={(e) => {
             if(e.target.value){
               setFormNumber(parseInt(e.target.value)); 
               searchFunction(parseInt(e.target.value), dtReceived, sAuthRegion, sName, sGBIDForSearch);
@@ -962,10 +968,26 @@ export default function EnhancedTable() {
 
           } />
           </Grid>
-
+          <Grid item xs={2} lg={2} style={{paddingTop: '9px'}}>
+            <TextField 
+              label={'Full Name'} 
+              fullWidth
+              onChange={(e) => {
+                if(e.target.value){
+                  setName(e.target.value); 
+                  searchFunction(nFormNumber, dtReceived, sAuthRegion, e.target.value, sGBIDForSearch); 
+                }
+                if(e.target.value === ''){
+                  setName(null); 
+                  searchFunction(nFormNumber, dtReceived, sAuthRegion, null, sGBIDForSearch); 
+                }
+                }} 
+            />
+          </Grid>
           <Grid item xs={2} lg={2} style={{paddingTop: '9px'}}>
             <Autocomplete
               openOnFocus
+              fullWidth
               clearOnEscape
               autoComplete={true}
               autoHighlight={true}
@@ -1012,24 +1034,11 @@ export default function EnhancedTable() {
             /> */}
           </Grid>
 
+         
           <Grid item xs={2} lg={2} style={{paddingTop: '9px'}}>
             <TextField 
-              label={'Name'} 
-              onChange={(e) => {
-                if(e.target.value){
-                  setName(e.target.value); 
-                  searchFunction(nFormNumber, dtReceived, sAuthRegion, e.target.value, sGBIDForSearch); 
-                }
-                if(e.target.value === ''){
-                  setName(null); 
-                  searchFunction(nFormNumber, dtReceived, sAuthRegion, null, sGBIDForSearch); 
-                }
-                }} 
-            />
-          </Grid>
-          <Grid item xs={2} lg={2} style={{paddingTop: '9px'}}>
-            <TextField 
-            label={"Greenbook ID"} 
+            fullWidth
+            label={"Green Book ID"} 
             onChange={(e) => {
               if(e.target.value){
                 setGBIDForSearch(e.target.value); 
@@ -1049,6 +1058,7 @@ export default function EnhancedTable() {
                   <KeyboardDatePicker
                     placeholder="DD-MM-YYYY"
                     variant="dialog"
+                    fullWidth
                     margin="dense"
                     id="dtReceived"
                     name="dtReceived"
@@ -1107,6 +1117,8 @@ export default function EnhancedTable() {
                 }}
               /> */}
             </Grid>
+            <Grid item xs={1} lg={1}>
+          </Grid>
         </Grid>
       <Grid container spacing={1}>
         <Grid item xs={12}>

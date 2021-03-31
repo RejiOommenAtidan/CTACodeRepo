@@ -840,18 +840,28 @@ CREATE TABLE `lstCTAConfig` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtEntered`,`nEnteredBy`,`dtUpdated`, `nUpdatedBy`) VALUES
-(1, 'UITableNumberOfRowsInPage', '20', now(), 1, now(), 1),
-(2, 'SelectTotalRecordCount', '1000', now(), 1, now(), 1),
-(3, 'DateFormat', 'DD-MM-YYYY', now(), 1, now(), 1),
-(4, 'CTAAdminEmail', 'set email here', now(), 1, now(), 1),
-(5, 'CTAAdminEmailPassword', 'set password here', now(), 1, now(), 1),
-(6, 'CTAEmailRelayServer', 'set email relay server here', now(), 1, now(), 1),
-(7, 'CTAEmailServerPort', 'set email server port here', now(), 1, now(), 1),
-(8, 'CTAEmailUseSSL', 'set ssl here', now(), 1, now(), 1),
-(9, 'CTAEmailCC', 'set cc email here', now(), 1, now(), 1),
-(10, 'LoginSessionTimeout', '600', now(), 1, now(), 1),
+truncate table lstctaconfig;
 
+INSERT INTO `lstctaconfig` (`sKey`, `sValue`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES 
+('UITableNumberOfRowsInPage', '20', now(), 1, now(), 1),
+('SelectTotalRecordCount', '1000', now(), 1, now(), 1),
+('DateFormat', 'DD-MM-YYYY', now(), 1, now(), 1),
+('CTAAdminEmail', 'chatrelcta@gmail.com', now(), 1, now(), 1),
+('CTAAdminEmailPassword', 'hjmzfrcillpuvsxv', now(), 1, now(), 1),
+('CTAEmailRelayServer', 'smtp.gmail.com', now(), 1, now(), 1),
+('CTAEmailServerPort', '465', now(), 1, now(), 1),
+('CTAEmailUseSSL', 'true', now(), 1, now(), 1),
+('CTAEmailCC', 'rajen.parekh@atidan.com', now(), 1, now(), 1),
+('LoginSessionTimeout', '600', now(), 1, now(), 1),
+('CTALastSyncDateTime', '2021-03-22 15:57:02', now(), 1, now(), 1),
+('MadebLoadDefaultRecordsNumber', '50', now(), 1, now(), 1),
+('MadebLoadSearchRecordsNumber', '100', now(), 1, now(), 1),
+('CTAChatreltblChatrelPaymentID', '113', now(), 1, now(), 1),
+('CTAChatrellnkgbChatrelID', '261', now(), 1, now(), 1),
+('CTAChatrellnkgbChatrelDonationID', '22', now(), 1, now(), 1),
+('ShouldCCEmail', 'false', now(), 1, now(), 1),
+('BookSerialNumber', '50378', now(), 1, now(), 1),
+('EncryptionKey', '@TiD#nC^A3,zD69#]qX', now(), 1, now(), 1);
 
 CREATE TABLE `lstChatrel` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1750,8 +1760,7 @@ DROP procedure IF EXISTS `spDeleteGreenBook`;
 
 DELIMITER $$
 
-CREATE PROCEDURE `spDeleteGreenBook`(IN sGBIDIN VARCHAR(255), OUT result INT)
-
+CREATE  PROCEDURE spDeleteGreenBook(IN sGBIDIN VARCHAR(255), OUT result INT)
 BEGIN
 
     -- SET result = row_count();
@@ -1779,8 +1788,10 @@ BEGIN
 
 	DELETE FROM tblRecentlySearchedGB WHERE tblRecentlySearchedGB.nGBID = sGBIDIN;
 	DELETE FROM tblAuditLog WHERE tblAuditLog.sGBID = sGBIDIN;
-	DELETE FROM tblMadeb WHERE tblMadeb.sGBID = sGBIDIN;
+	-- DELETE FROM tblMadeb WHERE tblMadeb.sGBID = sGBIDIN;
 	DELETE FROM tblgreenbook WHERE tblgreenbook.sGBID = sGBIDIN;
+
+	UPDATE tblmadeb SET nMadebStatusID = 6 WHERE sGBID = sGBIDIN;
 
     COMMIT;
     SET result = row_count();
@@ -1873,9 +1884,10 @@ DELIMITER $$
 CREATE PROCEDURE `spGetNewGreenBookSerialData`()
 BEGIN
     SELECT Id, sMadebType FROM lstmadebtype;
-    SELECT ID, sAuthRegion FROM lstauthregion;
-    SELECT ID, sCountryID, sCountry FROM lstcountry;
-    SELECT max(nBookNo) + 1 AS nBookNo FROM tblgreenbookserial;
+	SELECT ID, sAuthRegion FROM lstauthregion;
+	SELECT ID, sCountryID, sCountry FROM lstcountry;
+	-- SELECT max(nBookNo) + 1 AS nBookNo FROM tblgreenbookserial;
+	SELECT (l.sValue + 1) AS nBookNo FROM lstctaconfig l WHERE l.sKey = 'BookSerialNumber';
 END$$
 DELIMITER ;
 
@@ -2171,8 +2183,9 @@ BEGIN
 				, if(sum(tblMadeb.nMadebStatusID = 3) is null,0,sum(tblMadeb.nMadebStatusID = 3)) as MadebRejected
 				, if(sum(tblMadeb.nMadebStatusID = 4) is null,0,sum(tblMadeb.nMadebStatusID = 4)) as MadebDouble
 				, if(sum(tblMadeb.nMadebStatusID = 5) is null,0,sum(tblMadeb.nMadebStatusID = 5)) as MadebCancelled
+				, if(sum(tblMadeb.nMadebStatusID = 6) is null,0,sum(tblMadeb.nMadebStatusID = 6)) as MadebClosed
 				, if(sum((tblMadeb.nMadebStatusID = 1) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID is NULL) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID = 1 )) is null,0,sum((tblMadeb.nMadebStatusID = 1) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID is NULL) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID = 1 ))) as MadebPending
-				, if(sum(tblMadeb.nIssuedOrNotID = 2) is null,0,sum(tblMadeb.nIssuedOrNotID = 2)) + if(sum(tblMadeb.nMadebStatusID = 3) is null,0,sum(tblMadeb.nMadebStatusID = 3)) + if(sum(tblMadeb.nMadebStatusID = 4) is null,0,sum(tblMadeb.nMadebStatusID = 4)) + if(sum(tblMadeb.nMadebStatusID = 5) is null,0,sum(tblMadeb.nMadebStatusID = 5)) + if(sum((tblMadeb.nMadebStatusID = 1) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID is NULL) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID = 1 )) is null,0,sum((tblMadeb.nMadebStatusID = 1) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID is NULL) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID = 1 ))) as MadebTotalReceived
+				, if(sum(tblMadeb.nIssuedOrNotID = 2) is null,0,sum(tblMadeb.nIssuedOrNotID = 2)) + if(sum(tblMadeb.nMadebStatusID = 3) is null,0,sum(tblMadeb.nMadebStatusID = 3)) + if(sum(tblMadeb.nMadebStatusID = 4) is null,0,sum(tblMadeb.nMadebStatusID = 4)) + if(sum(tblMadeb.nMadebStatusID = 5) is null,0,sum(tblMadeb.nMadebStatusID = 5)) + if(sum(tblMadeb.nMadebStatusID = 6) is null,0,sum(tblMadeb.nMadebStatusID = 6)) +  if(sum((tblMadeb.nMadebStatusID = 1) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID is NULL) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID = 1 )) is null,0,sum((tblMadeb.nMadebStatusID = 1) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID is NULL) OR (tblMadeb.nMadebStatusID = 2 AND tblMadeb.nIssuedOrNotID = 1 ))) as MadebTotalReceived
 			FROM 
 				tblMadeb 
 			INNER JOIN ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion
@@ -2761,22 +2774,7 @@ declare continue handler for not found set done=1;
         SET rowsinserted = errno;
 		ROLLBACK;
     END;
-				-- if finds Data duplicate then exit the Proc
-				IF ( (
-					SELECT COUNT(*) FROM tblChatrelPayment 
-								inner join tblchatrelbulkdata
-									on tblchatrelbulkdata.ReceiptNo = tblChatrelPayment.schatrelReceiptnumber
-								WHERE tblchatrelbulkdata.sBatchNumber = strBatchNumber 
-				) > 0) THEN
-						-- Checking ReceiptNo is present in DB
-						SET SQL_SAFE_UPDATES=0;
-						
-								UPDATE `tblchatrelbulkdata` 
-									SET `sRemarkText` ='BatchNumber already exist in DB; Please Validate' , `bValidate` = 0, `sStatus` = 'Validation Failed'
-								WHERE `tblchatrelbulkdata`.`sBatchNumber` = strBatchNumber;
-								
-								LEAVE proc_label;
-				END IF;
+
 
 SET SQL_SAFE_UPDATES=0;
 

@@ -1,6 +1,7 @@
 ﻿using ChatrelDBL.BaseClasses.Transactions;
 using ChatrelDBL.QueryBuilder;
 using ChatrelDBL.Repository;
+using ChatrelDBL.Services;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -27,10 +28,32 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         //#endregion
 
         #region Update Green Book
-        public void Update(Greenbook greenbook)
+        public void UpdateLastSuccessfulLogin(Greenbook greenbook)
+
         {
-            var builder = new SqlQueryBuilder<Greenbook>(greenbook);
-            ExecuteCommand(builder.GetUpdateCommand());
+            string sql = @"UPDATE tblgreenbook SET dtLastSuccessfullLogin = now() WHERE id = @Id;";
+            using (MySqlCommand command = new MySqlCommand(sql,_connection)) {
+                try
+                {
+                    _connection.Open();
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("Id", greenbook.Id);
+                    int nUpdatedRow = command.ExecuteNonQuery();
+                    if (nUpdatedRow > 0)
+                    {
+                        _connection.Close();
+                    }
+                    else {
+                        _connection.Close();
+                        throw new Exception("There was an error updating login date");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _connection.Close();
+                    throw;
+                }
+            }
         }
         #endregion
 
@@ -220,6 +243,9 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
             greenbook.dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]);
             greenbook.nUpdatedBy = (int)reader["nUpdatedBy"];
 
+            // Decrypt sFirstName and sLastName
+            greenbook.sFirstName = DataEncryption.DecryptString(greenbook.sFirstName);
+            greenbook.sLastName = DataEncryption.DecryptString(greenbook.sLastName);
             return greenbook;
         }
         #endregion

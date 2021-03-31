@@ -43,28 +43,6 @@ export const sDateFormatDatePicker = 'MM/DD/YYYY';
 
 export const sISODateFormat = 'YYYY-MM-DD';
 
-////QA Success
-export const sSuccessPayPalWebPageURL =
-  'https://chatrel-webapp.azurewebsites.net/Success';
-
-////QA Failure
-export const sFailurePayPalWebPageURL =
-  'https://chatrel-webapp.azurewebsites.net/Failure';
-
-////UAT Success
-// export const sSuccessPayPalWebPageURL =
-//   'https://chatrel-webapp-uat.azurewebsites.net/Success';
-
-////UAT Failure
-// export const sFailurePayPalWebPageURL =
-//   'https://chatrel-webapp-uat.azurewebsites.net/Failure';
-
-////Live Success
-// export const sSuccessPayPalWebPageURL = 'https://chatrel.net/Success';
-
-////Live Failure
-// export const sFailurePayPalWebPageURL = 'https://chatrel.net/Failure';
-
 export const sFontName = 'JosefinSans-Regular';
 
 export const sFontNameBold = 'JosefinSans-Bold';
@@ -111,15 +89,17 @@ export const sFAQURL = 'https://chatrel.net/ChatrelFAQ.pdf';
 
 export const sChatrelNetURL = 'www.chatrel.net';
 
+export const sPrivacyPolicyURL = 'https://' + sChatrelNetURL + '/privacy';
+
 export const sVerificationSuccessfulMessage = 'Verification Successful';
 
 export const sVerificationFailedMessage = 'Verification Failed';
 
 export const sPayPalTransactionIDCopied = 'PayPal Transaction ID Copied';
-export const sPayPalPaymentIDCopied = 'PayPal Payment ID Copied';
+export const sPayPalPaymentIDCopied = 'PayPal Order ID Copied';
 
 export const sCopyPayPalTransactionID = 'Copy PayPal Transaction ID';
-export const sCopyPayPalPaymentID = 'Copy PayPal Payment ID';
+export const sCopyPayPalPaymentID = 'Copy PayPal Order ID';
 
 export const sMobilePassphrase = 'HHBawq>%6%?_/7}nz{C`94@f[';
 

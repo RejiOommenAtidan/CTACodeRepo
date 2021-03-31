@@ -19,7 +19,15 @@ namespace ChatrelPaymentWebAPI.Services
         {
             string clientId = ChatrelConfigRepository.GetValueByKey("PayPalClientID").ToString();
             string secret = ChatrelConfigRepository.GetValueByKey("PayPalSecret").ToString();
-            return new SandboxEnvironment(clientId, secret);
+            string environment = ChatrelConfigRepository.GetValueByKey("sPayPalEnvironment").ToString();
+            if(environment == "live")
+            {
+                return new LiveEnvironment(clientId, secret);
+            }
+            else
+            {
+                return new SandboxEnvironment(clientId, secret);
+            }
             //return new SandboxEnvironment("AdqxwGp5tKswa3OfXdw5dcCp5SQNtAEkDmPI9InDri3FcXnGCfWfpwhBsLRenYqMwrUrUTLLbnGTOM14", "ECrAFFlN_jB_Z62_rc9Ukt2Mv7Yeov2saaDbNCT3Ef_bP9JS2ke9y_G-8VGqQiTB7o3sGJRGFeBF-QKD");
         }
 

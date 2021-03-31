@@ -430,79 +430,18 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    greenbook.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                    greenbook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                    _greenbookRepository.Add(greenbook);
-
                     #region Parsing to Int
                     bool isParsable = int.TryParse(greenbook.sGBID, out int nGBId);
                     if (!isParsable)
                         return BadRequest("Cannot Convert GBID to Int " + greenbook.sGBID);
                     #endregion
 
-                    #region Firing Update Query to Change bGivenOrNot to true
-                    _givenGBIDRepository.UpdateGivenOrNot(nGBId);
-                    #endregion
+                    greenbook.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    greenbook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    _greenbookRepository.Add(greenbook);
 
-                    #region Relations Table Addition
-                    //Father - 1
-                    if (!string.IsNullOrEmpty(greenbook.sFathersGBID))
-                    {
-                        Greenbook fatherGB = _greenbookRepository.GetGreenbookByGBID(greenbook.sFathersGBID);
-                        if (fatherGB != null)
-                        {
-                            GBRelation fatherRelation = new GBRelation
-                            {
-                                sGBID = greenbook.sGBID,
-                                sGBIDRelation = greenbook.sFathersGBID,
-                                nRelationID = 1,
-                                dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
-                                dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
-                                nEnteredBy = greenbook.nEnteredBy,
-                                nUpdatedBy = greenbook.nUpdatedBy
-                            };
-                            _gbRelationRepository.Add(fatherRelation);
-                        }
-                    }
-                    //Mother - 2
-                    if (!string.IsNullOrEmpty(greenbook.sMothersGBID))
-                    {
-                        Greenbook motherGB = _greenbookRepository.GetGreenbookByGBID(greenbook.sMothersGBID);
-                        if (motherGB != null)
-                        {
-                            GBRelation motherRelation = new GBRelation
-                            {
-                                sGBID = greenbook.sGBID,
-                                sGBIDRelation = greenbook.sMothersGBID,
-                                nRelationID = 2,
-                                dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
-                                dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
-                                nEnteredBy = greenbook.nEnteredBy,
-                                nUpdatedBy = greenbook.nUpdatedBy
-                            };
-                            _gbRelationRepository.Add(motherRelation);
-                        }
-                    }
-                    //Spouse - 3
-                    if (!string.IsNullOrEmpty(greenbook.sSpouseGBID))
-                    {
-                        Greenbook spouseGB = _greenbookRepository.GetGreenbookByGBID(greenbook.sSpouseGBID);
-                        if (spouseGB != null)
-                        {
-                            GBRelation spouseRelation = new GBRelation
-                            {
-                                sGBID = greenbook.sGBID,
-                                sGBIDRelation = greenbook.sSpouseGBID,
-                                nRelationID = 3,
-                                dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
-                                dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
-                                nEnteredBy = greenbook.nEnteredBy,
-                                nUpdatedBy = greenbook.nUpdatedBy
-                            };
-                            _gbRelationRepository.Add(spouseRelation);
-                        }
-                    }
-                    #endregion
+                    
+
 
                     #region Information Logging 
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, greenbook.nEnteredBy);

@@ -41,7 +41,7 @@ export default function Friends () {
   const [sGBID,setGBID]=React.useState("");
   const [dtDob,setDOB]=React.useState("");
   const dispatch = useDispatch();
-  const [backdrop, setBackdrop] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(true);
   const [alertMessage, setAlertMessage] = React.useState('');
   const [alertType, setAlertType] = React.useState('');
   const alertObj = {
@@ -63,11 +63,13 @@ console.log("UserObj",userObj);
 console.log("UserGBObj",userGBObj);
 
 useEffect(() => {
+    console.log('Test 1');
     setBackdrop(true);
     axios.get(`/ChatrelPayment/Ping`)
     .then(resp => {
       if (resp.status === 200) {
 	setBackdrop(false);
+  console.log('Test 2');
         console.log(resp.data);
         const oSession={
           sJwtToken:resp.data.token,

@@ -127,6 +127,8 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchPage() {
   const dataAPI = useSelector(state => state.FeatureReducer.lFeature);
   let history = useHistory();
+  
+  
   //const dispatch = useDispatch();
   const classes = useStyles();
   const [isLoading, setisLoading] = React.useState(false);
@@ -161,6 +163,19 @@ export default function SearchPage() {
   const [countryData, setCountryData] = React.useState([]);
   const [backdrop, setBackdrop] = React.useState(false);
 
+
+  const items ={
+    sGBID:{displayName:"GB ID",displayColumn:false,exportPDF:false},
+      sOldGreenBkNo :{displayName:"OLD GB ID",displayColumn:true,exportPDF:true},
+      sFstGreenBkNo :{displayName:"FIRST GB ID",displayColumn:true,exportPDF:true},
+      sResidenceNumber :{displayName:"RC NO",displayColumn:true,exportPDF:true},
+    sFathersGBID :{displayName:"FATHER'S GB",displayColumn:true,exportPDF:true},
+      sMothersGBID :{displayName:"MOTHER'S GB",displayColumn:true,exportPDF:true},
+    sSpouseGBID :{displayName:"SPOUSE GB",displayColumn:true,exportPDF:true},
+    sOtherDocuments :{displayName:"OTHER DOCS",displayColumn:true,exportPDF:true},
+    complex:{displayName:"Complex",displayColumn:false,exportPDF:false}
+    }
+    const [dynamicColumn,setDynamicColumn]=React.useState('complex');
   // For DOB error message
   const [date, setDate] = React.useState(null);
   //Alerts
@@ -205,7 +220,7 @@ export default function SearchPage() {
         margin: '0px'
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '0px',
         margin: '0px',
         width: '0.5%',
@@ -213,6 +228,28 @@ export default function SearchPage() {
       },
       searchable: false,
       filtering: false
+    },
+    {
+      field: 'searchResult',
+      title: items[dynamicColumn].displayName,
+      hidden:!items[dynamicColumn].displayColumn,
+      export:items[dynamicColumn].exportPDF,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        width: '0.5%',
+        padding: '0px',
+        margin: '0px'
+      },
+      cellStyle: {
+        textAlign: "left",
+        padding: '0px',
+        margin: '0px',
+        width: '0.5%',
+        borderRight: '1px solid grey'
+      },
+     
     },
     // {
     //   render: rowData => <div onContextMenu={(e) => { handleClick(e) }} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-first" size={"large"} onClick={() => { viewGb(rowData['sGBID']) }}><span><u>{rowData['sCountryID'] + rowData['sGBID']}</u></span></Button>
@@ -486,13 +523,13 @@ export default function SearchPage() {
     setTimeout(() => viewGb(newsGBID), 0);
   }
 
-  const handleSimpleSearch = (e) => {
+  const handleSimpleSearch = (searchFilter,sSearchValue) => {
 
     //setSearchField(e.target.value,console.log(searchField))
-    if (e.target.value.length > 0) {
+    if (sSearchValue.length > 0) {
       const simpleObj = {
         sSearchField: searchFilter,
-        sSearchValue: e.target.value
+        sSearchValue: sSearchValue
       }
       //alert(JSON.stringify(simpleObj));
       axios.post(`Greenbook/GetQuickResult`, simpleObj)
@@ -507,6 +544,10 @@ export default function SearchPage() {
               element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format(sDateFormat) : '';
               i++;
             })
+            if(resp.data.length > 0)
+              {setDynamicColumn(resp.data[0].searchField);}
+            else
+              {setDynamicColumn('complex');}
             setdataFromAPI(resp.data);
             setisLoading(false);
           }
@@ -589,6 +630,7 @@ export default function SearchPage() {
             element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format(sDateFormat) : '';
             i++;
           })
+          setDynamicColumn('complex');
           setdataFromAPI(resp.data);
           setisLoading(false);
         }
@@ -716,7 +758,8 @@ export default function SearchPage() {
                       id="id_searchField"
                       label="Enter Value"
                       type="text"
-                      onChange={handleSimpleSearch}
+                      
+                      onChange={(e)=>{ setSearchField(e.target.value) ;handleSimpleSearch(searchFilter,e.target.value)}}
                     />
                   </FormControl>
                   <FormControl className={classes.formControl}>
@@ -724,7 +767,7 @@ export default function SearchPage() {
                     <Select
                       labelId="lbl-SearchFilter"
                       id="searchFilter"
-                      onChange={(e) => { setSearchFilter(e.target.value) }}
+                      onChange={(e) => { setSearchFilter(e.target.value); handleSimpleSearch(e.target.value,searchField)}}
                       value={searchFilter}
                     >
                       <MenuItem value="sGBID">GB Number</MenuItem>

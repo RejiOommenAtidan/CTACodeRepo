@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using TimeZoneConverter;
 using ChatrelDBL.BaseClassRepositories.Masters;
+using ChatrelDBL.Services;
 
 namespace ChatrelDBL.ViewModelsRepositories
 {
@@ -119,6 +120,7 @@ namespace ChatrelDBL.ViewModelsRepositories
                 MySqlTransaction transaction = _connection.BeginTransaction();
                 command.Transaction = transaction;
                 command.Connection = _connection;
+                command.CommandTimeout = 1200;
 
                 try
                 {
@@ -145,11 +147,34 @@ namespace ChatrelDBL.ViewModelsRepositories
                         command.CommandText = dbuilder.GetInsertCommand().CommandText;
                         int rows = command.ExecuteNonQuery();
                     }
-                    var gbuilder = new SqlQueryBuilder<Greenbook>(greenbook);
-                    command.CommandText = gbuilder.GetUpdateCommand().CommandText;
-                    command.ExecuteNonQuery();
-                    transaction.Commit();
+                    //greenbook.sFirstName = DataEncryption.EncryptString(greenbook.sFirstName);
+                    //greenbook.sLastName = DataEncryption.EncryptString(greenbook.sLastName);
+                    //var gbuilder = new SqlQueryBuilder<Greenbook>(greenbook);
+                    //command.CommandText = gbuilder.GetUpdateCommand().CommandText;
+                    //command.ExecuteNonQuery();
 
+                    //For Green Book
+                    string sqlUpdateGB = "UPDATE tblgreenbook SET dtUpdated = now(), sPaidUntil = @sPaidUntil WHERE sGBID = @sGBID;";
+                    //if (_connection != null && _connection.State == ConnectionState.Closed)
+                    //{
+                    //    _connection.Open();
+                    //    command.Connection = _connection;
+                    //}
+                    command.CommandText = sqlUpdateGB;
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("sGBID", greenbook.sGBID);
+                    command.Parameters.AddWithValue("sPaidUntil", greenbook.sPaidUntil);
+
+                    int nUpdatedRow = command.ExecuteNonQuery();
+                    if (nUpdatedRow > 0)
+                    {
+                        transaction.Commit();
+                        _connection.Close();
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
 
                     //To do: Update GreenBook "sPaidUntil" column to reflect current paid upto status.
 
@@ -195,7 +220,7 @@ namespace ChatrelDBL.ViewModelsRepositories
                     message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
                     message.Body = messageBody.ToMessageBody();
                     // Message ready. Now to use smtp client to despatch message
-                   SmtpClient smtpClient = new SmtpClient();
+                    SmtpClient smtpClient = new SmtpClient();
                     smtpClient.AuthenticationMechanisms.Remove("XOAUTH2");
                     smtpClient.Connect(server, port, ssl);
                     smtpClient.Authenticate(emailFrom, senderPassword);
@@ -211,12 +236,14 @@ namespace ChatrelDBL.ViewModelsRepositories
                 {
                     try
                     {
-                        transaction.Rollback();
+                        transaction.Rollback(); 
+                        _connection.Close();
                         //To do: Audit log for rollback transaction.
                         return ("Transaction rolled back successfully.");
                     }
                     catch (MySqlException mysqlException)
                     {
+                        _connection.Close();
                         if (transaction.Connection != null)
                         {
                             return ("An exception of type " + mysqlException.GetType() +
@@ -267,8 +294,8 @@ namespace ChatrelDBL.ViewModelsRepositories
                 var result = tables[0].AsEnumerable().Select(row => new
                 {
                     sGBID = row.Field<string>("sGBID"),
-                    sFirstName = row.Field<string>("sFirstName"),
-                    sLastName = row.Field<string>("sLastName"),
+                    sFirstName = DataEncryption.DecryptString(row.Field<string>("sFirstName")),
+                    sLastName = DataEncryption.DecryptString(row.Field<string>("sLastName")),
                     sCountryID = row.Field<string>("sCountryID"),
                     nAge = Convert.ToInt32(row.Field<System.UInt64>("nAge")),
                     sChatrelReceiptNumber = row.Field<string>("sChatrelReceiptNumber"),
@@ -405,7 +432,7 @@ namespace ChatrelDBL.ViewModelsRepositories
   </tr>
   <tr>
     <td width='20'></td>
-    <td colspan='2' height='28' align='left' valign='middle'><b><font face='Microsoft Himalaya' size='4' color='#000000'>མིང་། {receipt.sFirstName.Value + receipt.sLastName.Value }</font><font size='4' color='#000000'></font></b></td>
+    <td colspan='2' height='28' align='left' valign='middle'><b><font face='Microsoft Himalaya' size='4' color='#000000'>མིང་། {receipt.sFirstName.Value +' '+ receipt.sLastName.Value }</font><font size='4' color='#000000'></font></b></td>
     <td align='right' valign='middle'><b><font face='Microsoft Himalaya' size='4' color='#000000'>རང་ལོ། {receipt.nAge.Value}  </font></b></td>
     <td width='20'></td>
   </tr>

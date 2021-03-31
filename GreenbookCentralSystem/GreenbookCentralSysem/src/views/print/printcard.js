@@ -125,7 +125,8 @@ export const PrintCard = (props) => {
           </tr>
           <tr>
             <td style={{textAlign: 'left', paddingRight: '5px', fontSize: '21px'}}>སྐྱེས་ལོ་ཟླ་ཚེས།</td>
-            <td style={{textAlign: 'left', fontSize: '20px'}}>{props.data.sTibetanDate}</td>
+            <td style={{textAlign: 'left', fontSize: '20px'}}>{props.data.sDOBApprox==='Y'?props.data.sTibetanDate.substring(0, 4):props.data.sTibetanDate}</td>
+            
           </tr>
           <tr>
             <td style={{textAlign: 'right', paddingRight: '5px', fontSize: '21px'}} />

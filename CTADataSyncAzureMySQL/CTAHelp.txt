@@ -17,3 +17,4 @@ DB2ChatrelConnection : Server=chatrelmysqldb.mysql.database.azure.com; Port=3306
 AdminDBName : ctadb
 ChatrelDBName : chatreldb
 LogPath : d:\log\ 
+

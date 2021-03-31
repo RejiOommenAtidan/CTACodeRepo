@@ -3,6 +3,7 @@ using System;
 using System.Data;
 using System.IO;
 using System.Text;
+using CTADBL.Services;
 
 namespace CTADataSyncAzureMySQL
 {
@@ -193,6 +194,8 @@ namespace CTADataSyncAzureMySQL
             }
             catch (Exception ex)
             {
+                //email
+
                 stringBuilderAudit.Append(ex.ToString());
                 stringBuilderQuery.Append(strQuery);
                 stringBuilderQuery.Append(ex.Message);
@@ -786,7 +789,8 @@ namespace CTADataSyncAzureMySQL
 
         private static string getEncryptedValuesByActualData(string insertTempValues)
         {
-            return insertTempValues;
+            //return insertTempValues;
+            return DataEncryption.EncryptString(insertTempValues,"@TiD#nC^A3,zD69#]qX");
         }
 
         public static string executeUpdateQueryByIds(MySqlConnection cnnDB
@@ -832,6 +836,12 @@ namespace CTADataSyncAzureMySQL
 
                     if (strColumn.ColumnName.StartsWith("s") || strColumn.ColumnName.StartsWith("dt"))
                     {
+                        //if ColumnName is sFirstName Or sLastName then replace the updateTempValues with encrypted data
+                        if (strColumn.ColumnName.Trim() == "sFirstName" || strColumn.ColumnName.Trim() == "sLastName")
+                        {
+                            updateTempValues = getEncryptedValuesByActualData(updateTempValues);
+                        }
+
                         if (updateTempValues != "" )
                         {
                             updateValue = "'" + updateTempValues + "'";
@@ -1114,6 +1124,9 @@ namespace CTADataSyncAzureMySQL
             DataTable dtDB2 = new DataTable("c" + queryLabelTableName);
             returnValDB2.Fill(dtDB2);
 
+            //decrypt sFirstname and sLastName
+            dtDB2 = getDecryptedValues(dtDB2);
+
             if (AreTablesTheSame(dtDB1, dtDB2))
             {
                 //log with no changes
@@ -1142,6 +1155,27 @@ namespace CTADataSyncAzureMySQL
 
             }
             return strQuerys;
+        }
+
+        private static DataTable getDecryptedValues(DataTable dtDB2)
+        {
+            foreach (DataRow row in dtDB2.Rows)
+            {
+                string strFirstName = row["sFirstName"].ToString();
+                string strLastName = row["sLastName"].ToString();
+
+                if (strFirstName.Trim().Length > 0)
+                {
+                    row["sFirstName"] = DataEncryption.DecryptString(strFirstName, "@TiD#nC^A3,zD69#]qX");
+                }
+                if (strLastName.Trim().Length > 0)
+                {
+                    row["sLastName"] = DataEncryption.DecryptString(strLastName, "@TiD#nC^A3,zD69#]qX");
+                }
+
+            }
+
+            return dtDB2;
         }
         #endregion
 

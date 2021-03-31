@@ -62,7 +62,7 @@ export default function Friends () {
       setSnackbar(false);
     };
   
-    const [backdrop, setBackdrop] = React.useState(false);
+    const [backdrop, setBackdrop] = React.useState(true);
   
   const makePayment = (obj)=> {
   
@@ -226,7 +226,11 @@ dispatch(storeSession(oSession));
      
      </Grid>
      </Grid>
-     {snackbar && (
+    
+
+          </div>
+
+          {snackbar && (
             <Alerts
               alertObj={alertObj}
               snackbar={snackbar}
@@ -236,8 +240,6 @@ dispatch(storeSession(oSession));
           <Backdrop className={classes.backdrop} open={backdrop}>
             <CircularProgress color="inherit" />
           </Backdrop>
-
-          </div>
     </>);
 
 }

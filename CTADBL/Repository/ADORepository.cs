@@ -43,6 +43,7 @@ namespace CTADBL.Repository
                 catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    throw; 
                 }
                 finally
                 {
@@ -53,6 +54,7 @@ namespace CTADBL.Repository
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                throw;
             }
             finally
             {
@@ -79,6 +81,7 @@ namespace CTADBL.Repository
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    throw;
                 }
                 finally
                 {
@@ -89,6 +92,7 @@ namespace CTADBL.Repository
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                throw;
             }
             finally
             {
@@ -148,6 +152,10 @@ namespace CTADBL.Repository
             {
                 return command.ExecuteNonQuery();
             }
+            catch(MySqlException ex)
+            {
+                throw;
+            }
             finally
             {
                 _connection.Close();
@@ -184,10 +192,10 @@ namespace CTADBL.Repository
                 catch (MySqlException mySqlEx)
                 {
                     //if any prob in Rolling back
-                    throw mySqlEx;
+                    throw;
                 }
                 //Throw Actual Excep to Show in Controller Level
-                throw ex;
+                throw;
             }
             finally
             {

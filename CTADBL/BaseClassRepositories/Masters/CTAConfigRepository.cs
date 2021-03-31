@@ -33,7 +33,7 @@ namespace CTADBL.BaseClassRepositories.Masters
         }
         #endregion
 
-        private void LoadValues()
+        public void LoadValues()
         {
             string sql = @"SELECT `Id`,
                                 `sKey`,
@@ -45,7 +45,14 @@ namespace CTADBL.BaseClassRepositories.Masters
                             FROM `lstctaconfig`;";
             using (var command = new MySqlCommand(sql))
             {
-                configs = GetRecords(command);
+                try
+                {
+                    configs = GetRecords(command);
+                }
+                catch (MySqlException ex)
+                {
+                    throw;
+                }
             }
         }
 

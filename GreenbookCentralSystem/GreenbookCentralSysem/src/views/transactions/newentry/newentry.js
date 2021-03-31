@@ -341,7 +341,11 @@ const addChildAPICall = (childObj) => {
         }
       })
       .catch(error => {
-        handleError(error, history);
+        //handleError(error, history);
+        setAlertMessage("Could not save. Please try again.");
+          setAlertType('error');
+          snackbarOpen();
+          setBackdrop(false);
       })
       .then(release => {
         //console.log(release); => udefined
