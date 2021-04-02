@@ -2408,6 +2408,7 @@ where
 END$$
 DELIMITER ;
 
+
 DROP procedure IF EXISTS  spValidateBulkUploadedDataByBatchNumber;
 DELIMITER $$
 
@@ -2673,16 +2674,17 @@ SET SQL_SAFE_UPDATES=0;
 				SET @ArrearsToYear = if(ArrearsTo LIKE '%-%',Year(STR_TO_DATE(ArrearsTo, "%d-%m-%Y")),Year(STR_TO_DATE(ArrearsTo, "%d/%m/%Y")));
 				SET @ArrearsTotalYear = @ArrearsToYear - @ArrearsFromYear;
 				IF(@ArrearsTotalYear > 0) THEN
-					SET @ArrearsFeesPerYear = CAST(CAST(ArrearsPlusLateFees AS decimal(11,2))/@ArrearsTotalYear as decimal(11,2));
-					IF(@ArrearsFeesPerYear >= (CAST(Chatrel AS decimal(11,2)) + CAST(Meal AS decimal(11,2)))) THEN
+                   -- Check ArrearsPlusLateFee should be greater than 0
+                    IF(ArrearsPlusLateFees > 0) THEN
 						UPDATE `tblchatrelbulkdata` 
 							SET `bValidate` = 1 , `sStatus` = 'Validate Success', `sRemarkText` = null
 						WHERE `tblchatrelbulkdata`.`id` = ID;
                     ELSE
 						UPDATE `tblchatrelbulkdata` 
-							SET `sRemarkText` = 'Arrears Plus Late Fee Amount is not greater than or equal to (Chatrel + Meal) Amount across Arrears Year.' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+							SET `sRemarkText` = 'Arrears Plus Late Fees number is invalid' , `bValidate` = 0, `sStatus` = 'Validation Failed'
 						WHERE `tblchatrelbulkdata`.`id` = ID;
-					END IF;
+                    END IF;
+                    
 				ELSE
 					UPDATE `tblchatrelbulkdata` 
 							SET `sRemarkText` = 'Arrears Year From and To Range is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
@@ -2702,6 +2704,7 @@ SET SQL_SAFE_UPDATES=0;
       close cur1;
 END$$
 DELIMITER ;
+
 
 DROP procedure IF EXISTS  spInsertBulkUploadedDataByBatchNumber;
 DELIMITER $$

@@ -1185,9 +1185,34 @@ WHERE
 	AND t4.nFormNumber = t5.nFormNumber 
 	AND t4.nMadebTypeID > 1;
 	
--- ======================================================================================== 24-03-2021
-    
+================================================================================================ 24-03-2021
+select CONSTRAINT_SCHEMA, TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME, REFERENCED_COLUMN_NAME, REFERENCED_TABLE_NAME
+    from information_schema.KEY_COLUMN_USAGE
+where TABLE_NAME='tblchatrelpayment' and CONSTRAINT_SCHEMA='ctadb';
+
+select CONSTRAINT_SCHEMA, TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME, REFERENCED_COLUMN_NAME, REFERENCED_TABLE_NAME
+    from information_schema.KEY_COLUMN_USAGE
+where TABLE_NAME='tblgreenbookserial' and CONSTRAINT_SCHEMA='ctadb';
+
+ 
 ALTER TABLE tblchatrelpayment
 ADD CONSTRAINT UC_sChatrelReceiptNumber UNIQUE (sChatrelReceiptNumber);
 
- 
+ALTER TABLE tblgreenbookserial
+ADD CONSTRAINT UC_nBookNo UNIQUE (nBookNo);
+
+================================================================================================ 
+set session sql_mode = '';
+RENAME TABLE tblauditlog TO tblauditlogbackup;
+SET session group_concat_max_len=1024000;
+CREATE TABLE tblauditlog LIKE tblauditlogbackup;
+-- CREATE TEMPORARY TABLE tempauditlog AS (SELECT * FROM tblauditlogbackup t WHERE t.Id > );
+
+INSERT ignore INTO tblauditlog(dtEntered, nFeatureID, nRecordID, sGBID, sFieldValuesOld, sFieldValuesNew, nEnteredBy) SELECT h.ModifiedDate, 16, h.ID, h.IdentityID, concat('[', group_concat('{"Field":"',FieldName , '", "PreviousValue":"', ifnull(REPLACE(replace(ChangesFrom, '\\', '\\\\'), '\"', '\\"'), ''),'", "NewValue":"', ifnull(REPLACE(replace(ChangesTo, '\\','\\\\'), '\"', '\\"'), ''),'"}'), ']'),'', IFNULL(CAST(h.byWhom AS UNSIGNED), 0) FROM greenbookprime.historychanges h  GROUP BY h.IdentityID, date_format(ModifiedDate, '%Y-%m-%d %H:%i');
+
+-- INSERT INTO tblauditlog AS (SELECT * FROM tempauditlog);
+
+drop table tblauditlogbackup;
+
+
+select count(*) from tblauditlog; 

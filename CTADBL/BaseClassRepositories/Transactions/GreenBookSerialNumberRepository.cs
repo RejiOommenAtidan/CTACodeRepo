@@ -57,12 +57,15 @@ namespace CTADBL.BaseClassRepositories.Transactions
                     throw new Exception("Failed to Update Config values");
                 }
                 _ctaConfigRepository.LoadValues();
-                Madeb madeb = _madebRepository.GetMadebByGBIDAndFormNumber(gbsn.sGBID, (int)gbsn.nFormNumber, (int)gbsn.nMadebTypeId);
-                madeb.nCurrentGBSno = (int?)gbsn.nBookNo;
-                madeb.nIssuedOrNotID = 1;
-                madeb.dtUpdated = gbsn.dtUpdated;
-                madeb.nUpdatedBy = gbsn.nUpdatedBy;
-                _madebRepository.Update(madeb);
+                if(gbsn.nFormNumber != null)
+                {
+                    Madeb madeb = _madebRepository.GetMadebByGBIDAndFormNumber(gbsn.sGBID, (int)gbsn.nFormNumber, (int)gbsn.nMadebTypeId);
+                    madeb.nCurrentGBSno = (int?)gbsn.nBookNo;
+                    madeb.nIssuedOrNotID = 1;
+                    madeb.dtUpdated = gbsn.dtUpdated;
+                    madeb.nUpdatedBy = gbsn.nUpdatedBy;
+                    _madebRepository.Update(madeb);
+                }
                 transaction.Commit();
                 _connection.Close();
                 return insertedRows;

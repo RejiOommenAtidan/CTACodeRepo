@@ -100,7 +100,7 @@ export default function Report() {
     {
       field: "dtPayment",
       title: "PAYMENT DATE",
-      type: 'date',
+     
       //locale: 'en-IN',
       customSort: (a, b) => {
         //console(a, b);

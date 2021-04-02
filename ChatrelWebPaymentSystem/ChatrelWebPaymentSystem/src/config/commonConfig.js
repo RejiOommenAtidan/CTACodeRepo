@@ -20,10 +20,10 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 
 
 //QA
-export const sAPIBASEURL = "https://chatrel-webapi.azurewebsites.net/api";
+//export const sAPIBASEURL = "https://chatrel-webapi.azurewebsites.net/api";
 
 //UAT
-//export const sAPIBASEURL = "https://chatrel-webapi-uat.azurewebsites.net/api";
+export const sAPIBASEURL = "https://chatrel-webapi-uat.azurewebsites.net/api";
 
 //export const sPayPal_ClientID = "AdqxwGp5tKswa3OfXdw5dcCp5SQNtAEkDmPI9InDri3FcXnGCfWfpwhBsLRenYqMwrUrUTLLbnGTOM14";
 //export const sGoogleAuth_ClientID = "1077718482731-r63mupcpv0b687qd9f7ooktilkemb3qk.apps.googleusercontent.com";

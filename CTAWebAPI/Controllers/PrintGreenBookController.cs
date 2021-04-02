@@ -75,7 +75,7 @@ namespace CTAWebAPI.Controllers
                 }
                 else
                 {
-                    return StatusCode(StatusCodes.Status404NotFound);
+                    return StatusCode(StatusCodes.Status204NoContent);
                 }
             }
             catch (Exception ex)

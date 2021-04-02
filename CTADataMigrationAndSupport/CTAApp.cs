@@ -1969,6 +1969,7 @@ namespace CTADataMigrationAndSupport
         private void buttonQAConn_Click(object sender, EventArgs e)
         {
             txtConnectionString.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=chatreldb; Uid=ctamysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;CheckParameters=False;";
+            txtConnectionString.Text = "Server=chatrelmysqldb.mysql.database.azure.com; Port=3306; Database=chatreldbtemp; Uid=chatrelmysqladm@chatrelmysqldb; Pwd=P@w0r0D@890; SslMode=Preferred;";
         }
 
         private static string getEncryptedValuesByActualData(string insertTempValues)

@@ -22,6 +22,7 @@ using System.Text;
 using TimeZoneConverter;
 using ChatrelDBL.BaseClassRepositories.Masters;
 using ChatrelDBL.Services;
+using System.Reflection;
 
 namespace ChatrelDBL.ViewModelsRepositories
 {
@@ -118,8 +119,8 @@ namespace ChatrelDBL.ViewModelsRepositories
 
                 _connection.Open();
                 MySqlTransaction transaction = _connection.BeginTransaction();
-                command.Transaction = transaction;
                 command.Connection = _connection;
+                command.Transaction = transaction;
                 command.CommandTimeout = 1200;
 
                 try
@@ -168,7 +169,8 @@ namespace ChatrelDBL.ViewModelsRepositories
                     int nUpdatedRow = command.ExecuteNonQuery();
                     if (nUpdatedRow > 0)
                     {
-                        transaction.Commit();
+                        //transaction.Commit();
+                        command.Transaction.Commit();
                         _connection.Close();
                     }
                     else
@@ -180,55 +182,7 @@ namespace ChatrelDBL.ViewModelsRepositories
 
                     // Object receipt = GetReceipt(chatrelPayment.sChatrelReceiptNumber);
                     //return ("Records inserted successfully.");
-                    #region Receipt Email
-
-                    var emailFrom = ChatrelConfigRepository.GetValueByKey("ChatrelAdminEmail").ToString();
-                    var emailTo = sLoginGmail;
-                    var senderPassword = ChatrelConfigRepository.GetValueByKey("ChatrelAdminEmailPassword").ToString();
-                    var server = ChatrelConfigRepository.GetValueByKey("ChatrelEmailRelayServer").ToString();
-                    var port = Convert.ToInt32(ChatrelConfigRepository.GetValueByKey("ChatrelEmailServerPort"));
-                    bool ssl = Convert.ToBoolean(ChatrelConfigRepository.GetValueByKey("ChatrelEmailUseSSL"));
-
-                    var mailText = String.Format("Hello, Thank You for your contribution !\n \nདྭང་བླངས་དཔྱ་དངུལ་དྲ་རྒྱའི་བརྒྱུད་གནང་བར་ཐུགས་རྗེ་ཆེ་ \nབོད་མིའི་སྒྲིག་འཛུགས་དཔལ་འབྱོར་ལས་ཁུངས་ནས། \nThe receipt for your Chatrel Payment is attached with the mail.\n\nRegards,\nCTA Team");
-                    var mailHtml = "<p style = 'font-size:20px; '>Hello, Thank You for your contribution!<br/>" +
-                        "<span style = 'font-size:1.7rem; '>དྭང་བླངས་དཔྱ་དངུལ་དྲ་རྒྱའི་བརྒྱུད་གནང་བར་ཐུགས་རྗེ་ཆེ་</span><br/>" +
-                        "The receipt for your Chatrel Contribution is attached with the mail<br/>" +
-                        "Regards,<br/>CTA Team</p>";
-                    //attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
-
-                    var attach = GetReceipt(chatrelPayment.sChatrelReceiptNumber);
-
-                    MimeMessage message = new MimeMessage();
-                    MailboxAddress from = new MailboxAddress("CTA Team", emailFrom);
-                    MailboxAddress to = new MailboxAddress(greenbook.sFirstName+" "+greenbook.sLastName , emailTo);
-
-                    BodyBuilder messageBody = new BodyBuilder();
-                    
-                    messageBody.HtmlBody = mailHtml;
-                    //messageBody.TextBody = mailText;
-                    messageBody.Attachments.Add("ChatrelReceipt-"+ chatrelPayment.sChatrelReceiptNumber+".pdf" , (byte[])attach);
-
-
-                    message.From.Add(from);
-                    message.To.Add(to);
-                    //message.Subject = String.Format("Email from {0}, Green Book Id: {1}", sName, sGBID);
-
-                    message.Subject = String.Format("Chatrel Receipt - {0}", chatrelPayment.sChatrelReceiptNumber);
-
-
-
-                    message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
-                    message.Body = messageBody.ToMessageBody();
-                    // Message ready. Now to use smtp client to despatch message
-                    SmtpClient smtpClient = new SmtpClient();
-                    smtpClient.AuthenticationMechanisms.Remove("XOAUTH2");
-                    smtpClient.Connect(server, port, ssl);
-                    smtpClient.Authenticate(emailFrom, senderPassword);
-                    smtpClient.Send(message);
-                    smtpClient.Disconnect(true);
-                    smtpClient.Dispose();
-                    #endregion
-
+                    //SendEmail(sLoginGmail, chatrelPayment, greenbook);
                     return chatrelPayment.sChatrelReceiptNumber;
 
                 }
@@ -236,7 +190,7 @@ namespace ChatrelDBL.ViewModelsRepositories
                 {
                     try
                     {
-                        transaction.Rollback(); 
+                        command.Transaction.Rollback(); 
                         _connection.Close();
                         //To do: Audit log for rollback transaction.
                         return ("Transaction rolled back successfully.");
@@ -254,6 +208,71 @@ namespace ChatrelDBL.ViewModelsRepositories
                     }
                 }
             }
+        }
+
+        public bool SendEmail(string sLoginGmail, string sChatrelReceiptNumber, string sGBID)
+        {
+            #region Receipt Email
+
+            try
+            {
+                Greenbook greenbook = _greenBookRepository.GetGreenbookByGBID(sGBID);
+                var emailFrom = ChatrelConfigRepository.GetValueByKey("ChatrelAdminEmail").ToString();
+                var emailTo = sLoginGmail;
+                var senderPassword = ChatrelConfigRepository.GetValueByKey("ChatrelAdminEmailPassword").ToString();
+                var server = ChatrelConfigRepository.GetValueByKey("ChatrelEmailRelayServer").ToString();
+                var port = Convert.ToInt32(ChatrelConfigRepository.GetValueByKey("ChatrelEmailServerPort"));
+                bool ssl = Convert.ToBoolean(ChatrelConfigRepository.GetValueByKey("ChatrelEmailUseSSL"));
+
+                var mailText = String.Format("Hello, Thank You for your contribution !\n \nདྭང་བླངས་དཔྱ་དངུལ་དྲ་རྒྱའི་བརྒྱུད་གནང་བར་ཐུགས་རྗེ་ཆེ་ \nབོད་མིའི་སྒྲིག་འཛུགས་དཔལ་འབྱོར་ལས་ཁུངས་ནས། \nThe receipt for your Chatrel Payment is attached with the mail.\n\nRegards,\nCTA Team");
+                var mailHtml = "<p style = 'font-size:20px; '>Hello, Thank You for your contribution!<br/>" +
+                    "<span style = 'font-size:1.7rem; '>དྭང་བླངས་དཔྱ་དངུལ་དྲ་རྒྱའི་བརྒྱུད་གནང་བར་ཐུགས་རྗེ་ཆེ་</span><br/>" +
+                    "The receipt for your Chatrel Contribution is attached with the mail<br/>" +
+                    "Regards,<br/>CTA Team</p>";
+                //attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
+
+                var attach = GetReceipt(sChatrelReceiptNumber);
+
+                MimeMessage message = new MimeMessage();
+                MailboxAddress from = new MailboxAddress("CTA Team", emailFrom);
+                MailboxAddress to = new MailboxAddress(greenbook.sFirstName + " " + greenbook.sLastName, emailTo);
+
+                BodyBuilder messageBody = new BodyBuilder();
+
+                messageBody.HtmlBody = mailHtml;
+                //messageBody.TextBody = mailText;
+                messageBody.Attachments.Add("ChatrelReceipt-" + sChatrelReceiptNumber + ".pdf", (byte[])attach);
+
+
+                message.From.Add(from);
+                message.To.Add(to);
+                //message.Subject = String.Format("Email from {0}, Green Book Id: {1}", sName, sGBID);
+
+                message.Subject = String.Format("Chatrel Receipt - {0}", sChatrelReceiptNumber);
+
+
+
+                message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
+                message.Body = messageBody.ToMessageBody();
+                // Message ready. Now to use smtp client to despatch message
+                SmtpClient smtpClient = new SmtpClient();
+                smtpClient.AuthenticationMechanisms.Remove("XOAUTH2");
+                smtpClient.Connect(server, port, ssl);
+                smtpClient.Authenticate(emailFrom, senderPassword);
+                smtpClient.Send(message);
+                smtpClient.Disconnect(true);
+                smtpClient.Dispose();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //throw
+                //#region Exception Logging
+                //_chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                //#endregion 
+                return false;
+            }
+            #endregion
         }
 
         private string GenerateReceiptNo(string sPaymentMode = "Online")

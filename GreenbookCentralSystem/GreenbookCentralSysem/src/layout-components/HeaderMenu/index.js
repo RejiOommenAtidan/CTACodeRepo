@@ -1280,6 +1280,18 @@ const close=(id)=>{
                       </div>
                       <span>Chatrel Defaulter Report</span>
                     </ListItem>
+                    {/* <ListItem
+                      component="a"
+                      button
+                      href="/Chatrel/ChatrelSummaryReport">
+                      <div className="mr-2">
+                        <FontAwesomeIcon
+                          icon={['fas', 'chevron-right']}
+                          className="font-size-xs opacity-3"
+                        />
+                      </div>
+                      <span>Chatrel Summary Report</span>
+                    </ListItem> */}
                     </>
                     
                     }

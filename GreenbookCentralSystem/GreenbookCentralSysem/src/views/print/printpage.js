@@ -235,6 +235,14 @@ export default function EnhancedTable() {
           setObj([resp.data]);
           setBackdrop(false);
         }
+        else if (resp.status === 204) {
+          //console.log(resp.data);
+          setObj([resp.data]);
+          setBackdrop(false);
+          setAlertMessage('No records found');
+          setAlertType('info');
+          snackbarOpen();
+        }
       })
       .catch(error => {
         setBackdrop(false);

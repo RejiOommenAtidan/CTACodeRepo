@@ -376,10 +376,10 @@ export default function ChatrelReceipt(props){
                   <MTableToolbar {...props} />
                   <div style={{padding: '0px 10px'}}></div>
                   <Grid container style={{maxWidth: '700px'}} spacing={1}>
-                    <Grid item xs={4} lg={4}><b>Receipt Number: {sReceiptNumber}</b></Grid> 
+                    <Grid item xs={5} lg={5}><b>Receipt Number: {sReceiptNumber}</b></Grid> 
               
                     <Grid item xs={4} lg={4}><b>Greenbook ID: {sGBID}</b></Grid>
-                    <Grid item xs={4} lg={4}><b>Total: {`${sPaymentCurrency}${nReceiptTotal}`}</b></Grid>
+                    <Grid item xs={3} lg={3}><b>Total: {`${sPaymentCurrency}${nReceiptTotal}`}</b></Grid>
                   
                     <Grid item xs={4} lg={4}><b>Payment Date: {Moment(dtPymtDate).format(sDateFormat)}</b></Grid>
                     <Grid item xs={4} lg={4}><b>Paid By: {sGBIDPaidBy}</b></Grid>

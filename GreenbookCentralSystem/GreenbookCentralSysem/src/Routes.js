@@ -95,6 +95,7 @@ const ChatrelBulkUpload = lazy(() => import('./views/chatrelhome/bulkupload'));
 const ChatrelReport = lazy(() => import('./views/chatrelhome/reports'));
 const ChatrelAddSingle = lazy(() => import('./views/chatrelhome/addchatrel'));
 const ChatrelDefaulterList = lazy(() => import('./views/chatrelhome/defaulterlist'));
+const ChatrelSummaryReport = lazy(() => import('./views/chatrelhome/summaryreport'));
 const ChatrelListSearch = lazy(() => import('./views/chatrelpay/chatrel_list/chatrel_list_with_search'));
    
 //Report
@@ -316,6 +317,7 @@ const Routes = () => {
                 '/Chatrel/ChatrelReceipt',
                 // '/Chatrel',
                 '/Chatrel/ChatrelDefaulterReport',
+                '/Chatrel/ChatrelSummaryReport',
                 '/Chatrel/SearchUsers',
                 '/Chatrel/BulkImport',
                 '/Chatrel/Report',
@@ -631,7 +633,7 @@ const Routes = () => {
                       exact
                     />
                     {/* <Route path="/Chatrel" component={Chatrel} exact /> */}
-                    {/* <Route path="/Chatrel/ChatrelDefaulterReport" component={ChatrelDefaulterList} exact /> */}
+                    <Route path="/Chatrel/ChatrelSummaryReport" component={ChatrelSummaryReport} exact />
                     <PrivateRoute
                       path="/Chatrel/ChatrelDefaulterReport"
                       feature={52}

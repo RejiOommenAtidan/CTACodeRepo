@@ -524,6 +524,63 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
+        #region Chatrel Summary Report
+
+        public IEnumerable<object> GetSummaryReport(DateTime dtFrom,DateTime dtTo, string sPaymentMode, string sCountryID)
+        {
+
+
+
+            string sql = String.Empty;
+
+            using (var command = new MySqlCommand())
+            {
+                if (sCountryID == null)
+                {
+                    sql = @"SET SESSION sql_mode = '';
+SELECT CountryID,lst.sCountry,null as sAuthRegion  ,sPaymentCurrency, count(*) AS TotalContributors , null as TotalChatrel FROM (SELECT COALESCE(l.sCountryID, l2.sCountryID) AS CountryID, t.sPaymentCurrency, count(t.sGBId) AS sGBIdcount FROM tblchatrelpayment t  LEFT JOIN lnkgbchatrel l ON l.chatrelpaymentID = t.Id AND t.nChatrelYear = l.nChatrelYear LEFT JOIN lnkgbchatreldonation l2 ON l2.chatrelpaymentID = t.Id where t.dtPayment >= @dtFrom and t.dtPayment <= @dtTo and t.sPaymentMode=@sPaymaneMode GROUP BY t.sGBId) AS temp left join lstcountry lst on lst.sCountryID = temp.CountryID GROUP BY CountryID;";
+
+                    command.Parameters.AddWithValue("sPaymaneMode", sPaymentMode);
+                   command.Parameters.AddWithValue("dtFrom", dtFrom.ToString("yyyy-MM-dd"));
+                    command.Parameters.AddWithValue("dtTo", dtTo.ToString("yyyy-MM-dd"));
+                    
+                }
+                else
+                {
+                    sql = @"SET SESSION sql_mode = '';
+SELECT CountryID, null as sCountry, l3.sAuthRegion ,sPaymentCurrency, count(*) AS TotalContributors, sum(TotalChatrel) AS TotalChatrel FROM (SELECT COALESCE(l.sCountryID, l2.sCountryID) AS CountryID, COALESCE(l.nAuthRegionID, l2.nAuthRegionID) AS nAuthRegionID, t.sPaymentCurrency, count(t.sGBId) AS sGBIdcount, sum(t.nChatrelTotalAmount) AS TotalChatrel FROM tblchatrelpayment t  LEFT JOIN lnkgbchatrel l ON l.chatrelpaymentID = t.Id AND t.nChatrelYear = l.nChatrelYear LEFT JOIN lnkgbchatreldonation l2 ON l2.chatrelpaymentID = t.Id where t.dtPayment >= @dtFrom and t.dtPayment <= @dtTo and t.sPaymentMode=@sPaymaneMode AND COALESCE(l.sCountryID, l2.sCountryID) = @sCountryID    GROUP BY t.sGBId) AS temp left join lstauthregion l3 on l3.ID = temp.nAuthRegionID GROUP BY nAuthRegionID;
+
+";
+                    command.Parameters.AddWithValue("sPaymaneMode", sPaymentMode);
+                    command.Parameters.AddWithValue("dtFrom", dtFrom.ToString("yyyy-MM-dd"));
+                    command.Parameters.AddWithValue("dtTo", dtTo.ToString("yyyy-MM-dd"));
+                    command.Parameters.AddWithValue("sCountryID", sCountryID);
+                    
+                }
+                
+                command.CommandText = sql;
+                command.Connection = _connection;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var result = tables[0].AsEnumerable().Select(row => new
+                {           
+                    sCountryID = row.Field<string?>("CountryID"),
+                    sCountry = row.Field<string?>("sCountry"),
+                    sPaymentCurrency = row.Field<string?>("sPaymentCurrency"),
+                    nCount = row.Field<System.Int64?>("TotalContributors"),
+                    sAuthRegion= row.Field<string?>("sAuthRegion"),
+                    nTotalChatrel = row.Field<System.Decimal?>("TotalChatrel"),
+
+                });
+                return result;
+            }
+
+
+        }
+        #endregion
+
         #region Populate Greenbook Records
         public override Greenbook PopulateRecord(MySqlDataReader reader)
         {

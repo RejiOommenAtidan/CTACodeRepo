@@ -95,7 +95,12 @@ namespace CTADBL.ViewModelsRepositories
                 IEnumerable<PrintGreenBookVM> result = GetRecords(command);
                 AddPreviousBookNo(result);
                 //result = result.Reverse();
-                return result.First();
+                if (result.Count() > 0)
+                {
+                    return result.First();
+                }
+                else return null;
+                
             }
         }
         #endregion

@@ -91,13 +91,18 @@ namespace ChatrelPaymentWebAPI.Controllers
                     if (message != null)
                     {
 
-
-
                         #region Information Logging
                         _chatrelLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, payment.chatrelPayment.nEnteredBy);
                         #endregion
-                        return Ok(new { message, token });
-                        //return Ok(new { receipt = (byte[])message });
+
+                        if (_chatrelPaymentVMRepository.SendEmail(sLoginEmail,message.ToString(),sGBIDAuthorized))
+                        {
+                            return Ok(new { message, token });
+                            //return Ok(new { receipt = (byte[])message });
+                        }
+                        else {
+                            return Ok(new { message, token, mailmessage="Sending of email failed" });
+                        }
                     }
                     return Ok(new { message = message.ToString(), token });
                 }
@@ -119,62 +124,62 @@ namespace ChatrelPaymentWebAPI.Controllers
             }
         }
 
-        [AuthorizeToken]
-        [HttpPost]
-        [Route("[action]")]
-        public IActionResult AddNewChatrelPaymentMobile(ChatrelPaymentVM payment)
-        {
-            if (ModelState.IsValid)
-            {
-                string sGBIDAuthorized = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
-                string sLoginEmail = User.Claims.Where(claim => claim.Type == ClaimTypes.Email).Select(claim => claim.Value).FirstOrDefault().ToString();
-                string token = BlockAndGenerateNewToken(Request, sGBIDAuthorized);
-                try
-                {
-                    //var definition = new { details = new[] { new { issue = "", description = "" } } };
+        //[AuthorizeToken]
+        //[HttpPost]
+        //[Route("[action]")]
+        //public IActionResult AddNewChatrelPaymentMobile(ChatrelPaymentVM payment)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        string sGBIDAuthorized = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
+        //        string sLoginEmail = User.Claims.Where(claim => claim.Type == ClaimTypes.Email).Select(claim => claim.Value).FirstOrDefault().ToString();
+        //        string token = BlockAndGenerateNewToken(Request, sGBIDAuthorized);
+        //        try
+        //        {
+        //            //var definition = new { details = new[] { new { issue = "", description = "" } } };
 
 
-                    //var status = VerifyPayPalPayment(payment.chatrelPayment.sPayPal_ID, System.Math.Round(payment.chatrelPayment.nChatrelTotalAmount, 2, MidpointRounding.AwayFromZero));
-                    //bool success = status.Result.Item1;
+        //            //var status = VerifyPayPalPayment(payment.chatrelPayment.sPayPal_ID, System.Math.Round(payment.chatrelPayment.nChatrelTotalAmount, 2, MidpointRounding.AwayFromZero));
+        //            //bool success = status.Result.Item1;
 
-                    //var obj = JsonConvert.DeserializeAnonymousType(status.Result.Item2, definition);
+        //            //var obj = JsonConvert.DeserializeAnonymousType(status.Result.Item2, definition);
 
-                    //if (!success)
-                    //{
-                    //    return Ok(new { message = obj.details[0].description, token });
-                    //}
+        //            //if (!success)
+        //            //{
+        //            //    return Ok(new { message = obj.details[0].description, token });
+        //            //}
 
-                    Object message = _chatrelPaymentVMRepository.Add(payment, sLoginEmail);
-                    if (message != null)
-                    {
+        //            Object message = _chatrelPaymentVMRepository.Add(payment, sLoginEmail);
+        //            if (message != null)
+        //            {
 
 
 
-                        #region Information Logging
-                        _chatrelLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, payment.chatrelPayment.nEnteredBy);
-                        #endregion
-                        return Ok(new { message, token });
-                        //return Ok(new { receipt = (byte[])message });
-                    }
-                    return Ok(new { message = message.ToString(), token });
-                }
-                catch (Exception ex)
-                {
-                    #region Exception Logging
-                    _chatrelLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, payment.chatrelPayment.nEnteredBy);
-                    #endregion
+        //                #region Information Logging
+        //                _chatrelLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, payment.chatrelPayment.nEnteredBy);
+        //                #endregion
+        //                return Ok(new { message, token });
+        //                //return Ok(new { receipt = (byte[])message });
+        //            }
+        //            return Ok(new { message = message.ToString(), token });
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            #region Exception Logging
+        //            _chatrelLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, payment.chatrelPayment.nEnteredBy);
+        //            #endregion
 
-                    return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message, token });
-                }
-            }
-            else
-            {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                           .Where(y => y.Count > 0)
-                           .ToList();
-                return BadRequest(errors);
-            }
-        }
+        //            return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message, token });
+        //        }
+        //    }
+        //    else
+        //    {
+        //        var errors = ModelState.Select(x => x.Value.Errors)
+        //                   .Where(y => y.Count > 0)
+        //                   .ToList();
+        //        return BadRequest(errors);
+        //    }
+        //}
 
         #endregion
 
@@ -685,20 +690,6 @@ namespace ChatrelPaymentWebAPI.Controllers
             return Ok(new { sHomePageImage, sHomePageMessage, sHomePageName, sHomePageDesignation, sFAQDocument, token });
         }
         #endregion
-        
-        #region Get PayPal Credentials
-        [AuthorizeToken]
-        [HttpGet]
-        [Route("[action]")]
-        public IActionResult GetPayPalCredentials()
-        {
-            string clientId = ChatrelConfigRepository.GetValueByKey("PayPalClientID").ToString();
-            string secret = ChatrelConfigRepository.GetValueByKey("PayPalSecret").ToString();
-            string sGBID = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
-            string token = BlockAndGenerateNewToken(Request, sGBID);
-            return Ok(new { clientId, secret, token });
-        }
-        #endregion
 
         #region Get Google Credentials for Mobile
         
@@ -749,40 +740,6 @@ namespace ChatrelPaymentWebAPI.Controllers
                 user.sJwtToken = JwT.GenerateNewToken(user, _appSettings);
             }
             return user.sJwtToken;
-        }
-        #endregion
-
-        #region Get PayPal Access Token
-        [AuthorizeToken]
-        [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> GetPayPalAccessToken()
-        {
-            
-            try
-            {
-                var client = new WebClient();
-                string clientId = ChatrelConfigRepository.GetValueByKey("PayPalClientID").ToString();
-                string secret = ChatrelConfigRepository.GetValueByKey("PayPalSecret").ToString();
-                string url = ChatrelConfigRepository.GetValueByKey("PayPalAuthURL").ToString();
-                string auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{secret}"));
-                client.Headers.Add("authorization", "basic "+auth);
-                client.Headers.Add("content-type", "application/x-www-form-urlencoded");
-                client.Headers.Add("accept-language", "en_US");
-                client.Headers.Add("accept", "application/json");
-                var body = "grant_type=client_credentials";
-                var response = await client.UploadStringTaskAsync(url, "POST", body);
-                var anonObj = new { scope = "", access_token = "", token_type = "", app_id = "", expires_in = "", nonce = "" };
-                var responseObj = JsonConvert.DeserializeAnonymousType(response.ToString(), anonObj);
-                
-                
-                return Ok(new { responseObj.access_token });
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, ex.Message);
-            }
         }
         #endregion
     }

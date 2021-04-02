@@ -515,5 +515,47 @@ namespace CTAWebAPI.Controllers
             }
         }
         #endregion
+
+        #region Chatrel Summary Report
+      //  [AuthorizeRole(FeatureID = 50)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetSummaryReport(DateTime dtFrom, DateTime dtTo,string sPaymentMode, string sCountryID = null)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(sPaymentMode.Trim()) || dtFrom == null || dtTo == null)
+                {
+                    return BadRequest("Required parameters are missing.");
+                }
+                
+                string userId = User.Claims.Where(claim => claim.Type == ClaimTypes.Name).Select(claim => claim.Value).FirstOrDefault();
+                DateTime dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                string message = String.Empty;
+                var result = _greenBookRepository.GetSummaryReport( dtFrom,dtTo,sPaymentMode,sCountryID);
+                //Object familyDetails = _chatrelPaymentRepository.GetFamilyDetails(sGBID);
+                if (result.Count() > 0)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok( result);
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+
+                _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
+            }
+        }
+        #endregion
     }
 }

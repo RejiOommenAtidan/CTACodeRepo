@@ -141,45 +141,5 @@ namespace ChatrelPaymentWebAPI.Controllers
             return Ok(JsonConvert.SerializeObject(result, Formatting.Indented));
         }
         #endregion
-
-        #region Get Order Details
-
-        [HttpGet]
-        [Route("[action]")]
-        public IActionResult GetOrderDetails(string orderId)
-        {
-            var client = new WebClient();
-            string clientId = ChatrelConfigRepository.GetValueByKey("PayPalClientID").ToString();
-            string secret = ChatrelConfigRepository.GetValueByKey("PayPalSecret").ToString();
-            string auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{secret}"));
-            client.Headers.Add("authorization", "basic " + auth);
-            client.Headers.Add("content-type", "application/json");
-
-            try
-            {
-                var response = client.DownloadString($"https://api.sandbox.paypal.com/v2/checkout/orders/{orderId}");
-                Console.WriteLine(response);
-
-                // Keep the console window open in debug mode.
-                //Console.ReadKey();
-                return Ok(new { response });
-            }
-            catch (WebException e)
-            {
-                var errorResponse = e.Response as HttpWebResponse;
-                Console.WriteLine(e.Response.Headers);
-                string responseText;
-                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                {
-                    responseText = reader.ReadToEnd();
-                    Console.WriteLine(responseText);
-                }
-                // Keep the console window open in debug mode.
-                Console.ReadKey();
-                return StatusCode(500, new { responseText });
-            }
-            
-        }
-        #endregion
     }
 }
