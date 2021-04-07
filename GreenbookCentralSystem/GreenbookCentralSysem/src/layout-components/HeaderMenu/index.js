@@ -1280,7 +1280,7 @@ const close=(id)=>{
                       </div>
                       <span>Chatrel Defaulter Report</span>
                     </ListItem>
-                    {/* <ListItem
+                    <ListItem
                       component="a"
                       button
                       href="/Chatrel/ChatrelSummaryReport">
@@ -1291,7 +1291,7 @@ const close=(id)=>{
                         />
                       </div>
                       <span>Chatrel Summary Report</span>
-                    </ListItem> */}
+                    </ListItem> 
                     </>
                     
                     }

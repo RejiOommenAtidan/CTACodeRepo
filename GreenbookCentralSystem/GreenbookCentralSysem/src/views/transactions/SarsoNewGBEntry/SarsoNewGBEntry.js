@@ -14,6 +14,7 @@ import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders } from '../../../config/commonConfig';
+import { Alerts } from '../../alerts';
 
 const useStyles = makeStyles({
   root: {
@@ -86,6 +87,22 @@ export default function SarsoNewGBEntry() {
   const [isLoading, setisLoading] = React.useState(true);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
+
+  //Alerts
+  const [alertMessage, setAlertMessage] = useState("");
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertType, setAlertType] = useState("");
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+  const [snackbar, setSnackbar] = React.useState(false);
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
 
   const columns = [
     {
@@ -181,7 +198,12 @@ export default function SarsoNewGBEntry() {
         }
       })
       .catch(error => {
-        handleError(error, history);
+        setisLoading(false);
+        //handleError(error, history);
+        setAlertMessage(`Error fetching Records`);
+        setAlertType('error');
+        snackbarOpen();
+        setdataAPI([]);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -211,6 +233,11 @@ export default function SarsoNewGBEntry() {
             ]}
           />
         </Grid>
+        {snackbar && <Alerts
+            alertObj={alertObj}
+            snackbar={snackbar}
+            snackbarClose={snackbarClose}
+          />}
       </Grid>
     </Container>
   );

@@ -84,9 +84,42 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
             return rowsAffected > 0 ? "Success" : "Update Failed"; ;
         }
+        #endregion
+
+        #region Update Madeb with MySql Transaction 
+        public string UpdateWithMySqlTransaction(Madeb madeb, MySqlCommand command)
+        {
+            if (madeb.nMadebTypeID > 1)
+            {
+                // We check if gbid passed, exists.
+                if (!GBIDExists(madeb.sGBID))
+                {
+                    return ("GBID does not exist.");
+                }
+            }
+            Madeb existingMadeb = GetMadebById(madeb.Id.ToString());
+            if (existingMadeb.nFormNumber != madeb.nFormNumber)
+            {
+                madeb.nFormNumber = VerifyAndGetUniqueFormNumber(madeb.nFormNumber, madeb.nMadebTypeID);
+            }
+            var builder = new SqlQueryBuilder<Madeb>(madeb);
+            builder.GetUpdateCommandTransaction(command);
+            int rowsAffected = ExecuteCommandTransaction(command);
+            if (rowsAffected > 0)
+            {
+                MadebType madebType = _madebTypeRepository.GetMadebTypeById(madeb.nMadebTypeID.ToString());
+                if (madebType.nMadebLastFormNumber < madeb.nFormNumber)
+                {
+                    madebType.nMadebLastFormNumber = madeb.nFormNumber;
+                    _madebTypeRepository.UpdateWithMySqlTransaction(madebType, command);
+                }
+            }
+            return rowsAffected > 0 ? "Success" : "Update Failed"; ;
+        }
+        #endregion
 
         #region Add GBID to Sarso Form
-        public bool AddGBIDByFormNo(int nFormNumber,DateTime dtReceived, string sGBID)
+        public bool AddGBIDByFormNoTransaction(int nFormNumber,DateTime dtReceived, string sGBID, MySqlCommand command)
         {
             Madeb madeb = GetMadebByFormNumber(nFormNumber, 1);
             //if(madeb.nMadebTypeID != 1)
@@ -97,13 +130,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
             madeb.nIssuedOrNotID = 1;
             madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
             madeb.dtIssueAction = dtReceived;
-            this.Update(madeb);
-            return true;
+            return this.UpdateWithMySqlTransaction(madeb, command) == "Success";
         }
         #endregion
 
         #region Update Madeb TypeIssued after IssueBook 
-        public void UpdateTypeIssued(string Id, int nIssuedOrNotID,DateTime dtIssuedDate, DateTime dtEntered)
+        public string UpdateTypeIssuedTransaction(string Id, int nIssuedOrNotID, DateTime dtIssuedDate, DateTime dtEntered, MySqlCommand command)
         {
             Madeb madeb = GetMadebById(Id);
             if (madeb.nMadebTypeID == 1)
@@ -112,7 +144,6 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 // As per discussion on 9th March, 2021 Issue action date in Sarso to be updated to Issued Date when book is issued.
                 madeb.dtIssueAction = dtIssuedDate;
                 madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                this.Update(madeb);
             }
             else {
                 madeb.nIssuedOrNotID = nIssuedOrNotID;
@@ -125,9 +156,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 {
                     madeb.dtIssueAction = dtIssuedDate;
                 }
-                this.Update(madeb);
             }
-            
+            return this.UpdateWithMySqlTransaction(madeb, command);
         }
         #endregion
 
@@ -142,8 +172,29 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
         }
         #endregion
+
+        #region Update Madeb with assigned serial numbers with MySql Transaction
+        public bool UpdateSerialNumberWithMySqlTransaction(string sGBID, int nFormNumber, int nMadebTypeId, int? nCurrentGBSno, int? nIssuedOrNotId, MySqlCommand command)
+        {
+            Madeb madeb = GetMadebByGBIDAndFormNumber(sGBID, nFormNumber, nMadebTypeId);
+            madeb.nCurrentGBSno = nCurrentGBSno;
+            madeb.nIssuedOrNotID = nIssuedOrNotId;
+
+            string msg = this.UpdateWithMySqlTransaction(madeb, command);
+            if(msg == "Success")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
         #endregion
 
+        
+        
         #region Madeb Delete
         public void Delete(Madeb madeb)
         {

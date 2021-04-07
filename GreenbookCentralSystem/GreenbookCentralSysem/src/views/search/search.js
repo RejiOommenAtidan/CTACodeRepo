@@ -197,9 +197,14 @@ export default function SearchPage() {
   const handleEditClickClose = () => {
     setEditModal(false);
   };
-  const handleViewClickClose = () => {
+  const handleViewClickClose = (err) => {
     getRecentGB();
     setViewModal(false);
+    if(err === 'error'){
+      setAlertMessage(`Error fetching Greenbook Record`);
+        setAlertType('error');
+        snackbarOpen();
+    }
   };
 
   const viewGb = (GBID) => {

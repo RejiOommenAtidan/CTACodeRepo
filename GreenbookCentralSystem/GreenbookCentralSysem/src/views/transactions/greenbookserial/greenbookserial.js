@@ -412,7 +412,7 @@ export default () => {
             setAlertType('warning');
           }
           else{
-            setAlertMessage(`Greenbook Serial Number ${gbSerialObj.nBookNo} assigned to Form No. ${gbSerialObj.nFormNumber} for ${gbSerialObj.sMadebType} madeb.`);
+            setAlertMessage(`Greenbook Serial Number ${gbSerialObj.nBookNo} assigned to Form No. ${gbSerialObj.nFormNumber} for ${gbSerialObj.sMadebType} madeb updated successfully.`);
             setAlertType('success');            
           }
           snackbarOpen();

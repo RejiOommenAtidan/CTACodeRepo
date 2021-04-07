@@ -13,17 +13,49 @@ namespace CTADBL.BaseClassRepositories.Transactions
     {
         #region Constructor
         private static MySqlConnection _connection;
+        private readonly MadebRepository _madebRepository;
         public IssueBookRepository(string connectionString) : base(connectionString)
         {
             _connection = new MySqlConnection(connectionString);
+            _madebRepository = new MadebRepository(connectionString);
         }
         #endregion
 
         #region IssueBook Add
-        public void Add(IssueBook issuebook)
+        public void Add(IssueBook issueBook, string MadebId, int nIssuedOrNotID, DateTime dtIssuedDate)
         {
-            var builder = new SqlQueryBuilder<IssueBook>(issuebook);
-            ExecuteCommand(builder.GetInsertCommand());
+            _connection.Open();
+            var builder = new SqlQueryBuilder<IssueBook>(issueBook);
+            using(MySqlCommand command = builder.GetInsertCommandTransaction(new MySqlCommand()))
+            {
+                using(MySqlTransaction transaction = _connection.BeginTransaction())
+                {
+                    try
+                    {
+                        command.Connection = _connection;
+                        command.Transaction = transaction;
+                        command.CommandTimeout = 60;
+                        int rowsInserted = ExecuteCommandTransaction(command);
+                        if(rowsInserted < 1)
+                        {
+                            throw new Exception("Inserting Issuebook record failed");
+                        }
+                        string update = _madebRepository.UpdateTypeIssuedTransaction(MadebId, nIssuedOrNotID, dtIssuedDate, issueBook.dtEntered, command);
+                        if(update != "Success")
+                        {
+                            throw new Exception("Update of Madeb failed for Issue action Id and Issued Action Date");
+                        }
+                        command.Transaction.Commit();
+                        _connection.Close();
+                    }
+                    catch(Exception ex)
+                    {
+                        command.Transaction.Rollback();
+                        _connection.Close();
+                        throw;
+                    }
+                }
+            }
         }
         #endregion
 

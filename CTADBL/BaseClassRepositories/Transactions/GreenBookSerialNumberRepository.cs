@@ -34,13 +34,14 @@ namespace CTADBL.BaseClassRepositories.Transactions
         {
             _connection.Open();
             MySqlTransaction transaction = _connection.BeginTransaction();
+            var builder = new SqlQueryBuilder<GreenBookSerialNumber>(gbsn);
+            MySqlCommand command = builder.GetInsertCommand();
             try
             {
-                var builder = new SqlQueryBuilder<GreenBookSerialNumber>(gbsn);
-                MySqlCommand command = builder.GetInsertCommand();
-                command.Transaction = transaction;
                 command.Connection = _connection;
-                int insertedRows = command.ExecuteNonQuery();
+                command.Transaction = transaction;
+                command.CommandTimeout = 60;
+                int insertedRows = ExecuteCommandTransaction(command);
                 if (insertedRows < 1)
                 {
                     throw new Exception("Failed to Add new Greenbook Serial Record");
@@ -50,8 +51,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 config.dtUpdated = gbsn.dtUpdated;
                 config.nUpdatedBy = gbsn.nUpdatedBy;
                 var cbuilder = new SqlQueryBuilder<CTAConfig>(config);
-                command.CommandText = cbuilder.GetUpdateCommand().CommandText;
-                int updatedRows = command.ExecuteNonQuery();
+                cbuilder.GetUpdateCommandTransaction(command);
+                //command.CommandText = cbuilder.GetUpdateCommand().CommandText;
+                int updatedRows = ExecuteCommandTransaction(command);
                 if(updatedRows < 1)
                 {
                     throw new Exception("Failed to Update Config values");
@@ -64,15 +66,15 @@ namespace CTADBL.BaseClassRepositories.Transactions
                     madeb.nIssuedOrNotID = 1;
                     madeb.dtUpdated = gbsn.dtUpdated;
                     madeb.nUpdatedBy = gbsn.nUpdatedBy;
-                    _madebRepository.Update(madeb);
+                    _madebRepository.UpdateWithMySqlTransaction(madeb, command);
                 }
-                transaction.Commit();
+                command.Transaction.Commit();
                 _connection.Close();
                 return insertedRows;
             }
             catch(Exception ex)
             {
-                transaction.Rollback();
+                command.Transaction.Rollback();
                 _connection.Close();
                 throw;
             }
@@ -88,8 +90,62 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
+        #region Update Call with MySql Transaction
+        public int UpdateWithMySqlTransaction(GreenBookSerialNumber gbsn, GreenBookSerialNumber gbsnDB)
+        {
+            _connection.Open();
+            var builder = new SqlQueryBuilder<GreenBookSerialNumber>(gbsn);
+            using (MySqlCommand command = builder.GetUpdateCommandTransaction(new MySqlCommand()))
+            {
+                using(MySqlTransaction transaction = _connection.BeginTransaction())
+                {
+                    try
+                    {
+                        command.Connection = _connection;
+                        command.Transaction = transaction;
+                        command.CommandTimeout = 60;
+                        int rowsUpdated = ExecuteCommandTransaction(command);
+                        bool updatemadeb = true;
+                        if (gbsn.nFormNumber == null)
+                        {
+                            if (gbsnDB.nMadebTypeId == 1)
+                            {
+                                updatemadeb = _madebRepository.UpdateSerialNumberWithMySqlTransaction(gbsnDB.sGBID, (int)gbsnDB.nFormNumber, (int)gbsnDB.nMadebTypeId, null, 1, command);
+                            }
+                            else
+                            {
+                                updatemadeb = _madebRepository.UpdateSerialNumberWithMySqlTransaction(gbsnDB.sGBID, (int)gbsnDB.nFormNumber, (int)gbsnDB.nMadebTypeId, null, null, command);
+                            }
+                        }
+                        if (updatemadeb)
+                        {
+                            command.Transaction.Commit();
+                            _connection.Close();
+                            return rowsUpdated;
+                        }
+                        else
+                        {
+                            throw new Exception("Update of Madeb for Damaged Book Serial failed");
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        command.Transaction.Rollback();
+                        _connection.Close();
+                        throw;
+                    }
+                }
+            }
+            //MySqlTransaction transaction = _connection.BeginTransaction();
+            //
+            //MySqlCommand command = builder.GetUpdateCommand(new MySqlCommand());
+            
+        }
+        #endregion
+
         #region Add Damaged Book Record
-        
+
         #endregion
 
         #region Edit Book Record and Mark as Damaged Book

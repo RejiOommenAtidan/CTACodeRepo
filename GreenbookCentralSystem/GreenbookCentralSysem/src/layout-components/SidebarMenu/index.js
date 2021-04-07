@@ -36,6 +36,11 @@ const SidebarMenu = (props) => {
     setMadebOpen(!madebOpen);
     event.preventDefault();
   };
+  const [chatrelOpen, setChatrelOpen] = useState(false);
+  const toggleChatrel = (event) => {
+    setChatrelOpen(!chatrelOpen);
+    event.preventDefault();
+  };
   const [reportOpen, setReportOpen] = useState(false);
   const toggleReport = (event) => {
     setReportOpen(!reportOpen);
@@ -666,20 +671,98 @@ const SidebarMenu = (props) => {
                 Reports
               </NavLink>
             </li>*/}
-            { /* authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
-              &&*/
+            {authUser &&
+              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 48)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 49)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 50)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 51)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 52)) !== undefined)
+              &&
               <li>
-                <NavLink
-                  activeClassName="active"
-                  onClick={toggleSidebarMobile}
-                  className="nav-link-simple"
-                  to="/Chatrel">
+                <a
+                  href="#/"
+                  onClick={toggleChatrel}
+                  className={clsx({ active: chatrelOpen })}>
                   <span className="sidebar-icon">
                     <PaymentIcon />
                   </span>
-                Chatrel
-              </NavLink>
-            </li>}
+                  <span className="sidebar-item-label">Chatrel</span>
+                  <span className="sidebar-icon-indicator">
+                    <ChevronRightTwoToneIcon />
+                  </span>
+                </a>
+                <Collapse in={chatrelOpen}>
+                  <ul>
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 48)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Chatrel/ChatrelList">
+                          Chatrel List
+                    </NavLink>
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 48)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Chatrel/ChatrelListSearch">
+                         Chatrel List With Search
+                    </NavLink>
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 50)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Chatrel/SearchUsers">
+                          Search Users
+                    </NavLink>
+                      </li>}
+                      {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 51)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Chatrel/BulkImport">
+                          Bulk Import
+                    </NavLink>
+                      </li>}
+                      {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 52)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Chatrel/Report">
+                          Chatrel Report
+                    </NavLink>
+                      </li>}
+                      {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 52)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Chatrel/ChatrelDefaulterReport">
+                          Chatrel Defaulter Report
+                    </NavLink>
+                      </li>}
+                      {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 52)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Chatrel/ChatrelSummaryReport">
+                          Chatrel Summary Report
+                    </NavLink>
+                      </li>}
+                  </ul>
+                </Collapse>
+              </li>}
             {authUser &&
               ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
                 ||

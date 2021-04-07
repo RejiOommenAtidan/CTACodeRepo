@@ -106,7 +106,7 @@ namespace CTAWebAPI.Controllers.Transactions
         [AuthorizeRole(FeatureID = 14)]
         [Route("[action]")]
         [HttpPost("AddIssueBook/MadebId={MadebId}&nIssuedOrNotID={nIssuedOrNotID:int}&dtIssuedDate={dtIssuedDate}")]
-        public IActionResult AddIssueBook(string MadebId , int nIssuedOrNotID,DateTime dtIssuedDate, [FromBody] IssueBook issueBook)
+        public IActionResult AddIssueBook(string MadebId , int nIssuedOrNotID, DateTime dtIssuedDate, [FromBody] IssueBook issueBook)
         {
             
             #region Add IssueBook
@@ -117,8 +117,8 @@ namespace CTAWebAPI.Controllers.Transactions
                     issueBook.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     issueBook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     issueBook.sFormNumber = issueBook.nFormNumber.ToString();
-                    _issueBookRepository.Add(issueBook);
-                    _madebRepository.UpdateTypeIssued(MadebId, nIssuedOrNotID , dtIssuedDate, issueBook.dtEntered);
+                    _issueBookRepository.Add(issueBook, MadebId, nIssuedOrNotID, dtIssuedDate);
+                    
                     #region Information Logging 
                     string sActionType = Enum.GetName(typeof(Operations), 1);
                     string sModuleName = (GetType().Name).Replace("Controller", "");

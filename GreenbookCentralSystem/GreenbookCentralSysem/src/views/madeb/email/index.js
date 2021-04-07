@@ -65,7 +65,7 @@ export const EmailDialog = (props) => {
       sFrom: sender,
       sReceiver: recipient,
       sSubject: subject,
-      sBody: body
+      sBody:'<div style="font-size: 24px;">'+ body+'</div>'
     };
     console.log(emailOutObj);
     setBackdrop(true);

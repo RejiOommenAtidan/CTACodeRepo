@@ -253,29 +253,7 @@ export const EditDialog = (props) => {
                     )}
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  {/* <FormControl className={props.classes.formControl}>
-                    <TextField
-                      id="dtReceived"
-                      name="dtReceived"
-
-                      label={<p>Received Date<span style={{ color: "red" }} > *</span></p>}
-                      type="date"
-                      value={dtReceived}
-                      className={props.classes.textField}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      onChange={(e) => { setReceivedDate(e.target.value) }}
-                      inputRef={register({
-                        required: true
-                      })}
-                    />
-                    {_.get("dtReceived.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
-                  </FormControl> */}
-                </Grid>
+              
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl} >
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>

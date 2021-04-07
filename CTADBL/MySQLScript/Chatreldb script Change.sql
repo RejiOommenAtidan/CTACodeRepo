@@ -465,3 +465,6 @@ SELECT `lnkgbchatreldonation`.`Id`,
     `lnkgbchatreldonation`.`dtUpdated`,
     `lnkgbchatreldonation`.`nUpdatedBy`
 FROM `ctadb`.`lnkgbchatreldonation`;
+
+
+-- UPDATE `chatreldb`.`lstchatrelconfig` SET `sValue` = '1077718482731-r63mupcpv0b687qd9f7ooktilkemb3qk.apps.googleusercontent.com' WHERE (`Id` = '11');

@@ -80,61 +80,6 @@ namespace CTADBL.BaseClassRepositories.Masters
         #endregion
 
 
-        #region Search Calls
-
-        //public IEnumerable<Country> SearchCountries(string param)
-        //{
-        //    string sql = String.Format(@"SELECT ID, sCountryID, sCountry, nDefaultAuthRegionID, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE sCountry LIKE '{0}{1}{2}'", "%", param, "%");
-
-        //    using (var command = new MySqlCommand(sql))
-        //    {
-        //        //command.Parameters.AddWithValue("param", param);
-        //        return GetRecords(command);
-        //    }
-        //}
-
-        public IEnumerable<Country> SearchCountries(string a)
-        {
-            
-
-            using (var command = new MySqlCommand())
-            {
-
-                string sql = String.Format(@"SELECT ID, sCountryID, sCountry, nDefaultAuthRegionID, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE ");
-                string addToSql = "";
-
-                var country = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(a);
-                //Dictionary<string, dynamic> parameters = country.GetType().GetProperties().ToDictionary(prop => prop.Name, prop => prop.GetValue(country, null));
-                foreach (KeyValuePair<string, dynamic> item in country)
-                {
-                    if (item.Value != null)
-                    {
-                        if (item.Value.GetType() == typeof(string))
-                        {
-                            if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
-                            {
-                                addToSql += @$"{item.Key} LIKE @{item.Key} and ";
-                                command.Parameters.AddWithValue(item.Key, '%' + item.Value + '%');
-                            }
-                        }
-                    }
-                }
-                if (String.IsNullOrEmpty(addToSql))
-                {
-                    return GetAllCountries();
-                }
-                
-                sql += addToSql;
-                sql += " 1 = 1";
-
-                command.CommandText = sql;
-                return GetRecords(command);
-            }
-        }
-
-        #endregion
-
-
 
 
         public bool CountryIdExists(string countryId)

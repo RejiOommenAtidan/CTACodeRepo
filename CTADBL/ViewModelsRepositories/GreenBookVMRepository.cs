@@ -172,37 +172,44 @@ namespace CTADBL.ViewModelsRepositories
 
         public async Task<IEnumerable<Object>> GetQuickResult(string parameter, string value)
         {
-            //string operation = parameter == "sGBID" ? "=" : "LIKE";
-            string operation = "LIKE";
             value = parameter == "sOtherDocuments" ? "%" + value.Trim() + "%" : value.Trim() + "%"; 
-            string join = String.Empty;
-            string field = String.Empty;
-            string where = String.Empty;
+            string addTosql = String.Empty;
             switch (parameter)
             {
                 case "sFathersGBID":
-                    join = String.Format(@"LEFT JOIN lnkgbrelation AS rel ON gb.sGBID = rel.sGBID AND rel.nrelationid = 1");
-                    field = String.Format(@", rel.sGBIDRelation AS {0}", parameter);
-                    where = @"rel.sGBIDRelation";
+                    addTosql = @", rel.sGBIDRelation AS sFathersGBID FROM tblgreenbook as gb LEFT JOIN lnkgbrelation AS rel ON gb.sGBID = rel.sGBID AND rel.nrelationid = 1 WHERE rel.sGBIDRelation LIKE @value ORDER BY rel.sGBIDRelation LIMIT 100";
                     break;
                 case "sMothersGBID":
-                    join = String.Format(@"LEFT JOIN lnkgbrelation AS rel ON gb.sGBID = rel.sGBID AND rel.nrelationid = 2");
-                    field = String.Format(@", rel.sGBIDRelation AS {0}", parameter);
-                    where = @"rel.sGBIDRelation";
+                    addTosql = @", rel.sGBIDRelation AS sMothersGBID FROM tblgreenbook as gb LEFT JOIN lnkgbrelation AS rel ON gb.sGBID = rel.sGBID AND rel.nrelationid = 2 WHERE rel.sGBIDRelation LIKE @value ORDER BY rel.sGBIDRelation LIMIT 100";
                     break;
                 case "sSpouseGBID":
-                    join = String.Format(@"LEFT JOIN lnkgbrelation AS rel ON gb.sGBID = rel.sGBID AND rel.nrelationid = 3");
-                    field = String.Format(@", rel.sGBIDRelation AS {0}", parameter);
-                    where = @"rel.sGBIDRelation";
+                    addTosql = @", rel.sGBIDRelation AS sSpouseGBID FROM tblgreenbook as gb LEFT JOIN lnkgbrelation AS rel ON gb.sGBID = rel.sGBID AND rel.nrelationid = 3 WHERE rel.sGBIDRelation LIKE @value ORDER BY rel.sGBIDRelation LIMIT 100";
+                    break;
+                case "sGBID":
+                    addTosql = @", gb.sGBID FROM tblgreenbook as gb WHERE gb.sGBID LIKE @value ORDER BY gb.sGBID LIMIT 100";
+                    break;
+                case "sOldGreenBkNo":
+                    addTosql = @", gb.sOldGreenBkNo FROM tblgreenbook as gb WHERE gb.sOldGreenBkNo LIKE @value ORDER BY gb.sOldGreenBkNo LIMIT 100";
+                    break;
+                case "sFstGreenBkNo":
+                    addTosql = @", gb.sFstGreenBkNo FROM tblgreenbook as gb WHERE gb.sFstGreenBkNo LIKE @value ORDER BY gb.sFstGreenBkNo LIMIT 100";
+                    break;
+                case "sResidenceNumber":
+                    addTosql = @", gb.sResidenceNumber FROM tblgreenbook as gb WHERE gb.sResidenceNumber LIKE @value ORDER BY gb.sResidenceNumber LIMIT 100";
+                    break;
+                case "sOtherDocuments":
+                    addTosql = @", gb.sOtherDocuments FROM tblgreenbook as gb WHERE gb.sOtherDocuments LIKE @value ORDER BY gb.sOtherDocuments LIMIT 100";
                     break;
                 default:
-                    join = String.Empty;
-                    field = ", gb." + parameter;
-                    where = "gb." + parameter;
                     break;
             }
 
-            string sql = String.Format(@"SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sAliasName, gb.dtDeceased, gb.sLastName, gb.sFamilyName, gb.dtDOB, IF(gb.dtDeceased is null,CAST(year(curdate()) - year(dtDOB) AS UNSIGNED), CAST(year(gb.dtDeceased) - year(dtDOB) AS UNSIGNED)) as nAge,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {0} FROM tblgreenbook as gb {1} WHERE {2} {3} @value ORDER BY {2} LIMIT 100", field, join, where, operation);
+            if (String.IsNullOrEmpty(addTosql))
+            {
+                return null;
+            }
+
+            string sql = @$"SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sAliasName, gb.dtDeceased, gb.sLastName, gb.sFamilyName, gb.dtDOB, IF(gb.dtDeceased is null,CAST(year(curdate()) - year(dtDOB) AS UNSIGNED), CAST(year(gb.dtDeceased) - year(dtDOB) AS UNSIGNED)) as nAge,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {addTosql};";
 
 
             
@@ -341,6 +348,12 @@ namespace CTADBL.ViewModelsRepositories
         #region Get Green books list for edit as per column search parameters
         public IEnumerable<object> GetGreenbooksForEdit(string parameters)
         {
+            // Expecting to get only the following four parameters only. Rest to be ignored.
+            if(parameters != "sGBID" && parameters != "sFirstName" && parameters != "sLastName" && parameters != "dtDOB")
+            {
+                return null;
+            }
+            
             string addToSql = @"SELECT Id, CAST(sGBID AS UNSIGNED) AS sGBID, sFirstName, sLastName, dtDOB FROM tblgreenbook WHERE ";
 
             var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(parameters);
@@ -390,7 +403,7 @@ namespace CTADBL.ViewModelsRepositories
         }
         #endregion
 
-        #region
+        #region Search GreenBooks Alternate
         public async Task<IEnumerable<object>> SearchGreenBooksAlternate(string a)
         {
             string addToSql = String.Empty;
@@ -410,7 +423,7 @@ namespace CTADBL.ViewModelsRepositories
                         command.Parameters.AddWithValue(property.Name, '%' + a + '%');
                     }
                 }
-                addToSql += " IF(dtDeceased is null,CAST(year(curdate()) - year(dtDOB) AS UNSIGNED), CAST(year(dtDeceased) - year(dtDOB) AS UNSIGNED)) LIKE @nAge) LIMIT @limit;";
+                addToSql += " IF(dtDeceased is null, CAST(year(curdate()) AS SIGNED) - CAST(year(dtDOB) AS SIGNED), CAST(year(dtDeceased) AS SIGNED) - CAST(year(dtDOB) AS SIGNED)) LIKE @nAge) LIMIT @limit;";
                 command.Parameters.AddWithValue("nAge", '%' + a + '%');
                 //addToSql = addToSql.Substring(0, (addToSql.Length - 3));
                 sql += addToSql;

@@ -317,11 +317,12 @@ namespace CTADBL.ViewModelsRepositories
 
         #region Column Search Madebs
 
-        public IEnumerable<MadebAuthRegionVM> ColumnSearchMadebs(int madebType, string madeb)
+        public IEnumerable<MadebAuthRegionVM> ColumnSearchMadebs(int madebType, MadebSearchVM madeb)
         {
             string addToSql = "";
 
-            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(madeb);
+            var madebString = JsonConvert.SerializeObject(madeb);
+            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(madebString);
 
             using (var command = new MySqlCommand())
             {

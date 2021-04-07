@@ -25,12 +25,25 @@ namespace CTADBL.BaseClassRepositories.Masters
         #endregion
 
         #region MadebType Update Call
+        #region Update MadebType
         public int Update(MadebType madebType)
         {
             var builder = new SqlQueryBuilder<MadebType>(madebType);
             return ExecuteCommand(builder.GetUpdateCommand());
         }
         #endregion
+
+        #region Update MadebType with Transaction
+        public int UpdateWithMySqlTransaction(MadebType madebType, MySqlCommand command)
+        {
+            var builder = new SqlQueryBuilder<MadebType>(madebType);
+            builder.GetUpdateCommandTransaction(command); // Will this work? We are not catching back the command. But since it is passed with reference, should work.
+            int rowsUpdated = ExecuteCommandTransaction(command);
+            return rowsUpdated;
+        }
+        #endregion
+        #endregion
+
 
         #region MadebType Delete Call
         public int Delete(MadebType madebType)

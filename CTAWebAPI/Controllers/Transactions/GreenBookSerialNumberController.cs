@@ -308,19 +308,8 @@ namespace CTAWebAPI.Controllers.Transactions
                         gbsn.nEnteredBy = fetch.nEnteredBy;
                         gbsn.dtEntered = fetch.dtEntered;
                         gbsn.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                        _greenBookSerialNumberRepository.Update(gbsn);
-                        if(gbsn.nFormNumber == null)
-                        {
-                            if(fetch.nMadebTypeId == 1)
-                            {
-                                _madebRepository.UpdateSerialNumber(fetch.sGBID, (int)fetch.nFormNumber, (int)fetch.nMadebTypeId, null, 1);
-                            }
-                            else
-                            {
-                                _madebRepository.UpdateSerialNumber(fetch.sGBID, (int)fetch.nFormNumber, (int)fetch.nMadebTypeId, null, null);
-                            }
-                            
-                        }
+                        _greenBookSerialNumberRepository.UpdateWithMySqlTransaction(gbsn, fetch);
+                        
 
                         #region Audit Log
                         CTALogger.LogAuditRecord(fetch, gbsn, fetch.sGBID, fetch.nAuthRegionId, 12, fetch.Id, gbsn.nUpdatedBy);

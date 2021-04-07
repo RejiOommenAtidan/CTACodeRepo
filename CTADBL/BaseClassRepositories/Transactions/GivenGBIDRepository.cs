@@ -12,19 +12,56 @@ namespace CTADBL.BaseClassRepositories.Transactions
     public class GivenGBIDRepository : ADORepository<GivenGBID>
     {
         private static MySqlConnection _connection;
+        //private MadebRepository madebRepository;
 
         #region Constructor
         public GivenGBIDRepository(string connectionString) : base(connectionString)
         {
             _connection = new MySqlConnection(connectionString);
+            //madebRepository = new MadebRepository(connectionString);
         }
         #endregion
 
         #region Add Call
-        public void Add(GivenGBID gbid)
+        public bool Add(GivenGBID givenGBID, DateTime dtReceived, MadebRepository _madebRepository)
         {
-            var builder = new SqlQueryBuilder<GivenGBID>(gbid);
-            ExecuteCommand(builder.GetInsertCommand());
+
+            //
+            _connection.Open();
+            var builder = new SqlQueryBuilder<GivenGBID>(givenGBID);
+            using (MySqlCommand command = builder.GetInsertCommandTransaction(new MySqlCommand()))
+            {
+                using (MySqlTransaction transaction = _connection.BeginTransaction())
+                {
+                    try
+                    {
+                        command.Connection = _connection;
+                        command.Transaction = transaction;
+                        command.CommandTimeout = 60;
+                        int rowsInserted = ExecuteCommandTransaction(command);
+                        if (rowsInserted < 1)
+                        {
+                            throw new Exception("Inserting Give GBID record failed");
+                        }
+                        bool success = _madebRepository.AddGBIDByFormNoTransaction(givenGBID.nFormNo, dtReceived, givenGBID.nGBId.ToString(), command);
+                        if (success)
+                        {
+                            command.Transaction.Commit();
+                            return true;
+                        }
+                        else
+                        {
+                            command.Transaction.Rollback();
+                            throw new Exception("Updating Madeb for Give GBID failed");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        command.Transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
         #endregion
 
@@ -177,12 +214,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
             command.CommandText = sql;
             command.Parameters.AddWithValue("nGBId", nGBId);
-            int updateRows = command.ExecuteNonQuery();
-            if(updateRows < 1)
-            {
-                command.Transaction.Rollback();
-                return 0;
-            }
+            int updateRows = ExecuteCommandTransaction(command);
             return updateRows;
         }
         #endregion

@@ -28,107 +28,134 @@ namespace CTADBL.BaseClassRepositories.Transactions
         public void Add(Greenbook greenbook)
         {
             _connection.Open();
-            MySqlTransaction transaction = _connection.BeginTransaction();
-            try
+            var builder = new SqlQueryBuilder<Greenbook>(greenbook);
+            using (MySqlCommand command = builder.GetInsertCommandTransaction(new MySqlCommand()))
             {
-                var builder = new SqlQueryBuilder<Greenbook>(greenbook);
-                MySqlCommand command = builder.GetInsertCommand();
-                command.Transaction = transaction;
-                command.Connection = _connection;
-                int a = command.ExecuteNonQuery();
-                if (a < 1)
+                using (MySqlTransaction transaction = _connection.BeginTransaction())
                 {
-                    transaction.Rollback();
-                    _connection.Close();
-                    return;
-                }
-                #region Firing Update Query to Change bGivenOrNot to true
-
-                int updatedRows = _givenGBIDRepository.UpdateGivenOrNot(Convert.ToInt32(greenbook.sGBID), command);
-                if (updatedRows == 0)
-                {
-                    transaction.Rollback();
-                    _connection.Close();
-                    return;
-                }
-                #endregion
-
-                #region Relations Table Addition
-
-                //Father - 1
-                if (!string.IsNullOrEmpty(greenbook.sFathersGBID))
-                {
-                    Greenbook fatherGB = GetGreenbookByGBID(greenbook.sFathersGBID);
-                    if (fatherGB != null)
+                    try
                     {
-                        GBRelation fatherRelation = new GBRelation
+                        command.Connection = _connection;
+                        command.Transaction = transaction;
+                        command.CommandTimeout = 120;
+                        int a = ExecuteCommandTransaction(command);
+                        if (a < 1)
                         {
-                            sGBID = greenbook.sGBID,
-                            sGBIDRelation = greenbook.sFathersGBID,
-                            nRelationID = 1,
-                            dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
-                            dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
-                            nEnteredBy = greenbook.nEnteredBy,
-                            nUpdatedBy = greenbook.nUpdatedBy
-                        };
-                        var fbuilder = new SqlQueryBuilder<GBRelation>(fatherRelation);
-                        command.CommandText = fbuilder.GetInsertCommand().CommandText;
-                        command.ExecuteNonQuery();
+                            //command.Transaction.Rollback();
+                            //_connection.Close();
+                            //return;
+                            throw new Exception("Failed to insert new greenbook record");
+                        }
+                        #region Firing Update Query to Change bGivenOrNot to true
+
+                        int updatedRows = _givenGBIDRepository.UpdateGivenOrNot(Convert.ToInt32(greenbook.sGBID), command);
+                        if (updatedRows == 0)
+                        {
+                            //command.Transaction.Rollback();
+                            //_connection.Close();
+                            //return;
+                            throw new Exception("Failed to update Give GBID record.");
+                        }
+                        #endregion
+
+                        #region Relations Table Addition
+
+                        //Father - 1
+                        if (!string.IsNullOrEmpty(greenbook.sFathersGBID))
+                        {
+                            Greenbook fatherGB = GetGreenbookByGBID(greenbook.sFathersGBID);
+                            if (fatherGB != null)
+                            {
+                                GBRelation fatherRelation = new GBRelation
+                                {
+                                    sGBID = greenbook.sGBID,
+                                    sGBIDRelation = greenbook.sFathersGBID,
+                                    nRelationID = 1,
+                                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
+                                    dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
+                                    nEnteredBy = greenbook.nEnteredBy,
+                                    nUpdatedBy = greenbook.nUpdatedBy
+                                };
+                                var fbuilder = new SqlQueryBuilder<GBRelation>(fatherRelation);
+                                //command.CommandText = fbuilder.GetInsertCommand().CommandText;
+                                //command.ExecuteNonQuery();
+                                fbuilder.GetInsertCommandTransaction(command);
+                                int insertedRows = ExecuteCommandTransaction(command);
+                                if(insertedRows < 1)
+                                {
+                                    throw new Exception("Failed to insert Father's GBID ");
+                                }
+                            }
+                        }
+                        //Mother - 2
+                        if (!string.IsNullOrEmpty(greenbook.sMothersGBID))
+                        {
+                            Greenbook motherGB = GetGreenbookByGBID(greenbook.sMothersGBID);
+                            if (motherGB != null)
+                            {
+                                GBRelation motherRelation = new GBRelation
+                                {
+                                    sGBID = greenbook.sGBID,
+                                    sGBIDRelation = greenbook.sMothersGBID,
+                                    nRelationID = 2,
+                                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
+                                    dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
+                                    nEnteredBy = greenbook.nEnteredBy,
+                                    nUpdatedBy = greenbook.nUpdatedBy
+                                };
+                                var mbuilder = new SqlQueryBuilder<GBRelation>(motherRelation);
+                                //command.CommandText = mbuilder.GetInsertCommand().CommandText;
+                                //command.ExecuteNonQuery();
+                                mbuilder.GetInsertCommandTransaction(command);
+                                int insertedRows = ExecuteCommandTransaction(command);
+                                if (insertedRows < 1)
+                                {
+                                    throw new Exception("Failed to insert Father's GBID ");
+                                }
+
+                            }
+                        }
+                        //Spouse - 3
+                        if (!string.IsNullOrEmpty(greenbook.sSpouseGBID))
+                        {
+                            Greenbook spouseGB = GetGreenbookByGBID(greenbook.sSpouseGBID);
+                            if (spouseGB != null)
+                            {
+                                GBRelation spouseRelation = new GBRelation
+                                {
+                                    sGBID = greenbook.sGBID,
+                                    sGBIDRelation = greenbook.sSpouseGBID,
+                                    nRelationID = 3,
+                                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
+                                    dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
+                                    nEnteredBy = greenbook.nEnteredBy,
+                                    nUpdatedBy = greenbook.nUpdatedBy
+                                };
+                                var sbuilder = new SqlQueryBuilder<GBRelation>(spouseRelation);
+                                //command.CommandText = sbuilder.GetInsertCommand().CommandText;
+                                //command.ExecuteNonQuery();
+                                sbuilder.GetInsertCommandTransaction(command);
+                                int insertedRows = ExecuteCommandTransaction(command);
+                                if (insertedRows < 1)
+                                {
+                                    throw new Exception("Failed to insert Father's GBID ");
+                                }
+                            }
+                        }
+                        command.Transaction.Commit();
+                        _connection.Close();
+                        #endregion
+                    }
+                    catch (Exception ex)
+                    {
+                        command.Transaction.Rollback();
+                        _connection.Close();
+                        throw;
                     }
                 }
-                //Mother - 2
-                if (!string.IsNullOrEmpty(greenbook.sMothersGBID))
-                {
-                    Greenbook motherGB = GetGreenbookByGBID(greenbook.sMothersGBID);
-                    if (motherGB != null)
-                    {
-                        GBRelation motherRelation = new GBRelation
-                        {
-                            sGBID = greenbook.sGBID,
-                            sGBIDRelation = greenbook.sMothersGBID,
-                            nRelationID = 2,
-                            dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
-                            dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
-                            nEnteredBy = greenbook.nEnteredBy,
-                            nUpdatedBy = greenbook.nUpdatedBy
-                        };
-                        var mbuilder = new SqlQueryBuilder<GBRelation>(motherRelation);
-                        command.CommandText = mbuilder.GetInsertCommand().CommandText;
-                        command.ExecuteNonQuery();
-
-                    }
-                }
-                //Spouse - 3
-                if (!string.IsNullOrEmpty(greenbook.sSpouseGBID))
-                {
-                    Greenbook spouseGB = GetGreenbookByGBID(greenbook.sSpouseGBID);
-                    if (spouseGB != null)
-                    {
-                        GBRelation spouseRelation = new GBRelation
-                        {
-                            sGBID = greenbook.sGBID,
-                            sGBIDRelation = greenbook.sSpouseGBID,
-                            nRelationID = 3,
-                            dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
-                            dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
-                            nEnteredBy = greenbook.nEnteredBy,
-                            nUpdatedBy = greenbook.nUpdatedBy
-                        };
-                        var sbuilder = new SqlQueryBuilder<GBRelation>(spouseRelation);
-                        command.CommandText = sbuilder.GetInsertCommand().CommandText;
-                        command.ExecuteNonQuery();
-                    }
-                }
-                transaction.Commit();
-                _connection.Close();
-                #endregion
             }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                _connection.Close();
-                throw;
-            }
+                
+            
             
         }
         #endregion

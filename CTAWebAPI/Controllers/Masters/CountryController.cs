@@ -342,57 +342,5 @@ namespace CTAWebAPI.Controllers.Masters
         }
         #endregion
 
-        #region Search
-        //[HttpGet]
-        //[Route("[action]")]
-        //public IActionResult SearchCountries(string sCountry)
-        //{
-        //    if (String.IsNullOrEmpty(sCountry))
-        //    {
-        //        return RedirectToAction("GetCountries");
-        //        //return BadRequest("Search parameter not specified");
-        //    }
-        //    try
-        //    {
-        //        IEnumerable<Country> result = _countryRepository.SearchCountries(sCountry);
-        //        if(result != null && result.Count() > 0)
-        //        {
-        //            return Ok(result);
-        //        }
-        //        return NoContent();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError);
-        //    }
-        //}
-        [AuthorizeRole(FeatureID = 23)]
-        [HttpPost]
-        [Route("[action]")]
-        public IActionResult SearchCountries(Object country) 
-        {
-            if(String.IsNullOrEmpty(country.ToString()))
-            {
-                return RedirectToAction("GetCountries");
-            }
-            try
-            {
-                IEnumerable<Country> countries = _countryRepository.SearchCountries(country.ToString());
-                if(countries != null && countries.Count() > 0)
-                {
-                    return Ok(countries);
-                }
-                else
-                {
-                    return NoContent();
-                }
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-        }
-
-        #endregion
     }
 }

@@ -76,6 +76,23 @@ namespace CTADBL.QueryBuilder
                 GetInsertFieldList());
             return new MySqlCommand(query);
         }
+        #endregion
+
+        #region Insert with MySql Command (For MySql Transaction)
+        public MySqlCommand GetInsertCommandTransaction(MySqlCommand command)
+        {
+            var table = GetTableName();
+            //var key = GetKeyField();
+            //if (key == null)
+            //    throw new Exception("No Key attribute was found.");
+            if (String.IsNullOrEmpty(table))
+                throw new Exception("No Table attribute was found.");
+            var query = String.Format("INSERT INTO {0} SELECT {1}",
+                table,
+                GetInsertFieldList());
+            command.CommandText = query;
+            return command;
+        }
         private string GetInsertFieldList()
         {
             var sb = new StringBuilder();
@@ -144,6 +161,20 @@ namespace CTADBL.QueryBuilder
                 GetKeyFieldName(),
                 GetKeyFieldValue());
             return new MySqlCommand(query);
+        }
+
+        public MySqlCommand GetUpdateCommandTransaction(MySqlCommand command)
+        {
+            var table = GetTableName();
+            if (String.IsNullOrEmpty(table))
+                throw new Exception("No Table attribute was found.");
+            var query = String.Format("UPDATE {0} SET {1} WHERE {2}={3}",
+                table,
+                GetUpdateFieldList(),
+                GetKeyFieldName(),
+                GetKeyFieldValue());
+            command.CommandText = query;
+            return command;
         }
         private string GetUpdateFieldList()
         {

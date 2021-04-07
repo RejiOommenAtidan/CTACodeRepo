@@ -304,9 +304,10 @@ namespace CTAWebAPI.Controllers
 
 
         #region Search
+        [AuthorizeRole(FeatureID = 0)]
         [HttpPost("ColumnSearchMadeb/madebType={madebType}")]
         [Route("[action]")]
-        public IActionResult ColumnSearchMadeb(int madebType, [FromBody] Object madeb)
+        public IActionResult ColumnSearchMadeb(int madebType, [FromBody] MadebSearchVM madeb)
         {
             if(madeb == null)
             {
@@ -314,7 +315,7 @@ namespace CTAWebAPI.Controllers
             }
             try
             {
-                IEnumerable<MadebAuthRegionVM> madebs = _madebAuthRegionVMRepository.ColumnSearchMadebs(madebType, madeb.ToString());
+                IEnumerable<MadebAuthRegionVM> madebs = _madebAuthRegionVMRepository.ColumnSearchMadebs(madebType, madeb);
                 if(madebs != null && madebs.Count() > 0)
                 {
                     #region Information Logging 

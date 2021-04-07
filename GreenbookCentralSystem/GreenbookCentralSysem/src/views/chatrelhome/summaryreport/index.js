@@ -81,6 +81,7 @@ export default function Report() {
   const [dataAPI, setDataAPI] = useState([]);
   const [showColumns, setShowColumns] = useState(true);
   const [sCountryID, setsCountryID] = useState(null);
+  const [title, setTitle] = useState("");
  
   const columns =[
     {
@@ -258,6 +259,18 @@ export default function Report() {
   const getChatrelSummaryReport =(tempsCountryID)=>{
    
    // alert(JSON.stringify(reportParams));-
+   console.log(reportParams );
+   if(reportParams.dtDateFrom === null ){
+    setAlertMessage("Date From is required");
+    setAlertType('info');
+    snackbarOpen();
+   }
+   else if(reportParams.dtDateTo === null ){
+    setAlertMessage("Date To is required");
+    setAlertType('info');
+    snackbarOpen();
+   }
+   else{
    setBackdrop(true);
    var sql="";
    if(tempsCountryID){
@@ -269,7 +282,7 @@ export default function Report() {
      axios.get(sql)
     .then(resp => {
       if (resp.status === 200) {
-        
+        setTitle(` from ${Moment(startDate).format('DD-MM-YYYY')} - ${Moment(endDate).format('DD-MM-YYYY')}`);
         setBackdrop(false);
        let x =1;
        let total=0;
@@ -322,6 +335,7 @@ export default function Report() {
       console.log(error.message);
       console.log(error.config);
     });
+  }
   }
   const onSubmit =(e)=>{
     e.preventDefault();
@@ -406,10 +420,13 @@ export default function Report() {
     format={sDateFormatMUIDatepicker}
     returnMoment={true}
     onChange={(date) => {
+      console.log(date);
       if (date) {
         setStartDate(date);
         setValue('startDate', date, { shouldValidate: true });
-      };
+      }else{
+        setStartDate(startDate);
+      }
     }}
     value={startDate}
     KeyboardButtonProps={{
@@ -505,7 +522,7 @@ export default function Report() {
          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px', color: 'black', fontSize:'1.05rem' }}
             //isLoading={isLoading}
             icons={oTableIcons}
-           title={`Chatrel Summary Report `}
+           title={`Chatrel Summary Report ${title}`}
         
            columns={columns}
      

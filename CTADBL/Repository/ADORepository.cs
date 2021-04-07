@@ -162,6 +162,25 @@ namespace CTADBL.Repository
             }
         }
 
+        #region Execute command with Transaction Support
+        protected int ExecuteCommandTransaction(MySqlCommand command)
+        {
+            command.CommandType = CommandType.Text;
+            try
+            {
+                return command.ExecuteNonQuery();
+            }
+            catch (MySqlException ex)
+            {
+                throw;
+            }
+            finally
+            {
+            
+            }
+        }
+        #endregion
+
         protected void ExecuteVoidSP(MySqlCommand command)
         {
             command.Connection = _connection;

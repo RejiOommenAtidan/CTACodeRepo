@@ -6,6 +6,7 @@ using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using CTADBL.ViewModels;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1;
 using System;
 using System.Collections.Generic;
@@ -279,6 +280,9 @@ namespace CTADBL.ViewModelsRepositories
              * 6. GB ID
              */
 
+            //string p = JsonConvert.SerializeObject(search);
+            //Dictionary<string, string> searchParams = JsonConvert.DeserializeObject<Dictionary<string, string>>(p);
+
             string sql = @"SET session sql_mode = ''; SELECT t.sGBID, t.sChatrelReceiptNumber, concat(t.nChatrelYear, '-', (CAST(substring(t.nChatrelYear, 3) AS UNSIGNED)+1))  AS sFinancialYear, t.dtPayment, t2.sFirstName, t2.sLastName, CONCAT(t2.sFirstName,' ',IFNULL(t2.sLastName, '')) AS sName,  t.sPaidByGBId, t.sPaymentCurrency, t.nChatrelTotalAmount, t.sPaymentMode, l.sAuthRegion, l3.sCountry FROM tblchatrelpayment t LEFT JOIN tblgreenbook t2 ON t2.sGBID = t.sGBId LEFT JOIN lnkgbchatrel l2 ON t.id = l2.chatrelpaymentID AND l2.nArrearsAmount IS NULL LEFT JOIN lnkgbchatreldonation l4 ON l4.chatrelpaymentID = t.Id  LEFT JOIN lstauthregion l ON l.ID = l2.nAuthRegionID OR l.ID = l4.nAuthRegionID LEFT JOIN lstcountry l3 ON l3.sCountryID = l2.sCountryID OR l3.sCountryID = l4.sCountryID  WHERE t.sChatrelReceiptNumber IS NOT NULL ";
             using (var command = new MySqlCommand())
             {
@@ -322,7 +326,12 @@ namespace CTADBL.ViewModelsRepositories
                             command.Parameters.AddWithValue(item.Key, item.Value.ToString() + '%');
                             continue;
                         }
-                        if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                        //if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                        //{
+                        //    sql += $@" AND t.{item.Key} LIKE @{item.Key}";
+                        //    command.Parameters.AddWithValue(item.Key, item.Value.ToString() + '%');
+                        //}
+                        if (item.Key == "sGBID" || item.Key == "sPaymentCurrency" || item.Key == "sChatrelReceiptNumber" || item.Key == "sPaymentMode")
                         {
                             sql += $@" AND t.{item.Key} LIKE @{item.Key}";
                             command.Parameters.AddWithValue(item.Key, item.Value.ToString() + '%');

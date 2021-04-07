@@ -154,16 +154,11 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    
-                    if (_madebRepository.AddGBIDByFormNo(givenGBID.nFormNo, dtReceived, givenGBID.nGBId.ToString()))
+                    givenGBID.dtDate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    givenGBID.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    givenGBID.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    if (_givenGBIDRepository.Add(givenGBID, dtReceived, _madebRepository))
                     {
-                        /* Changed by Rajen*/
-                        givenGBID.dtDate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                        /* Changed by Rajen*/
-
-                        givenGBID.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                        givenGBID.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
-                        _givenGBIDRepository.Add(givenGBID);
                         #region Information Logging 
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, givenGBID.nEnteredBy);
                         #endregion
@@ -172,10 +167,8 @@ namespace CTAWebAPI.Controllers.Transactions
                     }
                     else
                     {
-                        return BadRequest("Madeb is not Sarso Madeb");
+                        return Problem("There was an error saving Give GBID record", null, 500, "Give Greenbook ID", "Database failure");
                     }
-
-                    
                 }
                 else
                 {

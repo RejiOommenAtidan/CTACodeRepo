@@ -242,17 +242,22 @@ export const ViewDialog = (props) => {
   };
   useEffect(() => {
     let count=1;
+    setdialogBackdrop(true);
     axios.get(`GreenBook/GetDetailsFromGBID?sGBID=` + props.sGBID + `&nUserId=` + userid)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
         setData(resp.data);
-       
+        setdialogBackdrop(false);
           // console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
 
         }
       })
       .catch(error => {
+        setdialogBackdrop(false);
+        props.handleViewClickClose('error');
+        
+        setData([]);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -267,13 +272,13 @@ export const ViewDialog = (props) => {
       .then(release => {
         //console.log(release); => udefined
       });
-    function tick() {
-      // reset when reaching 100%
-      setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
-    } const timer = setInterval(tick, 20);
-    return () => {
-      clearInterval(timer);
-    };
+    // function tick() {
+    //   // reset when reaching 100%
+    //   setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+    // } const timer = setInterval(tick, 20);
+    // return () => {
+    //   clearInterval(timer);
+    // };
 
   }, []);
 
